@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.architecture.blueprints.todoapp.data.source.remote
+package com.applego.oblog.tppwatch.data.source.remote
 
-import com.example.android.architecture.blueprints.todoapp.data.Result
-import com.example.android.architecture.blueprints.todoapp.data.Result.Error
-import com.example.android.architecture.blueprints.todoapp.data.Result.Success
-import com.example.android.architecture.blueprints.todoapp.data.Tpp
-import com.example.android.architecture.blueprints.todoapp.data.source.TppsDataSource
+import com.applego.oblog.tppwatch.data.Result
+import com.applego.oblog.tppwatch.data.Result.Error
+import com.applego.oblog.tppwatch.data.Result.Success
+import com.applego.oblog.tppwatch.data.Tpp
+import com.applego.oblog.tppwatch.data.source.TppsDataSource
 import kotlinx.coroutines.delay
 
 /**

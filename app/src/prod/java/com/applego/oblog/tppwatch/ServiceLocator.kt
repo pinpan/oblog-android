@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.example.android.architecture.blueprints.todoapp
+package com.applego.oblog.tppwatch
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.room.Room
-import com.example.android.architecture.blueprints.todoapp.data.source.DefaultTppsRepository
-import com.example.android.architecture.blueprints.todoapp.data.source.TppsDataSource
-import com.example.android.architecture.blueprints.todoapp.data.source.TppsRepository
-import com.example.android.architecture.blueprints.todoapp.data.source.local.TppsLocalDataSource
-import com.example.android.architecture.blueprints.todoapp.data.source.local.ToDoDatabase
-import com.example.android.architecture.blueprints.todoapp.data.source.remote.TppsRemoteDataSource
+import com.applego.oblog.tppwatch.data.source.DefaultTppsRepository
+import com.applego.oblog.tppwatch.data.source.TppsDataSource
+import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.source.local.TppsLocalDataSource
+import com.applego.oblog.tppwatch.data.source.local.TppDatabase
+import com.applego.oblog.tppwatch.data.source.remote.TppsRemoteDataSource
 import kotlinx.coroutines.runBlocking
 
 /**
@@ -34,7 +34,7 @@ import kotlinx.coroutines.runBlocking
 object ServiceLocator {
 
     private val lock = Any()
-    private var database: ToDoDatabase? = null
+    private var database: TppDatabase? = null
     @Volatile
     var tppsRepository: TppsRepository? = null
         @VisibleForTesting set
@@ -54,10 +54,10 @@ object ServiceLocator {
         return TppsLocalDataSource(database.tppDao())
     }
 
-    private fun createDataBase(context: Context): ToDoDatabase {
+    private fun createDataBase(context: Context): TppDatabase {
         val result = Room.databaseBuilder(
             context.applicationContext,
-            ToDoDatabase::class.java, "Tpps.db"
+            TppDatabase::class.java, "Tpps.db"
         ).build()
         database = result
         return result

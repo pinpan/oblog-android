@@ -20,13 +20,13 @@
 
     <application
         android:allowBackup="false"
-        android:name="com.applego.oblog.architecture.blueprints.com.applego.oblog.tppwatch.TodoApplication"
+        android:name="com.applego.oblog.tppwatch.TppWatchApplication"
         android:icon="@mipmap/ic_launcher"
-        android:label=string/app_name"
+        android:label="string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.applego.oblog.architecture.blueprints.com.applego.oblog.tppwatch.tpps.TppsActivity"
+            android:name="com.applego.oblog.tppwatch.tpps.TppsActivity"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme.OverlapSystemBar">
             <intent-filter>
