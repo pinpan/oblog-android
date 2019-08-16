@@ -22,11 +22,11 @@
 
         <variable
             name="tpp"
-            type="com.example.android.architecture.blueprints.todoapp.data.Tpp" />
+            type="com.applego.oblog.tppwatch.data.Tpp" />
 
         <variable
             name="viewmodel"
-            type="com.example.android.architecture.blueprints.todoapp.tpps.TppsViewModel" />
+            type="com.applego.oblog.tppwatch.tpps.TppsViewModel" />
     </data>
 
     <LinearLayout
