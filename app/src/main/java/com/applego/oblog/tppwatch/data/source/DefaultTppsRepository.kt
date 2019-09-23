@@ -19,13 +19,12 @@ import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.Tpp
+import com.applego.oblog.tppwatch.data.source.rest.TppsRestDataSource
 import com.applego.oblog.tppwatch.util.EspressoIdlingResource
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
@@ -36,7 +35,7 @@ import java.util.concurrent.ConcurrentMap
  * To simplify the sample, this repository only uses the local data source only if the remote
  * data source fails. Remote is the source of truth.
  */
-class DefaultTppsRepository(
+class DefaultTppsRepository (
         private val tppsRemoteDataSource: TppsDataSource,
         private val tppsLocalDataSource: TppsDataSource,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
@@ -76,8 +75,13 @@ class DefaultTppsRepository(
         }
     }
 
-    private suspend fun fetchTppsFromRemoteOrLocal(forceUpdate: Boolean): Result<List<Tpp>> {
+    private suspend fun fetchTppsFromRemoteOrLocal(forceUpdate: Boolean): Result<List<Tpp>>? {
         // Remote first
+        // Don't read from local if it's forced
+        if (!forceUpdate) {
+            return Error(Exception("forceUpdate is FALSE: Update from remote source is not required."))
+        }
+
         val remoteTpps = tppsRemoteDataSource.getTpps()
         when (remoteTpps) {
             is Error -> Timber.w("Remote data source fetch failed")
@@ -86,11 +90,6 @@ class DefaultTppsRepository(
                 return remoteTpps
             }
             else -> throw IllegalStateException()
-        }
-
-        // Don't read from local if it's forced
-        if (forceUpdate) {
-            return Error(Exception("Can't force refresh: remote data source is unavailable"))
         }
 
         // Local if remote fails

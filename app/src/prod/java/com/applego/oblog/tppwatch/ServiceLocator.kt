@@ -24,7 +24,9 @@ import com.applego.oblog.tppwatch.data.source.TppsDataSource
 import com.applego.oblog.tppwatch.data.source.TppsRepository
 import com.applego.oblog.tppwatch.data.source.local.TppsLocalDataSource
 import com.applego.oblog.tppwatch.data.source.local.TppDatabase
+import com.applego.oblog.tppwatch.data.source.rest.EbaService
 import com.applego.oblog.tppwatch.data.source.remote.TppsRemoteDataSource
+import com.applego.oblog.tppwatch.data.source.rest.TppsRestDataSource
 import kotlinx.coroutines.runBlocking
 
 /**
@@ -46,12 +48,17 @@ object ServiceLocator {
     }
 
     private fun createTppsRepository(context: Context): TppsRepository {
-        return DefaultTppsRepository(TppsRemoteDataSource, createTppLocalDataSource(context))
+        return DefaultTppsRepository(createTppsRestDataSource(context), createTppLocalDataSource(context))
     }
 
     private fun createTppLocalDataSource(context: Context): TppsDataSource {
         val database = database ?: createDataBase(context)
         return TppsLocalDataSource(database.tppDao())
+    }
+
+    private fun createTppsRestDataSource(context: Context): TppsRestDataSource {
+        //val database = database ?: createDataBase(context)
+        return TppsRestDataSource(EbaService.create(), database!!.tppDao())
     }
 
     private fun createDataBase(context: Context): TppDatabase {
