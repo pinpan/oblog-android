@@ -14,7 +14,7 @@ interface  EbaService {
 
     companion object {
 
-        var BASE_URL = "https://api.oblog.org/"
+        var BASE_URL = "https://api.oblog.org:8443/eba-registry"
         //var API_KEY = "2e65127e909e178d0af311a81f39948c"
 
         fun create(): EbaService {
@@ -33,7 +33,7 @@ interface  EbaService {
 
     //var disposable: Disposable? = null
 
-    @GET("tpps")
+    @GET("eba-registry")
     fun getTpps(): Call<List<Tpp>>
 
     @GET("tpps")

@@ -57,7 +57,7 @@ object ServiceLocator {
     }
 
     private fun createTppsRestDataSource(context: Context): TppsRestDataSource {
-        //val database = database ?: createDataBase(context)
+        val database = database ?: createDataBase(context)
         return TppsRestDataSource(EbaService.create(), database!!.tppDao())
     }
 
