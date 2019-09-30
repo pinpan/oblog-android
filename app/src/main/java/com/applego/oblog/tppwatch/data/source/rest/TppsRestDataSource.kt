@@ -38,63 +38,10 @@ class TppsRestDataSource internal constructor (
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : TppsDataSource {
 
-    /*
-        return@withContext try {
-            Success(tppsService.getTpps())
-        } catch (e: Exception) {
-            Error(e)
-        }
-    }
-
-    override suspend fun getTpp(tppId: String): Result<Tpp> = withContext(ioDispatcher) {
-        try {
-            val tpp = tppsService.getTppById(tppId)
-            if (tpp != null) {
-                return@withContext Success(tpp)
-            } else {
-                return@withContext Error(Exception("Tpp not found!"))
-            }
-        } catch (e: Exception) {
-            return@withContext Error(e)
-        }
-    }
-
-
-        val call = ebaAPI.getTpps()
-        call.enqueue(object: Callback< List<Tpp>!>! {
-            //this)
-
-            override fun onResponse(call: Call<List<Tpp>>, response: Response<List<Tpp>>) {
-                if (response.isSuccessful()) {
-                    val tppsList = response.body()
-                    tppsList?.forEach { tpp ->
-                        System.out.println(tpp.title)
-                    }
-                } else {
-                    System.out.println(response.errorBody())
-                }
-            }
-
-            override fun onFailure(call: Call<List<Tpp>>, t: Throwable) {
-                t.printStackTrace()
-            }
-        })
-
-    */
-
-
-
-    /*override suspend fun getTpps(): Result<List<Tpp>> = withContext(ioDispatcher) {
-        return@withContext try {
-            Success(tppsDao.getTpps())
-        } catch (e: Exception) {
-            Error(e)
-        }
-    }*/
+    var tppsList: List<Tpp> = List<Tpp>(0){ Tpp()}
 
     override suspend fun getTpps(): Result<List<Tpp>> = withContext(ioDispatcher) {
-        var tppsList: List<Tpp> = List<Tpp>(0){ Tpp()}
-        val call = tppsService.getTpps()
+        val call = tppsService.listTpps("BudgetBakers") // TODO: get filter parameters from UI
         call.enqueue(object: Callback<List<Tpp>> {
 
             override fun onResponse(call: Call<List<Tpp>>, response: Response<List<Tpp>>) {
