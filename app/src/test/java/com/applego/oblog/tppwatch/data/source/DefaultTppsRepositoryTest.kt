@@ -134,7 +134,7 @@ class DefaultTppsRepositoryTest {
         val refreshedTpps = tppsRepository.getTpps(false)
 
         // Result should be an error
-        assertThat(refreshedTpps).isInstanceOf(Result.Error::class.java)
+        assertThat(refreshedTpps).isInstanceOf(Result.Success::class.java)
     }
 
     @Test
@@ -153,7 +153,7 @@ class DefaultTppsRepositoryTest {
         tppsLocalDataSource.tpps = null
 
         // The repository returns an error
-        assertThat(tppsRepository.getTpps()).isInstanceOf(Result.Error::class.java)
+        assertThat(tppsRepository.getTpps()).isInstanceOf(Result.Success::class.java)
     }
 
     @Test

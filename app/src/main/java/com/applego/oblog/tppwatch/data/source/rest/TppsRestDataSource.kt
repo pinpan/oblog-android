@@ -15,18 +15,16 @@
  */
 package com.applego.oblog.tppwatch.data.source.rest
 
-import android.content.ContentValues.TAG
-import android.provider.Contacts
-import android.util.Log
 import com.applego.oblog.tppwatch.data.Result
-import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.Tpp
 import com.applego.oblog.tppwatch.data.source.TppsDataSource
 import com.applego.oblog.tppwatch.data.source.local.TppsDao
 import kotlinx.coroutines.*
+import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -70,7 +68,7 @@ class TppsRestDataSource internal constructor (
             }
         })
 
-        return@withContext Success(tppsList)
+        return@withContext Result.Loading(Timeout())
     }
 
     override suspend fun getTpp(tppId: String): Result<Tpp> {

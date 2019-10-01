@@ -16,18 +16,18 @@
 package com.applego.oblog.tppwatch.data.source
 
 import com.applego.oblog.tppwatch.data.Result
+import com.applego.oblog.tppwatch.data.Result.Loading
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.Tpp
-import com.applego.oblog.tppwatch.data.source.rest.TppsRestDataSource
 import com.applego.oblog.tppwatch.util.EspressoIdlingResource
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import okio.Timeout
 import timber.log.Timber
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
+import java.util.concurrent.TimeUnit
 
 /**
  * Concrete implementation to load tpps from the data sources into a cache.
@@ -41,7 +41,9 @@ class DefaultTppsRepository (
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : TppsRepository {
 
-    private var cachedTpps: ConcurrentMap<String, Tpp>? = null
+    private var cachedTpps: ConcurrentMap<String, Tpp> = ConcurrentHashMap()
+
+    val waitTwoSeconds : Timeout = Timeout()
 
     override suspend fun getTpps(forceUpdate: Boolean): Result<List<Tpp>> {
 
@@ -49,28 +51,29 @@ class DefaultTppsRepository (
 
             return withContext(ioDispatcher) {
                 // Respond immediately with cache if available and not dirty
-                if (!forceUpdate) {
-                    cachedTpps?.let { cachedTpps ->
-                        return@withContext Success(cachedTpps.values.sortedBy { it.id })
+                if (forceUpdate) {
+                    val newTpps = fetchTppsFromRemoteOrLocal(forceUpdate)
+
+                    // Refresh the cache with the new tpps
+                    (newTpps as? Success)?.let {
+                        if (!it.data.isEmpty()) {
+                            refreshCache(it.data)
+                            //return@withContext Success(it.data.sortedBy { it.id })
+                        }
+                    }
+
+                    (newTpps as? Loading)?.let {
+                        return@withContext Loading(waitTwoSeconds.timeout(2000, TimeUnit.MILLISECONDS))
                     }
                 }
 
-                val newTpps = fetchTppsFromRemoteOrLocal(forceUpdate)
-
-                // Refresh the cache with the new tpps
-                (newTpps as? Success)?.let { refreshCache(it.data) }
-
-                cachedTpps?.values?.let { tpps ->
-                    return@withContext Success(tpps.sortedBy { it.id })
-                }
-
-                (newTpps as? Success)?.let {
-                    if (it.data.isEmpty()) {
-                        return@withContext Success(it.data)
+                //cachedTpps.let { cachedTpps ->
+                    cachedTpps.values.let { tpps ->
+                        return@withContext Success(tpps.sortedBy { it.id })
                     }
-                }
+                //}
 
-                return@withContext Error(Exception("Illegal state"))
+                //return@withContext Error(Exception("Illegal state"))
             }
         }
     }
@@ -84,12 +87,15 @@ class DefaultTppsRepository (
 
         val remoteTpps = tppsRemoteDataSource.getTpps()
         when (remoteTpps) {
-            is Error -> Timber.w("Remote data source fetch failed")
             is Success -> {
                 refreshLocalDataSource(remoteTpps.data)
-                return remoteTpps
+                //return remoteTpps
             }
-            else -> throw IllegalStateException()
+            /*is Loading -> {
+                return remoteTpps
+            }*/
+            is Error -> Timber.w("Remote data source fetch failed")
+            //else -> throw IllegalStateException()
         }
 
         // Local if remote fails
@@ -205,7 +211,7 @@ class DefaultTppsRepository (
             launch { tppsLocalDataSource.clearCompletedTpps() }
         }
         withContext(ioDispatcher) {
-            cachedTpps?.entries?.removeAll { it.value.isCompleted }
+            cachedTpps.entries.removeAll { it.value.isCompleted }
         }
     }
 
@@ -216,7 +222,7 @@ class DefaultTppsRepository (
                 launch { tppsLocalDataSource.deleteAllTpps() }
             }
         }
-        cachedTpps?.clear()
+        cachedTpps.clear()
     }
 
     override suspend fun deleteTpp(tppId: String) {
@@ -225,11 +231,11 @@ class DefaultTppsRepository (
             launch { tppsLocalDataSource.deleteTpp(tppId) }
         }
 
-        cachedTpps?.remove(tppId)
+        cachedTpps.remove(tppId)
     }
 
     private fun refreshCache(tpps: List<Tpp>) {
-        cachedTpps?.clear()
+        cachedTpps.clear()
         tpps.sortedBy { it.id }.forEach {
             cacheAndPerform(it) {}
         }
@@ -246,15 +252,16 @@ class DefaultTppsRepository (
         tppsLocalDataSource.saveTpp(tpp)
     }
 
-    private fun getTppWithId(id: String) = cachedTpps?.get(id)
+    private fun getTppWithId(id: String) = cachedTpps.get(id)
 
     private fun cacheTpp(tpp: Tpp): Tpp {
         val cachedTpp = Tpp(tpp.title, tpp.description, tpp.isCompleted, tpp.id)
         // Create if it doesn't exist.
+        /* Declared as new object -> Test if not null and remove this check
         if (cachedTpps == null) {
             cachedTpps = ConcurrentHashMap()
-        }
-        cachedTpps?.put(cachedTpp.id, cachedTpp)
+        }*/
+        cachedTpps.put(cachedTpp.id, cachedTpp)
         return cachedTpp
     }
 

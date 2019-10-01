@@ -17,6 +17,7 @@
 package com.applego.oblog.tppwatch.data
 
 import com.applego.oblog.tppwatch.data.Result.Success
+import okio.Timeout
 
 /**
  * A generic class that holds a value with its loading status.
@@ -26,13 +27,13 @@ sealed class Result<out T> {
 
     data class Success<out T>(val data: T) : Result<T>()
     data class Error(val exception: Exception) : Result<Nothing>()
-    object Loading : Result<Nothing>()
+    data class Loading(val timeout: Timeout) : Result<Nothing>()
 
     override fun toString(): String {
         return when (this) {
             is Success<*> -> "Success[data=$data]"
             is Error -> "Error[exception=$exception]"
-            Loading -> "Loading"
+            is Loading -> "Loading"
         }
     }
 }
