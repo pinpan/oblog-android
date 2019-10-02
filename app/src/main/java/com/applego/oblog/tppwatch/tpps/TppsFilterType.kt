@@ -25,12 +25,12 @@ enum class TppsFilterType {
     ALL_TPPS,
 
     /**
-     * Filters only the active (not completed yet) tpps.
+     * Filters only the active (not followed yet) tpps.
      */
     ACTIVE_TPPS,
 
     /**
-     * Filters only the completed tpps.
+     * Filters only the followed tpps.
      */
-    COMPLETED_TPPS
+    FOLLOWED_TPPS
 }

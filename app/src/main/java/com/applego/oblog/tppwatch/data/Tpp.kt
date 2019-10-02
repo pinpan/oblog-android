@@ -26,15 +26,15 @@ import java.util.UUID
  *
  * @param title       title of the tpp
  * @param description description of the tpp
- * @param isCompleted whether or not this tpp is completed
+ * @param isFollowed whether or not this tpp is followed
  * @param id          id of the tpp
  */
 @Entity(tableName = "tpps")
 data class Tpp @JvmOverloads constructor(
-    @ColumnInfo(name = "title") var title: String = "",
-    @ColumnInfo(name = "description") var description: String = "",
-    @ColumnInfo(name = "completed") var isCompleted: Boolean = false,
-    @PrimaryKey @ColumnInfo(name = "entryid") var id: String = UUID.randomUUID().toString()
+        @ColumnInfo(name = "title") var title: String = "",
+        @ColumnInfo(name = "description") var description: String = "",
+        @ColumnInfo(name = "followed") var isFollowed: Boolean = false,
+        @PrimaryKey @ColumnInfo(name = "entryid") var id: String = UUID.randomUUID().toString()
 ) {
 
     val titleForList: String
@@ -42,7 +42,7 @@ data class Tpp @JvmOverloads constructor(
 
 
     val isActive
-        get() = !isCompleted
+        get() = !isFollowed
 
     val isEmpty
         get() = title.isEmpty() || description.isEmpty()

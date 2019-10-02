@@ -54,7 +54,7 @@ class TppsViewModelTest {
 
     @Before
     fun setupViewModel() {
-        // We initialise the tpps to 3, with one active and two completed
+        // We initialise the tpps to 3, with one active and two followed
         tppsRepository = FakeRepository()
         val tpp1 = Tpp("Title1", "Description1")
         val tpp2 = Tpp("Title2", "Description2", true)
@@ -106,10 +106,10 @@ class TppsViewModelTest {
     }
 
     @Test
-    fun loadCompletedTppsFromRepositoryAndLoadIntoView() {
+    fun loadFollowedTppsFromRepositoryAndLoadIntoView() {
         // Given an initialized TppsViewModel with initialized tpps
         // When loading of Tpps is requested
-        tppsViewModel.setFiltering(TppsFilterType.COMPLETED_TPPS)
+        tppsViewModel.setFiltering(TppsFilterType.FOLLOWED_TPPS)
 
         // Load tpps
         tppsViewModel.loadTpps(true)
@@ -160,26 +160,26 @@ class TppsViewModelTest {
     }
 
     @Test
-    fun clearCompletedTpps_clearsTpps() = mainCoroutineRule.runBlockingTest {
-        // When completed tpps are cleared
-        tppsViewModel.clearCompletedTpps()
+    fun clearFollowedTpps_clearsTpps() = mainCoroutineRule.runBlockingTest {
+        // When followed tpps are cleared
+        tppsViewModel.clearFollowedTpps()
 
         // Fetch tpps
         tppsViewModel.loadTpps(true)
 
         // Fetch tpps
         val allTpps = LiveDataTestUtil.getValue(tppsViewModel.items)
-        val completedTpps = allTpps.filter { it.isCompleted }
+        val followedTpps = allTpps.filter { it.isFollowed }
 
-        // Verify there are no completed tpps left
-        assertThat(completedTpps).isEmpty()
+        // Verify there are no followed tpps left
+        assertThat(followedTpps).isEmpty()
 
         // Verify active tpp is not cleared
         assertThat(allTpps).hasSize(1)
 
         // Verify snackbar is updated
         assertSnackbarMessage(
-            tppsViewModel.snackbarText, R.string.completed_tpps_cleared
+            tppsViewModel.snackbarText, R.string.followed_tpps_cleared
         )
     }
 
@@ -217,38 +217,38 @@ class TppsViewModelTest {
     }
 
     @Test
-    fun completeTpp_dataAndSnackbarUpdated() {
+    fun followTpp_dataAndSnackbarUpdated() {
         // With a repository that has an active tpp
         val tpp = Tpp("Title", "Description")
         tppsRepository.addTpps(tpp)
 
-        // Complete tpp
-        tppsViewModel.completeTpp(tpp, true)
+        // Follow tpp
+        tppsViewModel.FollowTpp(tpp, true)
 
-        // Verify the tpp is completed
-        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isCompleted).isTrue()
+        // Verify the tpp is followed
+        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isFollowed).isTrue()
 
         // The snackbar is updated
         assertSnackbarMessage(
-            tppsViewModel.snackbarText, R.string.tpp_marked_complete
+            tppsViewModel.snackbarText, R.string.tpp_marked_followed
         )
     }
 
     @Test
     fun activateTpp_dataAndSnackbarUpdated() {
-        // With a repository that has a completed tpp
+        // With a repository that has a followed tpp
         val tpp = Tpp("Title", "Description", true)
         tppsRepository.addTpps(tpp)
 
         // Activate tpp
-        tppsViewModel.completeTpp(tpp, true)
+        tppsViewModel.FollowTpp(tpp, true)
 
         // Verify the tpp is active
         assertThat(tppsRepository.tppsServiceData[tpp.id]?.isActive).isFalse()
 
         // The snackbar is updated
         assertSnackbarMessage(
-            tppsViewModel.snackbarText, R.string.tpp_marked_complete
+            tppsViewModel.snackbarText, R.string.tpp_marked_followed
         )
     }
 

@@ -70,34 +70,34 @@ class TppDetailViewModelTest {
     }
 
     @Test
-    fun completeTpp() {
+    fun followTpp() {
         tppDetailViewModel.start(tpp.id)
 
         // Verify that the tpp was active initially
-        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isCompleted).isFalse()
+        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isFollowed).isFalse()
 
-        // When the ViewModel is asked to complete the tpp
-        tppDetailViewModel.setCompleted(true)
+        // When the ViewModel is asked to follow the tpp
+        tppDetailViewModel.setFollowed(true)
 
-        // Then the tpp is completed and the snackbar shows the correct message
-        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isCompleted).isTrue()
-        assertSnackbarMessage(tppDetailViewModel.snackbarText, R.string.tpp_marked_complete)
+        // Then the tpp is followed and the snackbar shows the correct message
+        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isFollowed).isTrue()
+        assertSnackbarMessage(tppDetailViewModel.snackbarText, R.string.tpp_marked_followed)
     }
 
     @Test
     fun activateTpp() {
-        tpp.isCompleted = true
+        tpp.isFollowed = true
 
         tppDetailViewModel.start(tpp.id)
 
-        // Verify that the tpp was completed initially
-        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isCompleted).isTrue()
+        // Verify that the tpp was followed initially
+        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isFollowed).isTrue()
 
-        // When the ViewModel is asked to complete the tpp
-        tppDetailViewModel.setCompleted(false)
+        // When the ViewModel is asked to follow the tpp
+        tppDetailViewModel.setFollowed(false)
 
-        // Then the tpp is not completed and the snackbar shows the correct message
-        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isCompleted).isFalse()
+        // Then the tpp is not followed and the snackbar shows the correct message
+        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isFollowed).isFalse()
         assertSnackbarMessage(tppDetailViewModel.snackbarText, R.string.tpp_marked_active)
 
     }

@@ -55,7 +55,7 @@ class AddEditTppViewModel(
 
     private var isDataLoaded = false
 
-    private var tppCompleted = false
+    private var tppFollowed = false
 
     fun start(tppId: String?) {
         if (_dataLoading.value == true) {
@@ -90,7 +90,7 @@ class AddEditTppViewModel(
     private fun onTppLoaded(tpp: Tpp) {
         title.value = tpp.title
         description.value = tpp.description
-        tppCompleted = tpp.isCompleted
+        tppFollowed = tpp.isFollowed
         _dataLoading.value = false
         isDataLoaded = true
     }
@@ -117,7 +117,7 @@ class AddEditTppViewModel(
         if (isNewTpp || currentTppId == null) {
             createTpp(Tpp(currentTitle, currentDescription))
         } else {
-            val tpp = Tpp(currentTitle, currentDescription, tppCompleted, currentTppId)
+            val tpp = Tpp(currentTitle, currentDescription, tppFollowed, currentTppId)
             updateTpp(tpp)
         }
     }

@@ -24,7 +24,6 @@ import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.concurrent.TimeUnit
 
 
 /**
@@ -46,7 +45,7 @@ class TppsRestDataSource internal constructor (
                 if (response.isSuccessful()) {
                     //var tppsList : List<Tpp>
                     tppsList = response.body()!!
-                    tppsList?.forEach { tpp ->
+                    tppsList.forEach { tpp ->
                         System.out.println("Insert/Update tpp: " + tpp.title + " into database")
 
                         runBlocking<Unit> {
@@ -79,24 +78,24 @@ class TppsRestDataSource internal constructor (
         tppsService.insertTpp(tpp)
     }
 
-    override suspend fun completeTpp(tpp: Tpp): Unit = withContext(ioDispatcher) {
-        tppsService.updateCompleted(tpp.id, true)
+    override suspend fun unfollowTpp(tpp: Tpp): Unit = withContext(ioDispatcher) {
+        tppsService.updateUnfollowed(tpp.id, true)
     }
 
-    override suspend fun completeTpp(tppId: String) {
-        tppsService.updateCompleted(tppId, true)
+    override suspend fun unfollowTpp(tppId: String) {
+        tppsService.updateUnfollowed(tppId, true)
     }
 
     override suspend fun activateTpp(tpp: Tpp) = withContext(ioDispatcher) {
-        tppsService.updateCompleted(tpp.id, false)
+        tppsService.updateUnfollowed(tpp.id, false)
     }
 
     override suspend fun activateTpp(tppId: String) {
-        tppsService.updateCompleted(tppId, false)
+        tppsService.updateUnfollowed(tppId, false)
     }
 
-    override suspend fun clearCompletedTpps() = withContext<Unit>(ioDispatcher) {
-        tppsService.deleteCompletedTpps()
+    override suspend fun clearFollowedTpps() = withContext<Unit>(ioDispatcher) {
+        tppsService.deleteFollowedTpps()
     }
 
     override suspend fun deleteAllTpps(): Unit = withContext(ioDispatcher) {

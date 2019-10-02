@@ -77,7 +77,7 @@ class TppsDaoTest {
         assertThat(loaded.id, `is`(tpp.id))
         assertThat(loaded.title, `is`(tpp.title))
         assertThat(loaded.description, `is`(tpp.description))
-        assertThat(loaded.isCompleted, `is`(tpp.isCompleted))
+        assertThat(loaded.isFollowed, `is`(tpp.isFollowed))
     }
 
     @Test
@@ -95,7 +95,7 @@ class TppsDaoTest {
         assertThat(loaded?.id, `is`(tpp.id))
         assertThat(loaded?.title, `is`("title2"))
         assertThat(loaded?.description, `is`("description2"))
-        assertThat(loaded?.isCompleted, `is`(true))
+        assertThat(loaded?.isFollowed, `is`(true))
     }
 
     @Test
@@ -112,7 +112,7 @@ class TppsDaoTest {
         assertThat(tpps[0].id, `is`(tpp.id))
         assertThat(tpps[0].title, `is`(tpp.title))
         assertThat(tpps[0].description, `is`(tpp.description))
-        assertThat(tpps[0].isCompleted, `is`(tpp.isCompleted))
+        assertThat(tpps[0].isFollowed, `is`(tpp.isFollowed))
     }
 
     @Test
@@ -130,24 +130,24 @@ class TppsDaoTest {
         assertThat(loaded?.id, `is`(originalTpp.id))
         assertThat(loaded?.title, `is`("new title"))
         assertThat(loaded?.description, `is`("new description"))
-        assertThat(loaded?.isCompleted, `is`(true))
+        assertThat(loaded?.isFollowed, `is`(true))
     }
 
     @Test
-    fun updateCompletedAndGetById() = runBlockingTest {
+    fun updateFollowedAndGetById() = runBlockingTest {
         // When inserting a tpp
         val tpp = Tpp("title", "description", true)
         database.tppDao().insertTpp(tpp)
 
         // When the tpp is updated
-        database.tppDao().updateCompleted(tpp.id, false)
+        database.tppDao().updateFollowed(tpp.id, false)
 
         // THEN - The loaded data contains the expected values
         val loaded = database.tppDao().getTppById(tpp.id)
         assertThat(loaded?.id, `is`(tpp.id))
         assertThat(loaded?.title, `is`(tpp.title))
         assertThat(loaded?.description, `is`(tpp.description))
-        assertThat(loaded?.isCompleted, `is`(false))
+        assertThat(loaded?.isFollowed, `is`(false))
     }
 
     @Test
@@ -178,12 +178,12 @@ class TppsDaoTest {
     }
 
     @Test
-    fun deleteCompletedTppsAndGettingTpps() = runBlockingTest {
-        // Given a completed tpp inserted
-        database.tppDao().insertTpp(Tpp("completed", "tpp", true))
+    fun deleteUnfollowedTppsAndGettingTpps() = runBlockingTest {
+        // Given a followed tpp inserted
+        database.tppDao().insertTpp(Tpp("followed", "tpp", true))
 
-        // When deleting completed tpps
-        database.tppDao().deleteCompletedTpps()
+        // When deleting followed tpps
+        database.tppDao().deleteUnfollowedTpps()
 
         // THEN - The list is empty
         val tpps = database.tppDao().getTpps()

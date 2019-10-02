@@ -104,7 +104,7 @@ class TppsActivityTest {
         onView(withText("TITLE1")).perform(click())
         onView(withId(R.id.tpp_detail_title_text)).check(matches(withText("TITLE1")))
         onView(withId(R.id.tpp_detail_description_text)).check(matches(withText("DESCRIPTION")))
-        onView(withId(R.id.tpp_detail_complete_checkbox)).check(matches(not(isChecked())))
+        onView(withId(R.id.tpp_detail_follow_checkbox)).check(matches(not(isChecked())))
 
         // Click on the edit button, edit, and save
         onView(withId(R.id.edit_tpp_fab)).perform(click())
@@ -165,9 +165,9 @@ class TppsActivityTest {
     }
 
     @Test
-    fun markTppAsCompleteOnDetailScreen_tppIsCompleteInList() {
+    fun markTppAsFollowedOnDetailScreen_tppIsFollowInList() {
         // Add 1 active tpp
-        val tppTitle = "COMPLETED"
+        val tppTitle = "FOLLOWED"
         repository.saveTppBlocking(Tpp(tppTitle, "DESCRIPTION"))
 
         // start up Tpps screen
@@ -178,7 +178,7 @@ class TppsActivityTest {
         onView(withText(tppTitle)).perform(click())
 
         // Click on the checkbox in tpp details screen
-        onView(withId(R.id.tpp_detail_complete_checkbox)).perform(click())
+        onView(withId(R.id.tpp_detail_follow_checkbox)).perform(click())
 
         // Click on the navigation up button to go back to the list
         onView(
@@ -187,14 +187,14 @@ class TppsActivityTest {
             )
         ).perform(click())
 
-        // Check that the tpp is marked as completed
-        onView(allOf(withId(R.id.complete_checkbox), hasSibling(withText(tppTitle))))
+        // Check that the tpp is marked as followed
+        onView(allOf(withId(R.id.follow_checkbox), hasSibling(withText(tppTitle))))
             .check(matches(isChecked()))
     }
 
     @Test
     fun markTppAsActiveOnDetailScreen_tppIsActiveInList() {
-        // Add 1 completed tpp
+        // Add 1 followed tpp
         val tppTitle = "ACTIVE"
         repository.saveTppBlocking(Tpp(tppTitle, "DESCRIPTION", true))
 
@@ -205,7 +205,7 @@ class TppsActivityTest {
         // Click on the tpp on the list
         onView(withText(tppTitle)).perform(click())
         // Click on the checkbox in tpp details screen
-        onView(withId(R.id.tpp_detail_complete_checkbox)).perform(click())
+        onView(withId(R.id.tpp_detail_follow_checkbox)).perform(click())
 
         // Click on the navigation up button to go back to the list
         onView(
@@ -215,12 +215,12 @@ class TppsActivityTest {
         ).perform(click())
 
         // Check that the tpp is marked as active
-        onView(allOf(withId(R.id.complete_checkbox), hasSibling(withText(tppTitle))))
+        onView(allOf(withId(R.id.follow_checkbox), hasSibling(withText(tppTitle))))
             .check(matches(not(isChecked())))
     }
 
     @Test
-    fun markTppAsCompleteAndActiveOnDetailScreen_tppIsActiveInList() {
+    fun markTppAsFollowAndActiveOnDetailScreen_tppIsActiveInList() {
         // Add 1 active tpp
         val tppTitle = "ACT-COMP"
         repository.saveTppBlocking(Tpp(tppTitle, "DESCRIPTION"))
@@ -232,9 +232,9 @@ class TppsActivityTest {
         // Click on the tpp on the list
         onView(withText(tppTitle)).perform(click())
         // Click on the checkbox in tpp details screen
-        onView(withId(R.id.tpp_detail_complete_checkbox)).perform(click())
+        onView(withId(R.id.tpp_detail_follow_checkbox)).perform(click())
         // Click again to restore it to original state
-        onView(withId(R.id.tpp_detail_complete_checkbox)).perform(click())
+        onView(withId(R.id.tpp_detail_follow_checkbox)).perform(click())
 
         // Click on the navigation up button to go back to the list
         onView(
@@ -244,13 +244,13 @@ class TppsActivityTest {
         ).perform(click())
 
         // Check that the tpp is marked as active
-        onView(allOf(withId(R.id.complete_checkbox), hasSibling(withText(tppTitle))))
+        onView(allOf(withId(R.id.follow_checkbox), hasSibling(withText(tppTitle))))
             .check(matches(not(isChecked())))
     }
 
     @Test
-    fun markTppAsActiveAndCompleteOnDetailScreen_tppIsCompleteInList() {
-        // Add 1 completed tpp
+    fun markTppAsActiveAndFollowOnDetailScreen_tppIsFollowInList() {
+        // Add 1 followed tpp
         val tppTitle = "COMP-ACT"
         repository.saveTppBlocking(Tpp(tppTitle, "DESCRIPTION", true))
 
@@ -261,9 +261,9 @@ class TppsActivityTest {
         // Click on the tpp on the list
         onView(withText(tppTitle)).perform(click())
         // Click on the checkbox in tpp details screen
-        onView(withId(R.id.tpp_detail_complete_checkbox)).perform(click())
+        onView(withId(R.id.tpp_detail_follow_checkbox)).perform(click())
         // Click again to restore it to original state
-        onView(withId(R.id.tpp_detail_complete_checkbox)).perform(click())
+        onView(withId(R.id.tpp_detail_follow_checkbox)).perform(click())
 
         // Click on the navigation up button to go back to the list
         onView(
@@ -273,7 +273,7 @@ class TppsActivityTest {
         ).perform(click())
 
         // Check that the tpp is marked as active
-        onView(allOf(withId(R.id.complete_checkbox), hasSibling(withText(tppTitle))))
+        onView(allOf(withId(R.id.follow_checkbox), hasSibling(withText(tppTitle))))
             .check(matches(isChecked()))
     }
 

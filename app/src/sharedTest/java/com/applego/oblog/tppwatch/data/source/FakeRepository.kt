@@ -56,12 +56,12 @@ class FakeRepository : TppsRepository {
         tppsServiceData[tpp.id] = tpp
     }
 
-    override suspend fun completeTpp(tpp: Tpp) {
-        val completedTpp = Tpp(tpp.title, tpp.description, true, tpp.id)
-        tppsServiceData[tpp.id] = completedTpp
+    override suspend fun unollowTpp(tpp: Tpp) {
+        val unfollowTpp = Tpp(tpp.title, tpp.description, true, tpp.id)
+        tppsServiceData[tpp.id] = unfollowTpp
     }
 
-    override suspend fun completeTpp(tppId: String) {
+    override suspend fun followTpp(tppId: String) {
         // Not required for the remote data source.
         throw NotImplementedError()
     }
@@ -75,9 +75,9 @@ class FakeRepository : TppsRepository {
         throw NotImplementedError()
     }
 
-    override suspend fun clearCompletedTpps() {
+    override suspend fun clearFollowedTpps() {
         tppsServiceData = tppsServiceData.filterValues {
-            !it.isCompleted
+            !it.isFollowed
         } as LinkedHashMap<String, Tpp>
     }
 

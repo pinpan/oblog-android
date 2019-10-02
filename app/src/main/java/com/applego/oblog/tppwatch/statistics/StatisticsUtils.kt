@@ -21,7 +21,7 @@ import com.applego.oblog.tppwatch.data.Tpp
 /**
  * Function that does some trivial computation. Used to showcase unit tests.
  */
-internal fun getActiveAndCompletedStats(tpps: List<Tpp>?): StatsResult {
+internal fun getActiveAndFollowedStats(tpps: List<Tpp>?): StatsResult {
 
     return if (tpps == null || tpps.isEmpty()) {
         StatsResult(0f, 0f)
@@ -30,9 +30,9 @@ internal fun getActiveAndCompletedStats(tpps: List<Tpp>?): StatsResult {
         val numberOfActiveTpps = tpps.count { it.isActive }
         StatsResult(
             activeTppsPercent = 100f * numberOfActiveTpps / tpps.size,
-            completedTppsPercent = 100f * (totalTpps - numberOfActiveTpps) / tpps.size
+            followedTppsPercent = 100f * (totalTpps - numberOfActiveTpps) / tpps.size
         )
     }
 }
 
-data class StatsResult(val activeTppsPercent: Float, val completedTppsPercent: Float)
+data class StatsResult(val activeTppsPercent: Float, val followedTppsPercent: Float)

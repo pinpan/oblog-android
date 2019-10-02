@@ -69,7 +69,7 @@ class StatisticsViewModelTest {
 
     @Test
     fun loadNonEmptyTppsFromRepository_NonEmptyResults() {
-        // We initialise the tpps to 3, with one active and two completed
+        // We initialise the tpps to 3, with one active and two followed
         val tpp1 = Tpp("Title1", "Description1")
         val tpp2 = Tpp("Title2", "Description2", true)
         val tpp3 = Tpp("Title3", "Description3", true)
@@ -84,7 +84,7 @@ class StatisticsViewModelTest {
             .isFalse()
         assertThat(LiveDataTestUtil.getValue(statisticsViewModel.activeTppsPercent))
             .isEqualTo(25f)
-        assertThat(LiveDataTestUtil.getValue(statisticsViewModel.completedTppsPercent))
+        assertThat(LiveDataTestUtil.getValue(statisticsViewModel.followedTppsPercent))
             .isEqualTo(75f)
     }
 

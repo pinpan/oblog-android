@@ -106,12 +106,12 @@ class TppsFragmentTest {
         onView(withText("TITLE1")).check(matches(isDisplayed()))
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_completed)).perform(click())
+        onView(withText(R.string.nav_followed)).perform(click())
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
     }
 
     @Test
-    fun displayCompletedTpp() {
+    fun displayFollowedTpp() {
         repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION1", true))
 
         launchActivity()
@@ -123,7 +123,7 @@ class TppsFragmentTest {
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_completed)).perform(click())
+        onView(withText(R.string.nav_followed)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
     }
 
@@ -167,15 +167,15 @@ class TppsFragmentTest {
     }
 
     @Test
-    fun markTppAsComplete() {
+    fun markTppAsFollowed() {
         repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION1"))
 
         launchActivity()
 
-        // Mark the tpp as complete
+        // Mark the tpp as followed
         onView(checkboxWithText("TITLE1")).perform(click())
 
-        // Verify tpp is shown as complete
+        // Verify tpp is shown as followed
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_all)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
@@ -183,7 +183,7 @@ class TppsFragmentTest {
         onView(withText(R.string.nav_active)).perform(click())
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_completed)).perform(click())
+        onView(withText(R.string.nav_followed)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
     }
 
@@ -204,13 +204,13 @@ class TppsFragmentTest {
         onView(withText(R.string.nav_active)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_completed)).perform(click())
+        onView(withText(R.string.nav_followed)).perform(click())
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
     }
 
     @Test
     fun showAllTpps() {
-        // Add one active tpp and one completed tpp
+        // Add one active tpp and one followed tpp
         repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION1"))
         repository.saveTppBlocking(Tpp("TITLE2", "DESCRIPTION2", true))
 
@@ -225,14 +225,14 @@ class TppsFragmentTest {
 
     @Test
     fun showActiveTpps() {
-        // Add 2 active tpps and one completed tpp
+        // Add 2 active tpps and one followed tpp
         repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION1"))
         repository.saveTppBlocking(Tpp("TITLE2", "DESCRIPTION2"))
         repository.saveTppBlocking(Tpp("TITLE3", "DESCRIPTION3", true))
 
         launchActivity()
 
-        // Verify that the active tpps (but not the completed tpp) are shown
+        // Verify that the active tpps (but not the followed tpp) are shown
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_active)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
@@ -241,31 +241,31 @@ class TppsFragmentTest {
     }
 
     @Test
-    fun showCompletedTpps() {
-        // Add one active tpp and 2 completed tpps
+    fun showFollowedTpps() {
+        // Add one active tpp and 2 followed tpps
         repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION1"))
         repository.saveTppBlocking(Tpp("TITLE2", "DESCRIPTION2", true))
         repository.saveTppBlocking(Tpp("TITLE3", "DESCRIPTION3", true))
 
         launchActivity()
 
-        // Verify that the completed tpps (but not the active tpp) are shown
+        // Verify that the followed tpps (but not the active tpp) are shown
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_completed)).perform(click())
+        onView(withText(R.string.nav_followed)).perform(click())
         onView(withText("TITLE1")).check(doesNotExist())
         onView(withText("TITLE2")).check(matches(isDisplayed()))
         onView(withText("TITLE3")).check(matches(isDisplayed()))
     }
 
     @Test
-    fun clearCompletedTpps() {
-        // Add one active tpp and one completed tpp
+    fun clearFollowedTpps() {
+        // Add one active tpp and one followed tpp
         repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION1"))
         repository.saveTppBlocking(Tpp("TITLE2", "DESCRIPTION2", true))
 
         launchActivity()
 
-        // Click clear completed in menu
+        // Click clear followed in menu
         openActionBarOverflowOrOptionsMenu(getApplicationContext())
         onView(withText(R.string.menu_clear)).perform(click())
 
@@ -288,14 +288,14 @@ class TppsFragmentTest {
     }
 
     @Test
-    fun noTpps_CompletedTppsFilter_AddTppViewNotVisible() {
+    fun noTpps_FollowedTppsFilter_AddTppViewNotVisible() {
         launchActivity()
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_completed)).perform(click())
+        onView(withText(R.string.nav_followed)).perform(click())
 
-        // Verify the "You have no completed tpps!" text is shown
-        onView(withText("You have no completed tpps!")).check(matches((isDisplayed())))
+        // Verify the "You have no followed tpps!" text is shown
+        onView(withText("You have no followed tpps!")).check(matches((isDisplayed())))
     }
 
     @Test
@@ -339,6 +339,6 @@ class TppsFragmentTest {
     }
 
     private fun checkboxWithText(text: String): Matcher<View> {
-        return allOf(withId(R.id.complete_checkbox), hasSibling(withText(text)))
+        return allOf(withId(R.id.follow_checkbox), hasSibling(withText(text)))
     }
 }

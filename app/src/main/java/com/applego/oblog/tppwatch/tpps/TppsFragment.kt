@@ -40,7 +40,7 @@ import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
 /**
- * Display a grid of [Tpp]s. User can choose to view all, active or completed tpps.
+ * Display a grid of [Tpp]s. User can choose to view all, active or followed tpps.
  */
 class TppsFragment : Fragment() {
 
@@ -66,7 +66,7 @@ class TppsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
             R.id.menu_clear -> {
-                viewModel.clearCompletedTpps()
+                viewModel.clearFollowedTpps()
                 true
             }
             R.id.menu_filter -> {
@@ -97,7 +97,7 @@ class TppsFragment : Fragment() {
 
         // Always reloading data for simplicity. Real apps should only do this on first load and
         // when navigating back to this destination. TODO: https://issuetracker.google.com/79672220
-        viewModel.loadTpps(true)
+        //viewModel.loadTpps(true)
     }
 
     private fun setupNavigation() {
@@ -125,7 +125,7 @@ class TppsFragment : Fragment() {
                 viewModel.setFiltering(
                     when (it.itemId) {
                         R.id.active -> TppsFilterType.ACTIVE_TPPS
-                        R.id.completed -> TppsFilterType.COMPLETED_TPPS
+                        R.id.followed -> TppsFilterType.FOLLOWED_TPPS
                         else -> TppsFilterType.ALL_TPPS
                     }
                 )

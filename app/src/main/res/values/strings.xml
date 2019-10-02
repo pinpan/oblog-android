@@ -18,12 +18,12 @@
     <string name="app_name">Tpp Watch</string>
     <string name="add_tpp">New Tpp</string>
     <string name="edit_tpp">Edit Tpp</string>
-    <string name="tpp_marked_complete">Tpp marked complete</string>
+    <string name="tpp_marked_followed">Tpp marked Followed</string>
     <string name="tpp_marked_active">Tpp marked active</string>
     <string name="loading_tpps_error">Error while loading tpps</string>
-    <string name="completed_tpps_cleared">Completed tpps cleared</string>
+    <string name="followed_tpps_cleared">Followed tpps cleared</string>
     <string name="menu_filter">Filter</string>
-    <string name="menu_clear">Clear completed</string>
+    <string name="menu_clear">Clear followed</string>
     <string name="menu_delete_tpp">Delete tpp</string>
     <string name="navigation_view_header_title">Tpp Watch</string>
     <string name="title_hint">Title</string>
@@ -34,7 +34,7 @@
     <string name="statistics_title">Statistics</string>
     <string name="statistics_no_tpps">You have no tpps.</string>
     <string name="statistics_active_tpps">Active tpps: %.1f%%</string>
-    <string name="statistics_completed_tpps">Completed tpps: %.1f%%</string>
+    <string name="statistics_followed_tpps">Followed tpps: %.1f%%</string>
     <string name="statistics_error">Error loading statistics.</string>
     <string name="no_data">No data</string>
     <string name="loading">LOADING</string>
@@ -42,17 +42,17 @@
     <string-array name="list_tpps_array">
         <item>@string/nav_all</item>
         <item>@string/nav_active</item>
-        <item>@string/nav_completed</item>
+        <item>@string/nav_followed</item>
     </string-array>
     <string name="nav_all">All</string>
     <string name="nav_active">Active</string>
-    <string name="nav_completed">Completed</string>
+    <string name="nav_followed">Followed</string>
     <string name="label_all">All Tpps</string>
     <string name="label_active">Active Tpps</string>
-    <string name="label_completed">Completed Tpps</string>
+    <string name="label_followed">Followed Tpps</string>
     <string name="no_tpps_all">You have no tpps!</string>
     <string name="no_tpps_active">You have no active tpps!</string>
-    <string name="no_tpps_completed">You have no completed tpps!</string>
+    <string name="no_tpps_followed">You have no followed tpps!</string>
     <string name="refresh">Refresh</string>
     <string name="successfully_deleted_tpp_message">Tpp was deleted</string>
     <string name="successfully_added_tpp_message">Tpp added</string>

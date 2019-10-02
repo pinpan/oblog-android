@@ -59,8 +59,8 @@ class TppDetailViewModel(
         get() = _tpp.value?.id
 
     // This LiveData depends on another so we can use a transformation.
-    val completed: LiveData<Boolean> = Transformations.map(_tpp) { input: Tpp? ->
-        input?.isCompleted ?: false
+    val followed: LiveData<Boolean> = Transformations.map(_tpp) { input: Tpp? ->
+        input?.isFollowed ?: false
     }
 
 
@@ -75,11 +75,11 @@ class TppDetailViewModel(
         _editTppEvent.value = Event(Unit)
     }
 
-    fun setCompleted(completed: Boolean) = viewModelScope.launch {
+    fun setFollowed(follow: Boolean) = viewModelScope.launch {
         val tpp = _tpp.value ?: return@launch
-        if (completed) {
-            tppsRepository.completeTpp(tpp)
-            showSnackbarMessage(R.string.tpp_marked_complete)
+        if (follow) {
+            tppsRepository.unollowTpp(tpp)
+            showSnackbarMessage(R.string.tpp_marked_followed)
         } else {
             tppsRepository.activateTpp(tpp)
             showSnackbarMessage(R.string.tpp_marked_active)

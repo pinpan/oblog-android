@@ -86,7 +86,7 @@ class TppsViewModel(
      * Sets the current tpp filtering type.
      *
      * @param requestType Can be [TppsFilterType.ALL_TPPS],
-     * [TppsFilterType.COMPLETED_TPPS], or
+     * [TppsFilterType.FOLLOWED_TPPS], or
      * [TppsFilterType.ACTIVE_TPPS]
      */
     fun setFiltering(requestType: TppsFilterType) {
@@ -106,9 +106,9 @@ class TppsViewModel(
                     R.drawable.ic_check_circle_96dp, false
                 )
             }
-            TppsFilterType.COMPLETED_TPPS -> {
+            TppsFilterType.FOLLOWED_TPPS -> {
                 setFilter(
-                    R.string.label_completed, R.string.no_tpps_completed,
+                    R.string.label_followed, R.string.no_tpps_followed,
                     R.drawable.ic_verified_user_96dp, false
                 )
             }
@@ -125,19 +125,19 @@ class TppsViewModel(
         _tppsAddViewVisible.value = tppsAddVisible
     }
 
-    fun clearCompletedTpps() {
+    fun clearFollowedTpps() {
         viewModelScope.launch {
-            tppsRepository.clearCompletedTpps()
-            showSnackbarMessage(R.string.completed_tpps_cleared)
+            tppsRepository.clearFollowedTpps()
+            showSnackbarMessage(R.string.followed_tpps_cleared)
             // Refresh list to show the new state
             loadTpps(false)
         }
     }
 
-    fun completeTpp(tpp: Tpp, completed: Boolean) = viewModelScope.launch {
-        if (completed) {
-            tppsRepository.completeTpp(tpp)
-            showSnackbarMessage(R.string.tpp_marked_complete)
+    fun FollowTpp(tpp: Tpp, followed: Boolean) = viewModelScope.launch {
+        if (followed) {
+            tppsRepository.unollowTpp(tpp)
+            showSnackbarMessage(R.string.tpp_marked_followed)
         } else {
             tppsRepository.activateTpp(tpp)
             showSnackbarMessage(R.string.tpp_marked_active)
@@ -194,7 +194,7 @@ class TppsViewModel(
                             TppsFilterType.ACTIVE_TPPS -> if (tpp.isActive) {
                                 tppsToShow.add(tpp)
                             }
-                            TppsFilterType.COMPLETED_TPPS -> if (tpp.isCompleted) {
+                            TppsFilterType.FOLLOWED_TPPS -> if (tpp.isFollowed) {
                                 tppsToShow.add(tpp)
                             }
                         }

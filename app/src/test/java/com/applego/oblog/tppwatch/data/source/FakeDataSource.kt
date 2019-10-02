@@ -40,24 +40,24 @@ class FakeDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : TppsDataSo
         tpps?.add(tpp)
     }
 
-    override suspend fun completeTpp(tpp: Tpp) {
-        tpps?.firstOrNull { it.id == tpp.id }?.let { it.isCompleted = true }
+    override suspend fun unfollowTpp(tpp: Tpp) {
+        tpps?.firstOrNull { it.id == tpp.id }?.let { it.isFollowed = true }
     }
 
-    override suspend fun completeTpp(tppId: String) {
-        tpps?.firstOrNull { it.id == tppId }?.let { it.isCompleted = true }
+    override suspend fun unfollowTpp(tppId: String) {
+        tpps?.firstOrNull { it.id == tppId }?.let { it.isFollowed = true }
     }
 
     override suspend fun activateTpp(tpp: Tpp) {
-        tpps?.firstOrNull { it.id == tpp.id }?.let { it.isCompleted = false }
+        tpps?.firstOrNull { it.id == tpp.id }?.let { it.isFollowed = false }
     }
 
     override suspend fun activateTpp(tppId: String) {
-        tpps?.firstOrNull { it.id == tppId }?.let { it.isCompleted = false }
+        tpps?.firstOrNull { it.id == tppId }?.let { it.isFollowed = false }
     }
 
-    override suspend fun clearCompletedTpps() {
-        tpps?.removeIf { it.isCompleted }
+    override suspend fun clearFollowedTpps() {
+        tpps?.removeIf { it.isFollowed }
     }
 
     override suspend fun deleteAllTpps() {

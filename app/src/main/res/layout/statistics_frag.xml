@@ -67,11 +67,11 @@
                 <!-- android:paddingTop specified to temporarily work around -->
                 <!-- https://github.com/robolectric/robolectric/issues/4588 -->
                 <TextView
-                    android:id="@+id/stats_completed_text"
+                    android:id="@+id/stats_followed_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="1dp"
-                    android:text="@{@string/statistics_completed_tpps(viewmodel.completedTppsPercent)}"
+                    android:text="@{@string/statistics_followed_tpps(viewmodel.followedTppsPercent)}"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:visibility="@{viewmodel.empty ? View.GONE : View.VISIBLE}" />
 

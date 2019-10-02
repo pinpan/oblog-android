@@ -145,7 +145,7 @@ class AddEditTppViewModelTest {
             this.description.value = description
         }
 
-        // When saving an incomplete tpp
+        // When saving an unFollowed tpp
         addEditTppViewModel.saveTpp()
 
         // Then the snackbar shows an error

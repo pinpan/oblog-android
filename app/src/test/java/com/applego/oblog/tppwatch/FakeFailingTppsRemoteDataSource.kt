@@ -33,11 +33,11 @@ object FakeFailingTppsRemoteDataSource : TppsDataSource {
         TODO("not implemented")
     }
 
-    override suspend fun completeTpp(tpp: Tpp) {
+    override suspend fun unfollowTpp(tpp: Tpp) {
         TODO("not implemented")
     }
 
-    override suspend fun completeTpp(tppId: String) {
+    override suspend fun unfollowTpp(tppId: String) {
         TODO("not implemented")
     }
 
@@ -49,7 +49,7 @@ object FakeFailingTppsRemoteDataSource : TppsDataSource {
         TODO("not implemented")
     }
 
-    override suspend fun clearCompletedTpps() {
+    override suspend fun clearFollowedTpps() {
         TODO("not implemented")
     }
 

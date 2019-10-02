@@ -51,7 +51,8 @@ class DefaultTppsRepository (
 
             return withContext(ioDispatcher) {
                 // Respond immediately with cache if available and not dirty
-                if (forceUpdate) {
+                //if (forceUpdate) {
+                // TODO: Avoid multiple fetches running in paralel: Make newTPPs a member so we can check if already Loading
                     val newTpps = fetchTppsFromRemoteOrLocal(forceUpdate)
 
                     // Refresh the cache with the new tpps
@@ -65,13 +66,11 @@ class DefaultTppsRepository (
                     (newTpps as? Loading)?.let {
                         return@withContext Loading(waitTwoSeconds.timeout(2000, TimeUnit.MILLISECONDS))
                     }
-                }
-
-                //cachedTpps.let { cachedTpps ->
-                    cachedTpps.values.let { tpps ->
-                        return@withContext Success(tpps.sortedBy { it.id })
-                    }
                 //}
+
+                cachedTpps.values.let { tpps ->
+                    return@withContext Success(tpps.sortedBy { it.id })
+                }
 
                 //return@withContext Error(Exception("Illegal state"))
             }
@@ -79,23 +78,21 @@ class DefaultTppsRepository (
     }
 
     private suspend fun fetchTppsFromRemoteOrLocal(forceUpdate: Boolean): Result<List<Tpp>>? {
-        // Remote first
-        // Don't read from local if it's forced
-        if (!forceUpdate) {
-            return Error(Exception("forceUpdate is FALSE: Update from remote source is not required."))
-        }
+        // If forced to update -> Get remote first
+        // Always return from local datasource
+        if (forceUpdate) {
 
-        val remoteTpps = tppsRemoteDataSource.getTpps()
-        when (remoteTpps) {
-            is Success -> {
-                refreshLocalDataSource(remoteTpps.data)
-                //return remoteTpps
+            val remoteTpps = tppsRemoteDataSource.getTpps()
+            when (remoteTpps) {
+                is Success -> {
+                    refreshLocalDataSource(remoteTpps.data)
+                }
+                /*is Loading -> {
+                    return remoteTpps
+                }*/
+                is Error -> Timber.w("Remote data source fetch failed: %s", remoteTpps.exception)
+                //else -> throw IllegalStateException()
             }
-            /*is Loading -> {
-                return remoteTpps
-            }*/
-            is Error -> Timber.w("Remote data source fetch failed")
-            //else -> throw IllegalStateException()
         }
 
         // Local if remote fails
@@ -166,21 +163,21 @@ class DefaultTppsRepository (
         }
     }
 
-    override suspend fun completeTpp(tpp: Tpp) {
+    override suspend fun unollowTpp(tpp: Tpp) {
         // Do in memory cache update to keep the app UI up to date
         cacheAndPerform(tpp) {
-            it.isCompleted = true
+            it.isFollowed = true
             coroutineScope {
-                launch { tppsRemoteDataSource.completeTpp(it) }
-                launch { tppsLocalDataSource.completeTpp(it) }
+                launch { tppsRemoteDataSource.unfollowTpp(it) }
+                launch { tppsLocalDataSource.unfollowTpp(it) }
             }
         }
     }
 
-    override suspend fun completeTpp(tppId: String) {
+    override suspend fun followTpp(tppId: String) {
         withContext(ioDispatcher) {
             getTppWithId(tppId)?.let {
-                completeTpp(it)
+                unollowTpp(it)
             }
         }
     }
@@ -188,7 +185,7 @@ class DefaultTppsRepository (
     override suspend fun activateTpp(tpp: Tpp) = withContext(ioDispatcher) {
         // Do in memory cache update to keep the app UI up to date
         cacheAndPerform(tpp) {
-            it.isCompleted = false
+            it.isFollowed = false
             coroutineScope {
                 launch { tppsRemoteDataSource.activateTpp(it) }
                 launch { tppsLocalDataSource.activateTpp(it) }
@@ -205,13 +202,14 @@ class DefaultTppsRepository (
         }
     }
 
-    override suspend fun clearCompletedTpps() {
+    override suspend fun clearFollowedTpps() {
         coroutineScope {
-            launch { tppsRemoteDataSource.clearCompletedTpps() }
-            launch { tppsLocalDataSource.clearCompletedTpps() }
+            // TODO:
+            launch { tppsRemoteDataSource.clearFollowedTpps() }
+            launch { tppsLocalDataSource.clearFollowedTpps() }
         }
         withContext(ioDispatcher) {
-            cachedTpps.entries.removeAll { it.value.isCompleted }
+            cachedTpps.entries.removeAll { it.value.isFollowed }
         }
     }
 
@@ -255,7 +253,7 @@ class DefaultTppsRepository (
     private fun getTppWithId(id: String) = cachedTpps.get(id)
 
     private fun cacheTpp(tpp: Tpp): Tpp {
-        val cachedTpp = Tpp(tpp.title, tpp.description, tpp.isCompleted, tpp.id)
+        val cachedTpp = Tpp(tpp.title, tpp.description, tpp.isFollowed, tpp.id)
         // Create if it doesn't exist.
         /* Declared as new object -> Test if not null and remove this check
         if (cachedTpps == null) {

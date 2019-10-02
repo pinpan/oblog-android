@@ -61,12 +61,12 @@ object TppsRemoteDataSource : TppsDataSource {
         TPPS_SERVICE_DATA[tpp.id] = tpp
     }
 
-    override suspend fun completeTpp(tpp: Tpp) {
-        val completedTpp = Tpp(tpp.title, tpp.description, true, tpp.id)
-        TPPS_SERVICE_DATA[tpp.id] = completedTpp
+    override suspend fun unfollowTpp(tpp: Tpp) {
+        val followedTpp = Tpp(tpp.title, tpp.description, true, tpp.id)
+        TPPS_SERVICE_DATA[tpp.id] = followedTpp
     }
 
-    override suspend fun completeTpp(tppId: String) {
+    override suspend fun unfollowTpp(tppId: String) {
         // Not required for the remote data source
     }
 
@@ -79,9 +79,9 @@ object TppsRemoteDataSource : TppsDataSource {
         // Not required for the remote data source
     }
 
-    override suspend fun clearCompletedTpps() {
+    override suspend fun clearFollowedTpps() {
         TPPS_SERVICE_DATA = TPPS_SERVICE_DATA.filterValues {
-            !it.isCompleted
+            !it.isFollowed
         } as LinkedHashMap<String, Tpp>
     }
 

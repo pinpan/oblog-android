@@ -89,29 +89,29 @@ class TppsLocalDataSourceTest {
         result as Success
         assertThat(result.data.title, `is`("title"))
         assertThat(result.data.description, `is`("description"))
-        assertThat(result.data.isCompleted, `is`(true))
+        assertThat(result.data.isFollowed, `is`(true))
     }
 
     @Test
-    fun completeTpp_retrievedTppIsComplete() = runBlockingTest {
+    fun followedTpp_retrievedTppIsFollow() = runBlockingTest {
         // Given a new tpp in the persistent repository
         val newTpp = Tpp("title")
         localDataSource.saveTpp(newTpp)
 
-        // When completed in the persistent repository
-        localDataSource.completeTpp(newTpp)
+        // When followed in the persistent repository
+        localDataSource.unfollowTpp(newTpp)
         val result = localDataSource.getTpp(newTpp.id)
 
-        // Then the tpp can be retrieved from the persistent repository and is complete
+        // Then the tpp can be retrieved from the persistent repository and is Followed
         assertThat(result.succeeded, `is`(true))
         result as Success
         assertThat(result.data.title, `is`(newTpp.title))
-        assertThat(result.data.isCompleted, `is`(true))
+        assertThat(result.data.isFollowed, `is`(true))
     }
 
     @Test
     fun activateTpp_retrievedTppIsActive() = runBlockingTest {
-        // Given a new completed tpp in the persistent repository
+        // Given a new followed tpp in the persistent repository
         val newTpp = Tpp("Some title", "Some description", true)
         localDataSource.saveTpp(newTpp)
 
@@ -124,24 +124,24 @@ class TppsLocalDataSourceTest {
         result as Success
 
         assertThat(result.data.title, `is`("Some title"))
-        assertThat(result.data.isCompleted, `is`(false))
+        assertThat(result.data.isFollowed, `is`(false))
     }
 
     @Test
-    fun clearCompletedTpp_tppNotRetrievable() = runBlockingTest {
-        // Given 2 new completed tpps and 1 active tpp in the persistent repository
+    fun clearUnfollowedTpp_tppNotRetrievable() = runBlockingTest {
+        // Given 2 new followed tpps and 1 active tpp in the persistent repository
         val newTpp1 = Tpp("title")
         val newTpp2 = Tpp("title2")
         val newTpp3 = Tpp("title3")
         localDataSource.saveTpp(newTpp1)
-        localDataSource.completeTpp(newTpp1)
+        localDataSource.unfollowTpp(newTpp1)
         localDataSource.saveTpp(newTpp2)
-        localDataSource.completeTpp(newTpp2)
+        localDataSource.unfollowTpp(newTpp2)
         localDataSource.saveTpp(newTpp3)
-        // When completed tpps are cleared in the repository
-        localDataSource.clearCompletedTpps()
+        // When followed tpps are cleared in the repository
+        localDataSource.clearFollowedTpps()
 
-        // Then the completed tpps cannot be retrieved and the active one can
+        // Then the followed tpps cannot be retrieved and the active one can
         assertThat(localDataSource.getTpp(newTpp1.id).succeeded, `is`(false))
         assertThat(localDataSource.getTpp(newTpp2.id).succeeded, `is`(false))
 

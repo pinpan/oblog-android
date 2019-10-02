@@ -9,7 +9,7 @@ import java.util.*
 data class App @JvmOverloads constructor(
         @ColumnInfo(name = "name") var name: String = "",
         @ColumnInfo(name = "description") var description: String = "",
-        @ColumnInfo(name = "completed") var isCompleted: Boolean = false,
+        @ColumnInfo(name = "followed") var isFollowed: Boolean = false,
         @PrimaryKey @ColumnInfo(name = "appId") var id: String = UUID.randomUUID().toString()
 )
 {
@@ -18,7 +18,7 @@ data class App @JvmOverloads constructor(
 
 
     val isActive
-        get() = !isCompleted
+        get() = !isFollowed
 
     val isEmpty
         get() = name.isEmpty() || description.isEmpty()

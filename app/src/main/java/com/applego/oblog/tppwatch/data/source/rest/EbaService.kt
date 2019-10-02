@@ -81,9 +81,9 @@ interface  EbaService {
 
 
     abstract fun insertTpp(tpp: Tpp): Unit
-    fun updateCompleted(id: String, b: Boolean): Unit
+    fun updateUnfollowed(id: String, b: Boolean): Unit
 
-    fun deleteCompletedTpps ()
+    fun deleteFollowedTpps ()
 
     fun deleteTpps(): Unit
 

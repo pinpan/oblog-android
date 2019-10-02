@@ -80,20 +80,20 @@
                     <!-- android:paddingTop specified to temporarily work around -->
                     <!-- https://github.com/robolectric/robolectric/issues/4588 -->
                     <CheckBox
-                        android:id="@+id/tpp_detail_complete_checkbox"
+                        android:id="@+id/tpp_detail_follow_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="@dimen/activity_horizontal_margin"
-                        android:checked="@{viewmodel.completed}"
-                        android:onClick="@{(view) -> viewmodel.setCompleted(((CompoundButton)view).isChecked())}"
+                        android:checked="@{viewmodel.followed}"
+                        android:onClick="@{(view) -> viewmodel.setFollowed(((CompoundButton)view).isChecked())}"
                         android:paddingTop="1dp" />
 
                     <TextView
                         android:id="@+id/tpp_detail_title_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/tpp_detail_complete_checkbox"
+                        android:layout_toRightOf="@id/tpp_detail_follow_checkbox"
                         android:paddingTop="1dp"
                         android:text="@{viewmodel.tpp.title}"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -103,7 +103,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tpp_detail_title_text"
-                        android:layout_toRightOf="@id/tpp_detail_complete_checkbox"
+                        android:layout_toRightOf="@id/tpp_detail_follow_checkbox"
                         android:paddingTop="1dp"
                         android:text="@{viewmodel.tpp.description}"
                         android:textAppearance="?android:attr/textAppearanceMedium" />

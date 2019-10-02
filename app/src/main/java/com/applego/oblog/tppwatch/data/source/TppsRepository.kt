@@ -30,15 +30,15 @@ interface TppsRepository {
 
     suspend fun saveTpp(tpp: Tpp)
 
-    suspend fun completeTpp(tpp: Tpp)
+    suspend fun unollowTpp(tpp: Tpp)
 
-    suspend fun completeTpp(tppId: String)
+    suspend fun followTpp(tppId: String)
 
     suspend fun activateTpp(tpp: Tpp)
 
     suspend fun activateTpp(tppId: String)
 
-    suspend fun clearCompletedTpps()
+    suspend fun clearFollowedTpps()
 
     suspend fun deleteAllTpps()
 

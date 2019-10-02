@@ -57,24 +57,24 @@ class TppsLocalDataSource internal constructor(
         tppsDao.insertTpp(tpp)
     }
 
-    override suspend fun completeTpp(tpp: Tpp) = withContext(ioDispatcher) {
-        tppsDao.updateCompleted(tpp.id, true)
+    override suspend fun unfollowTpp(tpp: Tpp) = withContext(ioDispatcher) {
+        tppsDao.updateFollowed(tpp.id, true)
     }
 
-    override suspend fun completeTpp(tppId: String) {
-        tppsDao.updateCompleted(tppId, true)
+    override suspend fun unfollowTpp(tppId: String) {
+        tppsDao.updateFollowed(tppId, true)
     }
 
     override suspend fun activateTpp(tpp: Tpp) = withContext(ioDispatcher) {
-        tppsDao.updateCompleted(tpp.id, false)
+        tppsDao.updateFollowed(tpp.id, false)
     }
 
     override suspend fun activateTpp(tppId: String) {
-        tppsDao.updateCompleted(tppId, false)
+        tppsDao.updateFollowed(tppId, false)
     }
 
-    override suspend fun clearCompletedTpps() = withContext<Unit>(ioDispatcher) {
-        tppsDao.deleteCompletedTpps()
+    override suspend fun clearFollowedTpps() = withContext<Unit>(ioDispatcher) {
+        tppsDao.deleteUnfollowedTpps()
     }
 
     override suspend fun deleteAllTpps() = withContext(ioDispatcher) {

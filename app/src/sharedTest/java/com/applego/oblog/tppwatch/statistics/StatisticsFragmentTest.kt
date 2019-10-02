@@ -95,13 +95,13 @@ class StatisticsFragmentTest {
 
         val expectedActiveTppText = getApplicationContext<Context>()
             .getString(R.string.statistics_active_tpps, 50.0f)
-        val expectedCompletedTppText = getApplicationContext<Context>()
-            .getString(R.string.statistics_completed_tpps, 50.0f)
+        val expectedFollowedTppText = getApplicationContext<Context>()
+            .getString(R.string.statistics_followed_tpps, 50.0f)
         // check that both info boxes are displayed and contain the correct info
         onView(withId(R.id.stats_active_text)).check(matches(isDisplayed()))
         onView(withId(R.id.stats_active_text)).check(matches(withText(expectedActiveTppText)))
-        onView(withId(R.id.stats_completed_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.stats_completed_text))
-            .check(matches(withText(expectedCompletedTppText)))
+        onView(withId(R.id.stats_followed_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.stats_followed_text))
+            .check(matches(withText(expectedFollowedTppText)))
     }
 }

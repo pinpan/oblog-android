@@ -40,12 +40,12 @@
         android:onClick="@{() -> viewmodel.openTpp(tpp.id)}">
 
         <CheckBox
-            android:id="@+id/complete_checkbox"
+            android:id="@+id/follow_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:onClick="@{(view) -> viewmodel.completeTpp(tpp, ((CompoundButton)view).isChecked())}"
-            android:checked="@{tpp.completed}" />
+            android:onClick="@{(view) -> viewmodel.FollowTpp(tpp, ((CompoundButton)view).isChecked())}"
+            android:checked="@{tpp.followed}" />
 
         <TextView
             android:id="@+id/title_text"
@@ -56,6 +56,6 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:text="@{tpp.titleForList}"
-            app:completedTpp="@{tpp.completed}" />
+            app:followedTpp="@{tpp.followed}" />
     </LinearLayout>
 </layout>

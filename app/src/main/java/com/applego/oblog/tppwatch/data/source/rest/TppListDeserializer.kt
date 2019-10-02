@@ -19,8 +19,8 @@ class TppListDeserializer : JsonDeserializer<List<Tpp>> {
 
         for (itemsJsonElement:JsonElement in itemsJsonArray) run {
             val itemJsonObject: JsonObject = itemsJsonElement.getAsJsonObject();
-            val id: String = itemJsonObject?.get("entityId")?.asString ?:""
-            val name: String = itemJsonObject?.get("entityName")?.getAsString() ?: ""
+            val id: String = itemJsonObject.get("entityId")?.asString ?:""
+            val name: String = itemJsonObject.get("entityName")?.getAsString() ?: ""
             val description: String = itemJsonObject?.get("description")?.asString ?: ""
 
             items.add(Tpp(name , description));

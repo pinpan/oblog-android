@@ -64,13 +64,13 @@ interface TppsDao {
     suspend fun updateTpp(tpp: Tpp): Int
 
     /**
-     * Update the complete status of a tpp
+     * Update the followed status of a tpp
      *
      * @param tppId    id of the tpp
-     * @param completed status to be updated
+     * @param followed status to be updated
      */
-    @Query("UPDATE tpps SET completed = :completed WHERE entryid = :tppId")
-    suspend fun updateCompleted(tppId: String, completed: Boolean)
+    @Query("UPDATE tpps SET followed = :followed WHERE entryid = :tppId")
+    suspend fun updateFollowed(tppId: String, followed: Boolean)
 
     /**
      * Delete a tpp by id.
@@ -87,10 +87,10 @@ interface TppsDao {
     suspend fun deleteTpps()
 
     /**
-     * Delete all completed tpps from the table.
+     * Delete all followed tpps from the table.
      *
      * @return the number of tpps deleted.
      */
-    @Query("DELETE FROM Tpps WHERE completed = 1")
-    suspend fun deleteCompletedTpps(): Int
+    @Query("DELETE FROM Tpps WHERE followed = 1")
+    suspend fun deleteUnfollowedTpps(): Int
 }

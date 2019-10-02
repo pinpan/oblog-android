@@ -29,15 +29,15 @@ interface TppsDataSource {
 
     suspend fun saveTpp(tpp: Tpp)
 
-    suspend fun completeTpp(tpp: Tpp)
+    suspend fun unfollowTpp(tpp: Tpp)
 
-    suspend fun completeTpp(tppId: String)
+    suspend fun unfollowTpp(tppId: String)
 
     suspend fun activateTpp(tpp: Tpp)
 
     suspend fun activateTpp(tppId: String)
 
-    suspend fun clearCompletedTpps()
+    suspend fun clearFollowedTpps()
 
     suspend fun deleteAllTpps()
 

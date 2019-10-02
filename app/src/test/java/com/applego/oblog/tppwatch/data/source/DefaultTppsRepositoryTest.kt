@@ -185,27 +185,27 @@ class DefaultTppsRepositoryTest {
     }
 
     @Test
-    fun completeTpp_completesTppToServiceAPIUpdatesCache() = runBlockingTest {
+    fun followTpp_followsTppToServiceAPIUpdatesCache() = runBlockingTest {
         // Save a tpp
         tppsRepository.saveTpp(newTpp)
 
         // Make sure it's active
-        assertThat((tppsRepository.getTpp(newTpp.id, true) as Success).data.isCompleted).isFalse()
+        assertThat((tppsRepository.getTpp(newTpp.id, true) as Success).data.isFollowed).isFalse()
 
-        // Mark is as complete
-        tppsRepository.completeTpp(newTpp.id)
+        // Mark is as Followed
+        tppsRepository.followTpp(newTpp.id)
 
-        // Verify it's now completed
-        assertThat((tppsRepository.getTpp(newTpp.id) as Success).data.isCompleted).isTrue()
+        // Verify it's now followed
+        assertThat((tppsRepository.getTpp(newTpp.id) as Success).data.isFollowed).isTrue()
     }
 
     @Test
-    fun completeTpp_activeTppToServiceAPIUpdatesCache() = runBlockingTest {
+    fun unfollowTpp_activeTppToServiceAPIUpdatesCache() = runBlockingTest {
         // Save a tpp
         tppsRepository.saveTpp(newTpp)
-        tppsRepository.completeTpp(newTpp.id)
+        tppsRepository.followTpp(newTpp.id)
 
-        // Make sure it's completed
+        // Make sure it's followed
         assertThat((tppsRepository.getTpp(newTpp.id, true) as Success).data.isActive).isFalse()
 
         // Mark is as active
@@ -252,16 +252,17 @@ class DefaultTppsRepositoryTest {
     }
 
     @Test
-    fun clearCompletedTpps() = runBlockingTest {
-        val completedTpp = tpp1.copy().apply { isCompleted = true }
-        tppsRemoteDataSource.tpps = mutableListOf(completedTpp, tpp2)
-        tppsRepository.clearCompletedTpps()
+    fun clearFollowedTpps() = runBlockingTest {
+        val followedTpp = tpp1.copy().apply { isFollowed = true }
+        tppsRemoteDataSource.tpps = mutableListOf(followedTpp, tpp2)
+        tppsRepository.clearFollowedTpps()
 
         val tpps = (tppsRepository.getTpps(true) as? Success)?.data
 
+        // TODO: Fix the Code to not do anything remote for unfollowing then fix the test.
         assertThat(tpps).hasSize(1)
         assertThat(tpps).contains(tpp2)
-        assertThat(tpps).doesNotContain(completedTpp)
+        assertThat(tpps).doesNotContain(followedTpp)
     }
 
     @Test

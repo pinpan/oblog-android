@@ -22,71 +22,71 @@ import org.junit.Assert.assertThat
 import org.junit.Test
 
 /**
- * Unit tests for [getActiveAndCompletedStats].
+ * Unit tests for [getActiveAndFollowedStats].
  */
 class StatisticsUtilsTest {
 
     @Test
-    fun getActiveAndCompletedStats_noCompleted() {
+    fun getActiveAndFollowedStats_noFollowed() {
         val tpps = listOf(
-            Tpp("title", "desc", isCompleted = false)
+            Tpp("title", "desc", isFollowed = false)
         )
         // When the list of tpps is computed with an active tpp
-        val result = getActiveAndCompletedStats(tpps)
+        val result = getActiveAndFollowedStats(tpps)
 
         // Then the percentages are 100 and 0
         assertThat(result.activeTppsPercent, `is`(100f))
-        assertThat(result.completedTppsPercent, `is`(0f))
+        assertThat(result.followedTppsPercent, `is`(0f))
     }
 
     @Test
-    fun getActiveAndCompletedStats_noActive() {
+    fun getActiveAndFollowedStats_noActive() {
         val tpps = listOf(
-            Tpp("title", "desc", isCompleted = true)
+            Tpp("title", "desc", isFollowed = true)
         )
-        // When the list of tpps is computed with a completed tpp
-        val result = getActiveAndCompletedStats(tpps)
+        // When the list of tpps is computed with a followed tpp
+        val result = getActiveAndFollowedStats(tpps)
 
         // Then the percentages are 0 and 100
         assertThat(result.activeTppsPercent, `is`(0f))
-        assertThat(result.completedTppsPercent, `is`(100f))
+        assertThat(result.followedTppsPercent, `is`(100f))
     }
 
     @Test
-    fun getActiveAndCompletedStats_both() {
-        // Given 3 completed tpps and 2 active tpps
+    fun getActiveAndFollowedStats_both() {
+        // Given 3 followed tpps and 2 active tpps
         val tpps = listOf(
-            Tpp("title", "desc", isCompleted = true),
-            Tpp("title", "desc", isCompleted = true),
-            Tpp("title", "desc", isCompleted = true),
-            Tpp("title", "desc", isCompleted = false),
-            Tpp("title", "desc", isCompleted = false)
+            Tpp("title", "desc", isFollowed = true),
+            Tpp("title", "desc", isFollowed = true),
+            Tpp("title", "desc", isFollowed = true),
+            Tpp("title", "desc", isFollowed = false),
+            Tpp("title", "desc", isFollowed = false)
         )
         // When the list of tpps is computed
-        val result = getActiveAndCompletedStats(tpps)
+        val result = getActiveAndFollowedStats(tpps)
 
         // Then the result is 40-60
         assertThat(result.activeTppsPercent, `is`(40f))
-        assertThat(result.completedTppsPercent, `is`(60f))
+        assertThat(result.followedTppsPercent, `is`(60f))
     }
 
     @Test
-    fun getActiveAndCompletedStats_error() {
+    fun getActiveAndFollowdStats_error() {
         // When there's an error loading stats
-        val result = getActiveAndCompletedStats(null)
+        val result = getActiveAndFollowedStats(null)
 
-        // Both active and completed tpps are 0
+        // Both active and followed tpps are 0
         assertThat(result.activeTppsPercent, `is`(0f))
-        assertThat(result.completedTppsPercent, `is`(0f))
+        assertThat(result.followedTppsPercent, `is`(0f))
     }
 
     @Test
-    fun getActiveAndCompletedStats_empty() {
+    fun getActiveAndFollowedStats_empty() {
         // When there are no tpps
-        val result = getActiveAndCompletedStats(emptyList())
+        val result = getActiveAndFollowedStats(emptyList())
 
-        // Both active and completed tpps are 0
+        // Both active and followed tpps are 0
         assertThat(result.activeTppsPercent, `is`(0f))
-        assertThat(result.completedTppsPercent, `is`(0f))
+        assertThat(result.followedTppsPercent, `is`(0f))
     }
 }

@@ -4,7 +4,6 @@ import androidx.core.app.ServiceCompat;
 
 import com.applego.oblog.tppwatch.data.Tpp;
 
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
