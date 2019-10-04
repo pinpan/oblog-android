@@ -25,7 +25,7 @@ import com.applego.oblog.tppwatch.data.Tpp
  *
  * Note that exportSchema should be true in production databases.
  */
-@Database(entities = [Tpp::class], version = 1, exportSchema = false)
+@Database(entities = [Tpp::class], version = 2, exportSchema = false)
 abstract class TppDatabase : RoomDatabase() {
 
     abstract fun tppDao(): TppsDao
