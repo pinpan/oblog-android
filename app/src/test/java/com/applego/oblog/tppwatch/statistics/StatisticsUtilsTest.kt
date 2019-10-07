@@ -16,7 +16,7 @@
 
 package com.applego.oblog.tppwatch.statistics
 
-import com.applego.oblog.tppwatch.data.Tpp
+import com.applego.oblog.tppwatch.data.source.local.Tpp
 import org.hamcrest.core.Is.`is`
 import org.junit.Assert.assertThat
 import org.junit.Test
@@ -29,7 +29,7 @@ class StatisticsUtilsTest {
     @Test
     fun getActiveAndFollowedStats_noFollowed() {
         val tpps = listOf(
-            Tpp("title", "desc", isFollowed = false)
+                Tpp("title", "desc", isFollowed = false)
         )
         // When the list of tpps is computed with an active tpp
         val result = getActiveAndFollowedStats(tpps)
@@ -42,7 +42,7 @@ class StatisticsUtilsTest {
     @Test
     fun getActiveAndFollowedStats_noActive() {
         val tpps = listOf(
-            Tpp("title", "desc", isFollowed = true)
+                Tpp("title", "desc", isFollowed = true)
         )
         // When the list of tpps is computed with a followed tpp
         val result = getActiveAndFollowedStats(tpps)
@@ -56,11 +56,11 @@ class StatisticsUtilsTest {
     fun getActiveAndFollowedStats_both() {
         // Given 3 followed tpps and 2 active tpps
         val tpps = listOf(
-            Tpp("title", "desc", isFollowed = true),
-            Tpp("title", "desc", isFollowed = true),
-            Tpp("title", "desc", isFollowed = true),
-            Tpp("title", "desc", isFollowed = false),
-            Tpp("title", "desc", isFollowed = false)
+                Tpp("title", "desc", isFollowed = true),
+                Tpp("title", "desc", isFollowed = true),
+                Tpp("title", "desc", isFollowed = true),
+                Tpp("title", "desc", isFollowed = false),
+                Tpp("title", "desc", isFollowed = false)
         )
         // When the list of tpps is computed
         val result = getActiveAndFollowedStats(tpps)

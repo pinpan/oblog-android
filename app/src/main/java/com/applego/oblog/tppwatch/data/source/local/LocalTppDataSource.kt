@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.applego.oblog.tppwatch.data.source
+package com.applego.oblog.tppwatch.data.source.local
 
 import com.applego.oblog.tppwatch.data.Result
-import com.applego.oblog.tppwatch.data.Tpp
+import com.applego.oblog.tppwatch.data.source.local.Tpp
 
 /**
  * Main entry point for accessing tpps data.
  */
-interface TppsDataSource {
+interface LocalTppDataSource {
 
     suspend fun getTpps(): Result<List<Tpp>>
 

@@ -1,6 +1,6 @@
-package com.applego.oblog.tppwatch.data.source.rest
+package com.applego.oblog.tppwatch.data.source.remote.nca
 
-import com.applego.oblog.tppwatch.data.Tpp
+import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement

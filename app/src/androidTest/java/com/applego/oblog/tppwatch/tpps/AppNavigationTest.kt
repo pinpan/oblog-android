@@ -37,7 +37,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.ServiceLocator
-import com.applego.oblog.tppwatch.data.Tpp
+import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.TppsRepository
 import com.applego.oblog.tppwatch.util.DataBindingIdlingResource
 import com.applego.oblog.tppwatch.util.EspressoIdlingResource

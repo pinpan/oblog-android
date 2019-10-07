@@ -35,13 +35,18 @@ android {
             useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
+            buildConfigField "String", 'BASE_URL', "\"http://192.168.0.15:8585/eba-registry/\""
         }
 
         release {
             minifyEnabled true
             useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
+            //testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
+        }
+
+        release {
+            buildConfigField "String", 'BASE_URL', "\"https://api.oblog.org:8443/eba-registry/\""
         }
     }
 
@@ -55,7 +60,9 @@ android {
         }
         prod {
             dimension "default"
+            buildConfigField "String", 'BASE_URL', "\"https://api.oblog.org:8443\""
         }
+
     }
 
     // Remove mockRelease as it's not needed.

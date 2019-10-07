@@ -1,7 +1,9 @@
-package com.applego.oblog.tppwatch.data.source.rest;
+package com.applego.oblog.tppwatch.data.source.remote.eba;
 
-import com.applego.oblog.tppwatch.data.Tpp;
-import com.applego.oblog.tppwatch.data.App
+import com.applego.oblog.tppwatch.BuildConfig
+import com.applego.oblog.tppwatch.R
+import com.applego.oblog.tppwatch.data.source.local.Tpp;
+import com.applego.oblog.tppwatch.data.source.local.App
 
 import retrofit2.Call;
 import retrofit2.Retrofit
@@ -52,7 +54,7 @@ interface  EbaService {
                             RxJava2CallAdapterFactory.create())
                     .addConverterFactory(
                             GsonConverterFactory.create(gson))
-                    .baseUrl(BASE_URL)
+                    .baseUrl(BuildConfig.BASE_URL) //context.getString(R.oblog_api_base_url))
                     .build()
 
             return retrofit.create(EbaService::class.java)

@@ -18,7 +18,6 @@ package com.applego.oblog.tppwatch.data.source.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.applego.oblog.tppwatch.data.Tpp
 
 /**
  * The Room Database that contains the Tpp table.

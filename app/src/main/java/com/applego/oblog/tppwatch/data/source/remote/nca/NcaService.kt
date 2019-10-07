@@ -1,8 +1,6 @@
-package com.applego.oblog.tppwatch.data.source.rest;
+package com.applego.oblog.tppwatch.data.source.remote.nca;
 
-import androidx.core.app.ServiceCompat;
-
-import com.applego.oblog.tppwatch.data.Tpp;
+import com.applego.oblog.tppwatch.data.source.local.Tpp;
 
 
 import retrofit2.Call;

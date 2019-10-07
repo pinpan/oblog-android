@@ -14,57 +14,50 @@
  * limitations under the License.
  */
 
-package com.applego.oblog.tppwatch.data.source
+package com.applego.oblog.tppwatch
 
 import com.applego.oblog.tppwatch.data.Result
-import com.applego.oblog.tppwatch.data.Result.Error
-import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.Tpp
+import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 
-class FakeDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : TppsDataSource {
+object FakeFailingTppsLocalDataSource : LocalTppDataSource {
     override suspend fun getTpps(): Result<List<Tpp>> {
-        tpps?.let { return Success(it) }
-        return Error(
-            Exception("Tpps not found")
-        )
+        return Result.Error(Exception("Test"))
     }
 
     override suspend fun getTpp(tppId: String): Result<Tpp> {
-        tpps?.firstOrNull { it.id == tppId }?.let { return Success(it) }
-        return Error(
-            Exception("Tpp not found")
-        )
+        return Result.Error(Exception("Test"))
     }
 
     override suspend fun saveTpp(tpp: Tpp) {
-        tpps?.add(tpp)
+        TODO("not implemented")
     }
 
     override suspend fun unfollowTpp(tpp: Tpp) {
-        tpps?.firstOrNull { it.id == tpp.id }?.let { it.isFollowed = true }
+        TODO("not implemented")
     }
 
     override suspend fun unfollowTpp(tppId: String) {
-        tpps?.firstOrNull { it.id == tppId }?.let { it.isFollowed = true }
+        TODO("not implemented")
     }
 
     override suspend fun activateTpp(tpp: Tpp) {
-        tpps?.firstOrNull { it.id == tpp.id }?.let { it.isFollowed = false }
+        TODO("not implemented")
     }
 
     override suspend fun activateTpp(tppId: String) {
-        tpps?.firstOrNull { it.id == tppId }?.let { it.isFollowed = false }
+        TODO("not implemented")
     }
 
     override suspend fun clearFollowedTpps() {
-        tpps?.removeIf { it.isFollowed }
+        TODO("not implemented")
     }
 
     override suspend fun deleteAllTpps() {
-        tpps?.clear()
+        TODO("not implemented")
     }
 
     override suspend fun deleteTpp(tppId: String) {
-        tpps?.removeIf { it.id == tppId }
+        TODO("not implemented")
     }
 }

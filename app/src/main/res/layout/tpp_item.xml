@@ -22,7 +22,7 @@
 
         <variable
             name="tpp"
-            type="com.applego.oblog.tppwatch.data.Tpp" />
+            type="com.applego.oblog.tppwatch.data.source.local.Tpp" />
 
         <variable
             name="viewmodel"

@@ -20,7 +20,7 @@ import com.applego.oblog.tppwatch.LiveDataTestUtil.getValue
 import com.applego.oblog.tppwatch.MainCoroutineRule
 import com.applego.oblog.tppwatch.R.string
 import com.applego.oblog.tppwatch.assertSnackbarMessage
-import com.applego.oblog.tppwatch.data.Tpp
+import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.FakeRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi

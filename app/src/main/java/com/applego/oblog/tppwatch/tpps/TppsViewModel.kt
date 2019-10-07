@@ -25,8 +25,8 @@ import androidx.lifecycle.viewModelScope
 import com.applego.oblog.tppwatch.Event
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.Tpp
-import com.applego.oblog.tppwatch.data.source.TppsDataSource
+import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.TppsRepository
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.launch
@@ -173,7 +173,7 @@ class TppsViewModel(
     }
 
     /**
-     * @param forceUpdate   Pass in true to refresh the data in the [TppsDataSource]
+     * @param forceUpdate   Pass in true to refresh the data in the [LocalTppDataSource]
      */
     fun loadTpps(forceUpdate: Boolean) {
         _dataLoading.value = true

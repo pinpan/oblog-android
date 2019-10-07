@@ -17,13 +17,14 @@ package com.applego.oblog.tppwatch.data
 
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.source.TppsDataSource
+import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
+import com.applego.oblog.tppwatch.data.source.local.Tpp
 import java.util.LinkedHashMap
 
 /**
  * Implementation of a remote data source with static access to the data for easy testing.
  */
-object FakeTppsRemoteDataSource : TppsDataSource {
+object FakeTppsRemoteDataSource : LocalTppDataSource {
 
     private var TPPS_SERVICE_DATA: LinkedHashMap<String, Tpp> = LinkedHashMap()
 

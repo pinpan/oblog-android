@@ -16,10 +16,11 @@
 package com.applego.oblog.tppwatch.statistics
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.applego.oblog.tppwatch.FakeFailingTppsLocalDataSource
 import com.applego.oblog.tppwatch.FakeFailingTppsRemoteDataSource
 import com.applego.oblog.tppwatch.LiveDataTestUtil
 import com.applego.oblog.tppwatch.MainCoroutineRule
-import com.applego.oblog.tppwatch.data.Tpp
+import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.DefaultTppsRepository
 import com.applego.oblog.tppwatch.data.source.FakeRepository
 import com.google.common.truth.Truth.assertThat
@@ -94,7 +95,7 @@ class StatisticsViewModelTest {
             val errorViewModel = StatisticsViewModel(
                 DefaultTppsRepository(
                     FakeFailingTppsRemoteDataSource,
-                    FakeFailingTppsRemoteDataSource,
+                    FakeFailingTppsLocalDataSource,
                     Dispatchers.Main  // Main is set in MainCoroutineRule
                 )
             )

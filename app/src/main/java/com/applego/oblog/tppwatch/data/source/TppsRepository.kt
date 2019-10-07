@@ -17,7 +17,7 @@
 package com.applego.oblog.tppwatch.data.source
 
 import com.applego.oblog.tppwatch.data.Result
-import com.applego.oblog.tppwatch.data.Tpp
+import com.applego.oblog.tppwatch.data.source.local.Tpp
 
 /**
  * Interface to the data layer.

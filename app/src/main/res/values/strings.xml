@@ -62,4 +62,6 @@
     <string name="tpps_header_image_content_description">Tpps header image</string>
     <string name="no_tpps_image_content_description">No tpps image</string>
 
+    <string name="oblog_api_base_url">http://192.168.0.15:8585/eba-registry/</string>
+
 </resources>

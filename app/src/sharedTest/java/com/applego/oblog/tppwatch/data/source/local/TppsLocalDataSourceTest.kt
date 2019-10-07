@@ -22,8 +22,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.applego.oblog.tppwatch.MainCoroutineRule
 import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.Tpp
-import com.applego.oblog.tppwatch.data.source.TppsDataSource
 import com.applego.oblog.tppwatch.data.succeeded
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -37,14 +35,14 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
- * Integration test for the [TppsDataSource].
+ * Integration test for the [LocalTppDataSource].
  */
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 @MediumTest
 class TppsLocalDataSourceTest {
 
-    private lateinit var localDataSource: TppsLocalDataSource
+    private lateinit var localDataSource: TppsDaoDataSource
     private lateinit var database: TppDatabase
 
 
@@ -67,7 +65,7 @@ class TppsLocalDataSourceTest {
             .allowMainThreadQueries()
             .build()
 
-        localDataSource = TppsLocalDataSource(database.tppDao(), Dispatchers.Main)
+        localDataSource = TppsDaoDataSource(database.tppDao(), Dispatchers.Main)
     }
 
     @After

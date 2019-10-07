@@ -20,12 +20,12 @@ import androidx.annotation.VisibleForTesting
 import androidx.room.Room
 import com.applego.oblog.tppwatch.data.FakeTppsRemoteDataSource
 import com.applego.oblog.tppwatch.data.source.DefaultTppsRepository
-import com.applego.oblog.tppwatch.data.source.TppsDataSource
+import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.TppsRepository
-import com.applego.oblog.tppwatch.data.source.local.TppsLocalDataSource
+import com.applego.oblog.tppwatch.data.source.local.TppsDaoDataSource
 import com.applego.oblog.tppwatch.data.source.local.TppDatabase
-import com.applego.oblog.tppwatch.data.source.rest.EbaService
-import com.applego.oblog.tppwatch.data.source.rest.TppsRestDataSource
+import com.applego.oblog.tppwatch.data.source.remote.eba.EbaService
+import com.applego.oblog.tppwatch.data.source.remote.eba.TppsEbaDataSource
 import kotlinx.coroutines.runBlocking
 
 /**
@@ -50,14 +50,14 @@ object ServiceLocator {
         return DefaultTppsRepository(createTppsRestDataSource(context), createTppLocalDataSource(context))
     }
 
-    private fun createTppLocalDataSource(context: Context): TppsDataSource {
+    private fun createTppLocalDataSource(context: Context): LocalTppDataSource {
         val database = database ?: createDataBase(context)
-        return TppsLocalDataSource(database.tppDao())
+        return TppsDaoDataSource(database.tppDao())
     }
 
-    private fun createTppsRestDataSource(context: Context): TppsRestDataSource {
+    private fun createTppsRestDataSource(context: Context): TppsEbaDataSource {
         val database = database ?: createDataBase(context)
-        return TppsRestDataSource(EbaService.create(), database.tppDao())
+        return TppsEbaDataSource(EbaService.create(), database.tppDao())
     }
 
     private fun createDataBase(context: Context): TppDatabase {

@@ -19,7 +19,9 @@ import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Loading
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.Tpp
+import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
+import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
 import com.applego.oblog.tppwatch.util.EspressoIdlingResource
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
@@ -36,8 +38,8 @@ import java.util.concurrent.TimeUnit
  * data source fails. Remote is the source of truth.
  */
 class DefaultTppsRepository (
-        private val tppsRemoteDataSource: TppsDataSource,
-        private val tppsLocalDataSource: TppsDataSource,
+        private val tppsRemoteDataSource: RemoteTppDataSource,
+        private val tppsLocalDataSource: LocalTppDataSource,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : TppsRepository {
 
@@ -157,7 +159,7 @@ class DefaultTppsRepository (
         // Do in memory cache update to keep the app UI up to date
         cacheAndPerform(tpp) {
             coroutineScope {
-                launch { tppsRemoteDataSource.saveTpp(it) }
+                //launch { tppsRemoteDataSource.saveTpp(it) }
                 launch { tppsLocalDataSource.saveTpp(it) }
             }
         }
@@ -168,7 +170,7 @@ class DefaultTppsRepository (
         cacheAndPerform(tpp) {
             it.isFollowed = true
             coroutineScope {
-                launch { tppsRemoteDataSource.unfollowTpp(it) }
+                //launch { tppsRemoteDataSource.unfollowTpp(it) }
                 launch { tppsLocalDataSource.unfollowTpp(it) }
             }
         }
@@ -187,7 +189,7 @@ class DefaultTppsRepository (
         cacheAndPerform(tpp) {
             it.isFollowed = false
             coroutineScope {
-                launch { tppsRemoteDataSource.activateTpp(it) }
+                //launch { tppsRemoteDataSource.activateTpp(it) }
                 launch { tppsLocalDataSource.activateTpp(it) }
             }
 
@@ -205,7 +207,7 @@ class DefaultTppsRepository (
     override suspend fun clearFollowedTpps() {
         coroutineScope {
             // TODO:
-            launch { tppsRemoteDataSource.clearFollowedTpps() }
+            //launch { tppsRemoteDataSource.clearFollowedTpps() }
             launch { tppsLocalDataSource.clearFollowedTpps() }
         }
         withContext(ioDispatcher) {
@@ -216,7 +218,7 @@ class DefaultTppsRepository (
     override suspend fun deleteAllTpps() {
         withContext(ioDispatcher) {
             coroutineScope {
-                launch { tppsRemoteDataSource.deleteAllTpps() }
+                //launch { tppsRemoteDataSource.deleteAllTpps() }
                 launch { tppsLocalDataSource.deleteAllTpps() }
             }
         }
@@ -225,7 +227,7 @@ class DefaultTppsRepository (
 
     override suspend fun deleteTpp(tppId: String) {
         coroutineScope {
-            launch { tppsRemoteDataSource.deleteTpp(tppId) }
+            //launch { tppsRemoteDataSource.deleteTpp(tppId) }
             launch { tppsLocalDataSource.deleteTpp(tppId) }
         }
 

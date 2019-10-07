@@ -19,7 +19,7 @@ import android.graphics.Paint
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.applego.oblog.tppwatch.data.Tpp
+import com.applego.oblog.tppwatch.data.source.local.Tpp
 
 /**
  * [BindingAdapter]s for the [Tpp]s list.

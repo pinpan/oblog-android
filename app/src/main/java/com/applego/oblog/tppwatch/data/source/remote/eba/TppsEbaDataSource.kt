@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.applego.oblog.tppwatch.data.source.rest
+package com.applego.oblog.tppwatch.data.source.remote.eba
 
 import com.applego.oblog.tppwatch.data.Result
-import com.applego.oblog.tppwatch.data.Tpp
-import com.applego.oblog.tppwatch.data.source.TppsDataSource
+import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.TppsDao
+import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
 import kotlinx.coroutines.*
 import okio.Timeout
 import retrofit2.Call
@@ -29,13 +29,13 @@ import retrofit2.Response
 /**
  * Concrete implementation of a data source as a db.
  */
-class TppsRestDataSource internal constructor (
+class TppsEbaDataSource internal constructor (
         private val tppsService: EbaService,
         private val tppsDao: TppsDao,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-) : TppsDataSource {
+) : RemoteTppDataSource {
 
-    var tppsList: List<Tpp> = List<Tpp>(0){ Tpp()}
+    var tppsList: List<Tpp> = List<Tpp>(0){ Tpp() }
 
     override suspend fun getTpps(): Result<List<Tpp>> = withContext(ioDispatcher) {
         val call = tppsService.listTpps("BudgetBakers") // TODO: get filter parameters from UI
@@ -74,36 +74,5 @@ class TppsRestDataSource internal constructor (
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun saveTpp(tpp: Tpp): Unit = withContext(ioDispatcher) {
-        tppsService.insertTpp(tpp)
-    }
-
-    override suspend fun unfollowTpp(tpp: Tpp): Unit = withContext(ioDispatcher) {
-        tppsService.updateUnfollowed(tpp.id, true)
-    }
-
-    override suspend fun unfollowTpp(tppId: String) {
-        tppsService.updateUnfollowed(tppId, true)
-    }
-
-    override suspend fun activateTpp(tpp: Tpp) = withContext(ioDispatcher) {
-        tppsService.updateUnfollowed(tpp.id, false)
-    }
-
-    override suspend fun activateTpp(tppId: String) {
-        tppsService.updateUnfollowed(tppId, false)
-    }
-
-    override suspend fun clearFollowedTpps() = withContext<Unit>(ioDispatcher) {
-        tppsService.deleteFollowedTpps()
-    }
-
-    override suspend fun deleteAllTpps(): Unit = withContext(ioDispatcher) {
-        tppsService.deleteTpps()
-    }
-
-    override suspend fun deleteTpp(tppId: String) = withContext<Unit>(ioDispatcher) {
-        tppsService.deleteTppById(tppId)
-    }
 /**/
 }

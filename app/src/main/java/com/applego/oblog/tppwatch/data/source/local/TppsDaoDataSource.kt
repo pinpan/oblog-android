@@ -18,8 +18,6 @@ package com.applego.oblog.tppwatch.data.source.local
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.Tpp
-import com.applego.oblog.tppwatch.data.source.TppsDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -27,10 +25,10 @@ import kotlinx.coroutines.withContext
 /**
  * Concrete implementation of a data source as a db.
  */
-class TppsLocalDataSource internal constructor(
+class TppsDaoDataSource internal constructor(
         private val tppsDao: TppsDao,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-) : TppsDataSource {
+) : LocalTppDataSource {
 
     override suspend fun getTpps(): Result<List<Tpp>> = withContext(ioDispatcher) {
         return@withContext try {

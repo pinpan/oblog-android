@@ -18,14 +18,14 @@ package com.applego.oblog.tppwatch.data.source.remote
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.Tpp
-import com.applego.oblog.tppwatch.data.source.TppsDataSource
+import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import kotlinx.coroutines.delay
 
 /**
  * Implementation of the data source that adds a latency simulating network.
  */
-object TppsRemoteDataSource : TppsDataSource {
+object TppsRemoteDataSource : RemoteTppDataSource {
 
     private const val SERVICE_LATENCY_IN_MILLIS = 2000L
 
@@ -57,7 +57,7 @@ object TppsRemoteDataSource : TppsDataSource {
         TPPS_SERVICE_DATA[newTpp.id] = newTpp
     }
 
-    override suspend fun saveTpp(tpp: Tpp) {
+    /*override suspend fun saveTpp(tpp: Tpp) {
         TPPS_SERVICE_DATA[tpp.id] = tpp
     }
 
@@ -91,5 +91,5 @@ object TppsRemoteDataSource : TppsDataSource {
 
     override suspend fun deleteTpp(tppId: String) {
         TPPS_SERVICE_DATA.remove(tppId)
-    }
+    }*/
 }

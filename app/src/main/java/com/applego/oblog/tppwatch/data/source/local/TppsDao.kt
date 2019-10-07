@@ -21,7 +21,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.applego.oblog.tppwatch.data.Tpp
 
 /**
  * Data Access Object for the tpps table.
