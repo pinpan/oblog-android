@@ -62,9 +62,9 @@ object ServiceLocator {
 
     private fun createDataBase(context: Context): TppDatabase {
         val result = Room.databaseBuilder(
-            context.applicationContext,
-            TppDatabase::class.java, "Tpps.db"
-        ).build()
+            context.applicationContext, TppDatabase::class.java, "Tpps.db")
+                .fallbackToDestructiveMigration()
+                .build()
         database = result
         return result
     }

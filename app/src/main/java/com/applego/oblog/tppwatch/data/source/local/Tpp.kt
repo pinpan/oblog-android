@@ -18,6 +18,7 @@ package com.applego.oblog.tppwatch.data.source.local
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import java.util.UUID
 
 /**
@@ -30,11 +31,15 @@ import java.util.UUID
  * @param id          id of the tpp
  */
 @Entity(tableName = "tpps")
+@TypeConverters(StatusConverter::class)
 data class Tpp @JvmOverloads constructor(
         @ColumnInfo(name = "title") var title: String = "",
-        @ColumnInfo(name = "description") var description: String = "",
-        @ColumnInfo(name = "followed") var isFollowed: Boolean = false,
+        @ColumnInfo(name = "description") var description: String = "",             // Description  provided by original source. For additional details see detail
+        @ColumnInfo(name = "followed") var isFollowed: Boolean = false,             // TPP is followed by user
+        @ColumnInfo(name = "globalUrn") var globalUrn: String = "",                 // A Global Unified identifier. Used by Preta as own ID.
+        @ColumnInfo(name = "status") var status: RecordStatus = RecordStatus.NEW,   // New, Updated, Removed (from original source), Deleted (From our DB) ...
         @PrimaryKey @ColumnInfo(name = "entryid") var id: String = UUID.randomUUID().toString()
+    // TODO: Define tppRoles, tpp Services, tppApps, tppPassporting, tppDetails
 ) {
 
     val titleForList: String

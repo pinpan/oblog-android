@@ -20,6 +20,11 @@ import android.app.Application
 import com.applego.oblog.tppwatch.data.source.TppsRepository
 import timber.log.Timber
 import timber.log.Timber.DebugTree
+import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import androidx.room.Room
+import androidx.core.content.ContextCompat.getSystemService
+import com.applego.oblog.tppwatch.data.source.local.TppDatabase
+
 
 /**
  * An application that lazily provides a repository. Note that this Service Locator pattern is
@@ -36,5 +41,10 @@ class TppWatchApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) Timber.plant(DebugTree())
+
+        /*var database = Room.databaseBuilder(context.getApplicationContext(),
+                TppDatabase::class.java!!, "Sample.db")
+                .fallbackToDestructiveMigration()
+                .build()*/
     }
 }

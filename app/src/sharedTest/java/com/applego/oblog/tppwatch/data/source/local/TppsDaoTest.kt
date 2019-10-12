@@ -86,15 +86,15 @@ class TppsDaoTest {
         database.tppDao().insertTpp(tpp)
 
         // When a tpp with the same id is inserted
-        val newTpp = Tpp("title2", "description2", true, tpp.id)
+        val newTpp = Tpp("title2", "description2", true)
         database.tppDao().insertTpp(newTpp)
 
         // THEN - The loaded data contains the expected values
         val loaded = database.tppDao().getTppById(tpp.id)
         assertThat(loaded?.id, `is`(tpp.id))
-        assertThat(loaded?.title, `is`("title2"))
-        assertThat(loaded?.description, `is`("description2"))
-        assertThat(loaded?.isFollowed, `is`(true))
+        assertThat(loaded?.title, `is`("title"))
+        assertThat(loaded?.description, `is`("description"))
+        assertThat(loaded?.isFollowed, `is`(false))
     }
 
     @Test
@@ -121,7 +121,7 @@ class TppsDaoTest {
         database.tppDao().insertTpp(originalTpp)
 
         // When the tpp is updated
-        val updatedTpp = Tpp("new title", "new description", true, originalTpp.id)
+        val updatedTpp = Tpp("new title", "new description", true, originalTpp.id, RecordStatus.UPDATED, originalTpp.id)
         database.tppDao().updateTpp(updatedTpp)
 
         // THEN - The loaded data contains the expected values

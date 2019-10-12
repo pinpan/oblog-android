@@ -24,6 +24,7 @@ import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -71,7 +72,10 @@ class TppsEbaDataSource internal constructor (
     }
 
     override suspend fun getTpp(tppId: String): Result<Tpp> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (tppId == "") {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+        return Result.Loading(Timeout().timeout(100, TimeUnit.MILLISECONDS));
     }
 
 /**/

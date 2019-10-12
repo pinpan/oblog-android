@@ -25,6 +25,7 @@ import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.source.local.RecordStatus
 import kotlinx.coroutines.launch
 
 /**
@@ -117,7 +118,7 @@ class AddEditTppViewModel(
         if (isNewTpp || currentTppId == null) {
             createTpp(Tpp(currentTitle, currentDescription))
         } else {
-            val tpp = Tpp(currentTitle, currentDescription, tppFollowed, currentTppId)
+            val tpp = Tpp(currentTitle, currentDescription, tppFollowed, "", RecordStatus.NEW, currentTppId)
             updateTpp(tpp)
         }
     }

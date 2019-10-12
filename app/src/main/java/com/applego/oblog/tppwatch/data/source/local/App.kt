@@ -9,18 +9,7 @@ import java.util.*
 data class App @JvmOverloads constructor(
         @ColumnInfo(name = "name") var name: String = "",
         @ColumnInfo(name = "description") var description: String = "",
-        @ColumnInfo(name = "followed") var isFollowed: Boolean = false,
         @PrimaryKey @ColumnInfo(name = "appId") var id: String = UUID.randomUUID().toString()
 )
 {
-    val titleForList: String
-        get() = if (name.isNotEmpty()) name else description
-
-
-    val isActive
-        get() = !isFollowed
-
-    val isEmpty
-        get() = name.isEmpty() || description.isEmpty()
-
 }
