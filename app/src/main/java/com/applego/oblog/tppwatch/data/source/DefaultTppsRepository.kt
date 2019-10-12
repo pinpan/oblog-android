@@ -141,7 +141,8 @@ class DefaultTppsRepository (
                 refreshLocalDataSource(remoteTpp.data)
                 return remoteTpp
             }
-            else -> throw IllegalStateException()
+            is Loading -> {
+            }
         }
 
         // Don't read from local if it's forced
@@ -255,7 +256,7 @@ class DefaultTppsRepository (
     private fun getTppWithId(id: String) = cachedTpps.get(id)
 
     private fun cacheTpp(tpp: Tpp): Tpp {
-        val cachedTpp = Tpp(tpp.title, tpp.description, tpp.isFollowed, tpp.id)
+        val cachedTpp = Tpp(tpp.title, tpp.description, tpp.isFollowed, tpp.globalUrn, tpp.status, tpp.id)
         // Create if it doesn't exist.
         /* Declared as new object -> Test if not null and remove this check
         if (cachedTpps == null) {

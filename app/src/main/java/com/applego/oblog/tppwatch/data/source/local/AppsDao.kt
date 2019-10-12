@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
-interface AppDao {
+interface AppsDao {
     /**
      * Select all apps from the apps table.
      *
