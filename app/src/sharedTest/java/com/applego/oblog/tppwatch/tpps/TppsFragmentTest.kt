@@ -84,7 +84,7 @@ class TppsFragmentTest {
     @Test
     fun displayTpp_whenRepositoryHasData() {
         // GIVEN - One tpp already in the repository
-        repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION1"))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1"))
 
         // WHEN - On startup
         launchActivity()
@@ -95,7 +95,7 @@ class TppsFragmentTest {
 
     @Test
     fun displayActiveTpp() {
-        repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION1"))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1"))
 
         launchActivity()
 
@@ -112,7 +112,7 @@ class TppsFragmentTest {
 
     @Test
     fun displayFollowedTpp() {
-        repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION1", true))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1", true))
 
         launchActivity()
 
@@ -129,7 +129,7 @@ class TppsFragmentTest {
 
     @Test
     fun deleteOneTpp() {
-        repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION1"))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1"))
 
         launchActivity()
 
@@ -147,8 +147,8 @@ class TppsFragmentTest {
 
     @Test
     fun deleteOneOfTwoTpps() {
-        repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION1"))
-        repository.saveTppBlocking(Tpp("TITLE2", "DESCRIPTION2"))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1"))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION2"))
 
         launchActivity()
 
@@ -168,7 +168,7 @@ class TppsFragmentTest {
 
     @Test
     fun markTppAsFollowed() {
-        repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION1"))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1"))
 
         launchActivity()
 
@@ -189,7 +189,7 @@ class TppsFragmentTest {
 
     @Test
     fun markTppAsActive() {
-        repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION1", true))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1", true))
 
         launchActivity()
 
@@ -211,8 +211,8 @@ class TppsFragmentTest {
     @Test
     fun showAllTpps() {
         // Add one active tpp and one followed tpp
-        repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION1"))
-        repository.saveTppBlocking(Tpp("TITLE2", "DESCRIPTION2", true))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1"))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION2", true))
 
         launchActivity()
 
@@ -226,9 +226,9 @@ class TppsFragmentTest {
     @Test
     fun showActiveTpps() {
         // Add 2 active tpps and one followed tpp
-        repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION1"))
-        repository.saveTppBlocking(Tpp("TITLE2", "DESCRIPTION2"))
-        repository.saveTppBlocking(Tpp("TITLE3", "DESCRIPTION3", true))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1"))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION2"))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173283", "TITLE3", "DESCRIPTION3", true))
 
         launchActivity()
 
@@ -243,9 +243,9 @@ class TppsFragmentTest {
     @Test
     fun showFollowedTpps() {
         // Add one active tpp and 2 followed tpps
-        repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION1"))
-        repository.saveTppBlocking(Tpp("TITLE2", "DESCRIPTION2", true))
-        repository.saveTppBlocking(Tpp("TITLE3", "DESCRIPTION3", true))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1"))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION2", true))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173283", "TITLE3", "DESCRIPTION3", true))
 
         launchActivity()
 
@@ -260,8 +260,8 @@ class TppsFragmentTest {
     @Test
     fun clearFollowedTpps() {
         // Add one active tpp and one followed tpp
-        repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION1"))
-        repository.saveTppBlocking(Tpp("TITLE2", "DESCRIPTION2", true))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1"))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION2", true))
 
         launchActivity()
 

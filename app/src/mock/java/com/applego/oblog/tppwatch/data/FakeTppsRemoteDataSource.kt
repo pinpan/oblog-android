@@ -44,7 +44,7 @@ object FakeTppsRemoteDataSource : LocalTppDataSource {
     }
 
     override suspend fun unfollowTpp(tpp: Tpp) {
-        val followedTpp = Tpp(tpp.title, tpp.description, true, tpp.id)
+        val followedTpp = Tpp(tpp.entityCode, tpp.title, tpp.description, true, tpp.id)
         TPPS_SERVICE_DATA[tpp.id] = followedTpp
     }
 
@@ -53,7 +53,7 @@ object FakeTppsRemoteDataSource : LocalTppDataSource {
     }
 
     override suspend fun activateTpp(tpp: Tpp) {
-        val activeTpp = Tpp(tpp.title, tpp.description, false, tpp.id)
+        val activeTpp = Tpp(tpp.entityCode, tpp.title, tpp.description, false, tpp.id)
         TPPS_SERVICE_DATA[tpp.id] = activeTpp
     }
 

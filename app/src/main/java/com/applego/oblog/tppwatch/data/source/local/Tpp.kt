@@ -33,13 +33,14 @@ import java.util.UUID
 @Entity(tableName = "tpps")
 @TypeConverters(StatusConverter::class)
 data class Tpp @JvmOverloads constructor(
-        @ColumnInfo(name = "title") var title: String = "",
-        @ColumnInfo(name = "description") var description: String = "",             // Description  provided by original source. For additional details see detail
-        @ColumnInfo(name = "followed") var isFollowed: Boolean = false,             // TPP is followed by user
-        @ColumnInfo(name = "globalUrn") var globalUrn: String = "",                 // A Global Unified identifier. Used by Preta as own ID.
-        @ColumnInfo(name = "status") var status: RecordStatus = RecordStatus.NEW,   // New, Updated, Removed (from original source), Deleted (From our DB) ...
+        @ColumnInfo(name = "entityCode") var entityCode: String = "",   // Entity Code retruned by EBA or NCA
+        @ColumnInfo(name = "title") var title: String = "",             // Description  provided by original source. For additional details see detail
+        @ColumnInfo(name = "description") var description: String = "",             // TPP is followed by user
+        @ColumnInfo(name = "followed") var isFollowed: Boolean = false,                 // A Global Unified identifier. Used by Preta as own ID.
+        @ColumnInfo(name = "globalUrn") var globalUrn: String = "",   // New, Updated, Removed (from original source), Deleted (From our DB) ...
+        @ColumnInfo(name = "status") var status: RecordStatus = RecordStatus.NEW,
         @PrimaryKey @ColumnInfo(name = "entryid") var id: String = UUID.randomUUID().toString()
-    // TODO: Define tppRoles, tpp Services, tppApps, tppPassporting, tppDetails
+        // TODO: Define tppRoles, tpp Services, tppApps, tppPassporting, tppDetails
 ) {
 
     val titleForList: String

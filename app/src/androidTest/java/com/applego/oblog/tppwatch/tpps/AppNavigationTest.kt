@@ -172,7 +172,7 @@ class AppNavigationTest {
 
     @Test
     fun tppDetailScreen_doubleUIBackButton() {
-        val tpp = Tpp("UI <- button", "Description")
+        val tpp = Tpp("Entity_CZ28173281", "UI <- button", "Description")
         tppsRepository.saveTppBlocking(tpp)
 
         // start up Tpps screen
@@ -205,7 +205,7 @@ class AppNavigationTest {
 
     @Test
     fun tppDetailScreen_doubleBackButton() {
-        val tpp = Tpp("Back button", "Description")
+        val tpp = Tpp("Entity_CZ28173281", "Back button", "Description")
         tppsRepository.saveTppBlocking(tpp)
 
         // start up Tpps screen

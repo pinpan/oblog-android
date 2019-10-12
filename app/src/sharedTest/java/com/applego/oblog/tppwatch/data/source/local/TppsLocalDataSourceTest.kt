@@ -76,7 +76,7 @@ class TppsLocalDataSourceTest {
     @Test
     fun saveTpp_retrievesTpp() = runBlockingTest {
         // GIVEN - a new tpp saved in the database
-        val newTpp = Tpp("title", "description", true)
+        val newTpp = Tpp("Entity_CZ28173281", "title", "description", true)
         localDataSource.saveTpp(newTpp)
 
         // WHEN  - Tpp retrieved by ID
@@ -93,7 +93,7 @@ class TppsLocalDataSourceTest {
     @Test
     fun followedTpp_retrievedTppIsFollow() = runBlockingTest {
         // Given a new tpp in the persistent repository
-        val newTpp = Tpp("title")
+        val newTpp = Tpp("Entity_CZ28173281", "title")
         localDataSource.saveTpp(newTpp)
 
         // When followed in the persistent repository
@@ -110,7 +110,7 @@ class TppsLocalDataSourceTest {
     @Test
     fun activateTpp_retrievedTppIsActive() = runBlockingTest {
         // Given a new followed tpp in the persistent repository
-        val newTpp = Tpp("Some title", "Some description", true)
+        val newTpp = Tpp("Entity_CZ28173281", "Some title", "Some description", true)
         localDataSource.saveTpp(newTpp)
 
         localDataSource.activateTpp(newTpp)
@@ -128,9 +128,9 @@ class TppsLocalDataSourceTest {
     @Test
     fun clearUnfollowedTpp_tppNotRetrievable() = runBlockingTest {
         // Given 2 new followed tpps and 1 active tpp in the persistent repository
-        val newTpp1 = Tpp("title")
-        val newTpp2 = Tpp("title2")
-        val newTpp3 = Tpp("title3")
+        val newTpp1 = Tpp("Entity_CZ28173281", "title")
+        val newTpp2 = Tpp("Entity_CZ28173282", "title2")
+        val newTpp3 = Tpp("Entity_CZ28173283", "title3")
         localDataSource.saveTpp(newTpp1)
         localDataSource.unfollowTpp(newTpp1)
         localDataSource.saveTpp(newTpp2)
@@ -154,7 +154,7 @@ class TppsLocalDataSourceTest {
     @Test
     fun deleteAllTpps_emptyListOfRetrievedTpp() = runBlockingTest {
         // Given a new tpp in the persistent repository and a mocked callback
-        val newTpp = Tpp("title")
+        val newTpp = Tpp("Entity_CZ28173281", "title")
 
         localDataSource.saveTpp(newTpp)
 
@@ -170,8 +170,8 @@ class TppsLocalDataSourceTest {
     @Test
     fun getTpps_retrieveSavedTpps() = runBlockingTest {
         // Given 2 new tpps in the persistent repository
-        val newTpp1 = Tpp("title")
-        val newTpp2 = Tpp("title")
+        val newTpp1 = Tpp("Entity_CZ28173281", "title")
+        val newTpp2 = Tpp("Entity_CZ28173282", "title2")
 
         localDataSource.saveTpp(newTpp1)
         localDataSource.saveTpp(newTpp2)

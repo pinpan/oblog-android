@@ -86,8 +86,8 @@ class StatisticsFragmentTest {
     fun tpps_showsNonEmptyMessage() {
         // Given some tpps
         repository.apply {
-            saveTppBlocking(Tpp("Title1", "Description1", false))
-            saveTppBlocking(Tpp("Title2", "Description2", true))
+            saveTppBlocking(Tpp("Entity_CZ28173281", "Title1", "Description1", false))
+            saveTppBlocking(Tpp("Entity_CZ28173282", "Title2", "Description2", true))
         }
 
         val scenario = launchFragmentInContainer<StatisticsFragment>(Bundle(), R.style.AppTheme)
