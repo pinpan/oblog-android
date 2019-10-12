@@ -65,7 +65,7 @@ class TppsDaoTest {
     @Test
     fun insertTppAndGetById() = runBlockingTest {
         // GIVEN - insert a tpp
-        val tpp = Tpp("title", "description")
+        val tpp = Tpp("Entity_CZ28173281", "title", "description")
         database.tppDao().insertTpp(tpp)
 
         // WHEN - Get the tpp by id from the database
@@ -82,11 +82,11 @@ class TppsDaoTest {
     @Test
     fun insertTppReplacesOnConflict() = runBlockingTest {
         // Given that a tpp is inserted
-        val tpp = Tpp("title", "description")
+        val tpp = Tpp("Entity_CZ28173281", "title", "description")
         database.tppDao().insertTpp(tpp)
 
         // When a tpp with the same id is inserted
-        val newTpp = Tpp("title2", "description2", true)
+        val newTpp = Tpp("Entity_CZ28173282", "title2", "description2", true)
         database.tppDao().insertTpp(newTpp)
 
         // THEN - The loaded data contains the expected values
@@ -100,7 +100,7 @@ class TppsDaoTest {
     @Test
     fun insertTppAndGetTpps() = runBlockingTest {
         // GIVEN - insert a tpp
-        val tpp = Tpp("title", "description")
+        val tpp = Tpp("Entity_CZ28173281", "title", "description")
         database.tppDao().insertTpp(tpp)
 
         // WHEN - Get tpps from the database
@@ -117,11 +117,11 @@ class TppsDaoTest {
     @Test
     fun updateTppAndGetById() = runBlockingTest {
         // When inserting a tpp
-        val originalTpp = Tpp("title", "description")
+        val originalTpp = Tpp("Entity_CZ28173281", "title", "description")
         database.tppDao().insertTpp(originalTpp)
 
         // When the tpp is updated
-        val updatedTpp = Tpp("new title", "new description", true, originalTpp.id, RecordStatus.UPDATED, originalTpp.id)
+        val updatedTpp = Tpp("Entity_CZ28173282", "new title", "new description", true, originalTpp.id, RecordStatus.UPDATED, originalTpp.id)
         database.tppDao().updateTpp(updatedTpp)
 
         // THEN - The loaded data contains the expected values
@@ -135,7 +135,7 @@ class TppsDaoTest {
     @Test
     fun updateFollowedAndGetById() = runBlockingTest {
         // When inserting a tpp
-        val tpp = Tpp("title", "description", true)
+        val tpp = Tpp("Entity_CZ28173281", "title", "description", true)
         database.tppDao().insertTpp(tpp)
 
         // When the tpp is updated
@@ -152,7 +152,7 @@ class TppsDaoTest {
     @Test
     fun deleteTppByIdAndGettingTpps() = runBlockingTest {
         // Given a tpp inserted
-        val tpp = Tpp("title", "description")
+        val tpp = Tpp("Entity_CZ28173281", "title", "description")
         database.tppDao().insertTpp(tpp)
 
         // When deleting a tpp by id
@@ -166,7 +166,7 @@ class TppsDaoTest {
     @Test
     fun deleteTppsAndGettingTpps() = runBlockingTest {
         // Given a tpp inserted
-        database.tppDao().insertTpp(Tpp("title", "description"))
+        database.tppDao().insertTpp(Tpp("Entity_CZ28173281", "title", "description"))
 
         // When deleting all tpps
         database.tppDao().deleteTpps()
@@ -179,7 +179,7 @@ class TppsDaoTest {
     @Test
     fun deleteUnfollowedTppsAndGettingTpps() = runBlockingTest {
         // Given a followed tpp inserted
-        database.tppDao().insertTpp(Tpp("followed", "tpp", true))
+        database.tppDao().insertTpp(Tpp("Entity_CZ28173281", "followed", "tpp", true))
 
         // When deleting followed tpps
         database.tppDao().deleteUnfollowedTpps()

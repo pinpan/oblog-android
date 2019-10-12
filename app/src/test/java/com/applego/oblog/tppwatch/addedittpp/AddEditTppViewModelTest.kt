@@ -49,7 +49,7 @@ class AddEditTppViewModelTest {
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
-    private val tpp = Tpp("Title1", "Description1")
+    private val tpp = Tpp("Entity_CZ28173281", "Title1", "Description1")
 
     @Before
     fun setupViewModel() {

@@ -94,7 +94,7 @@ class TppsActivityTest {
 
     @Test
     fun editTpp() {
-        repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION"))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION"))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -145,8 +145,8 @@ class TppsActivityTest {
 
     @Test
     fun createTwoTpps_deleteOneTpp() {
-        repository.saveTppBlocking(Tpp("TITLE1", "DESCRIPTION"))
-        repository.saveTppBlocking(Tpp("TITLE2", "DESCRIPTION"))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION"))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION"))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -168,7 +168,7 @@ class TppsActivityTest {
     fun markTppAsFollowedOnDetailScreen_tppIsFollowInList() {
         // Add 1 active tpp
         val tppTitle = "FOLLOWED"
-        repository.saveTppBlocking(Tpp(tppTitle, "DESCRIPTION"))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173281", tppTitle, "DESCRIPTION"))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -196,7 +196,7 @@ class TppsActivityTest {
     fun markTppAsActiveOnDetailScreen_tppIsActiveInList() {
         // Add 1 followed tpp
         val tppTitle = "ACTIVE"
-        repository.saveTppBlocking(Tpp(tppTitle, "DESCRIPTION", true))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173281", tppTitle, "DESCRIPTION", true))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -223,7 +223,7 @@ class TppsActivityTest {
     fun markTppAsFollowAndActiveOnDetailScreen_tppIsActiveInList() {
         // Add 1 active tpp
         val tppTitle = "ACT-COMP"
-        repository.saveTppBlocking(Tpp(tppTitle, "DESCRIPTION"))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173281", tppTitle, "DESCRIPTION"))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -252,7 +252,7 @@ class TppsActivityTest {
     fun markTppAsActiveAndFollowOnDetailScreen_tppIsFollowInList() {
         // Add 1 followed tpp
         val tppTitle = "COMP-ACT"
-        repository.saveTppBlocking(Tpp(tppTitle, "DESCRIPTION", true))
+        repository.saveTppBlocking(Tpp("Entity_CZ28173281", tppTitle, "DESCRIPTION", true))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)

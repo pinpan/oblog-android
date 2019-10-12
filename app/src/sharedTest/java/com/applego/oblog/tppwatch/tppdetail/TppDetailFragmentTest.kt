@@ -62,7 +62,7 @@ class TppDetailFragmentTest {
     @Test
     fun activeTppDetails_DisplayedInUi() {
         // GIVEN - Add active (unfollow) tpp to the DB
-        val activeTpp = Tpp("Active Tpp", "AndroidX Rocks", false)
+        val activeTpp = Tpp("Entity_CZ28173281", "Active Tpp", "AndroidX Rocks", false)
         repository.saveTppBlocking(activeTpp)
 
         // WHEN - Details fragment launched to display tpp
@@ -83,7 +83,7 @@ class TppDetailFragmentTest {
     @Test
     fun followedTppDetails_DisplayedInUi() {
         // GIVEN - Add followed tpp to the DB
-        val followedTpp = Tpp("Followed Tpp", "AndroidX Rocks", true)
+        val followedTpp = Tpp("Entity_CZ28173281", "Followed Tpp", "AndroidX Rocks", true)
         repository.saveTppBlocking(followedTpp)
 
         // WHEN - Details fragment launched to display tpp

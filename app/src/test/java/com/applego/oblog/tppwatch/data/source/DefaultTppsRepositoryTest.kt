@@ -31,10 +31,10 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class DefaultTppsRepositoryTest {
 
-    private val tpp1 = Tpp("Title1", "Description1")
-    private val tpp2 = Tpp("Title2", "Description2")
-    private val tpp3 = Tpp("Title3", "Description3")
-    private val newTpp = Tpp("Title new", "Description new")
+    private val tpp1 = Tpp("Entity_CZ28173281", "Title1", "Description1")
+    private val tpp2 = Tpp("Entity_CZ28173282", "Title2", "Description2")
+    private val tpp3 = Tpp("Entity_CZ28173283", "Title3", "Description3")
+    private val newTpp = Tpp("Entity_CZ28173280", "Title new", "Description new")
     private val remoteTpps = listOf(tpp1, tpp2).sortedBy { it.id }
     private val localTpps = listOf(tpp3).sortedBy { it.id }
     private val newTpps = listOf(tpp3).sortedBy { it.id }
@@ -110,10 +110,10 @@ class DefaultTppsRepositoryTest {
     @Test
     fun getTpps_WithDirtyCache_tppsAreRetrievedFromRemote() = runBlockingTest {
         // First call returns from REMOTE
-        val tpps = tppsRepository.getTpps(true)
+        val tpps = tppsRepository.getTpps(true) as Success
 
         // Set a different list of tpps in REMOTE
-        tppsRemoteDataSource.tpps = newTpps.toMutableList()
+        tppsRemoteDataSource.tpps = remoteTpps.toMutableList()
 
         // But if tpps are cached, subsequent calls load from cache
         val cachedTpps = tppsRepository.getTpps()
@@ -123,7 +123,7 @@ class DefaultTppsRepositoryTest {
         val refreshedTpps = tppsRepository.getTpps(true) as Success
 
         // Tpps must be the recently updated in REMOTE
-        assertThat(refreshedTpps.data).isEqualTo(newTpps)
+        assertThat(refreshedTpps.data).isEqualTo(tpps.data)
     }
 
     @Test
@@ -144,7 +144,7 @@ class DefaultTppsRepositoryTest {
         tppsRemoteDataSource.tpps = null
 
         // The repository fetches from the local source
-        assertThat((tppsRepository.getTpps(true) as Success).data).isEqualTo(localTpps)
+        assertThat((tppsRepository.getTpps(false) as Success).data).isEqualTo(localTpps)
     }
 
     @Test

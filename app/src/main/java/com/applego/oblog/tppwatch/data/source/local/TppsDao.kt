@@ -46,6 +46,24 @@ interface TppsDao {
     suspend fun getTppById(tppId: String): Tpp?
 
     /**
+     * Select a tpp by id.
+     *
+     * @param tppId the tpp id.
+     * @return the tpp with tppId.
+     */
+    @Query("SELECT * FROM Tpps WHERE globalUrn = :globalUrn")
+    suspend fun getTppByGlobalUrn(globalUrn: String): Tpp?
+
+    /**
+     * Select a tpp by entityCode (provided by Backend).
+     *
+     * @param tppId the tpp entityCode.
+     * @return the tpp with entityCode.
+     */
+    @Query("SELECT * FROM Tpps WHERE entityCode = :entityCode")
+    suspend fun getTppByEntityCode(entityCode: String): Tpp?
+
+    /**
      * Insert a tpp in the database. If the tpp already exists, replace it.
      *
      * @param tpp the tpp to be inserted.

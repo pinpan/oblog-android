@@ -71,10 +71,10 @@ class StatisticsViewModelTest {
     @Test
     fun loadNonEmptyTppsFromRepository_NonEmptyResults() {
         // We initialise the tpps to 3, with one active and two followed
-        val tpp1 = Tpp("Title1", "Description1")
-        val tpp2 = Tpp("Title2", "Description2", true)
-        val tpp3 = Tpp("Title3", "Description3", true)
-        val tpp4 = Tpp("Title4", "Description4", true)
+        val tpp1 = Tpp("Entity_CZ28173281", "Title1", "Description1")
+        val tpp2 = Tpp("Entity_CZ28173282", "Title2", "Description2", true)
+        val tpp3 = Tpp("Entity_CZ28173283", "Title3", "Description3", true)
+        val tpp4 = Tpp("Entity_CZ28173284", "Title4", "Description4", true)
         tppsRepository.addTpps(tpp1, tpp2, tpp3, tpp4)
 
         // When loading of Tpps is requested

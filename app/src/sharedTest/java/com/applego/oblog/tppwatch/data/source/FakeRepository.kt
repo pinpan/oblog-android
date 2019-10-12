@@ -57,7 +57,7 @@ class FakeRepository : TppsRepository {
     }
 
     override suspend fun unollowTpp(tpp: Tpp) {
-        val unfollowTpp = Tpp(tpp.title, tpp.description, true, tpp.id)
+        val unfollowTpp = Tpp(tpp.entityCode, tpp.title, tpp.description, true, tpp.id)
         tppsServiceData[tpp.id] = unfollowTpp
     }
 
@@ -67,7 +67,7 @@ class FakeRepository : TppsRepository {
     }
 
     override suspend fun activateTpp(tpp: Tpp) {
-        val activeTpp = Tpp(tpp.title, tpp.description, false, tpp.id)
+        val activeTpp = Tpp(tpp.entityCode, tpp.title, tpp.description, false, tpp.id)
         tppsServiceData[tpp.id] = activeTpp
     }
 

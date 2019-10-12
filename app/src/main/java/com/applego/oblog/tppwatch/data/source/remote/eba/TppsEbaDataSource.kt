@@ -50,7 +50,7 @@ class TppsEbaDataSource internal constructor (
                         System.out.println("Insert/Update tpp: " + tpp.title + " into database")
 
                         runBlocking<Unit> {
-                            if (tppsDao.getTppById(tpp.id) == null) {
+                            if (tppsDao.getTppByEntityCode(tpp.entityCode) == null) {
                                 tppsDao.insertTpp(tpp)
                             } else {
                                 tppsDao.updateTpp(tpp)

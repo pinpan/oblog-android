@@ -29,7 +29,7 @@ class StatisticsUtilsTest {
     @Test
     fun getActiveAndFollowedStats_noFollowed() {
         val tpps = listOf(
-                Tpp("title", "desc", isFollowed = false)
+                Tpp("Entity_CZ28173281", "title", "desc", isFollowed = false)
         )
         // When the list of tpps is computed with an active tpp
         val result = getActiveAndFollowedStats(tpps)
@@ -42,7 +42,7 @@ class StatisticsUtilsTest {
     @Test
     fun getActiveAndFollowedStats_noActive() {
         val tpps = listOf(
-                Tpp("title", "desc", isFollowed = true)
+                Tpp("Entity_CZ28173281", "title", "desc", isFollowed = true)
         )
         // When the list of tpps is computed with a followed tpp
         val result = getActiveAndFollowedStats(tpps)
@@ -56,11 +56,11 @@ class StatisticsUtilsTest {
     fun getActiveAndFollowedStats_both() {
         // Given 3 followed tpps and 2 active tpps
         val tpps = listOf(
-                Tpp("title", "desc", isFollowed = true),
-                Tpp("title", "desc", isFollowed = true),
-                Tpp("title", "desc", isFollowed = true),
-                Tpp("title", "desc", isFollowed = false),
-                Tpp("title", "desc", isFollowed = false)
+                Tpp("Entity_CZ28173281", "title", "desc", isFollowed = true),
+                Tpp("Entity_CZ28173282", "title", "desc", isFollowed = true),
+                Tpp("Entity_CZ28173283", "title", "desc", isFollowed = true),
+                Tpp("Entity_CZ28173284", "title", "desc", isFollowed = false),
+                Tpp("Entity_CZ28173285", "title", "desc", isFollowed = false)
         )
         // When the list of tpps is computed
         val result = getActiveAndFollowedStats(tpps)

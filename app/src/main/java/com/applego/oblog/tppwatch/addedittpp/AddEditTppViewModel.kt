@@ -109,16 +109,16 @@ class AddEditTppViewModel(
             _snackbarText.value = Event(R.string.empty_tpp_message)
             return
         }
-        if (Tpp(currentTitle, currentDescription).isEmpty) {
+        if (Tpp("Entity_CZ28173282", currentTitle, currentDescription).isEmpty) {
             _snackbarText.value = Event(R.string.empty_tpp_message)
             return
         }
 
         val currentTppId = tppId
         if (isNewTpp || currentTppId == null) {
-            createTpp(Tpp(currentTitle, currentDescription))
+            createTpp(Tpp("Entity_CZ28173282", currentTitle, currentDescription))
         } else {
-            val tpp = Tpp(currentTitle, currentDescription, tppFollowed, "", RecordStatus.NEW, currentTppId)
+            val tpp = Tpp("Entity_CZ28173282", currentTitle, currentDescription, tppFollowed, "", RecordStatus.NEW, currentTppId)
             updateTpp(tpp)
         }
     }

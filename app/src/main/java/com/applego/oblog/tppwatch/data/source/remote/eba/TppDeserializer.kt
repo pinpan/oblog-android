@@ -13,9 +13,10 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         var jsonObject: JsonObject? = json?.asJsonObject
 
         val id: Int = jsonObject?.get("id")?.asInt ?: -1
+        val entityCode: String  = jsonObject?.get("entityCode")?.getAsString() ?: ""
         val name: String  = jsonObject?.get("name")?.getAsString() ?: ""
         val description: String = jsonObject?.get("description")?.asString ?: ""
 
-        return Tpp(name, description)
+        return Tpp(entityCode, name, description)
     }
 }

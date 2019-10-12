@@ -22,7 +22,7 @@ class TppListDeserializer : JsonDeserializer<List<Tpp>> {
             val name: String = itemJsonObject.get("entityName")?.getAsString() ?: ""
             val description: String = itemJsonObject?.get("description")?.asString ?: ""
 
-            items.add(Tpp(name, description));
+            items.add(Tpp("Entity_CZ28173282", name, description));
         }
 
         return items

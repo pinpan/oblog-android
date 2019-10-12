@@ -20,7 +20,6 @@ import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
 
 class FakeRemoteDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : RemoteTppDataSource {
