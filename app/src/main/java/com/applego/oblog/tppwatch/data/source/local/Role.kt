@@ -9,7 +9,7 @@ import java.util.*
 data class Role @JvmOverloads constructor(
         @ColumnInfo(name = "title") var title: String = "",
         @ColumnInfo(name = "description") var description: String = "",
-        @PrimaryKey @ColumnInfo(name = "roleid") var id: String = UUID.randomUUID().toString()
+        @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString()
 ) {
 
 }

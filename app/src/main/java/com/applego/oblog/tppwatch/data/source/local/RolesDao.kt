@@ -21,7 +21,7 @@ interface RolesDao {
      * @param roleId the role id.
      * @return the role with roleId.
      */
-    @Query("SELECT * FROM Roles WHERE roleid = :roleId")
+    @Query("SELECT * FROM Roles WHERE id = :roleId")
     suspend fun getRoleById(roleId: String): Role?
 
     /**

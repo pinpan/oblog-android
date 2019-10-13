@@ -21,7 +21,7 @@ interface AppsDao {
      * @param appId the app id.
      * @return the App with appId.
      */
-    @Query("SELECT * FROM Apps WHERE appid = :appId")
+    @Query("SELECT * FROM Apps WHERE id = :appId")
     suspend fun getAppById(appId: String): App?
 
     /**

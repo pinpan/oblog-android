@@ -1,0 +1,19 @@
+20191013
+TODO:
+1. Fragment.getViewModelFactory() creates new ViewModelFactory on app start and then every time TppList loading is invoked
+Thie in turn triggers creation of new repository. Question is:
+   - Do we have to create new Factory every time?
+   - Can't we cash the Tpp repository? Where?
+
+2. Create /Enhance:
+   New layourt:
+    - Search page / fragment
+    - Front page
+      - consider tabed layout or combo box for :  {Followed, EBA, Past viewed}
+      - buttons for opening the respective page
+    - Demo flow
+
+    - TPP Detail
+  - Site branding and styling
+     - Logo, Slogan
+     - Colors palette, icon

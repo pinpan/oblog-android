@@ -31,7 +31,7 @@ import java.util.UUID
 data class InfoSource @JvmOverloads constructor(
         @ColumnInfo(name = "title") var title: String = "",
         @ColumnInfo(name = "sourceType") var sourceType: String = "",  // TODO: Define SourceType enum - GOV, MEDIA, SOCIAL, EBA, NCA...
-        @PrimaryKey @ColumnInfo(name = "infosourceid") var id: String = UUID.randomUUID().toString()
+        @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString()
 ) {
 
 }

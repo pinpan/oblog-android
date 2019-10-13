@@ -42,6 +42,6 @@ interface TppDetailsDao {
      * @param tppDetailId the tppDetail id.
      * @return the tppDetail with tppDetailId.
      */
-    @Query("SELECT * FROM TppDetails WHERE detailid = :tppDetailId")
+    @Query("SELECT * FROM TppDetails WHERE id = :tppDetailId")
     suspend fun getTppDetailById(tppDetailId: String): TppDetail?
 }

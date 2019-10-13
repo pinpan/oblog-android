@@ -121,7 +121,7 @@ class TppsDaoTest {
         database.tppDao().insertTpp(originalTpp)
 
         // When the tpp is updated
-        val updatedTpp = Tpp("Entity_CZ28173282", "new title", "new description", true, originalTpp.id, RecordStatus.UPDATED, originalTpp.id)
+        val updatedTpp = Tpp("Entity_CZ28173282", "new title", "new description", true, originalTpp.id, RecordStatus.UPDATED, originalTpp.ebaEntityVersion, originalTpp.id)
         database.tppDao().updateTpp(updatedTpp)
 
         // THEN - The loaded data contains the expected values

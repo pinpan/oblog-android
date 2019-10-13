@@ -48,7 +48,7 @@ data class TppDetail @JvmOverloads constructor(
         @ColumnInfo(name = "dateAcquired") var dateAcquired: Date,      // Date when detail was acquired by Oblog from source with sourceId
         @ColumnInfo(name = "confirmed") var isConfirmed: Boolean = false, // TRUE if the detail is from official source or was confirmed publically or was evaluated to be valid by our algorithm
         @ColumnInfo(name = "confirmationSource") var confirmationSourceId: String = "", // InfoSource
-        @PrimaryKey @ColumnInfo(name = "detailid") var id: String = UUID.randomUUID().toString()
+        @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString()
 ) {
 
 }

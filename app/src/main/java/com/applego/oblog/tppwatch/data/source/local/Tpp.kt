@@ -19,7 +19,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import java.util.UUID
+import java.util.*
 
 /**
  * Immutable model class for a Tpp. In order to compile with Room, we can't use @JvmOverloads to
@@ -39,9 +39,21 @@ data class Tpp @JvmOverloads constructor(
         @ColumnInfo(name = "followed") var isFollowed: Boolean = false,                 // A Global Unified identifier. Used by Preta as own ID.
         @ColumnInfo(name = "globalUrn") var globalUrn: String = "",   // New, Updated, Removed (from original source), Deleted (From our DB) ...
         @ColumnInfo(name = "status") var status: RecordStatus = RecordStatus.NEW,
-        @PrimaryKey @ColumnInfo(name = "entryid") var id: String = UUID.randomUUID().toString()
-        // TODO: Define tppRoles, tpp Services, tppApps, tppPassporting, tppDetails
+        @ColumnInfo(name = "ebaEntityVersion") var ebaEntityVersion: String = "",
+        @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString()
+        //val recipes: List<Recipe>
+        // TODO#Define:
+        //  passporting
+        //      services,
+        //  tppRoles, - CZ has, Eba hasn't
+        //  apps,
+        //  details aka properties from EBA
 ) {
+    var dateAcquired: Date = Date()
+        //get() = if (dateAcquired != null) dateAcquired else Date()
+
+    //var ebaEntityVersion: String = ""
+        //get() = if (dateAcquired != null) dateAcquired else Date()
 
     val titleForList: String
         get() = if (title.isNotEmpty()) title else description

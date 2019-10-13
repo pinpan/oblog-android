@@ -21,7 +21,7 @@ interface ServicesDao {
      * @param serviceId the service id.
      * @return the service with serviceId.
      */
-    @Query("SELECT * FROM Services WHERE serviceid = :serviceId")
+    @Query("SELECT * FROM Services WHERE id = :serviceId")
     suspend fun getServiceById(serviceId: String): Service?
 
     /**

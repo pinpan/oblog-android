@@ -42,7 +42,7 @@ interface TppsDao {
      * @param tppId the tpp id.
      * @return the tpp with tppId.
      */
-    @Query("SELECT * FROM Tpps WHERE entryid = :tppId")
+    @Query("SELECT * FROM Tpps WHERE id = :tppId")
     suspend fun getTppById(tppId: String): Tpp?
 
     /**
@@ -86,7 +86,7 @@ interface TppsDao {
      * @param tppId    id of the tpp
      * @param followed status to be updated
      */
-    @Query("UPDATE tpps SET followed = :followed WHERE entryid = :tppId")
+    @Query("UPDATE tpps SET followed = :followed WHERE id = :tppId")
     suspend fun updateFollowed(tppId: String, followed: Boolean)
 
     /**
@@ -94,7 +94,7 @@ interface TppsDao {
      *
      * @return the number of tpps deleted. This should always be 1.
      */
-    @Query("DELETE FROM Tpps WHERE entryid = :tppId")
+    @Query("DELETE FROM Tpps WHERE id = :tppId")
     suspend fun deleteTppById(tppId: String): Int
 
     /**

@@ -9,7 +9,7 @@ import java.util.*
 data class Service @JvmOverloads constructor(
         @ColumnInfo(name = "title") var title: String = "",
         @ColumnInfo(name = "description") var description: String = "",
-        @PrimaryKey @ColumnInfo(name = "serviceid") var id: String = UUID.randomUUID().toString()
+        @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString()
 ) {
 
 }
