@@ -1,7 +1,6 @@
 package com.applego.oblog.tppwatch.data.source.remote.eba;
 
 import com.applego.oblog.tppwatch.BuildConfig
-import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.source.local.Tpp;
 import com.applego.oblog.tppwatch.data.source.local.App
 
@@ -18,7 +17,7 @@ import java.lang.reflect.Type
 import java.text.DateFormat
 
 
-interface  EbaService {
+interface  OblogEbaService {
 
     private fun createGsonConverter(type: Type, typeAdapter: Any): Converter.Factory {
         val gsonBuilder = GsonBuilder()
@@ -30,7 +29,7 @@ interface  EbaService {
 
     companion object {
 
-        var BASE_URL = "http://192.168.0.15:8585/eba-registry/" //api.oblog.org:8443  10.0.2.2
+        //var BASE_URL = "http://192.168.0.15:8585/eba-registry/" //api.oblog.org:8443  10.0.2.2
         //var API_KEY = "2e65127e909e178d0af311a81f39948c"
         val tppType: Type = object : TypeToken<Tpp>() {}.type
         val tppListType: Type = object : TypeToken<MutableList<Tpp>>() {}.type //@JvmSuppressWildcards
@@ -47,7 +46,7 @@ interface  EbaService {
                 .create()
 
 
-        fun create(): EbaService {
+        fun create(): OblogEbaService {
 
             val retrofit = Retrofit.Builder()
                     .addCallAdapterFactory(
@@ -57,7 +56,7 @@ interface  EbaService {
                     .baseUrl(BuildConfig.BASE_URL) //context.getString(R.oblog_api_base_url))
                     .build()
 
-            return retrofit.create(EbaService::class.java)
+            return retrofit.create(OblogEbaService::class.java)
         }
     }
 
@@ -68,6 +67,9 @@ interface  EbaService {
 
     @GET("tpps/")
     fun getTppById(@Query("id") id: Int?): Call<Tpp>
+
+    @GET("tpps/")
+    fun listTpps(): Call<List<Tpp>>;
 
     @GET("tpps/")
     fun listTpps(@Query("name")tppName: String ): Call<List<Tpp>>;

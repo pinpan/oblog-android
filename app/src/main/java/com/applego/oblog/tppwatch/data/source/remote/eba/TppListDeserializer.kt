@@ -9,7 +9,6 @@ import kotlin.collections.List
 class TppListDeserializer : JsonDeserializer<List<Tpp>> {
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): List<Tpp> {
 
-        //val items = ArrayList()
         var items : ArrayList<Tpp> = arrayListOf()
 
         var jsonObject: JsonObject? = json?.asJsonObject
@@ -17,13 +16,11 @@ class TppListDeserializer : JsonDeserializer<List<Tpp>> {
         val itemsJsonArray : JsonArray = jsonObject?.get("content")?.getAsJsonArray() ?: JsonArray();
 
         for (itemsJsonElement:JsonElement in itemsJsonArray) run {
-            val itemJsonObject: JsonObject = itemsJsonElement.getAsJsonObject();
-            val code: String = itemJsonObject.get("entityCode")?.asString ?:""
-            val id: String = itemJsonObject.get("entityId")?.asString ?:""
-            val name: String = itemJsonObject.get("entityName")?.getAsString() ?: ""
-            val description: String = itemJsonObject?.get("description")?.asString ?: ""
 
-            items.add(Tpp(code, name, description, false, id));
+            val itemJsonObject: JsonObject = itemsJsonElement.getAsJsonObject();
+            var tpp : Tpp = TppDeserializer.tppDeserializer.convertFrom(itemJsonObject)
+
+            items.add(tpp)
         }
 
         return items

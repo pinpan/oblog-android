@@ -31,21 +31,20 @@ import java.util.concurrent.TimeUnit
  * Concrete implementation of a data source as a db.
  */
 class TppsEbaDataSource internal constructor (
-        private val tppsService: EbaService,
+        private val tppsService: OblogEbaService,
         private val tppsDao: TppsDao,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : RemoteTppDataSource {
 
-    var tppsList: List<Tpp> = List<Tpp>(0){ Tpp() }
+    //var tppsList: List<Tpp> = List<Tpp>(0){ Tpp() }
 
     override suspend fun getTpps(): Result<List<Tpp>> = withContext(ioDispatcher) {
-        val call = tppsService.listTpps("BudgetBakers") // TODO: get filter parameters from UI
+        val call = tppsService.listTpps("") //""BudgetBakers") // TODO: get filter parameters from UI
         call.enqueue(object: Callback<List<Tpp>> {
 
             override fun onResponse(call: Call<List<Tpp>>, response: Response<List<Tpp>>) {
                 if (response.isSuccessful()) {
-                    //var tppsList : List<Tpp>
-                    tppsList = response.body()!!
+                    val tppsList = response.body()!!
                     tppsList.forEach { tpp ->
                         System.out.println("Insert/Update tpp: " + tpp.title + " into database")
 

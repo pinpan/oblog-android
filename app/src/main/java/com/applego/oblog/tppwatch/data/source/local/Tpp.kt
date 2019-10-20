@@ -31,7 +31,7 @@ import java.util.*
  * @param id          id of the tpp
  */
 @Entity(tableName = "tpps")
-@TypeConverters(StatusConverter::class)
+@TypeConverters(OblogTypeConverters::class)
 data class Tpp @JvmOverloads constructor(
         @ColumnInfo(name = "entityCode") var entityCode: String = "",   // Entity Code retruned by EBA or NCA
         @ColumnInfo(name = "title") var title: String = "",             // Description  provided by original source. For additional details see detail
@@ -49,7 +49,7 @@ data class Tpp @JvmOverloads constructor(
         //  apps,
         //  details aka properties from EBA
 ) {
-    var dateAcquired: Date = Date()
+    //var d : Date = Date()
         //get() = if (dateAcquired != null) dateAcquired else Date()
 
     //var ebaEntityVersion: String = ""

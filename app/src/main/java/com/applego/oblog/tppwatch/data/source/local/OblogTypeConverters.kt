@@ -7,10 +7,13 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 
-class StatusConverter {
+object OblogTypeConverters {
     @TypeConverter
+    @JvmStatic
     fun toStatus(status: Int): RecordStatus {
-        return if (status == RecordStatus.NEW.statusId) {
+        return if (status == RecordStatus.UNDEFINED.statusId) {
+            RecordStatus.UNDEFINED
+        } else if (status == RecordStatus.NEW.statusId) {
             RecordStatus.NEW
         } else if (status == RecordStatus.DIRTY.statusId) {
             RecordStatus.DIRTY
@@ -26,32 +29,38 @@ class StatusConverter {
     }
 
     @TypeConverter
+    @JvmStatic
     fun toInteger(recordStatus: RecordStatus): Int? {
         return recordStatus.statusId
     }
 
     @TypeConverter
+    @JvmStatic
     fun toDate(timestamp: Long?): Date? {
         return if (timestamp == null) null else Date(timestamp)
     }
 
     @TypeConverter
+    @JvmStatic
     fun toTimestamp(date: Date?): Long? {
         return if (date == null) null else date.getTime().toLong()
     }
 
     @TypeConverter
+    @JvmStatic
     fun toDate(date: String?): Date? {
-        return if (date == null) null else TheDateFormat.parse(date)
+        return if (date == null) null else simpleDateFormat.parse(date)
     }
 
     @TypeConverter
+    @JvmStatic
     fun toDateString(date: Date?): String? {
         return if (date == null) null else date.toString()
     }
 
 
     @TypeConverter
+    @JvmStatic
     fun storedStringToServices(data: String?): List<Service> {
         val gson = Gson()
         if (data == null) {
@@ -64,10 +73,11 @@ class StatusConverter {
     }
 
     @TypeConverter
+    @JvmStatic
     fun myObjectsToStoredString(myObjects: List<Service>): String {
         val gson = Gson()
         return gson.toJson(myObjects)
     }
 
-    object TheDateFormat : SimpleDateFormat() {}
+    val simpleDateFormat = SimpleDateFormat.getDateInstance()
 }

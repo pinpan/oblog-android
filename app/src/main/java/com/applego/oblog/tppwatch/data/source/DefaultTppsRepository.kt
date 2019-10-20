@@ -82,9 +82,11 @@ class DefaultTppsRepository (
     private suspend fun fetchTppsFromRemoteOrLocal(forceUpdate: Boolean): Result<List<Tpp>>? {
         // If forced to update -> Get remote first
         // Always return from local datasource
+        lateinit var remoteTpps: Result<List<Tpp>>
+
         if (forceUpdate) {
 
-            val remoteTpps = tppsRemoteDataSource.getTpps()
+            remoteTpps = tppsRemoteDataSource.getTpps()
             when (remoteTpps) {
                 is Success -> {
                     refreshLocalDataSource(remoteTpps.data)
@@ -99,7 +101,11 @@ class DefaultTppsRepository (
 
         // Local if remote fails
         val localTpps = tppsLocalDataSource.getTpps()
-        if (localTpps is Success) return localTpps
+        if (localTpps is Success) {
+            return localTpps
+        } /*else {
+            return remoteTpps;
+        }*/
         return Error(Exception("Error fetching from remote and local"))
     }
 

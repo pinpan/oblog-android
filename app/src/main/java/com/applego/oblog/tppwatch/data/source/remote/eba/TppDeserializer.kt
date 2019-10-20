@@ -1,10 +1,8 @@
 package com.applego.oblog.tppwatch.data.source.remote.eba
 
+import com.applego.oblog.tppwatch.data.source.local.RecordStatus
 import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
-import com.google.gson.JsonObject
+import com.google.gson.*
 import java.lang.reflect.Type
 
 class TppDeserializer : JsonDeserializer<Tpp> {
@@ -12,11 +10,53 @@ class TppDeserializer : JsonDeserializer<Tpp> {
 
         var jsonObject: JsonObject? = json?.asJsonObject
 
-        val id: Int = jsonObject?.get("id")?.asInt ?: -1
+        return convertFrom(jsonObject)
+    }
+
+
+    companion object {
+        private var INSTANCE: TppDeserializer? = null
+        val tppDeserializer: TppDeserializer
+            get() {
+                if (INSTANCE == null) {
+                    INSTANCE = TppDeserializer()
+                }
+                return INSTANCE!!
+            }
+    }
+
+    fun convertFrom(jsonObject: JsonObject?) : Tpp {
+        if (jsonObject == null) {
+            return Tpp();
+        }
+        val entityId: String = jsonObject.get("entityId")?.asString ?:""
         val entityCode: String  = jsonObject?.get("entityCode")?.getAsString() ?: ""
-        val name: String  = jsonObject?.get("name")?.getAsString() ?: ""
+        var entityName = ""
+        val nameJson = jsonObject?.get("entityName")
+        if (nameJson is JsonArray) {
+            entityName = getStringFromJsonArray(jsonObject?.get("entityName").asJsonArray)
+        } else {
+            entityName = nameJson.asString
+        }
+
+        /*(jsonObject?.get("entityName") as String)?.let {
+            entityName = jsonObject?.get("entityName").asString
+        }*/
+
+        //val entityName: String  = jsonObject?.get("entityName")?.getAsString() ?: ""
+        val ebaEntityVersion: String = jsonObject?.get("ebaEntityVersion")?.asString ?: ""
+        val status: String = jsonObject?.get("status")?.asString ?: ""
         val description: String = jsonObject?.get("description")?.asString ?: ""
 
-        return Tpp(entityCode, name, description)
+        return Tpp(entityCode, entityName, description, false, jsonObject?.get("globalUrn")?.asString ?:"", RecordStatus.getRecordStatus(status), ebaEntityVersion) //, entityId)
+    }
+
+    private fun getStringFromJsonArray(jsounArray: JsonArray): String {
+
+        var theString = ""
+        for (jsonArrayElement:JsonElement in jsounArray) run {
+            theString += "," + jsonArrayElement
+        }
+        return theString
     }
 }
