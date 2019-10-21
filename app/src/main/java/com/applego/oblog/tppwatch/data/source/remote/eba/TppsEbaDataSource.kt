@@ -48,7 +48,7 @@ class TppsEbaDataSource internal constructor (
 
                     val tppsListResponse = response.body()!!
                     Timber.d("tppsList=" + tppsListResponse.tppsList)
-                    tppsListResponse.tppsList.forEach { tpp ->
+                    tppsListResponse.tppsList?.forEach { tpp ->
                         System.out.println("Insert/Update tpp: " + tpp.title + " into database")
 
                         runBlocking<Unit> {
