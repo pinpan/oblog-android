@@ -48,7 +48,7 @@ class TppsEbaDataSource internal constructor (
 
                     val tppsListResponse = response.body()!!
                     Timber.d("tppsList=" + tppsListResponse.tppsList)
-                   /* tppsList.forEach { tpp ->
+                    tppsListResponse.tppsList.forEach { tpp ->
                         System.out.println("Insert/Update tpp: " + tpp.title + " into database")
 
                         runBlocking<Unit> {
@@ -58,7 +58,7 @@ class TppsEbaDataSource internal constructor (
                                 tppsDao.updateTpp(tpp)
                             }
                         }
-                    }*/
+                    }
                 } else {
                     System.out.println(response.errorBody())
                     //return@withContext  com.applego.oblog.tppwatch.data.Result.Error()
