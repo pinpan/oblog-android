@@ -19,6 +19,7 @@ import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.TppsDao
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
+import com.applego.oblog.tppwatch.data.source.remote.eba.TppsListResponse
 import kotlinx.coroutines.*
 import okio.Timeout
 import retrofit2.Call
@@ -37,14 +38,14 @@ class TppsNcaDataSource internal constructor (
 
     var tppsList: List<Tpp> = List<Tpp>(0){ Tpp() }
 
-    override suspend fun getTpps(): Result<List<Tpp>> = withContext(ioDispatcher) {
+    override suspend fun getTpps(): Result<TppsListResponse/*List<Tpp>*/> = withContext(ioDispatcher) {
         val call = tppsService.listTpps("BudgetBakers") // TODO: get filter parameters from UI
-        call.enqueue(object: Callback<List<Tpp>> {
+        call.enqueue(object: Callback<TppsListResponse/*List<Tpp>*/> {
 
-            override fun onResponse(call: Call<List<Tpp>>, response: Response<List<Tpp>>) {
+            override fun onResponse(call: Call<TppsListResponse/*List<Tpp>*/>, response: Response<TppsListResponse/*List<Tpp>*/>) {
                 if (response.isSuccessful()) {
                     //var tppsList : List<Tpp>
-                    tppsList = response.body()!!
+                    tppsList = response.body()?.tppsList!!
                     tppsList.forEach { tpp ->
                         System.out.println("Insert/Update tpp: " + tpp.title + " into database")
 
@@ -62,7 +63,7 @@ class TppsNcaDataSource internal constructor (
                 }
             }
 
-            override fun onFailure(call: Call<List<Tpp>>, t: Throwable) {
+            override fun onFailure(call: Call<TppsListResponse/*List<Tpp>*/>, t: Throwable) {
                 t.printStackTrace()
             }
         })

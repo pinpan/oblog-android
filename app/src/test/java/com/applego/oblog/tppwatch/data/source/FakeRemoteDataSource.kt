@@ -21,17 +21,18 @@ import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
+import com.applego.oblog.tppwatch.data.source.remote.eba.TppsListResponse
 
-class FakeRemoteDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : RemoteTppDataSource {
-    override suspend fun getTpps(): Result<List<Tpp>> {
-        tpps?.let { return Success(it) }
+class FakeRemoteDataSource(var tppsListResponse: TppsListResponse?/*MutableList<Tpp>*/ = TppsListResponse(mutableListOf())) : RemoteTppDataSource {
+    override suspend fun getTpps(): Result<TppsListResponse/*List<Tpp>*/> {
+        tppsListResponse?.let { return Success(it) }
         return Error(
             Exception("Tpps not found")
         )
     }
 
     override suspend fun getTpp(tppId: String): Result<Tpp> {
-        tpps?.firstOrNull { it.id == tppId }?.let { return Success(it) }
+        tppsListResponse?.tppsList?.firstOrNull { it.id == tppId }?.let { return Success(it) }
         return Error(
             Exception("Tpp not found")
         )

@@ -24,6 +24,7 @@ import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
@@ -38,14 +39,16 @@ class TppsEbaDataSource internal constructor (
 
     //var tppsList: List<Tpp> = List<Tpp>(0){ Tpp() }
 
-    override suspend fun getTpps(): Result<List<Tpp>> = withContext(ioDispatcher) {
-        val call = tppsService.listTpps("") //""BudgetBakers") // TODO: get filter parameters from UI
-        call.enqueue(object: Callback<List<Tpp>> {
+    override suspend fun getTpps(): Result<TppsListResponse> /*Result<List<Tpp>>*/ = withContext(ioDispatcher) {
+        val call = tppsService.listTpps("", 1, 25, "Some-field") //""BudgetBakers") // TODO: get filter parameters from UI
+        call.enqueue(object: Callback<TppsListResponse> { //List<Tpp>>
 
-            override fun onResponse(call: Call<List<Tpp>>, response: Response<List<Tpp>>) {
+            override fun onResponse(call: Call<TppsListResponse/*List<Tpp>*/>, response: Response<TppsListResponse/*List<Tpp>*/>) {
                 if (response.isSuccessful()) {
-                    val tppsList = response.body()!!
-                    tppsList.forEach { tpp ->
+
+                    val tppsListResponse = response.body()!!
+                    Timber.d("tppsList=" + tppsListResponse.tppsList)
+                   /* tppsList.forEach { tpp ->
                         System.out.println("Insert/Update tpp: " + tpp.title + " into database")
 
                         runBlocking<Unit> {
@@ -55,14 +58,14 @@ class TppsEbaDataSource internal constructor (
                                 tppsDao.updateTpp(tpp)
                             }
                         }
-                    }
+                    }*/
                 } else {
                     System.out.println(response.errorBody())
                     //return@withContext  com.applego.oblog.tppwatch.data.Result.Error()
                 }
             }
 
-            override fun onFailure(call: Call<List<Tpp>>, t: Throwable) {
+            override fun onFailure(call: Call<TppsListResponse/*List<Tpp>*/>, t: Throwable) {
                 t.printStackTrace()
             }
         })

@@ -1,6 +1,7 @@
 package com.applego.oblog.tppwatch.data.source.remote.eba;
 
 import com.applego.oblog.tppwatch.BuildConfig
+import com.applego.oblog.tppwatch.data.Paging
 import com.applego.oblog.tppwatch.data.source.local.Tpp;
 import com.applego.oblog.tppwatch.data.source.local.App
 
@@ -19,24 +20,26 @@ import java.text.DateFormat
 
 interface  OblogEbaService {
 
-    private fun createGsonConverter(type: Type, typeAdapter: Any): Converter.Factory {
+    /*private fun createGsonConverter(type: Type, typeAdapter: Any): Converter.Factory {
         val gsonBuilder = GsonBuilder()
         gsonBuilder.registerTypeAdapter(type, typeAdapter)
         val gson = gsonBuilder.create()
 
         return GsonConverterFactory.create(gson)
     }
-
+*/
     companion object {
 
         //var BASE_URL = "http://192.168.0.15:8585/eba-registry/" //api.oblog.org:8443  10.0.2.2
         //var API_KEY = "2e65127e909e178d0af311a81f39948c"
         val tppType: Type = object : TypeToken<Tpp>() {}.type
         val tppListType: Type = object : TypeToken<MutableList<Tpp>>() {}.type //@JvmSuppressWildcards
+        val tppsListResponseType: Type = object : TypeToken<TppsListResponse>() {}.type //@JvmSuppressWildcards
 
         var gson = GsonBuilder()
                 .registerTypeAdapter(tppType, TppDeserializer())
                 .registerTypeAdapter(tppListType, TppListDeserializer())
+                .registerTypeAdapter(tppsListResponseType, TppsListResponseDeserializer())
                 .enableComplexMapKeySerialization()
                 .serializeNulls()
                 .setDateFormat(DateFormat.LONG)
@@ -60,19 +63,19 @@ interface  OblogEbaService {
         }
     }
 
-    //var disposable: Disposable? = null
-
-    @GET("tpps/")
-    fun getTpps(): Call<List<Tpp>>
-
     @GET("tpps/")
     fun getTppById(@Query("id") id: Int?): Call<Tpp>
 
     @GET("tpps/")
-    fun listTpps(): Call<List<Tpp>>;
+    fun listTpps(@Query("page") page: Int? = null,
+                 @Query("page_size") pageSize: Int? = null,
+                 @Query("ordering") order: String? = null): Call<TppsListResponse/*List<Tpp>*/>;
 
     @GET("tpps/")
-    fun listTpps(@Query("name")tppName: String ): Call<List<Tpp>>;
+    fun listTpps(@Query("name")tppName: String,
+                 @Query("page") page: Int? = null,
+                 @Query("size") pageSize: Int? = null,
+                 @Query("sort") order: String? = null): Call<TppsListResponse/*List<Tpp>*/>;
 
     @GET("tpps/")
     fun listTpps(@Query("country")country: String, @Query("services") services: String): Call<List<Tpp>>;

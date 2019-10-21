@@ -22,6 +22,7 @@ import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
+import com.applego.oblog.tppwatch.data.source.remote.eba.TppsListResponse
 import com.applego.oblog.tppwatch.util.EspressoIdlingResource
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
@@ -82,19 +83,19 @@ class DefaultTppsRepository (
     private suspend fun fetchTppsFromRemoteOrLocal(forceUpdate: Boolean): Result<List<Tpp>>? {
         // If forced to update -> Get remote first
         // Always return from local datasource
-        lateinit var remoteTpps: Result<List<Tpp>>
+        //lateinit var remoteTpps: Result<List<Tpp>>
 
         if (forceUpdate) {
-
-            remoteTpps = tppsRemoteDataSource.getTpps()
-            when (remoteTpps) {
+            val tppsListResponse: Result<TppsListResponse> = tppsRemoteDataSource.getTpps()
+            when (tppsListResponse) {
                 is Success -> {
-                    refreshLocalDataSource(remoteTpps.data)
+                    //remoteTpps =
+                    refreshLocalDataSource(tppsListResponse.data.tppsList)
                 }
                 /*is Loading -> {
                     return remoteTpps
                 }*/
-                is Error -> Timber.w("Remote data source fetch failed: %s", remoteTpps.exception)
+                is Error -> Timber.w("Remote data source fetch failed: %s", tppsListResponse.exception)
                 //else -> throw IllegalStateException()
             }
         }
@@ -248,10 +249,12 @@ class DefaultTppsRepository (
         }
     }
 
-    private suspend fun refreshLocalDataSource(tpps: List<Tpp>) {
+    private suspend fun refreshLocalDataSource(tpps: List<Tpp>?) {
         tppsLocalDataSource.deleteAllTpps()
-        for (tpp in tpps) {
-            tppsLocalDataSource.saveTpp(tpp)
+        if (tpps != null) {
+            for (tpp in tpps) {
+                tppsLocalDataSource.saveTpp(tpp)
+            }
         }
     }
 

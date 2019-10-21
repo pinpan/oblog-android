@@ -20,9 +20,10 @@ import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
+import com.applego.oblog.tppwatch.data.source.remote.eba.TppsListResponse
 
 object FakeFailingTppsRemoteDataSource : RemoteTppDataSource {
-    override suspend fun getTpps(): Result<List<Tpp>> {
+    override suspend fun getTpps(): Result<TppsListResponse/*List<Tpp>*/> {
         return Result.Error(Exception("Test"))
     }
 

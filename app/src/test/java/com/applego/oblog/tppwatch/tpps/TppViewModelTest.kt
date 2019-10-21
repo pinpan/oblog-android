@@ -132,7 +132,7 @@ class TppsViewModelTest {
         // Then progress indicator is hidden
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading)).isFalse()
 
-        // And the list of items is empty
+        // And the list of tppsList is empty
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.items)).isEmpty()
 
         // And the snackbar updated

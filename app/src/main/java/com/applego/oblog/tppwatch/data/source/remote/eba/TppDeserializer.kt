@@ -39,10 +39,6 @@ class TppDeserializer : JsonDeserializer<Tpp> {
             entityName = nameJson.asString
         }
 
-        /*(jsonObject?.get("entityName") as String)?.let {
-            entityName = jsonObject?.get("entityName").asString
-        }*/
-
         //val entityName: String  = jsonObject?.get("entityName")?.getAsString() ?: ""
         val ebaEntityVersion: String = jsonObject?.get("ebaEntityVersion")?.asString ?: ""
         val status: String = jsonObject?.get("status")?.asString ?: ""

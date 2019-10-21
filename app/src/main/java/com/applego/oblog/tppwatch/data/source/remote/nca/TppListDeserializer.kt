@@ -9,7 +9,7 @@ import kotlin.collections.List
 class TppListDeserializer : JsonDeserializer<List<Tpp>> {
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): List<Tpp> {
 
-        //val items = ArrayList()
+        //val tppsList = ArrayList()
         var items : ArrayList<Tpp> = arrayListOf()
 
         var jsonObject: JsonObject? = json?.asJsonObject

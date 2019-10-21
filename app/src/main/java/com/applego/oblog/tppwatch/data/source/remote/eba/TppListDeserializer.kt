@@ -7,11 +7,33 @@ import kotlin.collections.ArrayList
 import kotlin.collections.List
 
 class TppListDeserializer : JsonDeserializer<List<Tpp>> {
+
+    companion object {
+        private var INSTANCE: TppListDeserializer? = null
+        val tppListDeserializer: TppListDeserializer
+            get() {
+                if (INSTANCE == null) {
+                    INSTANCE = TppListDeserializer()
+                }
+                return INSTANCE!!
+            }
+    }
+
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): List<Tpp> {
+
+        var items : List<Tpp> = convertFrom(json?.asJsonObject)
+
+        return items
+    }
+
+    fun convertFrom(jsonObject: JsonObject?) : List<Tpp> {
+        if (jsonObject == null) {
+            return ArrayList<Tpp>();
+        }
 
         var items : ArrayList<Tpp> = arrayListOf()
 
-        var jsonObject: JsonObject? = json?.asJsonObject
+        //var jsonObject: JsonObject? = json?.asJsonObject
 
         val itemsJsonArray : JsonArray = jsonObject?.get("content")?.getAsJsonArray() ?: JsonArray();
 
