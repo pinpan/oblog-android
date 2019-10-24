@@ -53,23 +53,25 @@ class DefaultTppsRepository (
         wrapEspressoIdlingResource {
 
             return withContext(ioDispatcher) {
-                // Respond immediately with cache if available and not dirty
-                //if (forceUpdate) {
+                if (forceUpdate) {
+                    fetchTppsFromRemoteDatasource()
+                }
                 // TODO: Avoid multiple fetches running in paralel: Make newTPPs a member so we can check if already Loading
-                    val newTpps = fetchTppsFromRemoteOrLocal(forceUpdate)
 
-                    // Refresh the cache with the new tpps
-                    (newTpps as? Success)?.let {
-                        if (!it.data.isEmpty()) {
-                            refreshCache(it.data)
-                            //return@withContext Success(it.data.sortedBy { it.id })
-                        }
-                    }
+                // Respond immediately with cache if available and not dirty
+                val newTpps = loadTppsFromLocalDatasource()
 
-                    (newTpps as? Loading)?.let {
-                        return@withContext Loading(waitTwoSeconds.timeout(2000, TimeUnit.MILLISECONDS))
+                // Refresh the cache with the new tpps
+                (newTpps as? Success)?.let {
+                    if (!it.data.isEmpty()) {
+                        refreshCache(it.data)
+                        //return@withContext Success(it.data.sortedBy { it.id })
                     }
-                //}
+                }
+
+                (newTpps as? Loading)?.let {
+                    return@withContext Loading(waitTwoSeconds.timeout(2000, TimeUnit.MILLISECONDS))
+                }
 
                 cachedTpps.values.let { tpps ->
                     return@withContext Success(tpps.sortedBy { it.id })
@@ -80,34 +82,34 @@ class DefaultTppsRepository (
         }
     }
 
-    private suspend fun fetchTppsFromRemoteOrLocal(forceUpdate: Boolean): Result<List<Tpp>>? {
-        // If forced to update -> Get remote first
-        // Always return from local datasource
-        //lateinit var remoteTpps: Result<List<Tpp>>
-
-        if (forceUpdate) {
-            val tppsListResponse: Result<TppsListResponse> = tppsRemoteDataSource.getTpps()
-            when (tppsListResponse) {
-                is Success -> {
-                    //remoteTpps =
-                    refreshLocalDataSource(tppsListResponse.data.tppsList)
-                }
-                /*is Loading -> {
-                    return remoteTpps
-                }*/
-                is Error -> Timber.w("Remote data source fetch failed: %s", tppsListResponse.exception)
-                //else -> throw IllegalStateException()
+    /**
+     * This method ensures we have Up-To-Date repository version, according to set freshness requirements.
+     * If @param forced is true, Do full refresh from remote source
+     */
+    private suspend fun fetchTppsFromRemoteDatasource() {
+        // If forced to update -> Get remotes now, otherwise call
+        val tppsListResponse: Result<TppsListResponse> = tppsRemoteDataSource.getAllTpps()
+        when (tppsListResponse) {
+            is Success -> {
+                refreshLocalDataSource(tppsListResponse.data.tppsList)
             }
+            /*is Loading -> {
+                return remoteTpps
+            }*/
+            is Error -> Timber.w("Remote data source fetch failed: %s", tppsListResponse.exception)
+            //else -> throw IllegalStateException()
         }
+    }
 
-        // Local if remote fails
+    private suspend fun loadTppsFromLocalDatasource(): Result<List<Tpp>>? {
+
         val localTpps = tppsLocalDataSource.getTpps()
         if (localTpps is Success) {
             return localTpps
         } /*else {
-            return remoteTpps;
+            return localTpps;
         }*/
-        return Error(Exception("Error fetching from remote and local"))
+        return Error(Exception("Error loading Tpps from local datasource: " + localTpps))
     }
 
     /**
@@ -136,7 +138,7 @@ class DefaultTppsRepository (
         }
     }
 
-    private suspend fun fetchTppFromRemoteOrLocal(
+    private suspend fun fetchTppFromRemoteOrLocal (
         tppId: String,
         forceUpdate: Boolean
     ): Result<Tpp> {

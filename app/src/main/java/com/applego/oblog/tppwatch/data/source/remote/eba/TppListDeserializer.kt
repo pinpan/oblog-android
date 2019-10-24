@@ -27,22 +27,21 @@ class TppListDeserializer : JsonDeserializer<List<Tpp>> {
     }
 
     fun convertFrom(jsonObject: JsonObject?) : List<Tpp> {
-        if (jsonObject == null) {
-            return ArrayList<Tpp>();
-        }
-
         var items : ArrayList<Tpp> = arrayListOf()
 
-        //var jsonObject: JsonObject? = json?.asJsonObject
+        if (jsonObject != null) {
 
-        val itemsJsonArray : JsonArray = jsonObject?.get("content")?.getAsJsonArray() ?: JsonArray();
+            //var jsonObject: JsonObject? = json?.asJsonObject
 
-        for (itemsJsonElement:JsonElement in itemsJsonArray) run {
+            val itemsJsonArray : JsonArray = jsonObject?.get("content")?.getAsJsonArray() ?: JsonArray();
 
-            val itemJsonObject: JsonObject = itemsJsonElement.getAsJsonObject();
-            var tpp : Tpp = TppDeserializer.tppDeserializer.convertFrom(itemJsonObject)
+            for (itemsJsonElement:JsonElement in itemsJsonArray) run {
 
-            items.add(tpp)
+                val itemJsonObject: JsonObject = itemsJsonElement.getAsJsonObject();
+                var tpp : Tpp = TppDeserializer.tppDeserializer.convertFrom(itemJsonObject)
+
+                items.add(tpp)
+            }
         }
 
         return items

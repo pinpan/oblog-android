@@ -79,6 +79,7 @@ class TppsViewModel(
     init {
         // Set initial state
         setFiltering(TppsFilterType.ALL_TPPS)
+
         loadTpps(true)
     }
 

@@ -16,10 +16,6 @@ enum class RecordStatus (val statusId: Int, val code: String ) {
     ,
     DELETED(5, "DELETED");
 
-    /*public fun getStatusId() : Int {
-        return statusId;
-    }*/
-
     companion object {
 
         fun getRecordStatus(statusCode: String)  : RecordStatus {

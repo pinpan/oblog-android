@@ -17,13 +17,14 @@
 package com.applego.oblog.tppwatch
 
 import com.applego.oblog.tppwatch.data.Result
+import com.applego.oblog.tppwatch.data.TppFilter
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.eba.TppsListResponse
 
 object FakeFailingTppsRemoteDataSource : RemoteTppDataSource {
-    override suspend fun getTpps(): Result<TppsListResponse/*List<Tpp>*/> {
+    override suspend fun getAllTpps(): Result<TppsListResponse/*List<Tpp>*/> {
         return Result.Error(Exception("Test"))
     }
 
@@ -31,6 +32,9 @@ object FakeFailingTppsRemoteDataSource : RemoteTppDataSource {
         return Result.Error(Exception("Test"))
     }
 
+    override suspend fun filterTpps(filter: TppFilter): Result<TppsListResponse> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
     /*override suspend fun saveTpp(tpp: Tpp) {
         TODO("not implemented")
     }

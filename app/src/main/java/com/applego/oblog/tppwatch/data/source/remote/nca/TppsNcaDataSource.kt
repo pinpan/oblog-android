@@ -16,6 +16,7 @@
 package com.applego.oblog.tppwatch.data.source.remote.nca
 
 import com.applego.oblog.tppwatch.data.Result
+import com.applego.oblog.tppwatch.data.TppFilter
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.TppsDao
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
@@ -38,7 +39,7 @@ class TppsNcaDataSource internal constructor (
 
     var tppsList: List<Tpp> = List<Tpp>(0){ Tpp() }
 
-    override suspend fun getTpps(): Result<TppsListResponse/*List<Tpp>*/> = withContext(ioDispatcher) {
+    override suspend fun getAllTpps(): Result<TppsListResponse/*List<Tpp>*/> = withContext(ioDispatcher) {
         val call = tppsService.listTpps("BudgetBakers") // TODO: get filter parameters from UI
         call.enqueue(object: Callback<TppsListResponse/*List<Tpp>*/> {
 
@@ -75,5 +76,9 @@ class TppsNcaDataSource internal constructor (
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-/**/
+    override suspend fun filterTpps(filter: TppFilter): Result<TppsListResponse> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    /**/
 }

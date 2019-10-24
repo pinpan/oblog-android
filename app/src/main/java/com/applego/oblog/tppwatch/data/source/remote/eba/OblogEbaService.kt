@@ -16,6 +16,8 @@ import com.google.gson.reflect.TypeToken
 import retrofit2.Converter
 import java.lang.reflect.Type
 import java.text.DateFormat
+import okhttp3.OkHttpClient
+import java.util.concurrent.TimeUnit
 
 
 interface  OblogEbaService {
@@ -50,6 +52,7 @@ interface  OblogEbaService {
 
 
         fun create(): OblogEbaService {
+            val okHttpClient = OkHttpClient().newBuilder().connectTimeout(60, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS).writeTimeout(60, TimeUnit.SECONDS).build()
 
             val retrofit = Retrofit.Builder()
                     .addCallAdapterFactory(
@@ -57,6 +60,7 @@ interface  OblogEbaService {
                     .addConverterFactory(
                             GsonConverterFactory.create(gson))
                     .baseUrl(BuildConfig.BASE_URL) //context.getString(R.oblog_api_base_url))
+                    .client(okHttpClient)
                     .build()
 
             return retrofit.create(OblogEbaService::class.java)
@@ -66,16 +70,16 @@ interface  OblogEbaService {
     @GET("tpps/")
     fun getTppById(@Query("id") id: Int?): Call<Tpp>
 
-    @GET("tpps/")
+    @GET("import/")
     fun listTpps(@Query("page") page: Int? = null,
-                 @Query("page_size") pageSize: Int? = null,
-                 @Query("ordering") order: String? = null): Call<TppsListResponse/*List<Tpp>*/>;
+                 @Query("size") pageSize: Int? = null,
+                 @Query("sort") order: String? = null): Call<TppsListResponse>;
 
     @GET("tpps/")
-    fun listTpps(@Query("name")tppName: String,
+    fun listTpps(@Query("name") tppName: String,
                  @Query("page") page: Int? = null,
                  @Query("size") pageSize: Int? = null,
-                 @Query("sort") order: String? = null): Call<TppsListResponse/*List<Tpp>*/>;
+                 @Query("sort") order: String? = null): Call<TppsListResponse>;
 
     @GET("tpps/")
     fun listTpps(@Query("country")country: String, @Query("services") services: String): Call<List<Tpp>>;
@@ -88,6 +92,7 @@ interface  OblogEbaService {
 
 
     abstract fun insertTpp(tpp: Tpp): Unit
+
     fun updateUnfollowed(id: String, b: Boolean): Unit
 
     fun deleteFollowedTpps ()

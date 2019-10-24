@@ -19,12 +19,13 @@ package com.applego.oblog.tppwatch.data.source
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
+import com.applego.oblog.tppwatch.data.TppFilter
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.eba.TppsListResponse
 
 class FakeRemoteDataSource(var tppsListResponse: TppsListResponse?/*MutableList<Tpp>*/ = TppsListResponse(mutableListOf())) : RemoteTppDataSource {
-    override suspend fun getTpps(): Result<TppsListResponse/*List<Tpp>*/> {
+    override suspend fun getAllTpps(): Result<TppsListResponse/*List<Tpp>*/> {
         tppsListResponse?.let { return Success(it) }
         return Error(
             Exception("Tpps not found")
@@ -36,6 +37,10 @@ class FakeRemoteDataSource(var tppsListResponse: TppsListResponse?/*MutableList<
         return Error(
             Exception("Tpp not found")
         )
+    }
+
+    override suspend fun filterTpps(filter: TppFilter): Result<TppsListResponse> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     /*override suspend fun saveTpp(tpp: Tpp) {

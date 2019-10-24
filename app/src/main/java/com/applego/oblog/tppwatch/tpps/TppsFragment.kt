@@ -129,7 +129,7 @@ class TppsFragment : Fragment() {
                         else -> TppsFilterType.ALL_TPPS
                     }
                 )
-                viewModel.loadTpps(false)
+                viewModel.loadTpps(false) // TODO: Use toggle on action bar - default to NO
                 true
             }
             show()

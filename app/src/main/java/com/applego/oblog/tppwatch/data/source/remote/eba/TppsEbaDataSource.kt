@@ -15,7 +15,9 @@
  */
 package com.applego.oblog.tppwatch.data.source.remote.eba
 
+import com.applego.oblog.tppwatch.data.Paging
 import com.applego.oblog.tppwatch.data.Result
+import com.applego.oblog.tppwatch.data.TppFilter
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.TppsDao
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
@@ -25,6 +27,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 
@@ -37,38 +40,18 @@ class TppsEbaDataSource internal constructor (
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : RemoteTppDataSource {
 
-    //var tppsList: List<Tpp> = List<Tpp>(0){ Tpp() }
+    override suspend fun getAllTpps(): Result<TppsListResponse> = withContext(ioDispatcher) {
+        var paging = Paging(10, 1, 10, true)
 
-    override suspend fun getTpps(): Result<TppsListResponse> /*Result<List<Tpp>>*/ = withContext(ioDispatcher) {
-        val call = tppsService.listTpps("", 1, 25, "Some-field") //""BudgetBakers") // TODO: get filter parameters from UI
-        call.enqueue(object: Callback<TppsListResponse> { //List<Tpp>>
-
-            override fun onResponse(call: Call<TppsListResponse/*List<Tpp>*/>, response: Response<TppsListResponse/*List<Tpp>*/>) {
-                if (response.isSuccessful()) {
-
-                    val tppsListResponse = response.body()!!
-                    Timber.d("tppsList=" + tppsListResponse.tppsList)
-                    tppsListResponse.tppsList?.forEach { tpp ->
-                        System.out.println("Insert/Update tpp: " + tpp.title + " into database")
-
-                        runBlocking<Unit> {
-                            if (tppsDao.getTppByEntityCode(tpp.entityCode) == null) {
-                                tppsDao.insertTpp(tpp)
-                            } else {
-                                tppsDao.updateTpp(tpp)
-                            }
-                        }
-                    }
-                } else {
-                    System.out.println(response.errorBody())
-                    //return@withContext  com.applego.oblog.tppwatch.data.Result.Error()
+        launch {
+            while (!paging.last) {
+                paging.page +=1
+                var result = loadTppsPage(paging)
+                if (result is Result.Success) {
+                    paging = result.data
                 }
             }
-
-            override fun onFailure(call: Call<TppsListResponse/*List<Tpp>*/>, t: Throwable) {
-                t.printStackTrace()
-            }
-        })
+        }
 
         return@withContext Result.Loading(Timeout())
     }
@@ -80,5 +63,48 @@ class TppsEbaDataSource internal constructor (
         return Result.Loading(Timeout().timeout(100, TimeUnit.MILLISECONDS));
     }
 
-/**/
+    override suspend fun filterTpps(filter: TppFilter): Result<TppsListResponse> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun loadTppsPage(paging: Paging): Result<Paging> {
+        val call = tppsService.listTpps("", paging.page, paging.size, paging.sortBy)
+        var response: Response<TppsListResponse>?
+        try {
+            response = call.execute()
+
+            //enqueue(object: Callback<TppsListResponse> {
+
+             //   override fun onResponse(call: Call<TppsListResponse>, response: Response<TppsListResponse>) {
+            if (response.isSuccessful()) {
+                val tppsListResponse = response.body()!!
+                Timber.d("tppsList=" + tppsListResponse.tppsList)
+                tppsListResponse.tppsList?.forEach { tpp ->
+                    System.out.println("Insert/Update tpp: " + tpp.title + " into database")
+
+                    runBlocking<Unit> {
+                        if (tppsDao.getTppByEntityCode(tpp.entityCode) == null) {
+                            tppsDao.insertTpp(tpp)
+                        } else {
+                            tppsDao.updateTpp(tpp)
+                        }
+                    }
+                }
+                return Result.Success(tppsListResponse.paging)
+            } else {
+                //System.out.println(response.errorBody())
+                return Result.Warn(response.code().toString(),  response.errorBody().toString())
+            }
+        } catch (ioe: IOException) {
+            Timber.e(ioe, "IOException caught: %s", ioe.message)
+            return Result.Error(ioe)
+        }
+        // }
+
+            //override fun onFailure(call: Call<TppsListResponse>, t: Throwable) {
+            //    t.printStackTrace()
+            //}
+        //})
+    }
+    /**/
 }
