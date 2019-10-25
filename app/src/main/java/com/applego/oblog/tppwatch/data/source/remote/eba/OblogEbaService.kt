@@ -1,7 +1,6 @@
 package com.applego.oblog.tppwatch.data.source.remote.eba;
 
 import com.applego.oblog.tppwatch.BuildConfig
-import com.applego.oblog.tppwatch.data.Paging
 import com.applego.oblog.tppwatch.data.source.local.Tpp;
 import com.applego.oblog.tppwatch.data.source.local.App
 
@@ -71,18 +70,21 @@ interface  OblogEbaService {
     fun getTppById(@Query("id") id: Int?): Call<Tpp>
 
     @GET("import/")
-    fun listTpps(@Query("page") page: Int? = null,
-                 @Query("size") pageSize: Int? = null,
-                 @Query("sort") order: String? = null): Call<TppsListResponse>;
+    fun listTppsByName(): Call<Unit>;
 
     @GET("tpps/")
-    fun listTpps(@Query("name") tppName: String,
-                 @Query("page") page: Int? = null,
-                 @Query("size") pageSize: Int? = null,
-                 @Query("sort") order: String? = null): Call<TppsListResponse>;
+    fun listAllTpps(@Query("page") page: Int? = null,
+                    @Query("size") pageSize: Int? = null,
+                    @Query("sort") order: String? = null): Call<TppsListResponse>;
 
     @GET("tpps/")
-    fun listTpps(@Query("country")country: String, @Query("services") services: String): Call<List<Tpp>>;
+    fun listTppsByName(@Query("name") tppName: String,
+                       @Query("page") page: Int? = null,
+                       @Query("size") pageSize: Int? = null,
+                       @Query("sort") order: String? = null): Call<TppsListResponse>;
+
+    @GET("tpps/")
+    fun listTppsByName(@Query("country")country: String, @Query("services") services: String): Call<List<Tpp>>;
 
     @GET("tpps/{tppId}/apps")
     fun listTppApps(@Path("tppId")tppId: String ): Call<List<App>>;

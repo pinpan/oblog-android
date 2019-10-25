@@ -23,8 +23,6 @@ import com.applego.oblog.tppwatch.data.source.local.TppsDao
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
 import kotlinx.coroutines.*
 import okio.Timeout
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
 import java.io.IOException
@@ -68,7 +66,7 @@ class TppsEbaDataSource internal constructor (
     }
 
     private fun loadTppsPage(paging: Paging): Result<Paging> {
-        val call = tppsService.listTpps("", paging.page, paging.size, paging.sortBy)
+        val call = tppsService.listTppsByName("", paging.page, paging.size, paging.sortBy)
         var response: Response<TppsListResponse>?
         try {
             response = call.execute()
