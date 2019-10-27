@@ -29,7 +29,7 @@ class StatisticsUtilsTest {
     @Test
     fun getActiveAndFollowedStats_noFollowed() {
         val tpps = listOf(
-                Tpp("Entity_CZ28173281", "title", "desc", isFollowed = false)
+                Tpp("Entity_CZ28173281", "title", "desc")
         )
         // When the list of tpps is computed with an active tpp
         val result = getActiveAndFollowedStats(tpps)
@@ -41,8 +41,10 @@ class StatisticsUtilsTest {
 
     @Test
     fun getActiveAndFollowedStats_noActive() {
+        var tpp1 = Tpp("Entity_CZ28173281", "title", "desc")
+        tpp1.isFollowed = true
         val tpps = listOf(
-                Tpp("Entity_CZ28173281", "title", "desc", isFollowed = true)
+                tpp1
         )
         // When the list of tpps is computed with a followed tpp
         val result = getActiveAndFollowedStats(tpps)
@@ -55,12 +57,22 @@ class StatisticsUtilsTest {
     @Test
     fun getActiveAndFollowedStats_both() {
         // Given 3 followed tpps and 2 active tpps
+        var tpp1 = Tpp("Entity_CZ28173281", "title", "desc")
+            tpp1.isFollowed = true
+        var tpp2 = Tpp("Entity_CZ28173282", "title", "desc")
+            tpp2.isFollowed = true
+        var tpp3 = Tpp("Entity_CZ28173283", "title", "desc")
+            tpp3.isFollowed = true
+
+        var tpp4 = Tpp("Entity_CZ28173284", "title", "desc")
+        var tpp5 = Tpp("Entity_CZ28173285", "title", "desc")
+
         val tpps = listOf(
-                Tpp("Entity_CZ28173281", "title", "desc", isFollowed = true),
-                Tpp("Entity_CZ28173282", "title", "desc", isFollowed = true),
-                Tpp("Entity_CZ28173283", "title", "desc", isFollowed = true),
-                Tpp("Entity_CZ28173284", "title", "desc", isFollowed = false),
-                Tpp("Entity_CZ28173285", "title", "desc", isFollowed = false)
+                tpp1,
+                tpp2,
+                tpp3,
+                tpp4,
+                tpp5
         )
         // When the list of tpps is computed
         val result = getActiveAndFollowedStats(tpps)

@@ -19,6 +19,7 @@ import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Loading
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
+import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
@@ -49,17 +50,22 @@ class DefaultTppsRepository (
     val waitTwoSeconds : Timeout = Timeout()
 
     override suspend fun getTpps(forceUpdate: Boolean): Result<List<Tpp>> {
+        return getTpps(forceUpdate, TppsFilter())
+    }
+
+    override suspend fun getTpps(forceUpdate: Boolean, filter: TppsFilter): Result<List<Tpp>> {
 
         wrapEspressoIdlingResource {
 
             return withContext(ioDispatcher) {
-                if (forceUpdate) {
+
+                if (forceUpdate) { // TODO: If Local datasource is empty - Hard Check! -> And update is required!
                     fetchTppsFromRemoteDatasource()
                 }
                 // TODO: Avoid multiple fetches running in paralel: Make newTPPs a member so we can check if already Loading
 
                 // Respond immediately with cache if available and not dirty
-                val newTpps = loadTppsFromLocalDatasource()
+                val newTpps = loadTppsFromLocalDatasource(filter)
 
                 // Refresh the cache with the new tpps
                 (newTpps as? Success)?.let {
@@ -69,9 +75,9 @@ class DefaultTppsRepository (
                     }
                 }
 
-                (newTpps as? Loading)?.let {
-                    return@withContext Loading(waitTwoSeconds.timeout(2000, TimeUnit.MILLISECONDS))
-                }
+                /*(newTpps as? Loading)?.let {
+                    return@withContext newTpps//Loading(waitTwoSeconds.timeout(2000, TimeUnit.MILLISECONDS))
+                }*/
 
                 cachedTpps.values.let { tpps ->
                     return@withContext Success(tpps.sortedBy { it.id })
@@ -101,15 +107,16 @@ class DefaultTppsRepository (
         }
     }
 
-    private suspend fun loadTppsFromLocalDatasource(): Result<List<Tpp>>? {
+    private suspend fun loadTppsFromLocalDatasource(filter: TppsFilter): Result<List<Tpp>> {
 
-        val localTpps = tppsLocalDataSource.getTpps()
+        val localTpps = tppsLocalDataSource.getTpps(filter)
         if (localTpps is Success) {
             return localTpps
-        } /*else {
-            return localTpps;
-        }*/
-        return Error(Exception("Error loading Tpps from local datasource: " + localTpps))
+        } else if (localTpps is Loading) {
+            return Loading(waitTwoSeconds.timeout(2000, TimeUnit.MILLISECONDS));
+        } else {
+            return Error(Exception("Error loading Tpps from local datasource: " + localTpps))
+        }
     }
 
     /**
@@ -175,7 +182,7 @@ class DefaultTppsRepository (
         }
     }
 
-    override suspend fun unollowTpp(tpp: Tpp) {
+    override suspend fun unfollowTpp(tpp: Tpp) {
         // Do in memory cache update to keep the app UI up to date
         cacheAndPerform(tpp) {
             it.isFollowed = true
@@ -189,7 +196,7 @@ class DefaultTppsRepository (
     override suspend fun followTpp(tppId: String) {
         withContext(ioDispatcher) {
             getTppWithId(tppId)?.let {
-                unollowTpp(it)
+                unfollowTpp(it)
             }
         }
     }
@@ -258,6 +265,7 @@ class DefaultTppsRepository (
                 tppsLocalDataSource.saveTpp(tpp)
             }
         }
+        // TODO: Check if ViewModel refresh is triggered then
     }
 
     private suspend fun refreshLocalDataSource(tpp: Tpp) {
@@ -267,7 +275,7 @@ class DefaultTppsRepository (
     private fun getTppWithId(id: String) = cachedTpps.get(id)
 
     private fun cacheTpp(tpp: Tpp): Tpp {
-        val cachedTpp = Tpp(tpp.entityCode, tpp.title, tpp.description, tpp.isFollowed, tpp.globalUrn, tpp.status, tpp.ebaEntityVersion, tpp.id)
+        val cachedTpp = Tpp(tpp.entityCode, tpp.title, tpp.description, tpp.globalUrn, tpp.ebaEntityVersion, tpp.id)
         // Create if it doesn't exist.
         /* Declared as new object -> Test if not null and remove this check
         if (cachedTpps == null) {

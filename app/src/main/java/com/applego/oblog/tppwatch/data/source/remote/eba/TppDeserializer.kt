@@ -1,6 +1,5 @@
 package com.applego.oblog.tppwatch.data.source.remote.eba
 
-import com.applego.oblog.tppwatch.data.source.local.RecordStatus
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.google.gson.*
 import java.lang.reflect.Type
@@ -44,7 +43,7 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         val status: String = jsonObject?.get("status")?.asString ?: ""
         val description: String = jsonObject?.get("description")?.asString ?: ""
 
-        return Tpp(entityCode, entityName, description, false, jsonObject?.get("globalUrn")?.asString ?:"", RecordStatus.getRecordStatus(status), ebaEntityVersion) //, entityId)
+        return Tpp(entityCode, entityName, description, jsonObject?.get("globalUrn")?.asString ?:"", ebaEntityVersion) //, entityId)
     }
 
     private fun getStringFromJsonArray(jsounArray: JsonArray): String {

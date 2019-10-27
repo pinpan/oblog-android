@@ -86,8 +86,11 @@ class StatisticsFragmentTest {
     fun tpps_showsNonEmptyMessage() {
         // Given some tpps
         repository.apply {
-            saveTppBlocking(Tpp("Entity_CZ28173281", "Title1", "Description1", false))
-            saveTppBlocking(Tpp("Entity_CZ28173282", "Title2", "Description2", true))
+            var tpp1 = Tpp("Entity_CZ28173281", "Title1", "Description1")
+            tpp1.isFollowed = true
+            saveTppBlocking(tpp1)
+            var tpp2 = Tpp("Entity_CZ28173282", "Title2", "Description2")
+            saveTppBlocking(tpp2)
         }
 
         val scenario = launchFragmentInContainer<StatisticsFragment>(Bundle(), R.style.AppTheme)
@@ -101,7 +104,6 @@ class StatisticsFragmentTest {
         onView(withId(R.id.stats_active_text)).check(matches(isDisplayed()))
         onView(withId(R.id.stats_active_text)).check(matches(withText(expectedActiveTppText)))
         onView(withId(R.id.stats_followed_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.stats_followed_text))
-            .check(matches(withText(expectedFollowedTppText)))
+        onView(withId(R.id.stats_followed_text)).check(matches(withText(expectedFollowedTppText)))
     }
 }

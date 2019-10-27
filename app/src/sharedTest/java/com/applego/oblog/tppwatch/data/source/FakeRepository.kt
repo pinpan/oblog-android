@@ -19,6 +19,7 @@ import androidx.annotation.VisibleForTesting
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
+import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import java.util.LinkedHashMap
 
@@ -52,22 +53,25 @@ class FakeRepository : TppsRepository {
         return Success(tppsServiceData.values.toList())
     }
 
+    override suspend fun getTpps(forceUpdate: Boolean, filter: TppsFilter): Result<List<Tpp>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override suspend fun saveTpp(tpp: Tpp) {
         tppsServiceData[tpp.id] = tpp
     }
 
-    override suspend fun unollowTpp(tpp: Tpp) {
-        val unfollowTpp = Tpp(tpp.entityCode, tpp.title, tpp.description, true, tpp.id)
+    override suspend fun unfollowTpp(tpp: Tpp) {
+        val unfollowTpp = Tpp(tpp.entityCode, tpp.title, tpp.description, tpp.id)
         tppsServiceData[tpp.id] = unfollowTpp
     }
 
     override suspend fun followTpp(tppId: String) {
-        // Not required for the remote data source.
-        throw NotImplementedError()
+        tppsServiceData[tppId]?.isFollowed = true
     }
 
     override suspend fun activateTpp(tpp: Tpp) {
-        val activeTpp = Tpp(tpp.entityCode, tpp.title, tpp.description, false, tpp.id)
+        val activeTpp = Tpp(tpp.entityCode, tpp.title, tpp.description, tpp.id)
         tppsServiceData[tpp.id] = activeTpp
     }
 

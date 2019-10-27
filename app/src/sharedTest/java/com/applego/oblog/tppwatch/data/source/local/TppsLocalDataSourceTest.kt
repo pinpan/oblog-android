@@ -22,6 +22,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.applego.oblog.tppwatch.MainCoroutineRule
 import com.applego.oblog.tppwatch.data.Result.Success
+import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.succeeded
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -76,7 +77,8 @@ class TppsLocalDataSourceTest {
     @Test
     fun saveTpp_retrievesTpp() = runBlockingTest {
         // GIVEN - a new tpp saved in the database
-        val newTpp = Tpp("Entity_CZ28173281", "title", "description", true)
+        val newTpp = Tpp("Entity_CZ28173281", "title", "description")
+        newTpp.isFollowed = true
         localDataSource.saveTpp(newTpp)
 
         // WHEN  - Tpp retrieved by ID
@@ -110,7 +112,7 @@ class TppsLocalDataSourceTest {
     @Test
     fun activateTpp_retrievedTppIsActive() = runBlockingTest {
         // Given a new followed tpp in the persistent repository
-        val newTpp = Tpp("Entity_CZ28173281", "Some title", "Some description", true)
+        val newTpp = Tpp("Entity_CZ28173281", "Some title", "Some description")
         localDataSource.saveTpp(newTpp)
 
         localDataSource.activateTpp(newTpp)
@@ -162,7 +164,7 @@ class TppsLocalDataSourceTest {
         localDataSource.deleteAllTpps()
 
         // Then the retrieved tpps is an empty list
-        val result = localDataSource.getTpps() as Success
+        val result = localDataSource.getTpps(TppsFilter()) as Success
         assertThat(result.data.isEmpty(), `is`(true))
 
     }
@@ -176,7 +178,7 @@ class TppsLocalDataSourceTest {
         localDataSource.saveTpp(newTpp1)
         localDataSource.saveTpp(newTpp2)
         // Then the tpps can be retrieved from the persistent repository
-        val results = localDataSource.getTpps() as Success<List<Tpp>>
+        val results = localDataSource.getTpps(TppsFilter()) as Success<List<Tpp>>
         val tpps = results.data
         assertThat(tpps.size, `is`(2))
     }

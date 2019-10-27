@@ -17,6 +17,7 @@
 package com.applego.oblog.tppwatch.data.source
 
 import com.applego.oblog.tppwatch.data.Result
+import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 
 /**
@@ -26,11 +27,13 @@ interface TppsRepository {
 
     suspend fun getTpps(forceUpdate: Boolean = false): Result<List<Tpp>>
 
+    suspend fun getTpps(forceUpdate: Boolean, filter: TppsFilter): Result<List<Tpp>>
+
     suspend fun getTpp(tppId: String, forceUpdate: Boolean = false): Result<Tpp>
 
     suspend fun saveTpp(tpp: Tpp)
 
-    suspend fun unollowTpp(tpp: Tpp)
+    suspend fun unfollowTpp(tpp: Tpp)
 
     suspend fun followTpp(tppId: String)
 

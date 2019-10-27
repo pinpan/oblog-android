@@ -18,6 +18,7 @@ package com.applego.oblog.tppwatch.data.source.local
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
+import com.applego.oblog.tppwatch.data.TppsFilter
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -30,12 +31,20 @@ class TppsDaoDataSource internal constructor(
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : LocalTppDataSource {
 
-    override suspend fun getTpps(): Result<List<Tpp>> = withContext(ioDispatcher) {
+    override suspend fun getTpps(filter: TppsFilter): Result<List<Tpp>> = withContext(ioDispatcher) {
         return@withContext try {
+            var tpps: List<Tpp>
+            if (isOnlyCountry(filter)) {
+                tpps = tppsDao.getTppsByCountry(filter.country)
+            }
             Success(tppsDao.getTpps())
         } catch (e: Exception) {
             Error(e)
         }
+    }
+
+    private fun isOnlyCountry(filter: TppsFilter): Boolean {
+        return (!filter.country.isNullOrBlank() && filter.pasportedTo.isNullOrEmpty() && filter.services.isNullOrEmpty() && filter.tppName.isNullOrBlank());
     }
 
     override suspend fun getTpp(tppId: String): Result<Tpp> = withContext(ioDispatcher) {

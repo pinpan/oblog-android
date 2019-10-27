@@ -57,8 +57,8 @@ class TppsViewModelTest {
         // We initialise the tpps to 3, with one active and two followed
         tppsRepository = FakeRepository()
         val tpp1 = Tpp("Entity_CZ28173281", "Title1", "Description1")
-        val tpp2 = Tpp("Entity_CZ28173282", "Title2", "Description2", true)
-        val tpp3 = Tpp("Entity_CZ28173283", "Title3", "Description3", true)
+        val tpp2 = Tpp("Entity_CZ28173282", "Title2", "Description2")
+        val tpp3 = Tpp("Entity_CZ28173283", "Title3", "Description3")
         tppsRepository.addTpps(tpp1, tpp2, tpp3)
 
         tppsViewModel = TppsViewModel(tppsRepository)
@@ -102,23 +102,30 @@ class TppsViewModelTest {
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading)).isFalse()
 
         // And data correctly loaded
-        assertThat(LiveDataTestUtil.getValue(tppsViewModel.items)).hasSize(1)
+        assertThat(LiveDataTestUtil.getValue(tppsViewModel.items)).hasSize(3)
     }
 
     @Test
     fun loadFollowedTppsFromRepositoryAndLoadIntoView() {
         // Given an initialized TppsViewModel with initialized tpps
-        // When loading of Tpps is requested
-        tppsViewModel.setFiltering(TppsFilterType.FOLLOWED_TPPS)
 
         // Load tpps
         tppsViewModel.loadTpps(true)
 
+        // When loading of Tpps is requested
+        tppsViewModel.setFiltering(TppsFilterType.FOLLOWED_TPPS)
+
+        val sTpps = tppsViewModel.items.value?.filter { it.title == "Title1" }?.forEach { it.isFollowed = true }
+
         // Then progress indicator is hidden
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading)).isFalse()
 
+        val allTpps = tppsViewModel.items.value
+        val followedTpps = allTpps?.filter { it.isFollowed}
+        assertThat(followedTpps?.size == 1)
+
         // And data correctly loaded
-        assertThat(LiveDataTestUtil.getValue(tppsViewModel.items)).hasSize(2)
+        assertThat(allTpps?.size == 3)
     }
 
     @Test
@@ -169,13 +176,17 @@ class TppsViewModelTest {
 
         // Fetch tpps
         val allTpps = LiveDataTestUtil.getValue(tppsViewModel.items)
-        val followedTpps = allTpps.filter { it.isFollowed }
+        // Verify active tpp is not cleared
+        assertThat(allTpps).hasSize(3)
+
+        var followedTpps = allTpps.filter { it.isFollowed}
 
         // Verify there are no followed tpps left
         assertThat(followedTpps).isEmpty()
 
-        // Verify active tpp is not cleared
-        assertThat(allTpps).hasSize(1)
+        val sTpps = allTpps.filter { it.title == "Title1" }.forEach { it.isFollowed = true }
+        followedTpps = allTpps.filter { it.isFollowed}
+        assertThat(followedTpps.size == 1)
 
         // Verify snackbar is updated
         assertSnackbarMessage(
@@ -223,7 +234,7 @@ class TppsViewModelTest {
         tppsRepository.addTpps(tpp)
 
         // Follow tpp
-        tppsViewModel.FollowTpp(tpp, true)
+        tppsViewModel.followTpp(tpp, true)
 
         // Verify the tpp is followed
         assertThat(tppsRepository.tppsServiceData[tpp.id]?.isFollowed).isTrue()
@@ -237,11 +248,11 @@ class TppsViewModelTest {
     @Test
     fun activateTpp_dataAndSnackbarUpdated() {
         // With a repository that has a followed tpp
-        val tpp = Tpp("Entity_CZ28173281", "Title", "Description", true)
+        val tpp = Tpp("Entity_CZ28173281", "Title", "Description")
         tppsRepository.addTpps(tpp)
 
         // Activate tpp
-        tppsViewModel.FollowTpp(tpp, true)
+        tppsViewModel.followTpp(tpp, true)
 
         // Verify the tpp is active
         assertThat(tppsRepository.tppsServiceData[tpp.id]?.isActive).isFalse()

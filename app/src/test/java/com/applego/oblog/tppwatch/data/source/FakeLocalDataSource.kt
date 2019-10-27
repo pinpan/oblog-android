@@ -19,11 +19,12 @@ package com.applego.oblog.tppwatch.data.source
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
+import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 
 class FakeLocalDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : LocalTppDataSource {
-    override suspend fun getTpps(): Result<List<Tpp>> {
+    override suspend fun getTpps(filter: TppsFilter): Result<List<Tpp>> {
         tpps?.let { return Success(it) }
         return Error(
             Exception("Tpps not found")

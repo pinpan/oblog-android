@@ -16,6 +16,7 @@
 package com.applego.oblog.tppwatch.data.source.local
 
 import com.applego.oblog.tppwatch.data.Result
+import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 
 /**
@@ -23,7 +24,7 @@ import com.applego.oblog.tppwatch.data.source.local.Tpp
  */
 interface LocalTppDataSource {
 
-    suspend fun getTpps(): Result<List<Tpp>>
+    suspend fun getTpps(filter: TppsFilter): Result<List<Tpp>>
 
     suspend fun getTpp(tppId: String): Result<Tpp>
 

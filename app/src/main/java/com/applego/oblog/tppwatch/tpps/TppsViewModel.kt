@@ -135,9 +135,9 @@ class TppsViewModel(
         }
     }
 
-    fun FollowTpp(tpp: Tpp, followed: Boolean) = viewModelScope.launch {
+    fun followTpp(tpp: Tpp, followed: Boolean) = viewModelScope.launch {
         if (followed) {
-            tppsRepository.unollowTpp(tpp)
+            tppsRepository.followTpp(tpp.id)
             showSnackbarMessage(R.string.tpp_marked_followed)
         } else {
             tppsRepository.activateTpp(tpp)

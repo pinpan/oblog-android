@@ -36,10 +36,8 @@ data class Tpp @JvmOverloads constructor(
         @ColumnInfo(name = "entityCode") var entityCode: String = "",   // Entity Code retruned by EBA or NCA
         @ColumnInfo(name = "title") var title: String = "",             // Description  provided by original source. For additional details see detail
         @ColumnInfo(name = "description") var description: String = "",             // TPP is followed by user
-        @ColumnInfo(name = "followed") var isFollowed: Boolean = false,                 // A Global Unified identifier. Used by Preta as own ID.
-        @ColumnInfo(name = "globalUrn") var globalUrn: String = "",   // New, Updated, Removed (from original source), Deleted (From our DB) ...
-        @ColumnInfo(name = "status") var status: RecordStatus = RecordStatus.NEW,
-        @ColumnInfo(name = "ebaEntityVersion") var ebaEntityVersion: String = "",
+        @ColumnInfo(name = "globalUrn") var globalUrn: String = "",                 // A Global Unified identifier. Used by Preta as own ID.
+        @ColumnInfo(name = "ebaEntityVersion") var ebaEntityVersion: String = "",   // New, Updated, Removed (from original source), Deleted (From our DB) ...
         @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString()
         //val recipes: List<Recipe>
         // TODO#Define:
@@ -54,6 +52,18 @@ data class Tpp @JvmOverloads constructor(
 
     //var ebaEntityVersion: String = ""
         //get() = if (dateAcquired != null) dateAcquired else Date()
+
+    @ColumnInfo(name = "followed")
+    var isFollowed: Boolean = false
+
+    @ColumnInfo(name = "status")
+    var status: RecordStatus = RecordStatus.NEW
+
+    @ColumnInfo(name = "country")
+    var country: String = ""
+
+    //@ColumnInfo(name = "service")
+    //var ebaServices: List<EbaService>? = null
 
     val titleForList: String
         get() = if (title.isNotEmpty()) title else description

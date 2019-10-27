@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:onClick="@{(view) -> viewmodel.FollowTpp(tpp, ((CompoundButton)view).isChecked())}"
+            android:onClick="@{(view) -> viewmodel.followTpp(tpp, ((CompoundButton)view).isChecked())}"
             android:checked="@{tpp.followed}" />
 
         <TextView

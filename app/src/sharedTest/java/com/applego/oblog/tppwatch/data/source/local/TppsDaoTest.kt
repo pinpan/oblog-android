@@ -86,7 +86,7 @@ class TppsDaoTest {
         database.tppDao().insertTpp(tpp)
 
         // When a tpp with the same id is inserted
-        val newTpp = Tpp("Entity_CZ28173282", "title2", "description2", true)
+        val newTpp = Tpp("Entity_CZ28173282", "title2", "description2")
         database.tppDao().insertTpp(newTpp)
 
         // THEN - The loaded data contains the expected values
@@ -121,7 +121,8 @@ class TppsDaoTest {
         database.tppDao().insertTpp(originalTpp)
 
         // When the tpp is updated
-        val updatedTpp = Tpp("Entity_CZ28173282", "new title", "new description", true, originalTpp.id, RecordStatus.UPDATED, originalTpp.ebaEntityVersion, originalTpp.id)
+        val updatedTpp = Tpp("Entity_CZ28173282", "new title", "new description", originalTpp.id, originalTpp.ebaEntityVersion, originalTpp.id)
+        updatedTpp.isFollowed = true
         database.tppDao().updateTpp(updatedTpp)
 
         // THEN - The loaded data contains the expected values
@@ -135,7 +136,7 @@ class TppsDaoTest {
     @Test
     fun updateFollowedAndGetById() = runBlockingTest {
         // When inserting a tpp
-        val tpp = Tpp("Entity_CZ28173281", "title", "description", true)
+        val tpp = Tpp("Entity_CZ28173281", "title", "description")
         database.tppDao().insertTpp(tpp)
 
         // When the tpp is updated
@@ -179,7 +180,9 @@ class TppsDaoTest {
     @Test
     fun deleteUnfollowedTppsAndGettingTpps() = runBlockingTest {
         // Given a followed tpp inserted
-        database.tppDao().insertTpp(Tpp("Entity_CZ28173281", "followed", "tpp", true))
+        var aTpp = Tpp("Entity_CZ28173281", "followed", "tpp")
+        aTpp.isFollowed = true // Followed is not set in constructor
+        database.tppDao().insertTpp(aTpp)
 
         // When deleting followed tpps
         database.tppDao().deleteUnfollowedTpps()

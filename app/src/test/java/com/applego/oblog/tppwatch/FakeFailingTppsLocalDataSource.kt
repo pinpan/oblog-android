@@ -17,11 +17,12 @@
 package com.applego.oblog.tppwatch
 
 import com.applego.oblog.tppwatch.data.Result
+import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 
 object FakeFailingTppsLocalDataSource : LocalTppDataSource {
-    override suspend fun getTpps(): Result<List<Tpp>> {
+    override suspend fun getTpps(filter: TppsFilter): Result<List<Tpp>> {
         return Result.Error(Exception("Test"))
     }
 

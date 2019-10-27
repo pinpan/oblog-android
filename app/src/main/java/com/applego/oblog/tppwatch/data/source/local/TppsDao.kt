@@ -110,4 +110,7 @@ interface TppsDao {
      */
     @Query("DELETE FROM Tpps WHERE followed = 1")
     suspend fun deleteUnfollowedTpps(): Int
+
+    @Query("SELECT * FROM Tpps WHERE country = :country")
+    fun getTppsByCountry(country: String): List<Tpp>
 }

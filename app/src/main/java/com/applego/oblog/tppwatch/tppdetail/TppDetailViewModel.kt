@@ -78,7 +78,7 @@ class TppDetailViewModel(
     fun setFollowed(follow: Boolean) = viewModelScope.launch {
         val tpp = _tpp.value ?: return@launch
         if (follow) {
-            tppsRepository.unollowTpp(tpp)
+            tppsRepository.followTpp(tpp.id)
             showSnackbarMessage(R.string.tpp_marked_followed)
         } else {
             tppsRepository.activateTpp(tpp)
