@@ -64,11 +64,11 @@ class TppsDaoDataSource internal constructor(
         tppsDao.insertTpp(tpp)
     }
 
-    override suspend fun unfollowTpp(tpp: Tpp) = withContext(ioDispatcher) {
+    override suspend fun followTpp(tpp: Tpp) = withContext(ioDispatcher) {
         tppsDao.updateFollowed(tpp.id, true)
     }
 
-    override suspend fun unfollowTpp(tppId: String) {
+    override suspend fun followTpp(tppId: String) {
         tppsDao.updateFollowed(tppId, true)
     }
 

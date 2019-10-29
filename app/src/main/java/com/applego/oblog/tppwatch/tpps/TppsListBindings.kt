@@ -29,6 +29,7 @@ fun setItems(listView: RecyclerView, items: List<Tpp>) {
     (listView.adapter as TppsAdapter).submitList(items)
 }
 
+/*
 @BindingAdapter("app:followedTpp")
 fun setStyle(textView: TextView, enabled: Boolean) {
     if (enabled) {
@@ -36,4 +37,4 @@ fun setStyle(textView: TextView, enabled: Boolean) {
     } else {
         textView.paintFlags = textView.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
     }
-}
+}*/

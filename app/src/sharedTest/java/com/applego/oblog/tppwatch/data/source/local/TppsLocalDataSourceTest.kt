@@ -99,7 +99,7 @@ class TppsLocalDataSourceTest {
         localDataSource.saveTpp(newTpp)
 
         // When followed in the persistent repository
-        localDataSource.unfollowTpp(newTpp)
+        localDataSource.followTpp(newTpp)
         val result = localDataSource.getTpp(newTpp.id)
 
         // Then the tpp can be retrieved from the persistent repository and is Followed
@@ -134,9 +134,9 @@ class TppsLocalDataSourceTest {
         val newTpp2 = Tpp("Entity_CZ28173282", "title2")
         val newTpp3 = Tpp("Entity_CZ28173283", "title3")
         localDataSource.saveTpp(newTpp1)
-        localDataSource.unfollowTpp(newTpp1)
+        localDataSource.followTpp(newTpp1)
         localDataSource.saveTpp(newTpp2)
-        localDataSource.unfollowTpp(newTpp2)
+        localDataSource.followTpp(newTpp2)
         localDataSource.saveTpp(newTpp3)
         // When followed tpps are cleared in the repository
         localDataSource.clearFollowedTpps()

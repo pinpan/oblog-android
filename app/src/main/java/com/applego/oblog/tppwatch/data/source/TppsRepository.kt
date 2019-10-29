@@ -33,9 +33,9 @@ interface TppsRepository {
 
     suspend fun saveTpp(tpp: Tpp)
 
-    suspend fun unfollowTpp(tpp: Tpp)
-
     suspend fun followTpp(tppId: String)
+
+    suspend fun followTpp(tpp: Tpp)
 
     suspend fun activateTpp(tpp: Tpp)
 

@@ -25,7 +25,7 @@ import androidx.room.RoomDatabase
  * Note that exportSchema should be true in production databases.
  */
 // TODO: Set schema export to true and provide `room.schemaLocation` annotation processor argument
-@Database(entities = [Tpp::class, Service::class, Role::class, App::class], version = 6, exportSchema = false)
+@Database(entities = [Tpp::class, Service::class, Role::class, App::class], version = 7, exportSchema = false)
 abstract class TppDatabase : RoomDatabase() {
 
     abstract fun tppDao(): TppsDao

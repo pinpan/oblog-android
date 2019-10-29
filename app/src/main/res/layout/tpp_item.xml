@@ -56,6 +56,6 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:text="@{tpp.titleForList}"
-            app:followedTpp="@{tpp.followed}" />
+             /> <!--app:followedTpp="@{tpp.followed}"-->
     </LinearLayout>
 </layout>

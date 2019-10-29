@@ -182,21 +182,28 @@ class DefaultTppsRepository (
         }
     }
 
-    override suspend fun unfollowTpp(tpp: Tpp) {
+    override suspend fun followTpp(tppId: String) {
         // Do in memory cache update to keep the app UI up to date
-        cacheAndPerform(tpp) {
-            it.isFollowed = true
-            coroutineScope {
-                //launch { tppsRemoteDataSource.unfollowTpp(it) }
-                launch { tppsLocalDataSource.unfollowTpp(it) }
-            }
+
+        (tppsLocalDataSource.getTpp(tppId) as? Success)?.let {
+            followTpp(it.data)
+            /*cacheAndPerform(it.data) {
+                it.isFollowed = true
+                coroutineScope {
+                    //launch { tppsRemoteDataSource.followTpp(it) }
+                    launch { tppsLocalDataSource.followTpp(it) }
+                }
+            }*/
         }
     }
 
-    override suspend fun followTpp(tppId: String) {
-        withContext(ioDispatcher) {
-            getTppWithId(tppId)?.let {
-                unfollowTpp(it)
+    override suspend fun followTpp(tpp: Tpp) {
+        cacheAndPerform(tpp) { //withContext(ioDispatcher) {
+            tpp/*getTppWithId(tpp.id)?*/.let {
+                it.isFollowed = true
+                coroutineScope {
+                    launch { tppsLocalDataSource.followTpp(it) }
+                } //followTpp(it)
             }
         }
     }
@@ -209,7 +216,6 @@ class DefaultTppsRepository (
                 //launch { tppsRemoteDataSource.activateTpp(it) }
                 launch { tppsLocalDataSource.activateTpp(it) }
             }
-
         }
     }
 
@@ -275,14 +281,14 @@ class DefaultTppsRepository (
     private fun getTppWithId(id: String) = cachedTpps.get(id)
 
     private fun cacheTpp(tpp: Tpp): Tpp {
-        val cachedTpp = Tpp(tpp.entityCode, tpp.title, tpp.description, tpp.globalUrn, tpp.ebaEntityVersion, tpp.id)
+        //val cachedTpp = Tpp(tpp.entityCode, tpp.title, tpp.description, tpp.globalUrn, tpp.ebaEntityVersion, tpp.id)
         // Create if it doesn't exist.
         /* Declared as new object -> Test if not null and remove this check
         if (cachedTpps == null) {
             cachedTpps = ConcurrentHashMap()
         }*/
-        cachedTpps.put(cachedTpp.id, cachedTpp)
-        return cachedTpp
+        cachedTpps.put(tpp.id, tpp)
+        return tpp
     }
 
     private inline fun cacheAndPerform(tpp: Tpp, perform: (Tpp) -> Unit) {

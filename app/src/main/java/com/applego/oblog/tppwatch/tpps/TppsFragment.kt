@@ -23,6 +23,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -39,6 +40,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
+
 /**
  * Display a grid of [Tpp]s. User can choose to view all, active or followed tpps.
  */
@@ -51,6 +53,8 @@ class TppsFragment : Fragment() {
     private lateinit var viewDataBinding: TppsFragBinding
 
     private lateinit var listAdapter: TppsAdapter
+
+    private var searchView: SearchView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,8 +69,8 @@ class TppsFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
-            R.id.menu_clear -> {
-                viewModel.clearFollowedTpps()
+            R.id.load_directory -> {
+                viewModel.loadEbaDirectory()
                 true
             }
             R.id.menu_filter -> {
@@ -74,7 +78,7 @@ class TppsFragment : Fragment() {
                 true
             }
             R.id.menu_refresh -> {
-                viewModel.loadTpps(true)
+                viewModel.loadTpps(false)
                 true
             }
             else -> false
@@ -93,11 +97,38 @@ class TppsFragment : Fragment() {
         setupListAdapter()
         setupRefreshLayout(viewDataBinding.refreshLayout, viewDataBinding.tppsList)
         setupNavigation()
+        setupTextSearch()
         setupFab()
 
         // Always reloading data for simplicity. Real apps should only do this on first load and
         // when navigating back to this destination. TODO: https://issuetracker.google.com/79672220
         //viewModel.loadTpps(true)
+    }
+
+    private fun setupTextSearch() {
+        searchView = activity?.findViewById<SearchView>(R.id.textSearchView)
+        if (searchView != null) {
+
+        }
+
+        searchView?.setIconifiedByDefault(true)
+        searchView?.setQueryHint("Type text to filter listed TPPs")
+        searchView?.setOnQueryTextFocusChangeListener { v, hasFocus ->
+            //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+        // perform set on query text listener event
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                // do something on text submit
+                viewModel.filterByTitle(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                // do something when text changes
+                return false
+            }
+        })
     }
 
     private fun setupNavigation() {
@@ -119,7 +150,7 @@ class TppsFragment : Fragment() {
     private fun showFilteringPopUpMenu() {
         val view = activity?.findViewById<View>(R.id.menu_filter) ?: return
         PopupMenu(requireContext(), view).run {
-            menuInflater.inflate(R.menu.filter_tpps, menu)
+            menuInflater.inflate(com.applego.oblog.tppwatch.R.menu.filter_tpps, menu)
 
             setOnMenuItemClickListener {
                 viewModel.setFiltering(

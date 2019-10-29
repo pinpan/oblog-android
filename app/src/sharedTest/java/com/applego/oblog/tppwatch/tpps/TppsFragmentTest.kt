@@ -271,6 +271,7 @@ class TppsFragmentTest {
         onView(withText("TITLE3")).check(matches(isDisplayed()))
     }
 
+    /* TODO-REMOVE - Not needed as we don't clean followed TPPs. Instead this action is used to do full reload of EBA directory
     @Test
     fun clearFollowedTpps() {
         // Add one active tpp and one followed tpp
@@ -284,14 +285,14 @@ class TppsFragmentTest {
 
         // Click clear followed in menu
         openActionBarOverflowOrOptionsMenu(getApplicationContext())
-        onView(withText(R.string.menu_clear)).perform(click())
+        onView(withText(R.string.load_eba_directory)).perform(click())
 
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_all)).perform(click())
         // Verify that only the active tpp is shown
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withText("TITLE2")).check(doesNotExist())
-    }
+    }*/
 
     @Test
     fun noTpps_AllTppsFilter_AddTppViewVisible() {

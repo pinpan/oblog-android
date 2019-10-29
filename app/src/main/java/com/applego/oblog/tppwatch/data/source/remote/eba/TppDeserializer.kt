@@ -50,8 +50,8 @@ class TppDeserializer : JsonDeserializer<Tpp> {
 
         var theString = ""
         for (jsonArrayElement:JsonElement in jsounArray) run {
-            theString += jsonArrayElement
-            theString += ", "
+            theString += jsonArrayElement.asString.removeSurrounding("\"")
+            theString += "\\"
         }
         return theString.trimEnd(',',' ')
     }

@@ -195,7 +195,7 @@ class DefaultTppsRepositoryTest {
         assertThat((tppsRepository.getTpp(newTpp.id, true) as Success).data.isFollowed).isFalse()
 
         // Mark is as Followed
-        tppsRepository.followTpp(newTpp.id)
+        tppsRepository.followTpp(newTpp)
 
         // Verify it's now followed
         assertThat((tppsRepository.getTpp(newTpp.id) as Success).data.isFollowed).isTrue()
@@ -205,13 +205,13 @@ class DefaultTppsRepositoryTest {
     fun unfollowTpp_activeTppToServiceAPIUpdatesCache() = runBlockingTest {
         // Save a tpp
         tppsRepository.saveTpp(newTpp)
-        tppsRepository.followTpp(newTpp.id)
+        tppsRepository.followTpp(newTpp)
 
         // Make sure it's followed
         assertThat((tppsRepository.getTpp(newTpp.id, true) as Success).data.isActive).isFalse()
 
         // Mark is as active
-        tppsRepository.activateTpp(newTpp.id)
+        tppsRepository.activateTpp(newTpp)
 
         // Verify it's now activated
         val result = tppsRepository.getTpp(newTpp.id, true) as Success

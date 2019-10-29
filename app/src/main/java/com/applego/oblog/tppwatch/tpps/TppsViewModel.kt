@@ -62,6 +62,8 @@ class TppsViewModel(
 
     private var _currentFiltering = TppsFilterType.ALL_TPPS
 
+    private var _currentFilterString: String = ""
+
     // Not used at the moment
     private val isDataLoadingError = MutableLiveData<Boolean>()
 
@@ -80,7 +82,7 @@ class TppsViewModel(
         // Set initial state
         setFiltering(TppsFilterType.ALL_TPPS)
 
-        loadTpps(true)
+        loadTpps(false)
     }
 
     /**
@@ -126,25 +128,34 @@ class TppsViewModel(
         _tppsAddViewVisible.value = tppsAddVisible
     }
 
-    fun clearFollowedTpps() {
+    /*fun clearFollowedTpps() {
         viewModelScope.launch {
             tppsRepository.clearFollowedTpps()
             showSnackbarMessage(R.string.followed_tpps_cleared)
             // Refresh list to show the new state
             loadTpps(false)
         }
+    }*/
+
+    fun loadEbaDirectory() {
+        viewModelScope.launch {
+            //tppsRepository.clearFollowedTpps()
+            showSnackbarMessage(R.string.loading)
+            // Refresh list to show the new state
+            loadTpps(true)
+        }
     }
 
     fun followTpp(tpp: Tpp, followed: Boolean) = viewModelScope.launch {
         if (followed) {
-            tppsRepository.followTpp(tpp.id)
+            tppsRepository.followTpp(tpp)
             showSnackbarMessage(R.string.tpp_marked_followed)
         } else {
             tppsRepository.activateTpp(tpp)
             showSnackbarMessage(R.string.tpp_marked_active)
         }
         // Refresh list to show the new state
-        loadTpps(false)
+        //loadTpps(false)
     }
 
     /**
@@ -213,7 +224,40 @@ class TppsViewModel(
         }
     }
 
+
+    fun filterByTitle(searchString: String) {
+        _dataLoading.value = true
+
+        _currentFilterString = searchString
+        wrapEspressoIdlingResource {
+
+            viewModelScope.launch {
+                val tppsResult = tppsRepository.getTpps(false)
+
+                if (tppsResult is Success) {
+                    val tpps = tppsResult.data
+
+                    val tppsToShow = ArrayList<Tpp>()
+                    // We filter the tpps based on the requestType
+                    for (tpp in tpps) {
+                        if (tpp.title.contains(_currentFilterString, true)) {
+                            tppsToShow.add(tpp)
+                        }
+                    }
+                    isDataLoadingError.value = false
+                    _items.value = ArrayList(tppsToShow)
+                } else {
+                    isDataLoadingError.value = false
+                    _items.value = emptyList()
+                    showSnackbarMessage(R.string.loading_tpps_error)
+                }
+
+                _dataLoading.value = false
+            }
+        }
+    }
+
     fun refresh() {
-        loadTpps(true)
+        loadTpps(false)
     }
 }

@@ -23,7 +23,7 @@
     <string name="loading_tpps_error">Error while loading tpps</string>
     <string name="followed_tpps_cleared">Followed tpps cleared</string>
     <string name="menu_filter">Filter</string>
-    <string name="menu_clear">Clear followed</string>
+    <string name="load_eba_directory">Load Eba Directory</string>
     <string name="menu_delete_tpp">Delete tpp</string>
     <string name="navigation_view_header_title">Tpp Watch</string>
     <string name="title_hint">Title</string>
@@ -64,4 +64,5 @@
 
     <string name="oblog_api_base_url">http://192.168.0.15:8585/eba-registry/</string>
 
+    <string name="reset_name_filter">Reset name filter</string>
 </resources>

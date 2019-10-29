@@ -23,8 +23,8 @@
         android:icon="@drawable/ic_filter_list"
         app:showAsAction="always" />
     <item
-        android:id="@+id/menu_clear"
-        android:title="@string/menu_clear"
+        android:id="@+id/load_directory"
+        android:title="@string/load_eba_directory"
         app:showAsAction="never" />
     <item
         android:id="@+id/menu_refresh"

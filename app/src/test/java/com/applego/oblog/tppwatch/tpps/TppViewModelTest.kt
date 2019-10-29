@@ -166,13 +166,11 @@ class TppsViewModelTest {
         assertLiveDataEventTriggered(tppsViewModel.openTppEvent, tppId)
     }
 
+/*
     @Test
     fun clearFollowedTpps_clearsTpps() = mainCoroutineRule.runBlockingTest {
         // When followed tpps are cleared
-        tppsViewModel.clearFollowedTpps()
-
-        // Fetch tpps
-        tppsViewModel.loadTpps(true)
+        tppsViewModel.loadEbaDirectory()
 
         // Fetch tpps
         val allTpps = LiveDataTestUtil.getValue(tppsViewModel.items)
@@ -193,6 +191,7 @@ class TppsViewModelTest {
             tppsViewModel.snackbarText, R.string.followed_tpps_cleared
         )
     }
+*/
 
     @Test
     fun showEditResultMessages_editOk_snackbarUpdated() {

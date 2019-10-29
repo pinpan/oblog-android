@@ -34,11 +34,11 @@ object FakeFailingTppsLocalDataSource : LocalTppDataSource {
         TODO("not implemented")
     }
 
-    override suspend fun unfollowTpp(tpp: Tpp) {
+    override suspend fun followTpp(tpp: Tpp) {
         TODO("not implemented")
     }
 
-    override suspend fun unfollowTpp(tppId: String) {
+    override suspend fun followTpp(tppId: String) {
         TODO("not implemented")
     }
 
