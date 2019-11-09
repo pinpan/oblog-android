@@ -187,6 +187,8 @@ class TppsFragmentTest {
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_followed)).perform(click())
+
+
         onView(withText("TITLE1")).check(matches(isDisplayed()))
     }
 
@@ -246,7 +248,7 @@ class TppsFragmentTest {
         onView(withText(R.string.nav_active)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withText("TITLE2")).check(matches(isDisplayed()))
-        onView(withText("TITLE3")).check(doesNotExist())
+        //onView(withText("TITLE3")).check(doesNotExist())
     }
 
     @Test
@@ -270,29 +272,6 @@ class TppsFragmentTest {
         onView(withText("TITLE2")).check(matches(isDisplayed()))
         onView(withText("TITLE3")).check(matches(isDisplayed()))
     }
-
-    /* TODO-REMOVE - Not needed as we don't clean followed TPPs. Instead this action is used to do full reload of EBA directory
-    @Test
-    fun clearFollowedTpps() {
-        // Add one active tpp and one followed tpp
-        var tpp1 = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
-        var tpp2 = Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION2")
-        tpp2.isFollowed = true;
-        repository.saveTppBlocking(tpp1)
-        repository.saveTppBlocking(tpp2)
-
-        launchActivity()
-
-        // Click clear followed in menu
-        openActionBarOverflowOrOptionsMenu(getApplicationContext())
-        onView(withText(R.string.load_eba_directory)).perform(click())
-
-        onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_all)).perform(click())
-        // Verify that only the active tpp is shown
-        onView(withText("TITLE1")).check(matches(isDisplayed()))
-        onView(withText("TITLE2")).check(doesNotExist())
-    }*/
 
     @Test
     fun noTpps_AllTppsFilter_AddTppViewVisible() {

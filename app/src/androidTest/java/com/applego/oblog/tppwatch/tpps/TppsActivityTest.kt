@@ -138,7 +138,7 @@ class TppsActivityTest {
         onView(withId(R.id.menu_delete)).perform(click())
 
         // Verify it was deleted
-        onView(withId(R.id.menu_filter)).perform(click())
+        //onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(string.nav_all)).perform(click())
         onView(withText("TITLE1")).check(doesNotExist())
     }
@@ -158,7 +158,7 @@ class TppsActivityTest {
         onView(withId(R.id.menu_delete)).perform(click())
 
         // Verify only one tpp was deleted
-        onView(withId(R.id.menu_filter)).perform(click())
+        //onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(string.nav_all)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withText("TITLE2")).check(doesNotExist())

@@ -21,8 +21,9 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.SearchView
-import androidx.appcompat.widget.PopupMenu
+//import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -111,7 +112,7 @@ class TppsFragment : Fragment() {
     }
 
     private fun setupTextSearch() {
-        searchView = activity?.findViewById<SearchView>(R.id.textSearchView)
+        searchView = activity?.findViewById<SearchView>(R.id.search/*textSearchView app_bar_search*/)
         if (searchView != null) {
 
         }

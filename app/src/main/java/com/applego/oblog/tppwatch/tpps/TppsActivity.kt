@@ -85,29 +85,12 @@ class TppsActivity : AppCompatActivity() {
 
         if (Intent.ACTION_SEARCH == intent.action) {
             val query = intent.getStringExtra(SearchManager.QUERY)
+            val aFragment = supportFragmentManager.primaryNavigationFragment
+            if (aFragment != null) {
+                aFragment.childFragmentManager.fragments
+            }
             val tppsFragment = findTppsFragment()
             tppsFragment!!.searchBy(query)
-            /*var fragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as Fragment? //"tppsFrament"
-            val tppsFragment = fragment?.childFragmentManager?.findFragmentById(R.id.tpps_fragment_dest) as TppsFragment?
-            if (tppsFragment != null)  {
-                tppsFragment.searchBy(query)
-            }*/
-
-            /*val tppsCoordLay = fragment?.childFragmentManager?.findFragmentById(R.id.coordinator_layout)
-            if (tppsCoordLay != null) {
-                if (tppsCoordLay is TppsFragment) {
-
-                }
-            }*/
-/*
-            val tppsFrag = fragment?.childFragmentManager?.findFragmentById(R.layout.tpps_frag.)
-            if (tppsCoordLay != null) {
-                if (tppsCoordLay is TppsFragment) {
-
-                }
-            }
-*/
-
         }
     }
 

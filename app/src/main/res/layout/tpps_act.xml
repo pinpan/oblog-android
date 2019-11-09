@@ -45,21 +45,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-
-                <SearchView
-                    android:id="@+id/textSearchView"
-                    android:layout_width="361dp"
-                    android:layout_height="match_parent">
-
-                </SearchView>
-
-                <ToggleButton
-                    android:id="@+id/resetSearch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/reset_name_filter" />
-
             </LinearLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -69,20 +54,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <!--<fragment>
-                android:id="@+id/search_fragment"
-                android:name="androidx.navigation.fragment.NavHostFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                app:defaultNavHost="false"
-            </fragment>-->
-           <!-- <SearchView
-                android:id="@+id/textSearchView2"
-                android:layout_width="361dp"
-                android:layout_height="match_parent">
-            </SearchView>-->
 
             <fragment
                 android:id="@+id/nav_host_fragment"
