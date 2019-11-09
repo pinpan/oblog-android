@@ -65,4 +65,6 @@
     <string name="oblog_api_base_url">http://192.168.0.15:8585/eba-registry/</string>
 
     <string name="reset_name_filter">Reset name filter</string>
+    <string name="search_title">search</string>
+    <string name="search_hint">Filter TPPs by name</string>
 </resources>

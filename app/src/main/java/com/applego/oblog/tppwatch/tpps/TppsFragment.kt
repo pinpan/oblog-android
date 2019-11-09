@@ -18,8 +18,6 @@ package com.applego.oblog.tppwatch.tpps
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -57,7 +55,8 @@ class TppsFragment : Fragment() {
     private var searchView: SearchView? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         viewDataBinding = TppsFragBinding.inflate(inflater, container, false).apply {
@@ -84,9 +83,15 @@ class TppsFragment : Fragment() {
             else -> false
         }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    /*override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.tpps_fragment_menu, menu)
-    }
+
+        val searchManager = getActivity()?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        (menu.findItem(R.id.search).actionView as SearchView).apply {
+            setSearchableInfo(searchManager.getSearchableInfo(getActivity()?.componentName))
+        }
+
+    }*/
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -119,8 +124,8 @@ class TppsFragment : Fragment() {
         // perform set on query text listener event
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                // do something on text submit
-                viewModel.filterByTitle(query)
+                val theID = id
+                searchBy(query)
                 return true
             }
 
@@ -129,6 +134,10 @@ class TppsFragment : Fragment() {
                 return false
             }
         })
+    }
+
+    fun searchBy(query: String) {
+        viewModel.filterByTitle(query)
     }
 
     private fun setupNavigation() {

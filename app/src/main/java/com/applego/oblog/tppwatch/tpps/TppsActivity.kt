@@ -16,9 +16,15 @@
 package com.applego.oblog.tppwatch.tpps
 
 import android.app.Activity
+import android.app.SearchManager
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -48,8 +54,75 @@ class TppsActivity : AppCompatActivity() {
                 .setDrawerLayout(drawerLayout)
                 .build()
         setupActionBarWithNavController(navController, appBarConfiguration)
-        findViewById<NavigationView>(R.id.nav_view)
-            .setupWithNavController(navController)
+        findViewById<NavigationView>(R.id.nav_view).setupWithNavController(navController)
+
+        handleIntent(intent);
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.tpps_fragment_menu, menu)
+
+        // Associate searchable configuration with the SearchView
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        (menu.findItem(R.id.search).actionView as SearchView).apply {
+            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        }
+
+        return true
+    }
+
+    override fun onAttachFragment(fragment: Fragment) {
+        super.onAttachFragment(fragment)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent) //
+
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent) {
+
+        if (Intent.ACTION_SEARCH == intent.action) {
+            val query = intent.getStringExtra(SearchManager.QUERY)
+            val tppsFragment = findTppsFragment()
+            tppsFragment!!.searchBy(query)
+            /*var fragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as Fragment? //"tppsFrament"
+            val tppsFragment = fragment?.childFragmentManager?.findFragmentById(R.id.tpps_fragment_dest) as TppsFragment?
+            if (tppsFragment != null)  {
+                tppsFragment.searchBy(query)
+            }*/
+
+            /*val tppsCoordLay = fragment?.childFragmentManager?.findFragmentById(R.id.coordinator_layout)
+            if (tppsCoordLay != null) {
+                if (tppsCoordLay is TppsFragment) {
+
+                }
+            }*/
+/*
+            val tppsFrag = fragment?.childFragmentManager?.findFragmentById(R.layout.tpps_frag.)
+            if (tppsCoordLay != null) {
+                if (tppsCoordLay is TppsFragment) {
+
+                }
+            }
+*/
+
+        }
+    }
+
+    fun findTppsFragment() : TppsFragment {
+        lateinit var tppsFragment: TppsFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+        val childFragmentManager = navHostFragment?.childFragmentManager
+        val childFragments = childFragmentManager?.fragments
+        for (fragment in childFragments!!) {
+            if (fragment is TppsFragment)  {
+                tppsFragment = fragment as TppsFragment
+            }
+        }
+
+        return tppsFragment
     }
 
     override fun onSupportNavigateUp(): Boolean {
