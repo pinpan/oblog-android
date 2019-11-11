@@ -98,7 +98,7 @@ class TppDetailViewModel(
 
             viewModelScope.launch {
                 if (tppId != null) {
-                    tppsRepository.getTpp(tppId, false).let { result ->
+                    tppsRepository.getTpp(tppId, forceRefresh).let { result ->
                         if (result is Success) {
                             onTppLoaded(result.data)
                         } else {

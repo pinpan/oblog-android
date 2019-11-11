@@ -17,13 +17,8 @@
 package com.applego.oblog.tppwatch.tpps
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.widget.PopupMenu
-import android.widget.SearchView
-//import androidx.appcompat.widget.PopupMenu
+import android.view.*
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -54,6 +49,11 @@ class TppsFragment : Fragment() {
     private lateinit var listAdapter: TppsAdapter
 
     private var searchView: SearchView? = null
+    var lastTppsSearchViewQuery = ""
+
+    lateinit var countriesSpinner: Spinner
+    lateinit var servicesSpinner: Spinner
+    lateinit var revokedSwitch: Switch
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,6 +64,7 @@ class TppsFragment : Fragment() {
             viewmodel = viewModel
         }
         setHasOptionsMenu(true)
+
         return viewDataBinding.root
     }
 
@@ -84,15 +85,9 @@ class TppsFragment : Fragment() {
             else -> false
         }
 
-    /*override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.tpps_fragment_menu, menu)
-
-        val searchManager = getActivity()?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        (menu.findItem(R.id.search).actionView as SearchView).apply {
-            setSearchableInfo(searchManager.getSearchableInfo(getActivity()?.componentName))
-        }
-
-    }*/
+    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -106,9 +101,53 @@ class TppsFragment : Fragment() {
         setupTextSearch()
         setupFab()
 
-        // Always reloading data for simplicity. Real apps should only do this on first load and
-        // when navigating back to this destination. TODO: https://issuetracker.google.com/79672220
-        //viewModel.loadTpps(true)
+        // Create an ArrayAdapter using the string array and a default countriesSpinner layout
+        val countryAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.eu_countries, android.R.layout.simple_spinner_item);
+        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        countriesSpinner = activity?.findViewById(R.id.serarch_country)!!
+        countriesSpinner.setAdapter(countryAdapter);
+        countriesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
+                // An item was selected. You can retrieve the selected item using
+                val country = parent.getItemAtPosition(pos).toString()
+                //val country : String = (item is String) ? item : ""
+                viewModel.filterTppsByCountry(country)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Another interface callback
+            }
+        })
+
+
+        val psd2RolesAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.psd2_roles, android.R.layout.simple_spinner_item);
+        psd2RolesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        servicesSpinner = activity?.findViewById(R.id.search_role)!!
+        servicesSpinner.setAdapter(psd2RolesAdapter);
+        servicesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
+                // An item was selected. You can retrieve the selected item using
+                val service = parent.getItemAtPosition(pos).toString()
+                //val country : String = (item is String) ? item : ""
+                viewModel.filterTppsByService(service)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Another interface callback
+            }
+        })
+
+
+        revokedSwitch = activity?.findViewById(R.id.revokedSwitch)!!
+        revokedSwitch.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
+            override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+                viewModel.showRevokedOnly()
+                //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        })
+
     }
 
     private fun setupTextSearch() {
@@ -125,7 +164,8 @@ class TppsFragment : Fragment() {
         // perform set on query text listener event
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                val theID = id
+                //val theID = id
+                lastTppsSearchViewQuery = query
                 searchBy(query)
                 return true
             }
@@ -135,6 +175,25 @@ class TppsFragment : Fragment() {
                 return false
             }
         })
+        searchView?.setOnCloseListener (object: SearchView.OnCloseListener {
+            override fun onClose(): Boolean {
+                if (!lastTppsSearchViewQuery?.isNullOrBlank()) {
+                    viewModel.loadTpps(false)
+                    lastTppsSearchViewQuery = ""
+                }
+                return true
+            }
+        })
+
+        searchView?.findViewById<ImageButton>(R.id.search_close_btn)
+                ?.setOnClickListener(object: View.OnClickListener {
+                    override fun onClick(v: View) {
+                        if (!lastTppsSearchViewQuery?.isNullOrBlank()) {
+                            viewModel.loadTpps(false)
+                            lastTppsSearchViewQuery = ""
+                        }
+                    }
+                })
     }
 
     fun searchBy(query: String) {

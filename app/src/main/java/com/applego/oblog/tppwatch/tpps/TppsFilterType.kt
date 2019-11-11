@@ -16,7 +16,7 @@
 package com.applego.oblog.tppwatch.tpps
 
 /**
- * Used with the filter spinner in the tpps list.
+ * Used with the filter countriesSpinner in the tpps list.
  */
 enum class TppsFilterType {
     /**

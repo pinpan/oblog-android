@@ -260,4 +260,16 @@ class TppsViewModel(
     fun refresh() {
         loadTpps(false)
     }
+
+    fun filterTppsByCountry(country: String) {
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    fun filterTppsByService(service: String) {
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    fun showRevokedOnly() {
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

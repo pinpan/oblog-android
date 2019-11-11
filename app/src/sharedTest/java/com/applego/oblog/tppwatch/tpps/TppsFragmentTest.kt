@@ -19,6 +19,7 @@ package com.applego.oblog.tppwatch.tpps
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -334,6 +335,17 @@ class TppsFragmentTest {
         }
         return activityScenario
     }
+
+    private fun launchTppsFragment(): FragmentScenario<TppsFragment>? {
+        val bundle = TppsFragmentArgs(1).toBundle()
+
+        val fragmentScenario = launchFragmentInContainer<TppsFragment>(bundle, R.style.AppTheme)
+        fragmentScenario.onFragment {
+            //Navigation.setViewNavController(it.view!!, navController)
+        }
+        return fragmentScenario
+    }
+
 
     private fun checkboxWithText(text: String): Matcher<View> {
         return allOf(withId(R.id.follow_checkbox), hasSibling(withText(text)))

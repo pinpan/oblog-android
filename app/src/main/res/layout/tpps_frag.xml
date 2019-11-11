@@ -34,76 +34,99 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <com.applego.oblog.tppwatch.ScrollChildSwipeRefreshLayout
-            android:id="@+id/refresh_layout"
+        <LinearLayout
+            android:id="@+id/tpps_fragment_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:onRefreshListener="@{viewmodel::refresh}"
-            app:refreshing="@{viewmodel.dataLoading}">
+            android:orientation="vertical" >
 
-            <RelativeLayout
-                android:id="@+id/tpps_container_layout"
+            <TextView
+                android:id="@+id/filtering_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/list_item_padding"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/list_item_padding"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:gravity="center_vertical"
+                android:text="@{context.getString(viewmodel.currentFilteringLabel)}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textSize="12sp" />
+
+            <include layout="@layout/tpps_search" />
+
+            <com.applego.oblog.tppwatch.ScrollChildSwipeRefreshLayout
+                android:id="@+id/refresh_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clickable="true"
-                android:orientation="vertical">
+                app:onRefreshListener="@{viewmodel::refresh}"
+                app:refreshing="@{viewmodel.dataLoading}">
 
-                <LinearLayout
-                    android:id="@+id/tpps_linear_layout"
+                <RelativeLayout
+                    android:id="@+id/tpps_container_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:visibility="@{viewmodel.empty ? View.GONE : View.VISIBLE}">
+                    android:clickable="true"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/filtering_text"
+                    <LinearLayout
+                        android:id="@+id/tpps_linear_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/list_item_padding"
-                        android:layout_marginTop="@dimen/activity_vertical_margin"
-                        android:layout_marginRight="@dimen/list_item_padding"
-                        android:layout_marginBottom="@dimen/activity_vertical_margin"
-                        android:gravity="center_vertical"
-                        android:text="@{context.getString(viewmodel.currentFilteringLabel)}"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textSize="12sp" />
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="@{viewmodel.empty ? View.GONE : View.VISIBLE}">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/tpps_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:items="@{viewmodel.items}" />
-                </LinearLayout>
+<!--
+                        <TextView
+                            android:id="@+id/filtering_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/list_item_padding"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            android:layout_marginRight="@dimen/list_item_padding"
+                            android:layout_marginBottom="@dimen/activity_vertical_margin"
+                            android:gravity="center_vertical"
+                            android:text="@{context.getString(viewmodel.currentFilteringLabel)}"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:textSize="12sp" />
 
-                <LinearLayout
-                    android:id="@+id/no_tpps_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:orientation="vertical"
-                    android:visibility="@{viewmodel.empty ? View.VISIBLE : View.GONE}">
+-->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/tpps_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:items="@{viewmodel.items}" />
+                    </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/no_tpps_icon"
-                        android:layout_width="96dp"
-                        android:layout_height="96dp"
-                        android:layout_gravity="center"
-                        android:src="@{ContextCompat.getDrawable(context, viewmodel.noTppIconRes)}"
-                        android:contentDescription="@string/no_tpps_image_content_description" />
-
-                    <TextView
-                        android:id="@+id/no_tpps_text"
+                    <LinearLayout
+                        android:id="@+id/no_tpps_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/list_item_padding"
-                        android:text="@{context.getString(viewmodel.noTppsLabel)}" />
-                </LinearLayout>
-            </RelativeLayout>
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical"
+                        android:visibility="@{viewmodel.empty ? View.VISIBLE : View.GONE}">
 
-        </com.applego.oblog.tppwatch.ScrollChildSwipeRefreshLayout>
+                        <ImageView
+                            android:id="@+id/no_tpps_icon"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:layout_gravity="center"
+                            android:src="@{ContextCompat.getDrawable(context, viewmodel.noTppIconRes)}"
+                            android:contentDescription="@string/no_tpps_image_content_description" />
+
+                        <TextView
+                            android:id="@+id/no_tpps_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="@dimen/list_item_padding"
+                            android:text="@{context.getString(viewmodel.noTppsLabel)}" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </com.applego.oblog.tppwatch.ScrollChildSwipeRefreshLayout>
+        </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_tpp_fab"
