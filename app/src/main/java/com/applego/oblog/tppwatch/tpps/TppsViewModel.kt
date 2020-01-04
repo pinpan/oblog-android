@@ -237,13 +237,7 @@ class TppsViewModel(
                 if (tppsResult is Success) {
                     val tpps = tppsResult.data
 
-                    val tppsToShow = ArrayList<Tpp>()
-                    // We filter the tpps based on the requestType
-                    for (tpp in tpps) {
-                        if (tpp.title.contains(_currentFilterString, true)) {
-                            tppsToShow.add(tpp)
-                        }
-                    }
+                    val tppsToShow = getTppsByGlobalFilter(tpps)
                     isDataLoadingError.value = false
                     _items.value = ArrayList(tppsToShow)
                 } else {
@@ -257,12 +251,42 @@ class TppsViewModel(
         }
     }
 
+    private fun getTppsByGlobalFilter(tpps: List<Tpp>): ArrayList<Tpp> {
+        val tppsToShow = ArrayList<Tpp>()
+        // We filter the tpps based on the requestType
+        for (tpp in tpps) {
+            if (tpp.title.contains(_currentFilterString, true)) {
+                tppsToShow.add(tpp)
+            }
+        }
+        return tppsToShow
+    }
+
     fun refresh() {
         loadTpps(false)
     }
 
     fun filterTppsByCountry(country: String) {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        var tppsToShow = ArrayList<Tpp>()
+        val theItems: List<Tpp> ?= _items.value
+        if (theItems != null) {
+            if (country.equals("<ALL>")) {
+                viewModelScope.launch {
+                    //tppsToShow = ArrayList(theItems)
+                    tppsToShow = getTppsByGlobalFilter(theItems)
+                    _items.value = ArrayList(tppsToShow)
+                }
+            } else {
+                theItems?.forEach {
+                    // filter the tpps based on the country
+                    if (it.country.contains(country, true)) {
+                        tppsToShow.add(it)
+                    }
+                }
+                _items.value = ArrayList(tppsToShow)
+            }
+        }
+        isDataLoadingError.value = false
     }
 
     fun filterTppsByService(service: String) {

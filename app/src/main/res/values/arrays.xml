@@ -1,0 +1,41 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="reply_entries">
+        <item>Reply</item>
+        <item>Reply to all</item>
+    </string-array>
+
+    <string-array name="reply_values">
+        <item>reply</item>
+        <item>reply_all</item>
+    </string-array>
+
+    <string-array name="environments">
+        <item>Dev</item>
+        <item>Test</item>
+        <item>Staging</item>
+        <item>Production</item>
+    </string-array>
+
+    <string-array name="env_base_url">
+        <item>\"http://192.168.0.15:8585\""</item>
+        <item>\"https://api.oblog.org:8443\""</item>
+        <item>\"https://api.oblog.org:8443\""</item>
+        <item>\"https://api.oblog.org:8443\""</item>
+    </string-array>
+
+    <string-array name="env_settings">
+        <item>@array/environments</item>
+        <item>@array/env_base_url</item>
+        <!--
+            <item>Dev</item>
+            <item>\"http://192.168.0.15:8585\""</item>
+            <item>"Test</item>
+            <item>\"https://api.oblog.org:8443\""</item>
+            <item>"Staging</item>
+            <item>\"https://api.oblog.org:8443\""</item>
+            <item>"Production</item>
+            <item>\"https://api.oblog.org:8443\""</item>
+        -->
+    </string-array>
+</resources>

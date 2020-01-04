@@ -35,4 +35,8 @@
         android:id="@+id/load_directory"
         android:title="@string/load_eba_directory"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/settings"
+        android:title="@string/settings_title"
+        app:showAsAction="never" />
 </menu>

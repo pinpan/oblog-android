@@ -282,7 +282,7 @@ class TppsFragmentTest {
         onView(withText(R.string.nav_all)).perform(click())
 
         // Verify the "You have no tpps!" text is shown
-        onView(withText("You have no tpps!")).check(matches(isDisplayed()))
+        onView(withText("No TPPs available!")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -293,7 +293,7 @@ class TppsFragmentTest {
         onView(withText(R.string.nav_followed)).perform(click())
 
         // Verify the "You have no followed tpps!" text is shown
-        onView(withText("You have no followed tpps!")).check(matches((isDisplayed())))
+        onView(withText("You have no followed TPPs!")).check(matches((isDisplayed())))
     }
 
     @Test
@@ -304,7 +304,7 @@ class TppsFragmentTest {
         onView(withText(R.string.nav_active)).perform(click())
 
         // Verify the "You have no active tpps!" text is shown
-        onView(withText("You have no active tpps!")).check(matches((isDisplayed())))
+        onView(withText("No active TPPs selected!")).check(matches((isDisplayed())))
     }
 
     @Test

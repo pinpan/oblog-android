@@ -21,6 +21,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -32,7 +33,12 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.applego.oblog.tppwatch.R
+import com.applego.oblog.tppwatch.SettingsActivity
 import com.google.android.material.navigation.NavigationView
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+
+
 
 /**
  * Main activity for the com.applego.oblog.tppwatch. Holds the Navigation Host Fragment and the Drawer, Toolbar, etc.
@@ -71,8 +77,14 @@ class TppsActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onAttachFragment(fragment: Fragment) {
-        super.onAttachFragment(fragment)
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val id = item?.getItemId();
+        if (id == R.id.settings) {
+            val intent = Intent(this@TppsActivity, SettingsActivity::class.java)
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -118,6 +130,11 @@ class TppsActivity : AppCompatActivity() {
             .apply {
                 setStatusBarBackground(R.color.colorPrimaryDark)
             }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        /* do nothing */
+        super.onSaveInstanceState(outState);
     }
 }
 

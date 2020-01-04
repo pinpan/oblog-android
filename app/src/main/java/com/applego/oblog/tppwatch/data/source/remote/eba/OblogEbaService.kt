@@ -66,24 +66,24 @@ interface  OblogEbaService {
         }
     }
 
-    @GET("tpps/")
+    @GET("local/tpps/")
     fun getTppById(@Query("id") id: Int?): Call<Tpp>
 
     @GET("import/")
     fun listTppsByName(): Call<Unit>;
 
-    @GET("tpps/")
+    @GET("local/tpps/")
     fun listAllTpps(@Query("page") page: Int? = null,
                     @Query("size") pageSize: Int? = null,
                     @Query("sort") order: String? = null): Call<TppsListResponse>;
 
-    @GET("tpps/")
+    @GET("local/tpps/")
     fun listTppsByName(@Query("name") tppName: String,
                        @Query("page") page: Int? = null,
                        @Query("size") pageSize: Int? = null,
                        @Query("sort") order: String? = null): Call<TppsListResponse>;
 
-    @GET("tpps/")
+    @GET("local/tpps/")
     fun listTppsByName(@Query("country")country: String, @Query("services") services: String): Call<List<Tpp>>;
 
     @GET("tpps/{tppId}/apps")

@@ -108,9 +108,10 @@ class TppsFragment : Fragment() {
         countriesSpinner = activity?.findViewById(R.id.serarch_country)!!
         countriesSpinner.setAdapter(countryAdapter);
         countriesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 // An item was selected. You can retrieve the selected item using
-                val country = parent.getItemAtPosition(pos).toString()
+                val item : Any? = parent.getItemAtPosition(pos);
+                val country = item.toString()
                 //val country : String = (item is String) ? item : ""
                 viewModel.filterTppsByCountry(country)
             }
@@ -121,13 +122,14 @@ class TppsFragment : Fragment() {
         })
 
 
+
         val psd2RolesAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.psd2_roles, android.R.layout.simple_spinner_item);
         psd2RolesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         servicesSpinner = activity?.findViewById(R.id.search_role)!!
         servicesSpinner.setAdapter(psd2RolesAdapter);
         servicesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 // An item was selected. You can retrieve the selected item using
                 val service = parent.getItemAtPosition(pos).toString()
                 //val country : String = (item is String) ? item : ""
@@ -148,6 +150,10 @@ class TppsFragment : Fragment() {
             }
         })
 
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
     }
 
     private fun setupTextSearch() {
