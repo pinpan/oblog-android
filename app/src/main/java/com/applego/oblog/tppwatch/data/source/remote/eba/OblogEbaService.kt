@@ -1,6 +1,8 @@
 package com.applego.oblog.tppwatch.data.source.remote.eba;
 
-import com.applego.oblog.tppwatch.BuildConfig
+import android.content.Context
+import android.content.SharedPreferences
+import androidx.preference.PreferenceManager
 import com.applego.oblog.tppwatch.data.source.local.Tpp;
 import com.applego.oblog.tppwatch.data.source.local.App
 
@@ -12,14 +14,13 @@ import retrofit2.http.*
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import retrofit2.Converter
 import java.lang.reflect.Type
 import java.text.DateFormat
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
 
 
-interface  OblogEbaService {
+interface  OblogEbaService  {
 
     /*private fun createGsonConverter(type: Type, typeAdapter: Any): Converter.Factory {
         val gsonBuilder = GsonBuilder()
@@ -29,10 +30,23 @@ interface  OblogEbaService {
         return GsonConverterFactory.create(gson)
     }
 */
-    companion object {
+
+    companion object EbaService : SharedPreferences.OnSharedPreferenceChangeListener {
+
+        override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+            if (key.equals("environment")) {
+                var actualEnvironment = sharedPreferences?.getString("environment","")
+                if (actualEnvironment == "Test") {
+                    actualEnvironment = "Dev"
+                }
+            }
+        }
 
         //var BASE_URL = "http://192.168.0.15:8585/eba-registry/" //api.oblog.org:8443  10.0.2.2
         //var API_KEY = "2e65127e909e178d0af311a81f39948c"
+        val EBA_CONTEXT = "/eba-registry"
+
+        var currentEnv = "Dev"
         val tppType: Type = object : TypeToken<Tpp>() {}.type
         val tppListType: Type = object : TypeToken<MutableList<Tpp>>() {}.type //@JvmSuppressWildcards
         val tppsListResponseType: Type = object : TypeToken<TppsListResponse>() {}.type //@JvmSuppressWildcards
@@ -49,8 +63,37 @@ interface  OblogEbaService {
                 .setVersion(1.0)
                 .create()
 
+        fun create(context: Context): OblogEbaService {
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+            sharedPreferences.registerOnSharedPreferenceChangeListener(this)
 
-        fun create(): OblogEbaService {
+            currentEnv = sharedPreferences.getString("environment", "Dev")
+
+            var baseUrl = ""
+            val envsBaseUrls = context.applicationContext.resources.getStringArray(com.applego.oblog.tppwatch.R.array.env_base_url);
+            /* This requires API leve 2, while we go with 14
+            val envsTypedArray = context.applicationContext.resources.obtainTypedArray(com.applego.oblog.tppwatch.R.array.environments)
+            if (envsTypedArray != null) {
+                for (iL: Int in 0..envsTypedArray.indexCount) {
+                    val type = envsTypedArray.getType(iL)
+                    Array<String> = envsTypedArray[i]
+
+
+                }
+            }
+            */
+
+            if (envsBaseUrls != null) {
+                for (i in envsBaseUrls.indices) {
+                    val env = envsBaseUrls[i]
+
+                    if (env.startsWith(currentEnv.toUpperCase())) {
+                        baseUrl = env.substring(currentEnv.length+1)
+                    }
+                }
+            }
+
+
             val okHttpClient = OkHttpClient().newBuilder().connectTimeout(60, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS).writeTimeout(60, TimeUnit.SECONDS).build()
 
             val retrofit = Retrofit.Builder()
@@ -58,7 +101,7 @@ interface  OblogEbaService {
                             RxJava2CallAdapterFactory.create())
                     .addConverterFactory(
                             GsonConverterFactory.create(gson))
-                    .baseUrl(BuildConfig.BASE_URL) //context.getString(R.oblog_api_base_url))
+                    .baseUrl(baseUrl + EBA_CONTEXT + "/api/") //BuildConfig.BASE_URL)
                     .client(okHttpClient)
                     .build()
 
@@ -66,30 +109,31 @@ interface  OblogEbaService {
         }
     }
 
-    @GET("local/tpps/")
+    @GET("/tpps/local/")
     fun getTppById(@Query("id") id: Int?): Call<Tpp>
 
-    @GET("import/")
+    @GET("/import/")
     fun listTppsByName(): Call<Unit>;
 
-    @GET("local/tpps/")
+    @GET("/tpps/local/")
     fun listAllTpps(@Query("page") page: Int? = null,
                     @Query("size") pageSize: Int? = null,
                     @Query("sort") order: String? = null): Call<TppsListResponse>;
 
-    @GET("local/tpps/")
-    fun listTppsByName(@Query("name") tppName: String,
+    @GET("/tpps/local/")
+    fun listTppsByName(@Header("X-API-KEY") apiKey: String,
+                       @Query("name") tppName: String,
                        @Query("page") page: Int? = null,
                        @Query("size") pageSize: Int? = null,
                        @Query("sort") order: String? = null): Call<TppsListResponse>;
 
-    @GET("local/tpps/")
+    @GET("/tpps/local/")
     fun listTppsByName(@Query("country")country: String, @Query("services") services: String): Call<List<Tpp>>;
 
-    @GET("tpps/{tppId}/apps")
+    @GET("/tpps/local/{tppId}/apps")
     fun listTppApps(@Path("tppId")tppId: String ): Call<List<App>>;
 
-    @PUT("tpps/{id}")
+    @PUT("/tpps/local/{id}")
     fun updateTpp(@Body tpp : Tpp) : Call<Tpp>
 
 

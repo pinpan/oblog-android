@@ -15,6 +15,8 @@
  */
 package com.applego.oblog.tppwatch.data.source.remote.eba
 
+import android.content.SharedPreferences
+import com.applego.oblog.apikey.ApiKey
 import com.applego.oblog.tppwatch.data.Paging
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.TppFilter
@@ -38,6 +40,8 @@ class TppsEbaDataSource internal constructor (
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : RemoteTppDataSource {
 
+    var theApiKey : ApiKey = ApiKey("MyhCyIKQ0IlIG5dFVk6sjXcG2aHhFbj0") // TODO: Get the String from config per Base URL
+
     override suspend fun getAllTpps(): Result<TppsListResponse> = withContext(ioDispatcher) {
         var paging = Paging(10, 1, 10, true)
 
@@ -54,6 +58,8 @@ class TppsEbaDataSource internal constructor (
         return@withContext Result.Loading(Timeout())
     }
 
+
+
     override suspend fun getTpp(tppId: String): Result<Tpp> {
         if (tppId == "") {
             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -66,7 +72,7 @@ class TppsEbaDataSource internal constructor (
     }
 
     private fun loadTppsPage(paging: Paging): Result<Paging> {
-        val call = tppsService.listTppsByName("", paging.page, paging.size, paging.sortBy)
+        val call = tppsService.listTppsByName(theApiKey.apiKey,"", paging.page, paging.size, paging.sortBy)
         var response: Response<TppsListResponse>?
         try {
             response = call.execute()

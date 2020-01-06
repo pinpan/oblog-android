@@ -25,7 +25,6 @@ import android.view.MenuItem
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -33,40 +32,71 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.SettingsActivity
+import com.applego.oblog.tppwatch.PreferencesActivity
 import com.google.android.material.navigation.NavigationView
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
 
 
 /**
  * Main activity for the com.applego.oblog.tppwatch. Holds the Navigation Host Fragment and the Drawer, Toolbar, etc.
  */
-class TppsActivity : AppCompatActivity() {
+class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppCompatActivity() {
 
+    private var selectedEnv: String ?= ""
+    private var actualEnvironment : String ?= ""
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.tpps_act)
+        setContentView(com.applego.oblog.tppwatch.R.layout.tpps_act)
         setupNavigationDrawer()
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(findViewById(com.applego.oblog.tppwatch.R.id.toolbar))
 
-        val navController: NavController = findNavController(R.id.nav_host_fragment)
+        val navController: NavController = findNavController(com.applego.oblog.tppwatch.R.id.nav_host_fragment)
         appBarConfiguration =
-            AppBarConfiguration.Builder(R.id.tpps_fragment_dest, R.id.statistics_fragment_dest)
+            AppBarConfiguration.Builder(com.applego.oblog.tppwatch.R.id.tpps_fragment_dest, com.applego.oblog.tppwatch.R.id.statistics_fragment_dest)
                 .setDrawerLayout(drawerLayout)
                 .build()
         setupActionBarWithNavController(navController, appBarConfiguration)
-        findViewById<NavigationView>(R.id.nav_view).setupWithNavController(navController)
+        findViewById<NavigationView>(com.applego.oblog.tppwatch.R.id.nav_view).setupWithNavController(navController)
+
+        setupSharedPreferences();
 
         handleIntent(intent);
     }
 
+    private fun setupSharedPreferences() {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if (key.equals("environment")) {
+            actualEnvironment = sharedPreferences?.getString("environment","")
+            val envsArray = getResources().getStringArray(R.array.environments);
+            if (envsArray != null) {
+                for (i in envsArray.indices.reversed()) {
+                    val env = envsArray[i]
+
+                    if (env == "Dev") {
+                        selectedEnv = env
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.tpps_fragment_menu, menu)
+        menuInflater.inflate(R.menu.tpps_activity_menu, menu)
 
         // Associate searchable configuration with the SearchView
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
@@ -80,7 +110,7 @@ class TppsActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val id = item?.getItemId();
         if (id == R.id.settings) {
-            val intent = Intent(this@TppsActivity, SettingsActivity::class.java)
+            val intent = Intent(this@TppsActivity, PreferencesActivity::class.java)
             startActivity(intent);
             return true;
         }

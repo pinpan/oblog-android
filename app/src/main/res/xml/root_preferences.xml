@@ -16,24 +16,23 @@
 
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/messages_header">
+    <PreferenceCategory app:title="@string/environments">
+
+        <ListPreference
+            app:defaultValue="@array/env_Dev"
+            app:entries="@array/env_names"
+            app:entryValues="@array/env_names"
+            app:key="environment"
+            app:title="@string/actual_env_title"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/sync_header">
 
         <EditTextPreference
             app:key="signature"
             app:title="@string/signature_title"
             app:useSimpleSummaryProvider="true" />
-
-        <ListPreference
-            app:defaultValue="Test"
-            app:entries="@array/environments"
-            app:entryValues="@array/env_base_url"
-            app:key="environment"
-            app:title="@string/env_settings_title"
-            app:useSimpleSummaryProvider="true" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory app:title="@string/sync_header">
 
         <SwitchPreferenceCompat
             app:key="sync"

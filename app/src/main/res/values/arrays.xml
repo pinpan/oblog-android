@@ -1,16 +1,5 @@
 <resources>
-    <!-- Reply Preference -->
-    <string-array name="reply_entries">
-        <item>Reply</item>
-        <item>Reply to all</item>
-    </string-array>
-
-    <string-array name="reply_values">
-        <item>reply</item>
-        <item>reply_all</item>
-    </string-array>
-
-    <string-array name="environments">
+    <string-array name="env_names">
         <item>Dev</item>
         <item>Test</item>
         <item>Staging</item>
@@ -18,24 +7,40 @@
     </string-array>
 
     <string-array name="env_base_url">
-        <item>\"http://192.168.0.15:8585\""</item>
-        <item>\"https://api.oblog.org:8443\""</item>
-        <item>\"https://api.oblog.org:8443\""</item>
-        <item>\"https://api.oblog.org:8443\""</item>
+        <item>DEV#http://192.168.0.15:8585"</item>
+        <item>TEST#https://api.oblog.org:8443"</item>
+        <item>STAGING#https://api.oblog.org:8443"</item>
+        <item>PRODUCTION#https://api.oblog.org:8443"</item>
     </string-array>
 
-    <string-array name="env_settings">
-        <item>@array/environments</item>
-        <item>@array/env_base_url</item>
-        <!--
-            <item>Dev</item>
-            <item>\"http://192.168.0.15:8585\""</item>
-            <item>"Test</item>
-            <item>\"https://api.oblog.org:8443\""</item>
-            <item>"Staging</item>
-            <item>\"https://api.oblog.org:8443\""</item>
-            <item>"Production</item>
-            <item>\"https://api.oblog.org:8443\""</item>
-        -->
+    <string-array name="env_Dev">
+        <item>Dev</item>
+        <item>\"http://192.168.0.15:8585\""</item>
+        <item>SomethingElse-Dev</item>
     </string-array>
+
+    <string-array name="env_Test">
+        <item>Test</item>
+        <item>\"https://api.oblog.org:8443\""</item>
+        <item>SomethingElse-Dev</item>
+    </string-array>
+
+    <string-array name="env_Staging">
+        <item>Staging</item>
+        <item>\"https://api.oblog.org:8443\""</item>
+        <item>SomethingElse-Dev</item>
+    </string-array>
+
+    <string-array name="env_Production">
+        <item>Production</item>
+        <item>\"https://api.oblog.org:8443\""</item>
+        <item>SomethingElse-Dev</item>
+    </string-array>
+
+    <array name="environments">
+        <item>@array/env_Dev</item>
+        <item>@array/env_Test</item>
+        <item>@array/env_Staging</item>
+        <item>@array/env_Production</item>
+    </array>
 </resources>

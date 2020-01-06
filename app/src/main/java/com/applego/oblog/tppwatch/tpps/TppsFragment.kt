@@ -85,9 +85,6 @@ class TppsFragment : Fragment() {
             else -> false
         }
 
-    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
-        super.onCreateContextMenu(menu, v, menuInfo)
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -99,9 +96,11 @@ class TppsFragment : Fragment() {
         setupRefreshLayout(viewDataBinding.refreshLayout, viewDataBinding.tppsList)
         setupNavigation()
         setupTextSearch()
+        setUpSearchForm();
         setupFab()
+    }
 
-        // Create an ArrayAdapter using the string array and a default countriesSpinner layout
+    private fun setUpSearchForm() {
         val countryAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.eu_countries, android.R.layout.simple_spinner_item);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -120,8 +119,6 @@ class TppsFragment : Fragment() {
                 // Another interface callback
             }
         })
-
-
 
         val psd2RolesAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.psd2_roles, android.R.layout.simple_spinner_item);
         psd2RolesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -149,7 +146,6 @@ class TppsFragment : Fragment() {
                 //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
         })
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

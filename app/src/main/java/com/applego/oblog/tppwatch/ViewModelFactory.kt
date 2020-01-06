@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.applego.oblog.tppwatch.addedittpp.AddEditTppViewModel
 import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.settings.SettingsViewModel
 import com.applego.oblog.tppwatch.statistics.StatisticsViewModel
 import com.applego.oblog.tppwatch.tppdetail.TppDetailViewModel
 import com.applego.oblog.tppwatch.tpps.TppsViewModel
@@ -42,6 +43,8 @@ class ViewModelFactory constructor(
                     AddEditTppViewModel(tppsRepository)
                 isAssignableFrom(TppsViewModel::class.java) ->
                     TppsViewModel(tppsRepository)
+                isAssignableFrom(SettingsViewModel::class.java) ->
+                    SettingsViewModel(tppsRepository)
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

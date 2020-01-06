@@ -37,7 +37,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
             // buildConfigField "String", 'BASE_URL', "\"https://api.oblog.org:8443/eba-registry/\""
-            buildConfigField "String", 'BASE_URL', "\"http://192.168.0.15:8585/api/eba-registry/\""
+            buildConfigField "String", 'BASE_URL', "\"http://192.168.0.15:8585/api/eba-registry2/\""
         }
 
         release {

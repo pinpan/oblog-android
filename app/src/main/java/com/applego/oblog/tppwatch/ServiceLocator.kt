@@ -60,7 +60,7 @@ object ServiceLocator {
 
     private fun createTppsRestDataSource(context: Context): RemoteTppDataSource {
         val database = database ?: createDataBase(context)
-        return TppsEbaDataSource(OblogEbaService.create(), database.tppDao())
+        return TppsEbaDataSource(OblogEbaService.create(context), database.tppDao())
     }
 
     private fun createDataBase(context: Context): TppDatabase {

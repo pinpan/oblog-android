@@ -71,7 +71,7 @@
 
     <string name="signature_title">Your signature</string>
 
-    <string name="env_settings_title">Environment</string>
+    <string name="actual_env_title">Actual environment</string>
     <string name="reply_title">Default reply action</string>
     <string name="sync_title">Sync TPP directory periodically</string>
 
@@ -85,6 +85,7 @@
     <string name="settings_no_tpps">No TPPs found</string>
     <string name="settings_followed_tpps">Followed TPPs</string>
     <string name="settings_active_tpps">Active TPPs</string>
+    <string name="environments">Environments</string>
     <string-array name="list_tpps_array">
         <item>@string/nav_all</item>
         <item>@string/nav_active</item>
