@@ -26,10 +26,7 @@ import com.applego.oblog.tppwatch.data.source.TppsRepository
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.local.TppDatabase
 import com.applego.oblog.tppwatch.data.source.remote.eba.OblogEbaService
-import com.applego.oblog.tppwatch.data.source.remote.nca.NcaService
 import com.applego.oblog.tppwatch.data.source.remote.eba.TppsEbaDataSource
-import com.applego.oblog.tppwatch.data.source.remote.nca.TppsNcaDataSource
-import kotlinx.coroutines.runBlocking
 
 /**
  * A Service Locator for the [TppsRepository]. This is the prod version, with a
@@ -46,6 +43,12 @@ object ServiceLocator {
     fun provideTppsRepository(context: Context): TppsRepository {
         synchronized(this) {
             return tppsRepository ?: tppsRepository ?: createTppsRepository(context)
+        }
+    }
+
+    fun resetTppsRepository(context: Context) {
+        synchronized(this) {
+            tppsRepository = createTppsRepository(context)
         }
     }
 
@@ -75,7 +78,7 @@ object ServiceLocator {
     }
 
     @VisibleForTesting
-    fun resetRepository() {
+    fun resetRestDataSource() {
         synchronized(lock) {
             /*runBlocking {
                 TppsRemoteDataSource.deleteAllTpps()
@@ -86,7 +89,7 @@ object ServiceLocator {
                 close()
             }
             database = null
-            tppsRepository = null
+            // tppsRepository = null
         }
     }
 }

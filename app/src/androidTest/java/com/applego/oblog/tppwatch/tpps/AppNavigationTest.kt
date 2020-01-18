@@ -68,7 +68,7 @@ class AppNavigationTest {
 
     @After
     fun reset() {
-        ServiceLocator.resetRepository()
+        ServiceLocator.resetRestDataSource()
     }
 
     /**

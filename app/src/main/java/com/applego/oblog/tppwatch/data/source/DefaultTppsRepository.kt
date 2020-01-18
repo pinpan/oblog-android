@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit
  * data source fails. Remote is the source of truth.
  */
 class DefaultTppsRepository (
-        private val tppsRemoteDataSource: RemoteTppDataSource,
+        /*private */var tppsRemoteDataSource: RemoteTppDataSource,
         private val tppsLocalDataSource: LocalTppDataSource,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : TppsRepository {

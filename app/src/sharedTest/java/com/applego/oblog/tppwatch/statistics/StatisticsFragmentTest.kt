@@ -62,7 +62,7 @@ class StatisticsFragmentTest {
 
     @After
     fun cleanupDb() = runBlockingTest {
-        ServiceLocator.resetRepository()
+        ServiceLocator.resetRestDataSource()
     }
 
     /**

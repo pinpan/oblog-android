@@ -70,7 +70,7 @@ object ServiceLocator {
     }
 
     @VisibleForTesting
-    fun resetRepository() {
+    fun resetRestDataSource() {
         synchronized(lock) {
             runBlocking {
                 FakeTppsRemoteDataSource.deleteAllTpps()
@@ -81,7 +81,7 @@ object ServiceLocator {
                 close()
             }
             database = null
-            tppsRepository = null
+            //tppsRepository = null
         }
     }
 }

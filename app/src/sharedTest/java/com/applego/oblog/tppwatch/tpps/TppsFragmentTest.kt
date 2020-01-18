@@ -28,7 +28,6 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -79,7 +78,7 @@ class TppsFragmentTest {
 
     @After
     fun cleanupDb() = runBlockingTest {
-        ServiceLocator.resetRepository()
+        ServiceLocator.resetRestDataSource()
     }
 
     @Test

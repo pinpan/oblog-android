@@ -67,7 +67,7 @@ class AddEditTppFragmentTest {
 
     @After
     fun cleanupDb() = runBlockingTest {
-        ServiceLocator.resetRepository()
+        ServiceLocator.resetRestDataSource()
     }
 
     @Test

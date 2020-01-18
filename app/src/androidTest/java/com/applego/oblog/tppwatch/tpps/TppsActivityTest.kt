@@ -70,7 +70,7 @@ class TppsActivityTest {
 
     @After
     fun reset() {
-        ServiceLocator.resetRepository()
+        ServiceLocator.resetRestDataSource()
     }
 
     /**

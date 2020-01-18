@@ -22,15 +22,6 @@ import java.util.concurrent.TimeUnit
 
 interface  OblogEbaService  {
 
-    /*private fun createGsonConverter(type: Type, typeAdapter: Any): Converter.Factory {
-        val gsonBuilder = GsonBuilder()
-        gsonBuilder.registerTypeAdapter(type, typeAdapter)
-        val gson = gsonBuilder.create()
-
-        return GsonConverterFactory.create(gson)
-    }
-*/
-
     companion object EbaService : SharedPreferences.OnSharedPreferenceChangeListener {
 
         override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
@@ -71,14 +62,13 @@ interface  OblogEbaService  {
 
             var baseUrl = ""
             val envsBaseUrls = context.applicationContext.resources.getStringArray(com.applego.oblog.tppwatch.R.array.env_base_url);
-            /* This requires API leve 2, while we go with 14
+            /* This requires API level 21, while we go with 14
+
             val envsTypedArray = context.applicationContext.resources.obtainTypedArray(com.applego.oblog.tppwatch.R.array.environments)
             if (envsTypedArray != null) {
                 for (iL: Int in 0..envsTypedArray.indexCount) {
                     val type = envsTypedArray.getType(iL)
                     Array<String> = envsTypedArray[i]
-
-
                 }
             }
             */
@@ -93,7 +83,6 @@ interface  OblogEbaService  {
                 }
             }
 
-
             val okHttpClient = OkHttpClient().newBuilder().connectTimeout(60, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS).writeTimeout(60, TimeUnit.SECONDS).build()
 
             val retrofit = Retrofit.Builder()
@@ -101,7 +90,7 @@ interface  OblogEbaService  {
                             RxJava2CallAdapterFactory.create())
                     .addConverterFactory(
                             GsonConverterFactory.create(gson))
-                    .baseUrl(baseUrl + EBA_CONTEXT + "/api/") //BuildConfig.BASE_URL)
+                    .baseUrl(baseUrl + EBA_CONTEXT + "/api/")
                     .client(okHttpClient)
                     .build()
 
