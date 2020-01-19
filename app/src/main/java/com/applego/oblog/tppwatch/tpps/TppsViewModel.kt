@@ -267,26 +267,39 @@ class TppsViewModel(
     }
 
     fun filterTppsByCountry(country: String) {
-        var tppsToShow = ArrayList<Tpp>()
-        val theItems: List<Tpp> ?= _items.value
-        if (theItems != null) {
-            if (country.equals("<ALL>")) {
-                viewModelScope.launch {
-                    //tppsToShow = ArrayList(theItems)
-                    tppsToShow = getTppsByGlobalFilter(theItems)
-                    _items.value = ArrayList(tppsToShow)
-                }
-            } else {
-                theItems?.forEach {
-                    // filter the tpps based on the country
-                    if (it.country.contains(country, true)) {
-                        tppsToShow.add(it)
+
+        //viewModelScope.launch {
+        //    theItems =
+        //}
+        var theItems: List<Tpp> ?= null
+
+        viewModelScope.launch {
+            val tppsResult = tppsRepository.getTpps(false)
+            if (tppsResult is Success) {
+                theItems = getTppsByGlobalFilter(tppsResult.data)
+            }
+
+            if (theItems != null) {
+                //tppsToShow = _items.value
+                if (!country.equals("<ALL>")) {
+                    //viewModelScope.launch {
+                    //    tppsToShow = theItems//getTppsByGlobalFilter(theItems)
+                    //}
+                    /*} else {*/
+                    var tppsToShow = ArrayList<Tpp>()
+                    theItems?.forEach {
+                        if (it.country.contains(country, true)) {
+                            tppsToShow.add(it)
+                        }
                     }
+                    theItems = tppsToShow
                 }
-                _items.value = ArrayList(tppsToShow)
+                _items.value = ArrayList(theItems)
+
+                isDataLoadingError.value = false
+                _dataLoading.value = false
             }
         }
-        isDataLoadingError.value = false
     }
 
     fun filterTppsByService(service: String) {

@@ -1,0 +1,4 @@
+# Nmap 7.60 scan initiated Sat Jan 18 14:46:20 2020 as: nmap -mP0 api.oblog.org
+Host: 94.26.34.204 (204.34.26.94.tbc.bg)	Status: Up
+Host: 94.26.34.204 (204.34.26.94.tbc.bg)	Ports: 25/open/tcp//smtp///, 80/open/tcp//http///, 110/open/tcp//pop3///, 1521/open/tcp//oracle///, 3128/closed/tcp//squid-http///, 3389/open/tcp//ms-wbt-server///, 8443/open/tcp//https-alt///	Ignored State: filtered (993)
+# Nmap done at Sat Jan 18 14:46:29 2020 -- 1 IP address (1 host up) scanned in 8.60 seconds

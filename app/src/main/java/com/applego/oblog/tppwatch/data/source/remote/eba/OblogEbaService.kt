@@ -35,7 +35,7 @@ interface  OblogEbaService  {
 
         //var BASE_URL = "http://192.168.0.15:8585/eba-registry/" //api.oblog.org:8443  10.0.2.2
         //var API_KEY = "2e65127e909e178d0af311a81f39948c"
-        val EBA_CONTEXT = "/eba-registry"
+        val EBA_CONTEXT = "/api/eba-registry/"
 
         var currentEnv = "Dev"
         val tppType: Type = object : TypeToken<Tpp>() {}.type
@@ -90,7 +90,7 @@ interface  OblogEbaService  {
                             RxJava2CallAdapterFactory.create())
                     .addConverterFactory(
                             GsonConverterFactory.create(gson))
-                    .baseUrl(baseUrl + EBA_CONTEXT + "/api/")
+                    .baseUrl(baseUrl + EBA_CONTEXT)
                     .client(okHttpClient)
                     .build()
 
@@ -98,31 +98,31 @@ interface  OblogEbaService  {
         }
     }
 
-    @GET("/tpps/local/")
+    @GET("tpps/local/")
     fun getTppById(@Query("id") id: Int?): Call<Tpp>
 
-    @GET("/import/")
+    @GET("import/")
     fun listTppsByName(): Call<Unit>;
 
-    @GET("/tpps/local/")
+    @GET("tpps/local/")
     fun listAllTpps(@Query("page") page: Int? = null,
                     @Query("size") pageSize: Int? = null,
                     @Query("sort") order: String? = null): Call<TppsListResponse>;
 
-    @GET("/tpps/local/")
-    fun listTppsByName(@Header("X-API-KEY") apiKey: String,
+    @GET("tpps/local/")
+    fun listTppsByName(@Header("X-Api-Key") apiKey: String,
                        @Query("name") tppName: String,
                        @Query("page") page: Int? = null,
                        @Query("size") pageSize: Int? = null,
                        @Query("sort") order: String? = null): Call<TppsListResponse>;
 
-    @GET("/tpps/local/")
+    @GET("tpps/local/")
     fun listTppsByName(@Query("country")country: String, @Query("services") services: String): Call<List<Tpp>>;
 
-    @GET("/tpps/local/{tppId}/apps")
+    @GET("tpps/local/{tppId}/apps")
     fun listTppApps(@Path("tppId")tppId: String ): Call<List<App>>;
 
-    @PUT("/tpps/local/{id}")
+    @PUT("tpps/local/{id}")
     fun updateTpp(@Body tpp : Tpp) : Call<Tpp>
 
 

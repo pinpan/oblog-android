@@ -40,7 +40,8 @@ class TppsEbaDataSource internal constructor (
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : RemoteTppDataSource {
 
-    var theApiKey : ApiKey = ApiKey("MyhCyIKQ0IlIG5dFVk6sjXcG2aHhFbj0") // TODO: Get the String from config per Base URL
+    // TODO: Get the String from config per Base URL
+    var theApiKey : ApiKey = ApiKey("GaW42ue9mRsgvlL0eIrrD6biU1tlpr8Y")
 
     override suspend fun getAllTpps(): Result<TppsListResponse> = withContext(ioDispatcher) {
         var paging = Paging(10, 1, 10, true)
