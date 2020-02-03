@@ -4,12 +4,34 @@ import androidx.room.TypeConverter
 import java.text.SimpleDateFormat
 import java.util.*
 import com.google.gson.Gson
+import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken
 
 
-object OblogTypeConverters {
+class OblogTypeConverters {
+
+    val simpleDateFormat = SimpleDateFormat.getDateInstance()
+
+    val gson = Gson()
+
+    val ebaPassportType = object : TypeToken<EbaPassport>() {
+    }.getType()
+
+    val tppServiceType = object : TypeToken<Service>() {
+    }.getType()
+
+    val tppServiceListType = object : TypeToken<List<Service>>() {
+    }.getType()
+
+    val ebaPassportListType = object : TypeToken<List<EbaPassport>>() {
+    }.getType()
+
+    val ebaPassportsMapType = object : TypeToken<Map<String, List<EbaService>>>() {
+    }.getType()
+
+
     @TypeConverter
-    @JvmStatic
+    //@JvmStatic
     fun toStatus(status: Int): RecordStatus {
         return if (status == RecordStatus.UNDEFINED.statusId) {
             RecordStatus.UNDEFINED
@@ -29,55 +51,104 @@ object OblogTypeConverters {
     }
 
     @TypeConverter
-    @JvmStatic
+    //@JvmStatic
     fun toInteger(recordStatus: RecordStatus): Int? {
         return recordStatus.statusId
     }
 
     @TypeConverter
-    @JvmStatic
+    //@JvmStatic
     fun toDate(timestamp: Long?): Date? {
         return if (timestamp == null) null else Date(timestamp)
     }
 
     @TypeConverter
-    @JvmStatic
+    //@JvmStatic
     fun toTimestamp(date: Date?): Long? {
         return if (date == null) null else date.getTime().toLong()
     }
 
     @TypeConverter
-    @JvmStatic
+    //@JvmStatic
     fun toDate(date: String?): Date? {
         return if (date == null) null else simpleDateFormat.parse(date)
     }
 
     @TypeConverter
-    @JvmStatic
+    //@JvmStatic
     fun toDateString(date: Date?): String? {
         return if (date == null) null else date.toString()
     }
 
 
     @TypeConverter
-    @JvmStatic
+    //@JvmStatic
     fun storedStringToServices(data: String?): List<Service> {
-        val gson = Gson()
         if (data == null) {
             return Collections.emptyList()
         }
-        val listType = object : TypeToken<List<Service>>() {
 
-        }.getType()
-        return gson.fromJson(data, listType)
+        return gson.fromJson(data, tppServiceListType)
     }
 
     @TypeConverter
-    @JvmStatic
+    //@JvmStatic
+    fun jsonToServices(data: String?): Service {
+        return gson.fromJson(data, tppServiceListType)
+    }
+
+    @TypeConverter
+    //@JvmStatic
     fun myObjectsToStoredString(myObjects: List<Service>): String {
-        val gson = Gson()
         return gson.toJson(myObjects)
     }
 
-    val simpleDateFormat = SimpleDateFormat.getDateInstance()
+    @TypeConverter
+    fun fromEbaPassportList(passports: List<EbaPassport>) : String {
+        var jsonString = gson.toJson(passports)
+
+        return jsonString
+    }
+
+    @TypeConverter
+    fun toEbaPassportList(json : String) : List<EbaPassport> {
+        val aList: List<EbaPassport> = gson.fromJson<List<EbaPassport>>(json, ebaPassportListType)
+        return aList
+    }
+
+    @TypeConverter
+    fun fromJsonElementToEbaService(json : JsonElement) : Service {
+        val aService: Service = gson.fromJson<Service>(json, tppServiceType)
+        return aService
+    }
+
+    @TypeConverter
+    fun fromJsonElementToEbaServiceList(json : JsonElement) : List<Service> {
+        val aList: List<Service> = gson.fromJson<List<Service>>(json, tppServiceListType)
+        return aList
+    }
+
+    @TypeConverter
+    fun fromJsonElementToEbaPassport(json : JsonElement) : EbaPassport {
+        val aPassport: EbaPassport = gson.fromJson<EbaPassport>(json, ebaPassportType)
+        return aPassport
+    }
+
+    @TypeConverter
+    fun fromJsonElementToEbaPassportList(json : JsonElement) : List<EbaPassport> {
+        val aList: List<EbaPassport> = gson.fromJson<List<EbaPassport>>(json, ebaPassportListType)
+        return aList
+    }
+
+    @TypeConverter
+    fun fromJsonElementToEbaPassportsMap(json : JsonElement) : Map<String, List<EbaService>> {
+        val aMap: Map<String, List<EbaService>> = gson.fromJson<Map<String, List<EbaService>>>(json, ebaPassportsMapType)
+        return aMap
+    }
+
+    @TypeConverter
+    fun fromArrayLisr(list: ArrayList<String>) : String {
+        val json = gson.toJson(list)
+        return json
+    }
 }

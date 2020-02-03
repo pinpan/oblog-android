@@ -27,7 +27,7 @@ enum class TppsFilterType {
     /**
      * Filters only the active (not followed yet) tpps.
      */
-    ACTIVE_TPPS,
+    USED_TPPS,
 
     /**
      * Filters only the followed tpps.

@@ -26,7 +26,6 @@ import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.FakeRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -93,7 +92,7 @@ class TppsViewModelTest {
     fun loadActiveTppsFromRepositoryAndLoadIntoView() {
         // Given an initialized TppsViewModel with initialized tpps
         // When loading of Tpps is requested
-        tppsViewModel.setFiltering(TppsFilterType.ACTIVE_TPPS)
+        tppsViewModel.setFiltering(TppsFilterType.USED_TPPS)
 
         // Load tpps
         tppsViewModel.loadTpps(true)

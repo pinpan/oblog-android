@@ -39,19 +39,7 @@ data class Tpp @JvmOverloads constructor(
         @ColumnInfo(name = "globalUrn") var globalUrn: String = "",                 // A Global Unified identifier. Used by Preta as own ID.
         @ColumnInfo(name = "ebaEntityVersion") var ebaEntityVersion: String = "",   // New, Updated, Removed (from original source), Deleted (From our DB) ...
         @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString()
-        //val recipes: List<Recipe>
-        // TODO#Define:
-        //  passporting
-        //      services,
-        //  tppRoles, - CZ has, Eba hasn't
-        //  apps,
-        //  details aka properties from EBA
 ) {
-    //var d : Date = Date()
-        //get() = if (dateAcquired != null) dateAcquired else Date()
-
-    //var ebaEntityVersion: String = ""
-        //get() = if (dateAcquired != null) dateAcquired else Date()
 
     @ColumnInfo(name = "followed")
     var isFollowed: Boolean = false
@@ -62,16 +50,25 @@ data class Tpp @JvmOverloads constructor(
     @ColumnInfo(name = "country")
     var country: String = ""
 
-    //@ColumnInfo(name = "service")
-    //var ebaServices: List<EbaService>? = null
-
     val titleForList: String
         get() = if (title.isNotEmpty()) title else description
-
 
     val isActive
         get() = !isFollowed
 
     val isEmpty
         get() = title.isEmpty() || description.isEmpty()
+
+    @JvmField
+    var ebaPassports: List<EbaPassport> = ArrayList<EbaPassport>()
+
+    // DOES NOT COMPILE BECAUSE ROOM DOES OT KOW HOW TO SAVE IT
+    //@JvmField
+    //var ebaPassportsMap: Map<String, List<EbaService>> = HashMap<String, List<EbaService>>()
+
+    //  details aka properties from EBA
+    //  apps,
+    //  tppRoles, - CZ has, Eba hasn't
+    //  var d : Date = Date()
+    //  get() = if (dateAcquired != null) dateAcquired else Date()
 }

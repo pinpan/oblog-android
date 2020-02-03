@@ -90,7 +90,7 @@ class TppsViewModel(
      *
      * @param requestType Can be [TppsFilterType.ALL_TPPS],
      * [TppsFilterType.FOLLOWED_TPPS], or
-     * [TppsFilterType.ACTIVE_TPPS]
+     * [TppsFilterType.USED_TPPS]
      */
     fun setFiltering(requestType: TppsFilterType) {
         _currentFiltering = requestType
@@ -103,7 +103,7 @@ class TppsViewModel(
                     R.drawable.logo_no_fill, true
                 )
             }
-            TppsFilterType.ACTIVE_TPPS -> {
+            TppsFilterType.USED_TPPS -> {
                 setFilter(
                     R.string.label_active, R.string.no_tpps_active,
                     R.drawable.ic_check_circle_96dp, false
@@ -128,18 +128,8 @@ class TppsViewModel(
         _tppsAddViewVisible.value = tppsAddVisible
     }
 
-    /*fun clearFollowedTpps() {
-        viewModelScope.launch {
-            tppsRepository.clearFollowedTpps()
-            showSnackbarMessage(R.string.followed_tpps_cleared)
-            // Refresh list to show the new state
-            loadTpps(false)
-        }
-    }*/
-
     fun loadEbaDirectory() {
         viewModelScope.launch {
-            //tppsRepository.clearFollowedTpps()
             showSnackbarMessage(R.string.loading)
             // Refresh list to show the new state
             loadTpps(true)
@@ -203,7 +193,7 @@ class TppsViewModel(
                     for (tpp in tpps) {
                         when (_currentFiltering) {
                             TppsFilterType.ALL_TPPS -> tppsToShow.add(tpp)
-                            TppsFilterType.ACTIVE_TPPS -> if (tpp.isActive) {
+                            TppsFilterType.USED_TPPS -> if (tpp.isActive) {
                                 tppsToShow.add(tpp)
                             }
                             TppsFilterType.FOLLOWED_TPPS -> if (tpp.isFollowed) {
@@ -268,24 +258,15 @@ class TppsViewModel(
 
     fun filterTppsByCountry(country: String) {
 
-        //viewModelScope.launch {
-        //    theItems =
-        //}
-        var theItems: List<Tpp> ?= null
-
         viewModelScope.launch {
             val tppsResult = tppsRepository.getTpps(false)
+            var theItems: List<Tpp> ?= null
             if (tppsResult is Success) {
                 theItems = getTppsByGlobalFilter(tppsResult.data)
             }
 
             if (theItems != null) {
-                //tppsToShow = _items.value
                 if (!country.equals("<ALL>")) {
-                    //viewModelScope.launch {
-                    //    tppsToShow = theItems//getTppsByGlobalFilter(theItems)
-                    //}
-                    /*} else {*/
                     var tppsToShow = ArrayList<Tpp>()
                     theItems?.forEach {
                         if (it.country.contains(country, true)) {
@@ -304,6 +285,29 @@ class TppsViewModel(
 
     fun filterTppsByService(service: String) {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        viewModelScope.launch {
+            val tppsResult = tppsRepository.getTpps(false)
+            var theItems: List<Tpp> ?= null
+            if (tppsResult is Success) {
+                theItems = getTppsByGlobalFilter(tppsResult.data)
+            }
+
+            if (theItems != null) {
+                if (!service.equals("<ALL>")) {
+                    var tppsToShow = ArrayList<Tpp>()
+                    theItems?.forEach {
+                        if (it.country.contains(service, true)) {
+                            tppsToShow.add(it)
+                        }
+                    }
+                    theItems = tppsToShow
+                }
+                _items.value = ArrayList(theItems)
+
+                isDataLoadingError.value = false
+                _dataLoading.value = false
+            }
+        }
     }
 
     fun showRevokedOnly() {

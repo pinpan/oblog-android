@@ -3,8 +3,7 @@ package com.applego.oblog.tppwatch.data.source.remote.eba;
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import com.applego.oblog.tppwatch.data.source.local.Tpp;
-import com.applego.oblog.tppwatch.data.source.local.App
+import com.applego.oblog.tppwatch.data.source.local.*
 
 import retrofit2.Call;
 import retrofit2.Retrofit
@@ -39,13 +38,25 @@ interface  OblogEbaService  {
 
         var currentEnv = "Dev"
         val tppType: Type = object : TypeToken<Tpp>() {}.type
-        val tppListType: Type = object : TypeToken<MutableList<Tpp>>() {}.type //@JvmSuppressWildcards
-        val tppsListResponseType: Type = object : TypeToken<TppsListResponse>() {}.type //@JvmSuppressWildcards
+        val tppListType: Type = object : TypeToken<MutableList<Tpp>>() {}.type
+        val tppsListResponseType: Type = object : TypeToken<TppsListResponse>() {}.type
+        val ebaPassportListType = object : TypeToken<List<EbaPassport>>() {}.type
+        val ebaPassportType: Type = object : TypeToken<EbaPassport>() {}.type
+        val tppServiceListType: Type = object : TypeToken<List<Service>>() {}.type
+        val tppServiceType: Type = object : TypeToken<Service>() {}.type
 
         var gson = GsonBuilder()
                 .registerTypeAdapter(tppType, TppDeserializer())
                 .registerTypeAdapter(tppListType, TppListDeserializer())
                 .registerTypeAdapter(tppsListResponseType, TppsListResponseDeserializer())
+
+                /*
+                .registerTypeAdapter(ebaPassportListType, EbaPassportListDeserializer())
+                .registerTypeAdapter(ebaPassportType, EbaPassportDeserializer())
+                .registerTypeAdapter(tppServiceListType, TppServiceListDeserializer())
+                */
+
+                .registerTypeAdapter(tppServiceType, TppServiceDeserializer())
                 .enableComplexMapKeySerialization()
                 .serializeNulls()
                 .setDateFormat(DateFormat.LONG)

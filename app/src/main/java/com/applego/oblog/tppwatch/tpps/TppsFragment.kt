@@ -109,8 +109,8 @@ class TppsFragment : Fragment() {
         countriesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 // An item was selected. You can retrieve the selected item using
-                val country_iso = context?.resources?.getStringArray(R.array.eu_countries_iso)!![pos];
-                viewModel.filterTppsByCountry(country_iso)
+                val countryISO = context?.resources?.getStringArray(R.array.eu_countries_iso)!![pos];
+                viewModel.filterTppsByCountry(countryISO)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -224,7 +224,7 @@ class TppsFragment : Fragment() {
             setOnMenuItemClickListener {
                 viewModel.setFiltering(
                     when (it.itemId) {
-                        R.id.active -> TppsFilterType.ACTIVE_TPPS
+                        R.id.active -> TppsFilterType.USED_TPPS
                         R.id.followed -> TppsFilterType.FOLLOWED_TPPS
                         else -> TppsFilterType.ALL_TPPS
                     }

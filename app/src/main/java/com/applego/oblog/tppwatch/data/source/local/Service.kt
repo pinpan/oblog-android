@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity(tableName = "services")
+// TODO: Rename to TppService
 data class Service @JvmOverloads constructor(
         @ColumnInfo(name = "title") var title: String = "",
         @ColumnInfo(name = "description") var description: String = "",
