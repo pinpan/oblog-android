@@ -4,6 +4,7 @@ import androidx.room.TypeConverter
 import java.text.SimpleDateFormat
 import java.util.*
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken
 
@@ -27,6 +28,9 @@ class OblogTypeConverters {
     }.getType()
 
     val ebaPassportsMapType = object : TypeToken<Map<String, List<EbaService>>>() {
+    }.getType()
+
+    val ebaPassportMapListType = object : TypeToken<List<Map<String, Service>>>() {
     }.getType()
 
 
@@ -135,9 +139,43 @@ class OblogTypeConverters {
     }
 
     @TypeConverter
+    fun fromEbaPassportListToJsonElement(passportsList : List<Map<String, List<Service>>>) : JsonElement {
+        val jsonElement = JsonArray()
+        return jsonElement
+    }
+
+    @TypeConverter
     fun fromJsonElementToEbaPassportList(json : JsonElement) : List<EbaPassport> {
-        val aList: List<EbaPassport> = gson.fromJson<List<EbaPassport>>(json, ebaPassportListType)
-        return aList
+        val aList: List<Map<String, Any>> = gson.fromJson<List<Map<String, String>>>(json, ebaPassportMapListType)
+
+        val ebaPassportsList = ArrayList<EbaPassport>()
+
+        for (aMap in aList) {
+            val entrySet: Set<Map.Entry<String, Any>> = aMap.entries
+            val ebaPassport = EbaPassport()
+            val passportsMap = HashMap<String, List<Service>>()
+            ebaPassport.theServices = passportsMap
+            ebaPassportsList.add(ebaPassport)
+            for (entry in entrySet) {
+                //val aPassport = EbaPassport()
+                val countryCode = entry.key
+                val theServices = ArrayList<Service>()
+                passportsMap.put(countryCode, theServices)
+                //val services = entry.value.split(",")
+                if (entry.value is String) {
+                    val ebaService = EbaService.findService(entry.value as String)
+                    theServices.add(Service(ebaService.code, ebaService.description))
+                } else {
+                    for (aService in entry.value as List<String>) {
+                        val ebaService = EbaService.findService(aService)
+                        theServices.add(Service(ebaService.code, ebaService.description))
+                    }
+                }
+            }
+        }
+
+
+        return ebaPassportsList
     }
 
     @TypeConverter
