@@ -17,11 +17,11 @@ data class EbaPassport @JvmOverloads constructor(
      * Map of services and corresponding list of countries to which the service is passported
      */
     @JvmField
-    var serviceMap = HashMap<EbaService, List<String>>()
+    var serviceMap = HashMap<EbaService, MutableList<String>>()
 
     /**
      * Map of counties and list of services which are passported to the corresponding country
      */
     @JvmField
-    var countryMap = HashMap<String, List<Service>>()
+    var countryMap = HashMap<String, MutableList<Service>>()
 }

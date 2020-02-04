@@ -296,19 +296,22 @@ class TppsViewModel(
             if (theItems != null) {
                 if (!service.equals("<ALL>")) {
 
+                    // TODO: Rework to serviceMap to avoid duplicity and shorten the filtering
+
                     val psdService = EbaService.findPsd2Service(service)
                     var tppsToShow = ArrayList<Tpp>()
                     theItems?.forEach {
                         if (it.ebaPassports != null) {
-                            for (pass in it.ebaPassports) {
+                            var i = 0
+                            while (i < it.ebaPassports.size) {
+                                val pass = it.ebaPassports[i++]
                                 if (pass.serviceMap != null) {
                                     for (serv in pass.serviceMap)  {
                                         if (serv.value != null) {
-                                            for (aServ in serv.value) {
-                                                if (aServ.title.equals(psdService.code)) {
-                                                    tppsToShow.add(it)
-                                                    break;
-                                                }
+                                            if (serv.key.code.equals(psdService.code)) {
+                                                tppsToShow.add(it)
+                                                i = it.ebaPassports.size
+                                                break;
                                             }
                                         }
                                     }

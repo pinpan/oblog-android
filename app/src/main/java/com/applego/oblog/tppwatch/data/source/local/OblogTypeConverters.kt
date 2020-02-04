@@ -154,23 +154,41 @@ class OblogTypeConverters {
             val ebaPassport = EbaPassport()
             ebaPassportsList.add(ebaPassport)
 
-            val countryMap = HashMap<String, List<Service>>()
+            val countryMap = HashMap<String, MutableList<Service>>()
             ebaPassport.countryMap = countryMap
 
-            val serviceMap = HashMap<EbaService, List<String>>()
+            val serviceMap = HashMap<EbaService, MutableList<String>>()
             ebaPassport.serviceMap = serviceMap
+
+            val theServiceCountries = ArrayList<String>()
 
             val entrySet: Set<Map.Entry<String, Any>> = aMap.entries
             for (entry in entrySet) {
                 val countryCode = entry.key
+
                 val theServices = ArrayList<Service>()
                 countryMap.put(countryCode, theServices)
+
                 if (entry.value is String) {
                     val ebaService = EbaService.findService(entry.value as String)
+                    var serviceCountries = serviceMap.get(ebaService)
+                    if (serviceCountries == null) {
+                        serviceCountries = mutableListOf<String>()
+                        serviceMap.put(ebaService, serviceCountries)
+                    }
+                    serviceCountries.add(entry.key)
+
                     theServices.add(Service(ebaService.code, ebaService.description))
                 } else {
                     for (aService in entry.value as List<String>) {
                         val ebaService = EbaService.findService(aService)
+                        var serviceCountries = serviceMap.get(ebaService)
+                        if (serviceCountries == null) {
+                            serviceCountries = mutableListOf<String>()
+                            serviceMap.put(ebaService, serviceCountries)
+                        }
+                        serviceCountries.add(entry.key)
+
                         theServices.add(Service(ebaService.code, ebaService.description))
                     }
                 }
