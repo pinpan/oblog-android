@@ -154,7 +154,7 @@ class OblogTypeConverters {
             val entrySet: Set<Map.Entry<String, Any>> = aMap.entries
             val ebaPassport = EbaPassport()
             val passportsMap = HashMap<String, List<Service>>()
-            ebaPassport.theServices = passportsMap
+            ebaPassport.services = passportsMap
             ebaPassportsList.add(ebaPassport)
             for (entry in entrySet) {
                 //val aPassport = EbaPassport()
@@ -173,7 +173,6 @@ class OblogTypeConverters {
                 }
             }
         }
-
 
         return ebaPassportsList
     }

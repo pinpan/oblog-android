@@ -60,7 +60,7 @@ data class Tpp @JvmOverloads constructor(
         get() = title.isEmpty() || description.isEmpty()
 
     @JvmField
-    var ebaPassports : List<EbaPassport> /*Map<String, List<Service>>> */ = ArrayList<EbaPassport>()/*Map<String, List<Service>>>()*/
+    var ebaPassports : List<EbaPassport> = ArrayList<EbaPassport>()
 
     // DOES NOT COMPILE BECAUSE ROOM DOES OT KOW HOW TO SAVE IT
     //@JvmField

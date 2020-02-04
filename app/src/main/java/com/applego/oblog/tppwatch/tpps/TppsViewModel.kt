@@ -28,6 +28,7 @@ import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.source.local.EbaService
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.launch
 import java.util.ArrayList
@@ -284,8 +285,8 @@ class TppsViewModel(
     }
 
     fun filterTppsByService(service: String) {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         viewModelScope.launch {
+
             val tppsResult = tppsRepository.getTpps(false)
             var theItems: List<Tpp> ?= null
             if (tppsResult is Success) {
@@ -294,10 +295,25 @@ class TppsViewModel(
 
             if (theItems != null) {
                 if (!service.equals("<ALL>")) {
+                    val psdService = EbaService.findPsd2Service(service)
                     var tppsToShow = ArrayList<Tpp>()
                     theItems?.forEach {
-                        if (it.country.contains(service, true)) {
-                            tppsToShow.add(it)
+                        if (it.ebaPassports != null) {
+                            for (pass in it.ebaPassports) {
+                                if (pass.services != null) {
+                                    for (serv in pass.services)  {
+                                        if (serv.value != null) {
+                                            for (aServ in serv.value) {
+                                                if (aServ.title.equals(psdService.code)) {
+                                                    tppsToShow.add(it)
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
                         }
                     }
                     theItems = tppsToShow

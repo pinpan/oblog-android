@@ -14,8 +14,5 @@ data class EbaPassport @JvmOverloads constructor(
 ) {
 
     @JvmField
-    var services: ArrayList<Service> = ArrayList<Service>()
-
-    @JvmField
-    var theServices = HashMap<String, List<Service>>()
+    var services = HashMap<String, List<Service>>()
 }

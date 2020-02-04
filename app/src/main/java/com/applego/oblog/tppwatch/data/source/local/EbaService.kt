@@ -28,6 +28,7 @@ enum class EbaService (val code: String, val psd2Code: String, val shortDescript
 
     companion object {
         val allServies = HashMap<String, EbaService>()
+        //val psd2Servies = HashMap<String, EbaService>()
         init {
             allServies.put("PS_010", PS_010)
             allServies.put("PS_020", PS_020)
@@ -52,6 +53,20 @@ enum class EbaService (val code: String, val psd2Code: String, val shortDescript
                 aService = NONE
             }
             return aService
+        }
+
+        fun findPsd2Service(inService: String): EbaService {
+            if (inService != null) {
+                val psd2Service = inService.toUpperCase()
+                for (serv in allServies) {
+                    if (!serv.value.psd2Code.isNullOrBlank()) {
+                        if (psd2Service.startsWith(serv.value.psd2Code.toUpperCase())) {
+                            return serv.value
+                        }
+                    }
+                }
+            }
+            return EbaService.NONE
         }
 
     }

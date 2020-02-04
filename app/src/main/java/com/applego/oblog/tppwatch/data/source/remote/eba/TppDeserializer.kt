@@ -6,6 +6,9 @@ import com.applego.oblog.tppwatch.data.source.local.Service
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.google.gson.*
 import java.lang.reflect.Type
+import java.util.*
+import java.util.Locale.filter
+import java.util.stream.Collectors
 
 class TppDeserializer : JsonDeserializer<Tpp> {
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Tpp {
@@ -52,26 +55,22 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         if (services != null) {
             val allPassportedServices = __oblogTypeConverters.fromJsonElementToEbaPassportList(services)
             tpp.ebaPassports = allPassportedServices
-
-            //val entrySet : Set<Map.Entry<String, JsonElement>> = services.entrySet()
-            /*for (element:JsonElement in services) {
-
-                var aMap : Map<String, JsonElement> = element.asJsonObject
-
-                val cntry = element.key
-                val pass : EbaPassport = EbaPassport(cntry)
-                pass.services = ArrayList<Service>()
-
-                val services = element.value.asJsonArray
-                for (service in services) {
-                    //pass.services.add(service)
-                }
-            }*/
         }
-
 
         return tpp
     }
+
+/*
+    @Override
+    fun deserialize(elem : JsonElement, type : Type, jsonDeserializationContext : JsonDeserializationContext) : Map<String, Date> {
+        return elem.getAsJsonObject()
+            .entrySet()
+            .stream()
+            .filter(e -> e.getValue().isJsonPrimitive())
+            .filter(e -> e.getValue().getAsJsonPrimitive().isString())
+            .collect(Collectors.toMap(Map.Entry::getKey, e -> formatDate(e.getValue())));
+     }
+*/
 
     private fun getStringFromJsonArray(jsounArray: JsonArray): String {
 
@@ -80,6 +79,6 @@ class TppDeserializer : JsonDeserializer<Tpp> {
             theString += jsonArrayElement.asString.removeSurrounding("\"")
             theString += "\\"
         }
-        return theString.trimEnd(',',' ')
+        return theString.trimEnd(',',' ','\\')
     }
 }
