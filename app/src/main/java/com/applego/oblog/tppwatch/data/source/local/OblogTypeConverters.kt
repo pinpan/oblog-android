@@ -151,17 +151,20 @@ class OblogTypeConverters {
         val ebaPassportsList = ArrayList<EbaPassport>()
 
         for (aMap in aList) {
-            val entrySet: Set<Map.Entry<String, Any>> = aMap.entries
             val ebaPassport = EbaPassport()
-            val passportsMap = HashMap<String, List<Service>>()
-            ebaPassport.services = passportsMap
             ebaPassportsList.add(ebaPassport)
+
+            val countryMap = HashMap<String, List<Service>>()
+            ebaPassport.countryMap = countryMap
+
+            val serviceMap = HashMap<EbaService, List<String>>()
+            ebaPassport.serviceMap = serviceMap
+
+            val entrySet: Set<Map.Entry<String, Any>> = aMap.entries
             for (entry in entrySet) {
-                //val aPassport = EbaPassport()
                 val countryCode = entry.key
                 val theServices = ArrayList<Service>()
-                passportsMap.put(countryCode, theServices)
-                //val services = entry.value.split(",")
+                countryMap.put(countryCode, theServices)
                 if (entry.value is String) {
                     val ebaService = EbaService.findService(entry.value as String)
                     theServices.add(Service(ebaService.code, ebaService.description))
