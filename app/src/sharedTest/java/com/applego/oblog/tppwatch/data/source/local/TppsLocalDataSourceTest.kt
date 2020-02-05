@@ -115,7 +115,7 @@ class TppsLocalDataSourceTest {
         val newTpp = Tpp("Entity_CZ28173281", "Some title", "Some description")
         localDataSource.saveTpp(newTpp)
 
-        localDataSource.activateTpp(newTpp)
+        localDataSource.setTppActivateFlag(newTpp.id, true)
 
         // Then the tppk can be retrieved from the persistent repository and is active
         val result = localDataSource.getTpp(newTpp.id)

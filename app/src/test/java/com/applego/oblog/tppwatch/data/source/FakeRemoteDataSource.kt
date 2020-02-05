@@ -47,19 +47,19 @@ class FakeRemoteDataSource(var tppsListResponse: TppsListResponse?/*MutableList<
         tpps?.add(tpp)
     }
 
-    override suspend fun followTpp(tpp: Tpp) {
+    override suspend fun setTppFollowedFlag(tpp: Tpp) {
         tpps?.firstOrNull { it.id == tpp.id }?.let { it.isFollowed = true }
     }
 
-    override suspend fun followTpp(tppId: String) {
+    override suspend fun setTppFollowedFlag(tppId: String) {
         tpps?.firstOrNull { it.id == tppId }?.let { it.isFollowed = true }
     }
 
-    override suspend fun activateTpp(tpp: Tpp) {
+    override suspend fun updateActive(tpp: Tpp) {
         tpps?.firstOrNull { it.id == tpp.id }?.let { it.isFollowed = false }
     }
 
-    override suspend fun activateTpp(tppId: String) {
+    override suspend fun updateActive(tppId: String) {
         tpps?.firstOrNull { it.id == tppId }?.let { it.isFollowed = false }
     }
 

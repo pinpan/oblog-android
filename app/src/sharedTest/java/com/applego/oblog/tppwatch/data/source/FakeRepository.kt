@@ -61,24 +61,20 @@ class FakeRepository : TppsRepository {
         tppsServiceData[tpp.id] = tpp
     }
 
-    override suspend fun followTpp(tppId: String) {
-
-        val unfollowTpp = tppsServiceData[tppId] //Tpp(tppId.entityCode, tppId.title, tppId.description, tppId.id)
-        unfollowTpp?.isFollowed = true
-        //tppsServiceData[tppId.id] = unfollowTpp
+    override suspend fun setTppFollowedFlag(tppId: String, followed: Boolean) {
+        tppsServiceData[tppId]?.isFollowed = true
     }
 
-    override suspend fun followTpp(tpp: Tpp) {
+    override suspend fun setTppFollowedFlag(tpp: Tpp, followed: Boolean) {
         tppsServiceData[tpp.id]?.isFollowed = true
     }
 
-    override suspend fun activateTpp(tpp: Tpp) {
-        val activeTpp = Tpp(tpp.entityCode, tpp.title, tpp.description, tpp.id)
-        tppsServiceData[tpp.id] = activeTpp
+    override suspend fun setTppActivateFlag(tpp: Tpp, active: Boolean) {
+        tpp.isActive = active
     }
 
-    override suspend fun activateTpp(tppId: String) {
-        throw NotImplementedError()
+    override suspend fun setTppActivateFlag(tppId: String, active: Boolean) {
+        tppsServiceData[tppId]?.isActive = active
     }
 
     override suspend fun clearFollowedTpps() {

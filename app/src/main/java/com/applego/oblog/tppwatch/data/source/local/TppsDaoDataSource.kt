@@ -72,12 +72,8 @@ class TppsDaoDataSource internal constructor(
         tppsDao.updateFollowed(tppId, true)
     }
 
-    override suspend fun activateTpp(tpp: Tpp) = withContext(ioDispatcher) {
-        tppsDao.updateFollowed(tpp.id, false)
-    }
-
-    override suspend fun activateTpp(tppId: String) {
-        tppsDao.updateFollowed(tppId, false)
+    override suspend fun setTppActivateFlag(tppId: String, active: Boolean)  = withContext(ioDispatcher) {
+        tppsDao.updateActive(tppId, active)
     }
 
     override suspend fun clearFollowedTpps() = withContext<Unit>(ioDispatcher) {

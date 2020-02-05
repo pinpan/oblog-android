@@ -28,8 +28,10 @@ class StatisticsUtilsTest {
 
     @Test
     fun getActiveAndFollowedStats_noFollowed() {
+        val aTpp = Tpp("Entity_CZ28173281", "title", "desc")
+        aTpp.isActive = true
         val tpps = listOf(
-                Tpp("Entity_CZ28173281", "title", "desc")
+                aTpp
         )
         // When the list of tpps is computed with an active tpp
         val result = getActiveAndFollowedStats(tpps)
@@ -65,7 +67,9 @@ class StatisticsUtilsTest {
             tpp3.isFollowed = true
 
         var tpp4 = Tpp("Entity_CZ28173284", "title", "desc")
+            tpp4.isActive = true
         var tpp5 = Tpp("Entity_CZ28173285", "title", "desc")
+            tpp5.isActive = true
 
         val tpps = listOf(
                 tpp1,

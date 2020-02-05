@@ -20,6 +20,7 @@
     <string name="edit_tpp">Edit TPP</string>
     <string name="tpp_marked_followed">TPP marked Followed</string>
     <string name="tpp_marked_active">TPP marked active</string>
+    <string name="tpp_marked_inactive">TPP marked inactive</string>
     <string name="loading_tpps_error">Error while loading TPPs</string>
     <string name="followed_tpps_cleared">Followed TPPs cleared</string>
     <string name="menu_filter">Filter</string>

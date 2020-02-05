@@ -87,9 +87,11 @@ class StatisticsFragmentTest {
         // Given some tpps
         repository.apply {
             var tpp1 = Tpp("Entity_CZ28173281", "Title1", "Description1")
-            tpp1.isFollowed = true
+            tpp1.isActive = true
+            tpp1.isFollowed = false
             saveTppBlocking(tpp1)
             var tpp2 = Tpp("Entity_CZ28173282", "Title2", "Description2")
+            tpp2.isFollowed = false
             saveTppBlocking(tpp2)
         }
 
@@ -99,7 +101,7 @@ class StatisticsFragmentTest {
         val expectedActiveTppText = getApplicationContext<Context>()
             .getString(R.string.statistics_active_tpps, 50.0f)
         val expectedFollowedTppText = getApplicationContext<Context>()
-            .getString(R.string.statistics_followed_tpps, 50.0f)
+            .getString(R.string.statistics_followed_tpps, 0.0f)
         // check that both info boxes are displayed and contain the correct info
         onView(withId(R.id.stats_active_text)).check(matches(isDisplayed()))
         onView(withId(R.id.stats_active_text)).check(matches(withText(expectedActiveTppText)))

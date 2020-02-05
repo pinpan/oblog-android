@@ -50,12 +50,8 @@ class FakeLocalDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : Local
         tpps?.firstOrNull { it.id == tppId }?.let { it.isFollowed = true }
     }
 
-    override suspend fun activateTpp(tpp: Tpp) {
-        tpps?.firstOrNull { it.id == tpp.id }?.let { it.isFollowed = false }
-    }
-
-    override suspend fun activateTpp(tppId: String) {
-        tpps?.firstOrNull { it.id == tppId }?.let { it.isFollowed = false }
+    override suspend fun setTppActivateFlag(tppId: String, active: Boolean) {
+        tpps?.firstOrNull { it.id == tppId }?.let { it.isActive = active}
     }
 
     override suspend fun clearFollowedTpps() {

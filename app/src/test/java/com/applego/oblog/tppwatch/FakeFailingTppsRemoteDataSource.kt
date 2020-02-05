@@ -39,19 +39,19 @@ object FakeFailingTppsRemoteDataSource : RemoteTppDataSource {
         TODO("not implemented")
     }
 
-    override suspend fun followTpp(tpp: Tpp) {
+    override suspend fun setTppFollowedFlag(tpp: Tpp) {
         TODO("not implemented")
     }
 
-    override suspend fun followTpp(tppId: String) {
+    override suspend fun setTppFollowedFlag(tppId: String) {
         TODO("not implemented")
     }
 
-    override suspend fun activateTpp(tpp: Tpp) {
+    override suspend fun updateActive(tpp: Tpp) {
         TODO("not implemented")
     }
 
-    override suspend fun activateTpp(tppId: String) {
+    override suspend fun updateActive(tppId: String) {
         TODO("not implemented")
     }
 

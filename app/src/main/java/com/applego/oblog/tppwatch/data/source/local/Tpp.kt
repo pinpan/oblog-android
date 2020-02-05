@@ -38,6 +38,7 @@ data class Tpp @JvmOverloads constructor(
         @ColumnInfo(name = "description") var description: String = "",             // TPP is followed by user
         @ColumnInfo(name = "globalUrn") var globalUrn: String = "",                 // A Global Unified identifier. Used by Preta as own ID.
         @ColumnInfo(name = "ebaEntityVersion") var ebaEntityVersion: String = "",   // New, Updated, Removed (from original source), Deleted (From our DB) ...
+
         @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString()
 ) {
 
@@ -53,14 +54,16 @@ data class Tpp @JvmOverloads constructor(
     val titleForList: String
         get() = if (title.isNotEmpty()) title else description
 
-    val isActive
-        get() = !isFollowed
-
-    val isEmpty
-        get() = title.isEmpty() || description.isEmpty()
+    @ColumnInfo(name = "active")
+    var isActive: Boolean = false
+        //get() = !isFollowed
 
     @JvmField
     var ebaPassports : List<EbaPassport> = ArrayList<EbaPassport>()
+
+    // TODO: Remove this "special" field used only for validation
+    val isEmpty
+        get() = title.isEmpty() || description.isEmpty()
 
     // DOES NOT COMPILE BECAUSE ROOM DOES OT KOW HOW TO SAVE IT
     //@JvmField

@@ -78,6 +78,7 @@ class StatisticsViewModelTest {
         val tpp3 = Tpp("Entity_CZ28173283", "Title3", "Description3")
         tpp3.isFollowed = true
         val tpp4 = Tpp("Entity_CZ28173284", "Title4", "Description4")
+        tpp3.isActive = true
         tppsRepository.addTpps(tpp1, tpp2, tpp3, tpp4)
 
         // When loading of Tpps is requested

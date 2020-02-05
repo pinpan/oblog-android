@@ -90,6 +90,15 @@ interface TppsDao {
     suspend fun updateFollowed(tppId: String, followed: Boolean)
 
     /**
+     * Update the active status of a tpp
+     *
+     * @param tppId  id of the tpp
+     * @param active status to be updated
+     */
+    @Query("UPDATE tpps SET active = :active WHERE id = :tppId")
+    suspend fun updateActive(tppId: String, active: Boolean)
+
+    /**
      * Delete a tpp by id.
      *
      * @return the number of tpps deleted. This should always be 1.

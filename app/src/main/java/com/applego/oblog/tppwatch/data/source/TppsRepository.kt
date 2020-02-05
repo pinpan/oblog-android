@@ -33,13 +33,17 @@ interface TppsRepository {
 
     suspend fun saveTpp(tpp: Tpp)
 
-    suspend fun followTpp(tppId: String)
+    suspend fun setTppFollowedFlag(tppId: String, followed: Boolean)
 
-    suspend fun followTpp(tpp: Tpp)
+    suspend fun setTppFollowedFlag(tpp: Tpp, followed: Boolean)
 
-    suspend fun activateTpp(tpp: Tpp)
+    //suspend fun unfollowTpp(tpp: Tpp)
 
-    suspend fun activateTpp(tppId: String)
+    suspend fun setTppActivateFlag(tppId: String, active: Boolean)
+
+    suspend fun setTppActivateFlag(tpp: Tpp, active: Boolean)
+
+    //suspend fun deactivateTpp(tpp: Tpp)
 
     suspend fun clearFollowedTpps()
 

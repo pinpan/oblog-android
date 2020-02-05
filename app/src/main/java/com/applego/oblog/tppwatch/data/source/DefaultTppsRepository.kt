@@ -182,47 +182,72 @@ class DefaultTppsRepository (
         }
     }
 
-    override suspend fun followTpp(tppId: String) {
+    override suspend fun setTppFollowedFlag(tppId: String, followed: Boolean) {
         // Do in memory cache update to keep the app UI up to date
 
         (tppsLocalDataSource.getTpp(tppId) as? Success)?.let {
-            followTpp(it.data)
+            setTppFollowedFlag(it.data, followed)
             /*cacheAndPerform(it.data) {
                 it.isFollowed = true
                 coroutineScope {
-                    //launch { tppsRemoteDataSource.followTpp(it) }
-                    launch { tppsLocalDataSource.followTpp(it) }
+                    //launch { tppsRemoteDataSource.setTppFollowedFlag(it) }
+                    launch { tppsLocalDataSource.setTppFollowedFlag(it) }
                 }
             }*/
         }
     }
 
-    override suspend fun followTpp(tpp: Tpp) {
-        cacheAndPerform(tpp) { //withContext(ioDispatcher) {
-            tpp/*getTppWithId(tpp.id)?*/.let {
+    override suspend fun setTppFollowedFlag(tpp: Tpp, followed: Boolean) {
+        cacheAndPerform(tpp) {
+            tpp.let {
                 it.isFollowed = true
                 coroutineScope {
                     launch { tppsLocalDataSource.followTpp(it) }
-                } //followTpp(it)
+                }
             }
         }
     }
 
-    override suspend fun activateTpp(tpp: Tpp) = withContext(ioDispatcher) {
+/*
+    override suspend fun unfollowTpp(tpp: Tpp) {
+        cacheAndPerform(tpp) {
+            tpp.let {
+                it.isFollowed = false
+                coroutineScope {
+                    launch { tppsLocalDataSource.followTpp(it) }
+                }
+            }
+        }
+    }
+
+
+    override suspend fun deactivateTpp(tpp: Tpp) {
+        cacheAndPerform(tpp) {
+            tpp.let {
+                it.isActive = false
+                coroutineScope {
+                    launch { tppsLocalDataSource.setTppActivateFlag(it.id, false) }
+                }
+            }
+        }
+    }
+*/
+
+    override suspend fun setTppActivateFlag(tpp: Tpp, active: Boolean) = withContext(ioDispatcher) {
         // Do in memory cache update to keep the app UI up to date
         cacheAndPerform(tpp) {
-            it.isFollowed = false
+            it.isActive = true
             coroutineScope {
-                //launch { tppsRemoteDataSource.activateTpp(it) }
-                launch { tppsLocalDataSource.activateTpp(it) }
+                //launch { tppsRemoteDataSource.updateActive(it) }
+                launch { tppsLocalDataSource.setTppActivateFlag(it.id, true) }
             }
         }
     }
 
-    override suspend fun activateTpp(tppId: String) {
+    override suspend fun setTppActivateFlag(tppId: String, active: Boolean) {
         withContext(ioDispatcher) {
             getTppWithId(tppId)?.let {
-                activateTpp(it)
+                setTppActivateFlag(it, active)
             }
         }
     }

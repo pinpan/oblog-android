@@ -86,20 +86,19 @@ class TppDetailViewModelTest {
 
     @Test
     fun activateTpp() {
-        tpp.isFollowed = true
+        tpp.isActive = true
 
         tppDetailViewModel.start(tpp.id)
 
         // Verify that the tpp was followed initially
-        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isFollowed).isTrue()
+        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isActive).isTrue()
 
         // When the ViewModel is asked to follow the tpp
-        tppDetailViewModel.setFollowed(false)
+        tppDetailViewModel.setActive(false)
 
         // Then the tpp is not followed and the snackbar shows the correct message
-        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isFollowed).isFalse()
-        assertSnackbarMessage(tppDetailViewModel.snackbarText, R.string.tpp_marked_active)
-
+        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isActive).isFalse()
+        assertSnackbarMessage(tppDetailViewModel.snackbarText, R.string.tpp_marked_inactive)
     }
 
     @Test

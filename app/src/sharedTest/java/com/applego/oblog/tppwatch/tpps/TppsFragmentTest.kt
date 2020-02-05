@@ -95,11 +95,15 @@ class TppsFragmentTest {
 
     @Test
     fun displayActiveTpp() {
-        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1"))
+        val tpp = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
+        tpp.isActive = true
+        tpp.isFollowed = false
+        repository.saveTppBlocking(tpp)
 
         launchActivity()
 
         onView(withText("TITLE1")).check(matches(isDisplayed()))
+
 
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_active)).perform(click())
@@ -233,7 +237,9 @@ class TppsFragmentTest {
     fun showActiveTpps() {
         // Add 2 active tpps and one followed tpp
         var tpp1 = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
+        tpp1.isActive = true
         var tpp2 = Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION2")
+        tpp2.isActive = true
         var tpp3 = Tpp("Entity_CZ28173283", "TITLE3", "DESCRIPTION3")
         tpp3.isFollowed = true
 
