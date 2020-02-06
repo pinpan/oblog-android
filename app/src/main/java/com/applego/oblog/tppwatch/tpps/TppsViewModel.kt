@@ -265,6 +265,7 @@ class TppsViewModel(
     }
 
     fun filterTppsByCountry(country: String) {
+        _dataLoading.value = true
 
         viewModelScope.launch {
             val tppsResult = tppsRepository.getTpps(false)
@@ -288,10 +289,15 @@ class TppsViewModel(
                 isDataLoadingError.value = false
                 _dataLoading.value = false
             }
+
+            _dataLoading.value = false
         }
     }
 
     fun filterTppsByService(service: String) {
+
+        _dataLoading.value = true
+
         viewModelScope.launch {
 
             val tppsResult = tppsRepository.getTpps(false)

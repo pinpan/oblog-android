@@ -56,10 +56,11 @@ data class Tpp @JvmOverloads constructor(
 
     @ColumnInfo(name = "active")
     var isActive: Boolean = false
-        //get() = !isFollowed
 
     @JvmField
     var ebaPassports : List<EbaPassport> = ArrayList<EbaPassport>()
+
+
 
     // TODO: Remove this "special" field used only for validation
     val isEmpty
