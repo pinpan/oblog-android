@@ -31,15 +31,52 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> viewmodel.openTpp(tpp.id)}"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingBottom="@dimen/list_item_padding"
         android:paddingTop="@dimen/list_item_padding"
-        android:onClick="@{() -> viewmodel.openTpp(tpp.id)}">
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/list_item_padding">
+
+        <!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="?android:attr/listPreferredItemHeight"
+            android:padding="6dip">-->
 
         <CheckBox
+            android:id="@+id/follow_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:checked="@{tpp.followed}"
+            android:onClick="@{(view) -> viewmodel.followTpp(tpp, ((CompoundButton)view).isChecked())}" />
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="@{tpp.titleForList}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" /> <!--app:followedTpp="@{tpp.followed}"-->
+
+        <!-- <TextView
+                android:id="@+id/firstLine"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/title_text"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_toRightOf="@id/follow_checkbox"
+                android:gravity="center_vertical"
+                android:text="Example application"
+                android:textSize="16sp" />-->
+        <!-- </RelativeLayout>-->
+
+        <!--<CheckBox
             android:id="@+id/follow_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,6 +93,6 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:text="@{tpp.titleForList}"
-             /> <!--app:followedTpp="@{tpp.followed}"-->
+             /> --><!--app:followedTpp="@{tpp.followed}"-->
     </LinearLayout>
 </layout>

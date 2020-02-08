@@ -50,8 +50,8 @@
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:gravity="center_vertical"
                 android:text="@{context.getString(viewmodel.currentFilteringLabel)}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textSize="12sp" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="8sp" />
 
             <include layout="@layout/tpps_search" />
 

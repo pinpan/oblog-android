@@ -81,23 +81,22 @@
                     <!-- android:paddingTop specified to temporarily work around -->
                     <!-- https://github.com/robolectric/robolectric/issues/4588 -->
 
-                    <EditText
-                        android:id="@+id/tpp_detail_name_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="textPersonName"
-                        android:text="Name"
-                        tools:text="@tpp_name_label" />
-
                     <TextView
                         android:id="@+id/tpp_detail_title_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tpp_detail_name_label"
                         android:paddingTop="1dp"
                         android:text="@{viewmodel.tpp.title}"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="#006496"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:id="@+id/divider2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tpp_detail_active_checkbox"
+                        android:background="?android:attr/listDivider" />
 
                     <CheckBox
                         android:id="@+id/tpp_detail_follow_checkbox"
@@ -110,48 +109,98 @@
                         android:gravity="left|center_vertical"
                         android:onClick="@{(view) -> viewmodel.setFollowed(((CompoundButton)view).isChecked())}"
                         android:paddingTop="1dp"
-                        android:text="@string/label_following" />
+                        android:text="@string/label_following"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
                     <CheckBox
                         android:id="@+id/tpp_detail_active_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tpp_detail_follow_checkbox"
+                        android:layout_alignTop="@id/tpp_detail_follow_checkbox"
                         android:layout_gravity="left"
                         android:layout_marginRight="@dimen/activity_horizontal_margin"
-                        android:checked="@{viewmodel.followed}"
+                        android:layout_toRightOf="@id/tpp_detail_follow_checkbox"
+                        android:checked="@{viewmodel.active}"
                         android:gravity="left|center_vertical"
-                        android:onClick="@{(view) -> viewmodel.setFollowed(((CompoundButton)view).isChecked())}"
+                        android:onClick="@{(view) -> viewmodel.setActive(((CompoundButton)view).isChecked())}"
                         android:paddingTop="1dp"
                         android:text="@string/label_activated"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+                    <View
+                        android:id="@+id/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tpp_detail_active_checkbox"
+                        android:background="?android:attr/listDivider" />
+
+                    <EditText
+                        android:id="@+id/tpp_detail_home_country_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/divider"
+                        android:ems="10"
+                        android:hint="@string/tpp_home_country_label"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:visibility="visible"
+                        tools:text="@string/tpp_home_country_label" />
 
                     <TextView
                         android:id="@+id/tpp_detail_home_country"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tpp_detail_active_checkbox"
+                        android:layout_alignBaseline="@id/tpp_detail_home_country_label"
+                        android:layout_toRightOf="@id/tpp_detail_home_country_label"
                         android:gravity="left"
-                        android:text="@string/tpp_home_country"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                        android:text="@{viewmodel.tpp.country}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="#006496"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/tpp_detail_description_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tpp_detail_home_country_label"
+                        android:clickable="false"
+                        android:ems="10"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        tools:text="@string/tpp_description_label" />
 
                     <TextView
                         android:id="@+id/tpp_detail_description_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tpp_detail_home_country"
+                        android:layout_below="@id/tpp_detail_description_label"
                         android:paddingTop="1dp"
                         android:text="@{viewmodel.tpp.description}"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
-                    <TextView
-                        android:id="@+id/tpp_detail_financial_services"
-                        android:layout_width="match_parent"
+                    <EditText
+                        android:id="@+id/tpp_detail_services_label"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tpp_detail_description_text"
+                        android:clickable="false"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:inputType="none"
+                        tools:text="@string/tpp_services_label" />
+
+                    <TextView
+                        android:id="@+id/tpp_detail_licensed_services"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tpp_detail_services_label"
                         android:paddingTop="1dp"
-                        android:text="@{viewmodel.tpp.description}"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:text="@{viewmodel.description}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
                 </RelativeLayout>
             </LinearLayout>

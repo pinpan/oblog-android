@@ -15,20 +15,29 @@
  */
 package com.applego.oblog.tppwatch.tpps
 
+import android.R
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.databinding.TppItemBinding
-import com.applego.oblog.tppwatch.tpps.TppsAdapter.ViewHolder
+import kotlinx.android.synthetic.main.tpp_item.view.*
+
 
 /**
  * Adapter for the tpp list. Has a reference to the [TppsViewModel] to send actions back to it.
  */
-class TppsAdapter(private val viewModel: TppsViewModel) :
-    ListAdapter<Tpp, ViewHolder>(TppDiffCallback()) {
+class TppsAdapter(private val viewModel: TppsViewModel, ctx: Context, layoutId: Int) :
+    ListAdapter<Tpp, TppsAdapter.ViewHolder>(TppDiffCallback()) {
+    //ArrayAdapter<Tpp>(ctx, layoutId) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
@@ -37,8 +46,28 @@ class TppsAdapter(private val viewModel: TppsViewModel) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        val vH = ViewHolder.from(parent)
+        val view : LinearLayout = vH.itemView as LinearLayout
+        if (view != null) {
+            view.title_text.textSize = 10f
+        }
+        return vH
     }
+
+/*
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
+        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val rowView = convertView ?: inflater.inflate(R.layout.simple_expandable_list_item_2, parent, false)
+
+        val textView = rowView.findViewById(R.id.title_text) as TextView
+        val imageView: ImageView = rowView.findViewById(R.id.icon) as ImageView
+        textView.setText(values.get(position))
+        // Change the icon for Windows and iPhone
+
+        return rowView
+    }
+*/
 
     class ViewHolder private constructor(val binding: TppItemBinding) :
         RecyclerView.ViewHolder(binding.root) {

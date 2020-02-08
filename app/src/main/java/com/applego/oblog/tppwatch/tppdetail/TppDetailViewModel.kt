@@ -58,6 +58,11 @@ class TppDetailViewModel(
     private val tppId: String?
         get() = _tpp.value?.id
 
+    public var description: String = ""
+        get() {
+            return tpp.value?.description ?: ""
+        }
+
     // This LiveData depends on another so we can use a transformation.
     val followed: LiveData<Boolean> = Transformations.map(_tpp) { input: Tpp? ->
         input?.isFollowed ?: false

@@ -26,7 +26,8 @@
                 <Spinner
                     android:id="@+id/serarch_country"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textSize="8sp"/>
 
                 <Spinner
                     android:id="@+id/search_role"

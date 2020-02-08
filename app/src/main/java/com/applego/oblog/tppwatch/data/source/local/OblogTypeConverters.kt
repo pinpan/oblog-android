@@ -160,8 +160,6 @@ class OblogTypeConverters {
             val serviceMap = HashMap<EbaService, MutableList<String>>()
             ebaPassport.serviceMap = serviceMap
 
-            val theServiceCountries = ArrayList<String>()
-
             val entrySet: Set<Map.Entry<String, Any>> = aMap.entries
             for (entry in entrySet) {
                 val countryCode = entry.key
@@ -176,8 +174,8 @@ class OblogTypeConverters {
                         serviceCountries = mutableListOf<String>()
                         serviceMap.put(ebaService, serviceCountries)
                     }
-                    serviceCountries.add(entry.key)
-
+                        serviceCountries.add(entry.key)
+                    // TODO: Make Service a shared immutable value object
                     theServices.add(Service(ebaService.code, ebaService.description))
                 } else {
                     for (aService in entry.value as List<String>) {

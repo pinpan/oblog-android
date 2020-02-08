@@ -17,6 +17,7 @@
 package com.applego.oblog.tppwatch.tpps
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
@@ -104,6 +105,7 @@ class TppsFragment : Fragment() {
         val countryAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.eu_countries, android.R.layout.simple_spinner_item);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+        //countriesSpinner
         countriesSpinner = activity?.findViewById(R.id.serarch_country)!!
         countriesSpinner.setAdapter(countryAdapter);
         countriesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
@@ -261,10 +263,33 @@ class TppsFragment : Fragment() {
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.viewmodel
         if (viewModel != null) {
-            listAdapter = TppsAdapter(viewModel)
+            listAdapter = TppsAdapter(viewModel, context!!, R.layout.tppitemlayout)
+
+            /* {
+
+                override fun getView(): View? {
+                    return super.getView()
+                }
+
+                Override
+                fun getView(position: Int, convertView : View, parent : ViewGroup) : View {
+                    /// Get the Item from ListView
+                    val view = super.getView(position, convertView, parent)
+
+                    val tv = (TextView) view.findViewById(android.R.id.text1)
+
+                    // Set the text size 25 dip for ListView each item
+                    tv.textSize = TypedValue.COMPLEX_UNIT_DIP
+
+                    // Return the view
+                    return view
+                }
+            }*/
             viewDataBinding.tppsList.adapter = listAdapter
+
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
         }
     }
+
 }
