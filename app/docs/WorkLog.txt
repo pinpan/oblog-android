@@ -1,4 +1,12 @@
+20200208
+------------------
+TODO:
+    1, REFRESH 1 TPP from DB in the TPPSViewMOdel
+    2. Display EntityCode instead of description
+    3. Display PAssports
+
 20191013
+------------------
 TODO:
 1. Fragment.getViewModelFactory() creates new ViewModelFactory on app start and then every time TppList loading is invoked
 Thie in turn triggers creation of new repository. Question is:

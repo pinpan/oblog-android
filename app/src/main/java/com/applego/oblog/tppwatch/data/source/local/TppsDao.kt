@@ -118,7 +118,7 @@ interface TppsDao {
      * @return the number of tpps deleted.
      */
     @Query("DELETE FROM Tpps WHERE followed = 1")
-    suspend fun deleteUnfollowedTpps(): Int
+    suspend fun deleteFollowedTpps(): Int
 
     @Query("SELECT * FROM Tpps WHERE country = :country")
     fun getTppsByCountry(country: String): List<Tpp>

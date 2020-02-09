@@ -22,10 +22,11 @@ import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
+import com.google.common.collect.Lists
 
 class FakeLocalDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : LocalTppDataSource {
     override suspend fun getTpps(filter: TppsFilter): Result<List<Tpp>> {
-        tpps?.let { return Success(it) }
+        tpps?.let { return Success(Lists.newArrayList(it)) }
         return Error(
             Exception("Tpps not found")
         )
@@ -42,12 +43,8 @@ class FakeLocalDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : Local
         tpps?.add(tpp)
     }
 
-    override suspend fun followTpp(tpp: Tpp) {
+    override suspend fun udateFollowing(tpp: Tpp, follow: Boolean) {
         tpps?.firstOrNull { it.id == tpp.id }?.let { it.isFollowed = true }
-    }
-
-    override suspend fun followTpp(tppId: String) {
-        tpps?.firstOrNull { it.id == tppId }?.let { it.isFollowed = true }
     }
 
     override suspend fun setTppActivateFlag(tppId: String, active: Boolean) {

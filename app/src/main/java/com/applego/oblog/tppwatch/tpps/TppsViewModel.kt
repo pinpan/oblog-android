@@ -138,20 +138,15 @@ class TppsViewModel(
     }
 
     fun followTpp(tpp: Tpp, followed: Boolean) = viewModelScope.launch {
-        if (followed) {
-            tppsRepository.setTppFollowedFlag(tpp, followed)
-            showSnackbarMessage(R.string.tpp_marked_followed)
-        }
+        tppsRepository.setTppFollowedFlag(tpp, followed)
+        showSnackbarMessage(R.string.tpp_marked_followed)
         // Refresh list to show the new state
         //loadTpps(false)
     }
 
     fun activateTpp(tpp: Tpp, active: Boolean) = viewModelScope.launch {
-        if (active) {
-            tppsRepository.setTppActivateFlag(tpp, active)
-
-            showSnackbarMessage(R.string.tpp_marked_active)
-        }
+        tppsRepository.setTppActivateFlag(tpp, active)
+        showSnackbarMessage(R.string.tpp_marked_active)
         // Refresh list to show the new state
         //loadTpps(false)
     }

@@ -17,7 +17,6 @@ package com.applego.oblog.tppwatch.data.source.local
 
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.TppsFilter
-import com.applego.oblog.tppwatch.data.source.local.Tpp
 
 /**
  * Main entry point for accessing tpps data.
@@ -30,9 +29,7 @@ interface LocalTppDataSource {
 
     suspend fun saveTpp(tpp: Tpp)
 
-    suspend fun followTpp(tpp: Tpp)
-
-    suspend fun followTpp(tppId: String)
+    suspend fun udateFollowing(tpp: Tpp, follow: Boolean)
 
     suspend fun setTppActivateFlag(tppId: String, active: Boolean)
 

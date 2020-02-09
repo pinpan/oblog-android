@@ -155,7 +155,7 @@ class DefaultTppsRepositoryTest {
         tppsLocalDataSource.tpps = null
 
         // The repository returns an error
-        assertThat(tppsRepository.getTpps()).isInstanceOf(Result.Success::class.java)
+        assertThat(tppsRepository.getTpps()).isInstanceOf(Result.Error::class.java)
     }
 
     @Test
@@ -269,9 +269,10 @@ class DefaultTppsRepositoryTest {
 
     @Test
     fun deleteAllTpps() = runBlockingTest {
+        // getTpps(true) will first fetch feom remote DS, then return feom local DS
         val initialTpps = (tppsRepository.getTpps(true) as? Success)?.data
 
-        // Delete all tpps
+        // Delete all tpps in local DS, those initialTpps.data will become empty
         tppsRepository.deleteAllTpps()
 
         // Fetch data again

@@ -51,6 +51,13 @@
             android:layout_gravity="center_vertical"
             android:checked="@{tpp.followed}"
             android:onClick="@{(view) -> viewmodel.followTpp(tpp, ((CompoundButton)view).isChecked())}" />
+        <CheckBox
+            android:id="@+id/active_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:checked="@{tpp.active}"
+            android:onClick="@{(view) -> viewmodel.activateTpp(tpp, ((CompoundButton)view).isChecked())}" />
 
         <TextView
             android:id="@+id/title_text"

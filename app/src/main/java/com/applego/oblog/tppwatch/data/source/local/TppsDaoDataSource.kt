@@ -64,12 +64,8 @@ class TppsDaoDataSource internal constructor(
         tppsDao.insertTpp(tpp)
     }
 
-    override suspend fun followTpp(tpp: Tpp) = withContext(ioDispatcher) {
-        tppsDao.updateFollowed(tpp.id, true)
-    }
-
-    override suspend fun followTpp(tppId: String) {
-        tppsDao.updateFollowed(tppId, true)
+    override suspend fun udateFollowing(tpp: Tpp, follow: Boolean) = withContext(ioDispatcher) {
+        tppsDao.updateFollowed(tpp.id, follow)
     }
 
     override suspend fun setTppActivateFlag(tppId: String, active: Boolean)  = withContext(ioDispatcher) {
@@ -77,7 +73,7 @@ class TppsDaoDataSource internal constructor(
     }
 
     override suspend fun clearFollowedTpps() = withContext<Unit>(ioDispatcher) {
-        tppsDao.deleteUnfollowedTpps()
+        tppsDao.deleteFollowedTpps()
     }
 
     override suspend fun deleteAllTpps() = withContext(ioDispatcher) {

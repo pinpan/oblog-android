@@ -49,6 +49,9 @@ class DefaultTppsRepository (
 
     val waitTwoSeconds : Timeout = Timeout()
 
+    //var _newTpps: Result<List<Tpp>> = Result.Idle(Date())
+    //var newTpps: Result<List<Tpp>> = Result.Idle(Date())
+
     override suspend fun getTpps(forceUpdate: Boolean): Result<List<Tpp>> {
         return getTpps(forceUpdate, TppsFilter())
     }
@@ -59,31 +62,25 @@ class DefaultTppsRepository (
 
             return withContext(ioDispatcher) {
 
-                if (forceUpdate) { // TODO: If Local datasource is empty - Hard Check! -> And update is required!
+                if (forceUpdate) {
                     fetchTppsFromRemoteDatasource()
                 }
-                // TODO: Avoid multiple fetches running in paralel: Make newTPPs a member so we can check if already Loading
+                // TODO:
+                //  Verify multiple fetches running in parallel are prevented:
+                //          in the load.... call
 
-                // Respond immediately with cache if available and not dirty
                 val newTpps = loadTppsFromLocalDatasource(filter)
-
-                // Refresh the cache with the new tpps
-                (newTpps as? Success)?.let {
-                    if (!it.data.isEmpty()) {
-                        refreshCache(it.data)
-                        //return@withContext Success(it.data.sortedBy { it.id })
+                /*
+                if (newTpps is Success<*>) {
+                    // Refresh the cache with the new tpps
+                    (newTpps as? Success)?.let {
+                        if (!it.data.isEmpty()) {
+                            return@withContext Success(it.data.sortedBy { it.id })
+                        }
                     }
                 }
-
-               /*(newTpps as? Loading)?.let {
-                    return@withContext newTpps//Loading(waitTwoSeconds.timeout(2000, TimeUnit.MILLISECONDS))
-                }*/
-
-                cachedTpps.values.let { tpps ->
-                    return@withContext Success(tpps.sortedBy { it.id })
-                }
-
-                //return@withContext Error(Exception("Illegal state"))
+                */
+                return@withContext newTpps
             }
         }
     }
@@ -138,7 +135,7 @@ class DefaultTppsRepository (
                 val newTpp = fetchTppFromRemoteOrLocal(tppId, forceUpdate)
 
                 // Refresh the cache with the new tpps
-                (newTpp as? Success)?.let { cacheTpp(it.data) }
+                //(newTpp as? Success)?.let { cacheTpp(it.data) }
 
                 return@withContext newTpp
             }
@@ -200,9 +197,9 @@ class DefaultTppsRepository (
     override suspend fun setTppFollowedFlag(tpp: Tpp, followed: Boolean) {
         cacheAndPerform(tpp) {
             tpp.let {
-                it.isFollowed = true
+                it.isFollowed = followed
                 coroutineScope {
-                    launch { tppsLocalDataSource.followTpp(it) }
+                    launch { tppsLocalDataSource.udateFollowing(it, it.isFollowed) }
                 }
             }
         }
@@ -236,10 +233,10 @@ class DefaultTppsRepository (
     override suspend fun setTppActivateFlag(tpp: Tpp, active: Boolean) = withContext(ioDispatcher) {
         // Do in memory cache update to keep the app UI up to date
         cacheAndPerform(tpp) {
-            it.isActive = true
+            it.isActive = active
             coroutineScope {
                 //launch { tppsRemoteDataSource.updateActive(it) }
-                launch { tppsLocalDataSource.setTppActivateFlag(it.id, true) }
+                launch { tppsLocalDataSource.setTppActivateFlag(it.id, active) }
             }
         }
     }
@@ -258,9 +255,9 @@ class DefaultTppsRepository (
             //launch { tppsRemoteDataSource.clearFollowedTpps() }
             launch { tppsLocalDataSource.clearFollowedTpps() }
         }
-        withContext(ioDispatcher) {
+        /*withContext(ioDispatcher) {
             cachedTpps.entries.removeAll { it.value.isFollowed }
-        }
+        }*/
     }
 
     override suspend fun deleteAllTpps() {
@@ -270,7 +267,7 @@ class DefaultTppsRepository (
                 launch { tppsLocalDataSource.deleteAllTpps() }
             }
         }
-        cachedTpps.clear()
+        //cachedTpps.clear()
     }
 
     override suspend fun deleteTpp(tppId: String) {
@@ -279,11 +276,11 @@ class DefaultTppsRepository (
             launch { tppsLocalDataSource.deleteTpp(tppId) }
         }
 
-        cachedTpps.remove(tppId)
+        //cachedTpps.remove(tppId)
     }
 
     private fun refreshCache(tpps: List<Tpp>) {
-        cachedTpps.clear()
+        //cachedTpps.clear()
         tpps.sortedBy { it.id }.forEach {
             cacheAndPerform(it) {}
         }
@@ -305,19 +302,7 @@ class DefaultTppsRepository (
 
     private fun getTppWithId(id: String) = cachedTpps.get(id)
 
-    private fun cacheTpp(tpp: Tpp): Tpp {
-        //val cachedTpp = Tpp(tpp.entityCode, tpp.title, tpp.description, tpp.globalUrn, tpp.ebaEntityVersion, tpp.id)
-        // Create if it doesn't exist.
-        /* Declared as new object -> Test if not null and remove this check
-        if (cachedTpps == null) {
-            cachedTpps = ConcurrentHashMap()
-        }*/
-        cachedTpps.put(tpp.id, tpp)
-        return tpp
-    }
-
     private inline fun cacheAndPerform(tpp: Tpp, perform: (Tpp) -> Unit) {
-        val cachedTpp = cacheTpp(tpp)
-        perform(cachedTpp)
+        perform(tpp)
     }
 }

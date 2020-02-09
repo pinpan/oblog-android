@@ -185,7 +185,7 @@ class TppsDaoTest {
         database.tppDao().insertTpp(aTpp)
 
         // When deleting followed tpps
-        database.tppDao().deleteUnfollowedTpps()
+        database.tppDao().deleteFollowedTpps()
 
         // THEN - The list is empty
         val tpps = database.tppDao().getTpps()

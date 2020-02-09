@@ -40,7 +40,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <TextView
+           <!-- <TextView
                 android:id="@+id/filtering_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                 android:gravity="center_vertical"
                 android:text="@{context.getString(viewmodel.currentFilteringLabel)}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textSize="8sp" />
+                android:textSize="12sp" />-->
 
             <include layout="@layout/tpps_search" />
 
@@ -74,9 +74,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="0dp"
                         android:visibility="@{viewmodel.empty ? View.GONE : View.VISIBLE}">
 
-<!--
+                        <!--
                         <TextView
                             android:id="@+id/filtering_text"
                             android:layout_width="match_parent"
@@ -95,8 +97,10 @@
                             android:id="@+id/tpps_list"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:items="@{viewmodel.items}" />
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="0dp"
+                            app:items="@{viewmodel.items}"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
                     </LinearLayout>
 
                     <LinearLayout
