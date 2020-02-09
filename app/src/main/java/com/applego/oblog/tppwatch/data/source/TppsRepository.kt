@@ -45,7 +45,7 @@ interface TppsRepository {
 
     //suspend fun deactivateTpp(tpp: Tpp)
 
-    suspend fun clearFollowedTpps()
+    //suspend fun clearFollowedTpps()
 
     suspend fun deleteAllTpps()
 

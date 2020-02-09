@@ -257,7 +257,7 @@ class DefaultTppsRepositoryTest {
     fun clearFollowedTpps() = runBlockingTest {
         val followedTpp = tpp1.copy().apply { isFollowed = true }
         tppsRemoteDataSource.tppsListResponse?.tppsList = mutableListOf(followedTpp, tpp2)
-        tppsRepository.clearFollowedTpps()
+        //tppsRepository.clearFollowedTpps()
 
         val tpps = (tppsRepository.getTpps(false) as? Success)?.data
 

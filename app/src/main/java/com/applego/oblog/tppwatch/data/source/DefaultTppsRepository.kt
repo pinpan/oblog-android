@@ -43,14 +43,11 @@ class DefaultTppsRepository (
         /*private */var tppsRemoteDataSource: RemoteTppDataSource,
         private val tppsLocalDataSource: LocalTppDataSource,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-) : TppsRepository {
+    ) : TppsRepository {
 
     private var cachedTpps: ConcurrentMap<String, Tpp> = ConcurrentHashMap()
 
     val waitTwoSeconds : Timeout = Timeout()
-
-    //var _newTpps: Result<List<Tpp>> = Result.Idle(Date())
-    //var newTpps: Result<List<Tpp>> = Result.Idle(Date())
 
     override suspend fun getTpps(forceUpdate: Boolean): Result<List<Tpp>> {
         return getTpps(forceUpdate, TppsFilter())
@@ -70,16 +67,7 @@ class DefaultTppsRepository (
                 //          in the load.... call
 
                 val newTpps = loadTppsFromLocalDatasource(filter)
-                /*
-                if (newTpps is Success<*>) {
-                    // Refresh the cache with the new tpps
-                    (newTpps as? Success)?.let {
-                        if (!it.data.isEmpty()) {
-                            return@withContext Success(it.data.sortedBy { it.id })
-                        }
-                    }
-                }
-                */
+
                 return@withContext newTpps
             }
         }
@@ -96,11 +84,7 @@ class DefaultTppsRepository (
             is Success -> {
                 refreshLocalDataSource(tppsListResponse.data.tppsList)
             }
-            /*is Loading -> {
-                return remoteTpps
-            }*/
             is Error -> Timber.w("Remote data source fetch failed: %s", tppsListResponse.exception)
-            //else -> throw IllegalStateException()
         }
     }
 
@@ -133,9 +117,6 @@ class DefaultTppsRepository (
                 }
 
                 val newTpp = fetchTppFromRemoteOrLocal(tppId, forceUpdate)
-
-                // Refresh the cache with the new tpps
-                //(newTpp as? Success)?.let { cacheTpp(it.data) }
 
                 return@withContext newTpp
             }
@@ -173,24 +154,14 @@ class DefaultTppsRepository (
         // Do in memory cache update to keep the app UI up to date
         cacheAndPerform(tpp) {
             coroutineScope {
-                //launch { tppsRemoteDataSource.saveTpp(it) }
                 launch { tppsLocalDataSource.saveTpp(it) }
             }
         }
     }
 
     override suspend fun setTppFollowedFlag(tppId: String, followed: Boolean) {
-        // Do in memory cache update to keep the app UI up to date
-
         (tppsLocalDataSource.getTpp(tppId) as? Success)?.let {
             setTppFollowedFlag(it.data, followed)
-            /*cacheAndPerform(it.data) {
-                it.isFollowed = true
-                coroutineScope {
-                    //launch { tppsRemoteDataSource.setTppFollowedFlag(it) }
-                    launch { tppsLocalDataSource.setTppFollowedFlag(it) }
-                }
-            }*/
         }
     }
 
@@ -205,37 +176,11 @@ class DefaultTppsRepository (
         }
     }
 
-/*
-    override suspend fun unfollowTpp(tpp: Tpp) {
-        cacheAndPerform(tpp) {
-            tpp.let {
-                it.isFollowed = false
-                coroutineScope {
-                    launch { tppsLocalDataSource.followTpp(it) }
-                }
-            }
-        }
-    }
-
-
-    override suspend fun deactivateTpp(tpp: Tpp) {
-        cacheAndPerform(tpp) {
-            tpp.let {
-                it.isActive = false
-                coroutineScope {
-                    launch { tppsLocalDataSource.setTppActivateFlag(it.id, false) }
-                }
-            }
-        }
-    }
-*/
-
     override suspend fun setTppActivateFlag(tpp: Tpp, active: Boolean) = withContext(ioDispatcher) {
         // Do in memory cache update to keep the app UI up to date
         cacheAndPerform(tpp) {
             it.isActive = active
             coroutineScope {
-                //launch { tppsRemoteDataSource.updateActive(it) }
                 launch { tppsLocalDataSource.setTppActivateFlag(it.id, active) }
             }
         }
@@ -249,38 +194,21 @@ class DefaultTppsRepository (
         }
     }
 
-    override suspend fun clearFollowedTpps() {
-        coroutineScope {
-            // TODO:
-            //launch { tppsRemoteDataSource.clearFollowedTpps() }
-            launch { tppsLocalDataSource.clearFollowedTpps() }
-        }
-        /*withContext(ioDispatcher) {
-            cachedTpps.entries.removeAll { it.value.isFollowed }
-        }*/
-    }
-
     override suspend fun deleteAllTpps() {
         withContext(ioDispatcher) {
             coroutineScope {
-                //launch { tppsRemoteDataSource.deleteAllTpps() }
                 launch { tppsLocalDataSource.deleteAllTpps() }
             }
         }
-        //cachedTpps.clear()
     }
 
     override suspend fun deleteTpp(tppId: String) {
         coroutineScope {
-            //launch { tppsRemoteDataSource.deleteTpp(tppId) }
             launch { tppsLocalDataSource.deleteTpp(tppId) }
         }
-
-        //cachedTpps.remove(tppId)
     }
 
     private fun refreshCache(tpps: List<Tpp>) {
-        //cachedTpps.clear()
         tpps.sortedBy { it.id }.forEach {
             cacheAndPerform(it) {}
         }

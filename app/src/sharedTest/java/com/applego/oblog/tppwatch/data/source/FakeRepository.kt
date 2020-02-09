@@ -77,7 +77,7 @@ class FakeRepository : TppsRepository {
         tppsServiceData[tppId]?.isActive = active
     }
 
-    override suspend fun clearFollowedTpps() {
+    suspend fun clearFollowedTpps() {
         tppsServiceData = tppsServiceData.filterValues {
             !it.isFollowed
         } as LinkedHashMap<String, Tpp>
