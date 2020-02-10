@@ -27,8 +27,10 @@ import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.source.local.EbaPassport
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.launch
+import okhttp3.internal.Util
 
 /**
  * ViewModel for the Details screen.
@@ -58,10 +60,24 @@ class TppDetailViewModel(
     private val tppId: String?
         get() = _tpp.value?.id
 
-    public var description: String = ""
+    public val description: String?
         get() {
             return tpp.value?.description ?: ""
         }
+
+    public var ebaPassports: List<EbaPassport>?
+        get() {
+            return tpp.value?.ebaPassports?: Util.immutableList()
+        }
+        set(passes: List<EbaPassport>?) {
+            this.ebaPassports = passes
+        }
+/*
+    private fun setEbaPassports(passes: List<EbaPassport>?) {
+        this.ebaPassports = passes
+        _isDataAvailable.value = passes != null
+    }*/
+
 
     // This LiveData depends on another so we can use a transformation.
     val followed: LiveData<Boolean> = Transformations.map(_tpp) { input: Tpp? ->

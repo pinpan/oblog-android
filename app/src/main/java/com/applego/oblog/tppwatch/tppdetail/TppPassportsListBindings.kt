@@ -13,26 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.applego.oblog.tppwatch.tpps
+package com.applego.oblog.tppwatch.tppdetail
 
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.source.local.EbaPassport
+
+import timber.log.Timber
 
 /**
- * [BindingAdapter]s for the [Tpp]s list.
+ * [BindingAdapter]s for the [EbaPassport]s list.
  */
 @BindingAdapter("app:items")
-fun setItems(listView: RecyclerView, items: List<Tpp>) {
-    (listView.adapter as TppsAdapter).submitList(items)
-}
+fun setItems(listView: RecyclerView, items: List<EbaPassport>) {
+    Timber.w("$$$$$$$$$$$$ The Adapter listView is: " + listView.adapter)
 
-/*
-@BindingAdapter("app:followedTpp")
-fun setStyle(textView: TextView, enabled: Boolean) {
-    if (enabled) {
-        textView.paintFlags = textView.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-    } else {
-        textView.paintFlags = textView.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-    }
-}*/
+    (listView?.adapter!! as TppDetailAdapter).submitList(items)
+}

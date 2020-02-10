@@ -24,8 +24,8 @@
 
         <variable
             name="viewmodel"
-            type="com.applego.oblog.tppwatch.tpps.TppsViewModel" />
-
+            type="com.applego.oblog.tppwatch.tpps.TppsViewModel"
+        />
     </data>
 
 
@@ -38,20 +38,7 @@
             android:id="@+id/tpps_fragment_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
-
-           <!-- <TextView
-                android:id="@+id/filtering_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/list_item_padding"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_marginRight="@dimen/list_item_padding"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:gravity="center_vertical"
-                android:text="@{context.getString(viewmodel.currentFilteringLabel)}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textSize="12sp" />-->
+            android:orientation="vertical">
 
             <include layout="@layout/tpps_search" />
 
@@ -78,21 +65,6 @@
                         android:paddingBottom="0dp"
                         android:visibility="@{viewmodel.empty ? View.GONE : View.VISIBLE}">
 
-                        <!--
-                        <TextView
-                            android:id="@+id/filtering_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/list_item_padding"
-                            android:layout_marginTop="@dimen/activity_vertical_margin"
-                            android:layout_marginRight="@dimen/list_item_padding"
-                            android:layout_marginBottom="@dimen/activity_vertical_margin"
-                            android:gravity="center_vertical"
-                            android:text="@{context.getString(viewmodel.currentFilteringLabel)}"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                            android:textSize="12sp" />
-
--->
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/tpps_list"
                             android:layout_width="match_parent"

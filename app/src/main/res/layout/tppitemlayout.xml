@@ -53,7 +53,7 @@
                 android:checked="@{tpp.followed}" />
 
             <TextView
-                android:id="@+id/title_text"
+                android:id="@+id/service"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -63,18 +63,6 @@
                 android:text="@{tpp.titleForList}"
                 /> <!--app:followedTpp="@{tpp.followed}"-->
 
-            <TextView
-                android:id="@+id/firstLine"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/title_text"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignWithParentIfMissing="true"
-                android:layout_toRightOf="@id/follow_checkbox"
-                android:gravity="center_vertical"
-                android:text="Example application"
-                android:textSize="16sp" />
         </RelativeLayout>
     </LinearLayout>
 </layout>

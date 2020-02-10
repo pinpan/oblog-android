@@ -13,32 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.applego.oblog.tppwatch.tpps
+package com.applego.oblog.tppwatch.tppdetail
 
-import android.R
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.databinding.TppItemBinding
-import kotlinx.android.synthetic.main.tpp_item.view.*
-import kotlinx.android.synthetic.main.tppdetail_frag.view.*
+import com.applego.oblog.tppwatch.data.source.local.EbaPassport
+import com.applego.oblog.tppwatch.databinding.TppPassportBinding
 
 
 /**
  * Adapter for the tpp list. Has a reference to the [TppsViewModel] to send actions back to it.
  */
-class TppsAdapter(private val viewModel: TppsViewModel, ctx: Context, layoutId: Int) :
-    ListAdapter<Tpp, TppsAdapter.ViewHolder>(TppDiffCallback()) {
-    //ArrayAdapter<Tpp>(ctx, layoutId) {
+class TppDetailAdapter(private val viewModel: TppDetailViewModel, ctx: Context, layoutId: Int) :
+    ListAdapter<EbaPassport, TppDetailAdapter.ViewHolder>(TppDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
@@ -50,40 +42,25 @@ class TppsAdapter(private val viewModel: TppsViewModel, ctx: Context, layoutId: 
         val vH = ViewHolder.from(parent)
         val view : LinearLayout = vH.itemView as LinearLayout
         if (view != null) {
-            view.tpp_title_text?.textSize = 10f
+            //view.passtpp_title_text?.textSize = 10f
         }
         return vH
     }
 
-/*
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val rowView = convertView ?: inflater.inflate(R.layout.simple_expandable_list_item_2, parent, false)
-
-        val textView = rowView.findViewById(R.id.title_text) as TextView
-        val imageView: ImageView = rowView.findViewById(R.id.icon) as ImageView
-        textView.setText(values.get(position))
-        // Change the icon for Windows and iPhone
-
-        return rowView
-    }
-*/
-
-    class ViewHolder private constructor(val binding: TppItemBinding) :
+    class ViewHolder private constructor(val binding: TppPassportBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(viewModel: TppsViewModel, item: Tpp) {
+        fun bind(viewModel: TppDetailViewModel, item: EbaPassport) {
 
             binding.viewmodel = viewModel
-            binding.tpp = item
+            binding.ebaPassport = item
             binding.executePendingBindings()
         }
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = TppItemBinding.inflate(layoutInflater, parent, false)
+                val binding = TppPassportBinding.inflate(layoutInflater, parent, false)
 
                 return ViewHolder(binding)
             }
@@ -97,12 +74,12 @@ class TppsAdapter(private val viewModel: TppsViewModel, ctx: Context, layoutId: 
  * Used by ListAdapter to calculate the minimum number of changes between and old list and a new
  * list that's been passed to `submitList`.
  */
-class TppDiffCallback : DiffUtil.ItemCallback<Tpp>() {
-    override fun areItemsTheSame(oldItem: Tpp, newItem: Tpp): Boolean {
+class TppDiffCallback : DiffUtil.ItemCallback<EbaPassport>() {
+    override fun areItemsTheSame(oldItem: EbaPassport, newItem: EbaPassport): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: Tpp, newItem: Tpp): Boolean {
+    override fun areContentsTheSame(oldItem: EbaPassport, newItem: EbaPassport): Boolean {
         return oldItem == newItem
     }
 }

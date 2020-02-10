@@ -5,38 +5,91 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tpps_advanced_search_layout"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="120dp"
         android:orientation="vertical"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        > <!--android:id="@+id/tpps_advanced_search_linear_layout"-->
+        android:paddingBottom="@dimen/activity_vertical_margin"> <!--android:id="@+id/tpps_advanced_search_linear_layout"-->
         <!--    <LinearLayout
                 android:id="@+id/country"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 >-->
-                <Spinner
-                    android:id="@+id/serarch_country"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="8sp"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-                <Spinner
-                    android:id="@+id/search_role"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            <!--</LinearLayout>-->
+            <EditText
+                android:id="@+id/label_country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:editable="false"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="none|textPersonName"
+                android:text="@string/label_country" />
 
-            <!--<EditText
+            <Spinner
+                android:id="@+id/serarch_country"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label_country"
+                android:textSize="8sp" />
+
+            <EditText
+                android:id="@+id/label_psd2_role"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/label_country"
+                android:clickable="false"
+                android:editable="false"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="textPersonName"
+                android:text="@string/label_role" />
+
+            <Spinner
+                android:id="@+id/search_role"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label_license_revoked"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/serarch_country"
+                android:layout_weight="1" />
+
+            <EditText
+                android:id="@+id/label_license_revoked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/label_psd2_role"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/label_revoked" />
+
+            <Switch
+                android:id="@+id/revokedSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label_license_revoked"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@id/search_role"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:textSize="8sp" />
+        </RelativeLayout>
+
+        <!--</LinearLayout>-->
+
+        <!--<EditText
                 android:id="@+id/search_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,25 +99,19 @@
                 android:text="Just a dummy query string"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title" />-->
 
-            <!--<LinearLayout
+        <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:orientation="horizontal"
                 >-->
-                    <Switch
-                        android:id="@+id/revokedSwitch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/search_revoked" />
 
-                    <!--<ImageButton
-                        android:id="@+id/imageButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:srcCompat="@android:drawable/ic_menu_search" />-->
-            <!--</LinearLayout>-->
+        <!--<ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/ic_menu_search" />-->
+        <!--</LinearLayout>-->
     </LinearLayout>
 </FrameLayout>
 

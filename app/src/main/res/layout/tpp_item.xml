@@ -60,7 +60,7 @@
             android:onClick="@{(view) -> viewmodel.activateTpp(tpp, ((CompoundButton)view).isChecked())}" />
 
         <TextView
-            android:id="@+id/title_text"
+            android:id="@+id/service"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

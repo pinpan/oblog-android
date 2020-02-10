@@ -30,10 +30,12 @@ import com.applego.oblog.tppwatch.EventObserver
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.TppdetailFragBinding
 import com.applego.oblog.tppwatch.tpps.DELETE_RESULT_OK
+import com.applego.oblog.tppwatch.tpps.TppsAdapter
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupRefreshLayout
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
+import timber.log.Timber
 
 /**
  * Main UI for the tpp detail screen.
@@ -43,16 +45,30 @@ class TppDetailFragment : Fragment() {
 
     private val args: TppDetailFragmentArgs by navArgs()
 
+    private lateinit var listAdapter: TppDetailAdapter
+
     private val viewModel by viewModels<TppDetailViewModel> { getViewModelFactory() }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
+        setupListAdapter()
         setupFab()
         view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
         setupNavigation()
+
         this.setupRefreshLayout(viewDataBinding.refreshLayout)
     }
 
+    private fun setupListAdapter() {
+        val viewModel = viewDataBinding.viewmodel
+        if (viewModel != null) {
+            listAdapter = TppDetailAdapter(viewModel, context!!, R.layout.tpp_passport)
+            viewDataBinding.tppPassportsList.adapter = listAdapter
+        } else {
+            Timber.w("ViewModel not initialized when attempting to set up adapter.")
+        }
+    }
     private fun setupNavigation() {
         viewModel.deleteTppEvent.observe(this, EventObserver {
             val action = TppDetailFragmentDirections

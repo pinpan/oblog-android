@@ -50,8 +50,14 @@ class TppsEbaDataSource internal constructor (
             while (!paging.last) {
                 paging.page +=1
                 var result = loadTppsPage(paging)
-                if (result is Result.Success) {
-                    paging = result.data
+                when (result) {
+                    is Result.Success -> {
+                        paging = result.data
+                    }
+                    is Result.Error -> {
+                        // TODO: IMplement proper Error handing. For now, jump out
+                        paging.last = true
+                    }
                 }
             }
         }

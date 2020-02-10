@@ -64,6 +64,7 @@ fun View.setupSnackbar(
     })
 }
 
+//TODO: Obsolete?
 fun Fragment.setupRefreshLayout(
     refreshLayout: ScrollChildSwipeRefreshLayout,
     scrollUpChild: View? = null
