@@ -30,7 +30,6 @@ import com.applego.oblog.tppwatch.EventObserver
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.TppdetailFragBinding
 import com.applego.oblog.tppwatch.tpps.DELETE_RESULT_OK
-import com.applego.oblog.tppwatch.tpps.TppsAdapter
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupRefreshLayout
 import com.applego.oblog.tppwatch.util.setupSnackbar
@@ -69,6 +68,7 @@ class TppDetailFragment : Fragment() {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
         }
     }
+
     private fun setupNavigation() {
         viewModel.deleteTppEvent.observe(this, EventObserver {
             val action = TppDetailFragmentDirections
@@ -96,13 +96,22 @@ class TppDetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.start(args.tppId)
+
         val view = inflater.inflate(R.layout.tppdetail_frag, container, false)
+
         viewDataBinding = TppdetailFragBinding.bind(view).apply {
             viewmodel = viewModel
         }
+
+/* DO NOT DO / INVESTIGATE: Empty Data
+       viewDataBinding = TppdetailFragBinding.inflate(inflater, container, false).apply {
+            viewmodel = viewModel
+        }
+*/
+
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
-        viewModel.start(args.tppId)
 
         setHasOptionsMenu(true)
         return view

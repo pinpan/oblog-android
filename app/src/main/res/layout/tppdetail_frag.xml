@@ -205,11 +205,15 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/passports_list"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/label_entity_code"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="0dp"
-                        app:items="@{viewmodel.ebaPassports}"
+                        android:background="#CDDC39"
+                        android:fadeScrollbars="false"
+                        android:scrollbars="horizontal|vertical"
                         android:textSize="12sp"
+                        app:items="@{viewmodel.ebaPassports}"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                     <!--<RecycleView>

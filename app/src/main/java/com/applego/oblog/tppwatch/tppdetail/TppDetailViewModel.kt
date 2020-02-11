@@ -28,6 +28,7 @@ import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.TppsRepository
 import com.applego.oblog.tppwatch.data.source.local.EbaPassport
+//import com.applego.oblog.tppwatch.data.source.local.EbaPassport
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.launch
 import okhttp3.internal.Util
@@ -65,13 +66,14 @@ class TppDetailViewModel(
             return tpp.value?.description ?: ""
         }
 
-    public var ebaPassports: List<EbaPassport>?
+    public val ebaPassports: List<EbaPassport>?
         get() {
             return tpp.value?.ebaPassports?: Util.immutableList()
         }
+        /*
         set(passes: List<EbaPassport>?) {
             this.ebaPassports = passes
-        }
+        }*/
 /*
     private fun setEbaPassports(passes: List<EbaPassport>?) {
         this.ebaPassports = passes
@@ -141,6 +143,7 @@ class TppDetailViewModel(
 
     private fun setTpp(tpp: Tpp?) {
         this._tpp.value = tpp
+        //this.ebaPassports = tpp?.ebaPassports
         _isDataAvailable.value = tpp != null
     }
 
