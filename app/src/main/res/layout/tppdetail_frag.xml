@@ -82,7 +82,7 @@
                     <!-- https://github.com/robolectric/robolectric/issues/4588 -->
 
                     <TextView
-                        android:id="@+id/tpp_title_text"
+                        android:id="@+id/title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
@@ -96,48 +96,52 @@
                         android:id="@+id/divider2"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_below="@id/tpp_detail_active_checkbox"
+                        android:layout_below="@id/title"
+                        android:layout_marginBottom="10dp"
                         android:background="?android:attr/listDivider" />
 
                     <CheckBox
-                        android:id="@+id/tpp_detail_follow_checkbox"
+                        android:id="@+id/checkbox_follow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tpp_title_text"
+                        android:layout_below="@id/title"
                         android:layout_gravity="left"
                         android:layout_marginRight="@dimen/activity_horizontal_margin"
                         android:checked="@{viewmodel.followed}"
                         android:gravity="left|center_vertical"
                         android:onClick="@{(view) -> viewmodel.setFollowed(((CompoundButton)view).isChecked())}"
-                        android:paddingTop="1dp"
                         android:text="@string/label_following"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="#006496"
+                        android:textStyle="bold" />
 
                     <CheckBox
-                        android:id="@+id/tpp_detail_active_checkbox"
+                        android:id="@+id/checkbox_active"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignTop="@id/tpp_detail_follow_checkbox"
+                        android:layout_alignTop="@id/checkbox_follow"
                         android:layout_gravity="left"
                         android:layout_marginRight="@dimen/activity_horizontal_margin"
-                        android:layout_toRightOf="@id/tpp_detail_follow_checkbox"
+                        android:layout_toRightOf="@id/checkbox_follow"
                         android:checked="@{viewmodel.active}"
                         android:gravity="left|center_vertical"
                         android:onClick="@{(view) -> viewmodel.setActive(((CompoundButton)view).isChecked())}"
                         android:paddingTop="1dp"
                         android:text="@string/label_activated"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="#006496"
+                        android:textStyle="bold" />
 
                     <View
                         android:id="@+id/divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_below="@id/tpp_detail_active_checkbox"
-                        android:layout_marginTop="10dp"
+                        android:layout_below="@id/checkbox_active"
+                        android:layout_marginBottom="10dp"
                         android:background="?android:attr/listDivider" />
 
                     <TextView
-                        android:id="@+id/tpp_detail_home_country_label"
+                        android:id="@+id/label_home_country"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/divider"
@@ -147,46 +151,42 @@
                         android:hint="@string/tpp_home_country_label"
                         android:inputType="none"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textSize="10sp"
                         android:textStyle="bold"
                         android:visibility="visible"
                         tools:text="@string/tpp_home_country_label" />
 
                     <TextView
-                        android:id="@+id/tpp_detail_home_country"
+                        android:id="@+id/home_country"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@id/tpp_detail_home_country_label"
-                        android:layout_toRightOf="@id/tpp_detail_home_country_label"
+                        android:layout_alignBaseline="@id/label_home_country"
+                        android:layout_toRightOf="@id/label_home_country"
                         android:gravity="left"
                         android:text="@{viewmodel.tpp.country}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/label_entity_code"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tpp_detail_home_country_label"
-                        android:clickable="false"
-                        android:ems="10"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:inputType="none"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textSize="10sp"
-                        tools:text="@string/label_entity_code" />
+                        android:layout_below="@id/label_home_country"
+                        android:text="@string/label_entity_code" />
 
                     <TextView
-                        android:id="@+id/tpp_entity_code"
+                        android:id="@+id/entity_code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tpp_detail_home_country"
-                        android:layout_toRightOf="@id/label_entity_code"
+                        android:layout_below="@id/home_country"
+                        android:layout_alignLeft="@id/home_country"
                         android:paddingTop="1dp"
                         android:text="@{viewmodel.tpp.entityCode}"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="#006496"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/label_passports"
@@ -199,15 +199,17 @@
                         android:focusable="false"
                         android:inputType="none"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textSize="12sp"
                         tools:text="@string/label_passports" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/tpp_passports_list"
+                        android:id="@+id/passports_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="0dp"
                         android:layout_marginBottom="0dp"
                         app:items="@{viewmodel.ebaPassports}"
+                        android:textSize="12sp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                     <!--<RecycleView>

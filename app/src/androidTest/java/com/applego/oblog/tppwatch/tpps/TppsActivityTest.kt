@@ -102,7 +102,7 @@ class TppsActivityTest {
 
         // Click on the tpp on the list and verify that all the data is correct
         onView(withText("TITLE1")).perform(click())
-        onView(withId(R.id.tpp_title_text)).check(matches(withText("TITLE1")))
+        onView(withId(R.id.title)).check(matches(withText("TITLE1")))
         // TODO: Fix test
         //onView(withId(R.id.tpp_detail_description_text)).check(matches(withText("DESCRIPTION")))
         //onView(withId(R.id.tpp_detail_follow_checkbox)).check(matches(not(isChecked())))
@@ -179,7 +179,7 @@ class TppsActivityTest {
         onView(withText(tppTitle)).perform(click())
 
         // Click on the checkbox in tpp details screen
-        onView(withId(R.id.tpp_detail_follow_checkbox)).perform(click())
+        onView(withId(R.id.checkbox_follow)).perform(click())
 
         // Click on the navigation up button to go back to the list
         onView(
@@ -206,7 +206,7 @@ class TppsActivityTest {
         // Click on the tpp on the list
         onView(withText(tppTitle)).perform(click())
         // Click on the checkbox in tpp details screen
-        onView(withId(R.id.tpp_detail_follow_checkbox)).perform(click())
+        onView(withId(R.id.checkbox_follow)).perform(click())
 
         // Click on the navigation up button to go back to the list
         onView(
@@ -233,9 +233,9 @@ class TppsActivityTest {
         // Click on the tpp on the list
         onView(withText(tppTitle)).perform(click())
         // Click on the checkbox in tpp details screen
-        onView(withId(R.id.tpp_detail_follow_checkbox)).perform(click())
+        onView(withId(R.id.checkbox_follow)).perform(click())
         // Click again to restore it to original state
-        onView(withId(R.id.tpp_detail_follow_checkbox)).perform(click())
+        onView(withId(R.id.checkbox_follow)).perform(click())
 
         // Click on the navigation up button to go back to the list
         onView(
@@ -262,9 +262,9 @@ class TppsActivityTest {
         // Click on the tpp on the list
         onView(withText(tppTitle)).perform(click())
         // Click on the checkbox in tpp details screen
-        onView(withId(R.id.tpp_detail_follow_checkbox)).perform(click())
+        onView(withId(R.id.checkbox_follow)).perform(click())
         // Click again to restore it to original state
-        onView(withId(R.id.tpp_detail_follow_checkbox)).perform(click())
+        onView(withId(R.id.checkbox_follow)).perform(click())
 
         // Click on the navigation up button to go back to the list
         onView(

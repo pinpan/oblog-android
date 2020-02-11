@@ -22,7 +22,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -95,17 +94,13 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.tpps_fragment_menu, menu)
         menuInflater.inflate(R.menu.tpps_activity_menu, menu)
 
-        // Associate searchable configuration with the SearchView
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        (menu.findItem(R.id.search).actionView as SearchView).apply {
-            setSearchableInfo(searchManager.getSearchableInfo(componentName))
-        }
 
         return true
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val id = item?.getItemId();

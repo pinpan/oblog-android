@@ -191,7 +191,7 @@ class AppNavigationTest {
                     .getToolbarNavigationContentDescription()
             )
         ).perform(click())
-        onView(withId(R.id.tpp_title_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.title)).check(matches(isDisplayed()))
 
         // Confirm that if we click "<-" a second time, we end up back at the home screen
         onView(
@@ -219,7 +219,7 @@ class AppNavigationTest {
 
         // Confirm that if we click back once, we end up back at the tpp details page
         pressBack()
-        onView(withId(R.id.tpp_title_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.title)).check(matches(isDisplayed()))
 
         // Confirm that if we click back a second time, we end up back at the home screen
         pressBack()

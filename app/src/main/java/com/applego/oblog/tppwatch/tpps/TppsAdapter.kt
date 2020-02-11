@@ -15,21 +15,15 @@
  */
 package com.applego.oblog.tppwatch.tpps
 
-import android.R
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.databinding.TppItemBinding
-import kotlinx.android.synthetic.main.tpp_item.view.*
 import kotlinx.android.synthetic.main.tppdetail_frag.view.*
 
 
@@ -50,7 +44,7 @@ class TppsAdapter(private val viewModel: TppsViewModel, ctx: Context, layoutId: 
         val vH = ViewHolder.from(parent)
         val view : LinearLayout = vH.itemView as LinearLayout
         if (view != null) {
-            view.tpp_title_text?.textSize = 10f
+            view.title?.textSize = 10f
         }
         return vH
     }

@@ -64,7 +64,7 @@ class TppDetailFragment : Fragment() {
         val viewModel = viewDataBinding.viewmodel
         if (viewModel != null) {
             listAdapter = TppDetailAdapter(viewModel, context!!, R.layout.tpp_passport)
-            viewDataBinding.tppPassportsList.adapter = listAdapter
+            viewDataBinding.passportsList.adapter = listAdapter
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
         }

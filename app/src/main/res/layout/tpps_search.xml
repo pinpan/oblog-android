@@ -30,6 +30,7 @@
                 android:id="@+id/label_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
                 android:clickable="false"
                 android:editable="false"
                 android:ems="10"
@@ -42,6 +43,7 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/label_country"
+                android:layout_alignLeft="@id/label_country"
                 android:textSize="8sp" />
 
             <EditText
@@ -60,20 +62,13 @@
                 android:id="@+id/search_role"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/label_license_revoked"
+                android:layout_below="@id/label_psd2_role"
+                android:layout_alignLeft="@id/label_psd2_role"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/serarch_country"
                 android:layout_weight="1" />
 
-            <EditText
-                android:id="@+id/label_license_revoked"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/label_psd2_role"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="@string/label_revoked" />
-
+            <!--
             <Switch
                 android:id="@+id/revokedSwitch"
                 android:layout_width="wrap_content"
@@ -84,7 +79,7 @@
                 android:layout_toRightOf="@id/search_role"
                 android:layout_weight="1"
                 android:enabled="false"
-                android:textSize="8sp" />
+                android:textSize="8sp" />-->
         </RelativeLayout>
 
         <!--</LinearLayout>-->

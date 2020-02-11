@@ -16,8 +16,9 @@
 
 package com.applego.oblog.tppwatch.tpps
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
@@ -54,7 +55,7 @@ class TppsFragment : Fragment() {
 
     lateinit var countriesSpinner: Spinner
     lateinit var servicesSpinner: Spinner
-    lateinit var revokedSwitch: Switch
+    //lateinit var revokedSwitch: Switch
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,6 +68,29 @@ class TppsFragment : Fragment() {
         setHasOptionsMenu(true)
 
         return viewDataBinding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        activity?.menuInflater?.inflate(R.menu.tpps_fragment_menu, menu)
+
+        // Associate searchable configuration with the SearchView
+        val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        (menu.findItem(R.id.search).actionView as SearchView).apply {
+            setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
+        }
+
+
+        val item = menu!!.findItem(R.id.revokedSwitchForActionBar)
+        item.setActionView(R.layout.switch_item)
+
+        val mySwitch = item.actionView.findViewById(R.id.mySwitch) as Switch
+        mySwitch.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener{
+            override fun onCheckedChanged(p0: CompoundButton?, isChecked: Boolean) {
+                // do what you want with isChecked
+                viewModel.showRevokedOnly()
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
@@ -139,13 +163,13 @@ class TppsFragment : Fragment() {
         })
 
 
-        revokedSwitch = activity?.findViewById(R.id.revokedSwitch)!!
+        /*revokedSwitch = activity?.findViewById(R.id.revokedSwitch)!!
         revokedSwitch.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
             override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
                 viewModel.showRevokedOnly()
                 //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
-        })
+        })*/
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

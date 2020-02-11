@@ -36,7 +36,7 @@
     <string name="loading_tpps_error">Error while loading TPPs</string>
     <string name="followed_tpps_cleared">Followed TPPs cleared</string>
     <string name="menu_filter">Filter</string>
-    <string name="load_eba_directory">Reload TPPs Directory</string>
+    <string name="load_from_server">Reload from server</string>
     <string name="settings_title">Settings</string>
     <string name="menu_delete_tpp">Delete TPP</string>
     <string name="navigation_view_header_title">OBLOG</string>
