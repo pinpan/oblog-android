@@ -3,10 +3,12 @@ package com.applego.oblog.tppwatch.data.source.local
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import java.util.*
 
 @Entity(tableName = "services")
 // TODO: Rename to TppService
+@TypeConverters(OblogTypeConverters::class)
 data class Service @JvmOverloads constructor(
         @ColumnInfo(name = "title") var title: String = "",
         @ColumnInfo(name = "description") var description: String = "",

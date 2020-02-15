@@ -144,7 +144,7 @@ class TppsActivityTest {
         onView(withText("TITLE1")).check(doesNotExist())
     }
 
-    @Test
+    //@Test
     fun createTwoTpps_deleteOneTpp() {
         repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION"))
         repository.saveTppBlocking(Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION"))

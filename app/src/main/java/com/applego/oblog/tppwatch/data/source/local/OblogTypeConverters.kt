@@ -1,12 +1,13 @@
 package com.applego.oblog.tppwatch.data.source.local
 
+import android.R.attr.valueType
 import androidx.room.TypeConverter
-import java.text.SimpleDateFormat
-import java.util.*
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class OblogTypeConverters {
@@ -27,10 +28,17 @@ class OblogTypeConverters {
     val ebaPassportListType = object : TypeToken<List<EbaPassport>>() {
     }.getType()
 
-    val ebaPassportsMapType = object : TypeToken<Map<String, List<EbaService>>>() {
+    val ebaPassportsMapType = TypeToken.getParameterized(HashMap::class.java, String::class.java, List::class.java).type
+/*
+
+    TypeToken.getParameterized(HashMap.class, String.class, List<Service>.class) {
+    }.getType()
+*/
+
+    val ebaPassportMapListType = object : TypeToken<List<Map<String, List<Service>>>>() {
     }.getType()
 
-    val ebaPassportMapListType = object : TypeToken<List<Map<String, Service>>>() {
+    val ebaPassportCountryMapType = object : TypeToken<Map<String, MutableList<Service>>>() {
     }.getType()
 
 
@@ -132,33 +140,68 @@ class OblogTypeConverters {
         return aList
     }
 
-    @TypeConverter
+   /* @TypeConverter
     fun fromJsonElementToEbaPassport(json : JsonElement) : EbaPassport {
         val aPassport: EbaPassport = gson.fromJson<EbaPassport>(json, ebaPassportType)
         return aPassport
-    }
+    }*/
 
     @TypeConverter
     fun fromEbaPassportListToJsonElement(passportsList : List<Map<String, List<Service>>>) : JsonElement {
-        val jsonElement = JsonArray()
+        val jsonElement = gson.toJsonTree(passportsList, ebaPassportMapListType)
+        return jsonElement
+    }
+
+
+    @TypeConverter
+    fun fromEbaPassportToString(pass : EbaPassport) : String {
+        val jsonElement = gson.toJson(pass, ebaPassportType)
+
         return jsonElement
     }
 
     @TypeConverter
-    fun fromJsonElementToEbaPassportList(json : JsonElement) : List<EbaPassport> {
-        val aList: List<Map<String, Any>> = gson.fromJson<List<Map<String, String>>>(json, ebaPassportMapListType)
+    fun fromStringToEbaPassport(json : String) : EbaPassport {
+        return gson.fromJson(json, ebaPassportType)
+        //val jsonElement : JsonElement = gson.fromJson(json, ebaPassportType)
+        //return fromJsonElementToEbaPassport(jsonElement)
+    }
 
-        val ebaPassportsList = ArrayList<EbaPassport>()
+   /* @TypeConverter
+    fun fromJsonElementToEbaPassportCountryMap(json : String) : Map<String, List<Service>> {
+        val countryMap : Map<String, List<Service>> = gson.fromJson(json, ebaPassportCountryMapType)
+        return countryMap
+    }
+
+    @TypeConverter
+    fun fromEbaPassportCountryMapToJsonElement(passCountryMap : Map<String, List<Service>>) : JsonElement {
+        val jsonElement = gson.toJsonTree(passCountryMap, ebaPassportCountryMapType)
+
+        return jsonElement
+    }
+*/
+    @TypeConverter
+    fun fromEbaPassportToJsonElement(pass : EbaPassport) : JsonElement {
+        val jsonElement = gson.toJsonTree(pass, ebaPassportsMapType)
+
+        return jsonElement
+    }
+
+    @TypeConverter
+    fun fromJsonElementToEbaPassport(json : JsonElement) : EbaPassport {
+        val aList: List<Map<String, Any>> = gson.fromJson(json, ebaPassportMapListType) //ebaPass   portCountryMapType) //ebaPassportsMapType) //<List<Map<String, String>>>
+
+        //val ebaPassportsList = ArrayList<EbaPassport>()
+
+        val ebaPassport = EbaPassport()
+        val countryMap = HashMap<String, MutableList<Service>>()
+        ebaPassport.countryMap = countryMap
+
+        val serviceMap = HashMap<EbaService, MutableList<String>>()
+        //ebaPassport.serviceMap = serviceMap
 
         for (aMap in aList) {
-            val ebaPassport = EbaPassport()
-            ebaPassportsList.add(ebaPassport)
-
-            val countryMap = HashMap<String, MutableList<Service>>()
-            ebaPassport.countryMap = countryMap
-
-            val serviceMap = HashMap<EbaService, MutableList<String>>()
-            ebaPassport.serviceMap = serviceMap
+            //ebaPassportsList.add(ebaPassport)
 
             val entrySet: Set<Map.Entry<String, Any>> = aMap.entries
             for (entry in entrySet) {
@@ -193,12 +236,28 @@ class OblogTypeConverters {
             }
         }
 
-        return ebaPassportsList
+        return ebaPassport
     }
 
     @TypeConverter
-    fun fromJsonElementToEbaPassportsMap(json : JsonElement) : Map<String, List<EbaService>> {
-        val aMap: Map<String, List<EbaService>> = gson.fromJson<Map<String, List<EbaService>>>(json, ebaPassportsMapType)
+    fun fromEbaPassportsMapToJsonElement(aMap : Map<String, List<Service>>) : JsonElement {
+        return gson.toJsonTree(aMap, ebaPassportsMapType)
+    }
+
+    @TypeConverter
+    fun fromJsonStringToEbaPassportsMap(json : String) : Map<String, List<Service>> {
+        val aMap: Map<String, List<Service>> = gson.fromJson<Map<String, List<Service>>>(json, ebaPassportCountryMapType)
+        return aMap
+    }
+
+    @TypeConverter
+    fun fromEbaPassportsMapToJsonString(aMap : Map<String, List<Service>>) : String {
+        return gson.toJsonTree(aMap, ebaPassportCountryMapType).asString
+    }
+
+    @TypeConverter
+    fun fromJsonElementToEbaPassportsMap(json : JsonElement) : Map<String, List<Service>> {
+        val aMap: Map<String, List<Service>> = gson.fromJson<Map<String, List<Service>>>(json, ebaPassportsMapType)
         return aMap
     }
 

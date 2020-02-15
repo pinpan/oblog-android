@@ -75,13 +75,11 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
         if (key.equals("environment")) {
             actualEnvironment = sharedPreferences?.getString("environment","")
             val envsArray = getResources().getStringArray(R.array.environments);
-            if (envsArray != null) {
-                for (i in envsArray.indices.reversed()) {
-                    val env = envsArray[i]
+            for (i in envsArray.indices.reversed()) {
+                val env = envsArray[i]
 
-                    if (env == "Dev") {
-                        selectedEnv = env
-                    }
+                if (env == "Dev") {
+                    selectedEnv = env
                 }
             }
         }
@@ -127,7 +125,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                 aFragment.childFragmentManager.fragments
             }
             val tppsFragment = findTppsFragment()
-            tppsFragment!!.searchBy(query)
+            tppsFragment.searchBy(query)
         }
     }
 
@@ -138,7 +136,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
         val childFragments = childFragmentManager?.fragments
         for (fragment in childFragments!!) {
             if (fragment is TppsFragment)  {
-                tppsFragment = fragment as TppsFragment
+                tppsFragment = fragment
             }
         }
 

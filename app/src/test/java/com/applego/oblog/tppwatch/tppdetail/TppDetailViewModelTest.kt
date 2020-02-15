@@ -23,7 +23,10 @@ import com.applego.oblog.tppwatch.assertSnackbarMessage
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.FakeRepository
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -61,7 +64,9 @@ class TppDetailViewModelTest {
 
     @Test
     fun getActiveTppFromRepositoryAndLoadIntoView() {
-        tppDetailViewModel.start(tpp.id)
+        CoroutineScope(Dispatchers.Main).launch {
+            tppDetailViewModel.start(tpp.id)
+        }
 
         // Then verify that the view was notified
         assertThat(getValue(tppDetailViewModel.tpp).title).isEqualTo(tpp.title)
@@ -71,8 +76,9 @@ class TppDetailViewModelTest {
 
     @Test
     fun followTpp() {
-        tppDetailViewModel.start(tpp.id)
-
+        CoroutineScope(Dispatchers.Main).launch {
+            tppDetailViewModel.start(tpp.id)
+        }
         // Verify that the tpp was active initially
         assertThat(tppsRepository.tppsServiceData[tpp.id]?.isFollowed).isFalse()
 
@@ -88,8 +94,9 @@ class TppDetailViewModelTest {
     fun activateTpp() {
         tpp.isActive = true
 
-        tppDetailViewModel.start(tpp.id)
-
+        CoroutineScope(Dispatchers.Main).launch {
+            tppDetailViewModel.start(tpp.id)
+        }
         // Verify that the tpp was followed initially
         assertThat(tppsRepository.tppsServiceData[tpp.id]?.isActive).isTrue()
 
@@ -107,8 +114,9 @@ class TppDetailViewModelTest {
         tppsRepository.setReturnError(true)
 
         // Given an initialized ViewModel with an active tpp
-        tppDetailViewModel.start(tpp.id)
-
+        CoroutineScope(Dispatchers.Main).launch {
+            tppDetailViewModel.start(tpp.id)
+        }
         // Then verify that data is not available
         assertThat(getValue(tppDetailViewModel.isDataAvailable)).isFalse()
     }
@@ -135,8 +143,9 @@ class TppDetailViewModelTest {
     @Test
     fun deleteTpp() {
         assertThat(tppsRepository.tppsServiceData.containsValue(tpp)).isTrue()
-        tppDetailViewModel.start(tpp.id)
-
+        CoroutineScope(Dispatchers.Main).launch {
+            tppDetailViewModel.start(tpp.id)
+        }
         // When the deletion of a tpp is requested
         tppDetailViewModel.deleteTpp()
 
@@ -149,7 +158,13 @@ class TppDetailViewModelTest {
         mainCoroutineRule.pauseDispatcher()
 
         // Load the tpp in the viewmodel
-        tppDetailViewModel.start(tpp.id)
+        val job = CoroutineScope(Dispatchers.Main).launch {
+            tppDetailViewModel.start(tpp.id)
+        }
+
+        while (job.isActive) {
+
+        }
 
         // Then progress indicator is shown
         assertThat(getValue(tppDetailViewModel.dataLoading)).isTrue()

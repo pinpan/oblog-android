@@ -1,14 +1,9 @@
 package com.applego.oblog.tppwatch.data.source.remote.eba
 
-import com.applego.oblog.tppwatch.data.source.local.EbaPassport
 import com.applego.oblog.tppwatch.data.source.local.OblogTypeConverters
-import com.applego.oblog.tppwatch.data.source.local.Service
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.google.gson.*
 import java.lang.reflect.Type
-import java.util.*
-import java.util.Locale.filter
-import java.util.stream.Collectors
 
 class TppDeserializer : JsonDeserializer<Tpp> {
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Tpp {
@@ -53,8 +48,8 @@ class TppDeserializer : JsonDeserializer<Tpp> {
 
         val services = jsonObject?.get("services").asJsonArray ?: JsonArray()
         if (services != null) {
-            val allPassportedServices = __oblogTypeConverters.fromJsonElementToEbaPassportList(services)
-            tpp.ebaPassports = allPassportedServices
+            val passportedServices = __oblogTypeConverters.fromJsonElementToEbaPassport(services)
+            tpp.ebaPassport = passportedServices
         }
 
         return tpp

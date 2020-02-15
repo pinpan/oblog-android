@@ -27,10 +27,10 @@ import com.applego.oblog.tppwatch.databinding.TppPassportBinding
 
 
 /**
- * Adapter for the tpp list. Has a reference to the [TppsViewModel] to send actions back to it.
+ * Adapter for the tpp details. Has a reference to the [TppDetailViewModel] to send actions back to it.
  */
 class TppDetailAdapter(private val viewModel: TppDetailViewModel, ctx: Context, layoutId: Int) :
-    ListAdapter<EbaPassport, TppDetailAdapter.ViewHolder>(TppDiffCallback()) {
+    ListAdapter<EbaPassport.CountryVisa, TppDetailAdapter.ViewHolder>(TppDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
@@ -50,10 +50,10 @@ class TppDetailAdapter(private val viewModel: TppDetailViewModel, ctx: Context, 
     class ViewHolder private constructor(val binding: TppPassportBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(viewModel: TppDetailViewModel, item: EbaPassport) {
+        fun bind(viewModel: TppDetailViewModel, item: EbaPassport.CountryVisa) {
 
             binding.viewmodel = viewModel
-            binding.ebaPassport = item
+            binding.countryVisa = item
             binding.executePendingBindings()
         }
 
@@ -74,12 +74,12 @@ class TppDetailAdapter(private val viewModel: TppDetailViewModel, ctx: Context, 
  * Used by ListAdapter to calculate the minimum number of changes between and old list and a new
  * list that's been passed to `submitList`.
  */
-class TppDiffCallback : DiffUtil.ItemCallback<EbaPassport>() {
-    override fun areItemsTheSame(oldItem: EbaPassport, newItem: EbaPassport): Boolean {
-        return oldItem.id == newItem.id
+class TppDiffCallback : DiffUtil.ItemCallback<EbaPassport.CountryVisa>() {
+    override fun areItemsTheSame(oldItem: EbaPassport.CountryVisa, newItem: EbaPassport.CountryVisa): Boolean {
+        return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: EbaPassport, newItem: EbaPassport): Boolean {
+    override fun areContentsTheSame(oldItem: EbaPassport.CountryVisa, newItem: EbaPassport.CountryVisa): Boolean {
         return oldItem == newItem
     }
 }

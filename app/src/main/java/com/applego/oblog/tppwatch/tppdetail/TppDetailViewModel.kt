@@ -30,7 +30,7 @@ import com.applego.oblog.tppwatch.data.source.TppsRepository
 import com.applego.oblog.tppwatch.data.source.local.EbaPassport
 //import com.applego.oblog.tppwatch.data.source.local.EbaPassport
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.internal.Util
 
 /**
@@ -66,14 +66,15 @@ class TppDetailViewModel(
             return tpp.value?.description ?: ""
         }
 
-    public val ebaPassports: List<EbaPassport>?
+    public var ebaPassport: EbaPassport?
         get() {
-            return tpp.value?.ebaPassports?: Util.immutableList()
+            return tpp.value?.ebaPassport?: EbaPassport()
         }
-        /*
-        set(passes: List<EbaPassport>?) {
-            this.ebaPassports = passes
-        }*/
+        set(pass: EbaPassport?) {
+            this.ebaPassport = pass
+        }
+
+
 /*
     private fun setEbaPassports(passes: List<EbaPassport>?) {
         this.ebaPassports = passes
@@ -116,7 +117,7 @@ class TppDetailViewModel(
         showSnackbarMessage(if (activate) R.string.tpp_marked_active else R.string.tpp_marked_inactive)
     }
 
-    fun start(tppId: String?, forceRefresh: Boolean = false) {
+    suspend fun start(tppId: String?, forceRefresh: Boolean = false) {
         if (_isDataAvailable.value == true && !forceRefresh || _dataLoading.value == true) {
             return
         }
@@ -126,17 +127,24 @@ class TppDetailViewModel(
 
         wrapEspressoIdlingResource {
 
-            viewModelScope.launch {
-                if (tppId != null) {
-                    tppsRepository.getTpp(tppId, forceRefresh).let { result ->
-                        if (result is Success) {
-                            onTppLoaded(result.data)
-                        } else {
-                            onDataNotAvailable(result)
+            runBlocking {
+                //val aJob =
+                coroutineScope {
+                //withContext(ioDispatcher) {
+                    if (tppId != null) {
+                        tppsRepository.getTpp(tppId, forceRefresh).let { result ->
+                            if (result is Success) {
+                                onTppLoaded(result.data)
+                            } else {
+                                onDataNotAvailable(result)
+                            }
                         }
                     }
+                    _dataLoading.value = false
+                //}
+
+              //  aJob.join()
                 }
-                _dataLoading.value = false
             }
         }
     }
@@ -157,7 +165,11 @@ class TppDetailViewModel(
     }
 
     fun refresh() {
-        tppId?.let { start(it, true) }
+        CoroutineScope(Dispatchers.Main).launch {
+            tppId?.let {
+                start(it, true)
+            }
+        }
     }
 
     private fun showSnackbarMessage(@StringRes message: Int) {

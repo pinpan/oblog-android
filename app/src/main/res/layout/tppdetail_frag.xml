@@ -213,7 +213,7 @@
                         android:fadeScrollbars="false"
                         android:scrollbars="horizontal|vertical"
                         android:textSize="12sp"
-                        app:items="@{viewmodel.ebaPassports}"
+                        app:items="@{viewmodel.tpp.ebaPassport.services}"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                     <!--<RecycleView>

@@ -23,8 +23,8 @@
             type="com.applego.oblog.tppwatch.data.source.local.Tpp" />-->
 
         <variable
-            name="ebaPassport"
-            type="com.applego.oblog.tppwatch.data.source.local.EbaPassport" />
+            name="countryVisa"
+            type="com.applego.oblog.tppwatch.data.source.local.EbaPassport.CountryVisa" />
 
         <variable
             name="viewmodel"
@@ -80,7 +80,7 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_toRightOf="@id/label_service"
-            android:text="@{ebaPassport.countryCode}"
+            android:text="@{countryVisa.country}"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
         <TextView
@@ -102,7 +102,7 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_toRightOf="@id/label_pass_countries"
-            android:text="@{ebaPassport.id}"
+            android:text="@{countryVisa.servicesAsString}"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
     </RelativeLayout>
 

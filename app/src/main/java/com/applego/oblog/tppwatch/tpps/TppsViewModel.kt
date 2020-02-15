@@ -29,6 +29,7 @@ import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.TppsRepository
 import com.applego.oblog.tppwatch.data.source.local.EbaService
+import com.applego.oblog.tppwatch.data.source.local.Service
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.launch
 import java.util.ArrayList
@@ -244,12 +245,17 @@ class TppsViewModel(
         }
     }
 
-    private fun getTppsByGlobalFilter(tpps: List<Tpp>): ArrayList<Tpp> {
-        val tppsToShow = ArrayList<Tpp>()
+    private fun getTppsByGlobalFilter(tpps: List<Tpp>): List<Tpp> {
+        var tppsToShow : List<Tpp> = ArrayList<Tpp>()
         // We filter the tpps based on the requestType
-        for (tpp in tpps) {
-            if (tpp.title.contains(_currentFilterString, true)) {
-                tppsToShow.add(tpp)
+        if (_currentFilterString.isNullOrEmpty()) {
+            tppsToShow = tpps
+
+        } else {
+            for (tpp in tpps) {
+                if (tpp.title.contains(_currentFilterString, true)) {
+                    (tppsToShow as ArrayList<Tpp>).add(tpp)
+                }
             }
         }
         return tppsToShow
@@ -309,16 +315,16 @@ class TppsViewModel(
                     val psdService = EbaService.findPsd2Service(service)
                     var tppsToShow = ArrayList<Tpp>()
                     theItems?.forEach {
-                        if (it.ebaPassports != null) {
+                        if (it.ebaPassport != null) {
                             var i = 0
-                            while (i < it.ebaPassports.size) {
-                                val pass = it.ebaPassports[i++]
-                                if (pass.serviceMap != null) {
-                                    for (serv in pass.serviceMap)  {
-                                        if (serv.value != null) {
-                                            if (serv.key.code.equals(psdService.code)) {
-                                                tppsToShow.add(it)
-                                                i = it.ebaPassports.size
+                            it.ebaPassport.countryMap.entries.forEach() {
+                                //val pass = it.ebaPassports[i++]
+                                if (it.value != null) {
+                                    val services = it.value as List<Service>
+                                    if (services != null) {
+                                        for (serv in services)  {
+                                            if (serv.title.equals(psdService.code)) {
+                                                tppsToShow.add(it as Tpp)
                                                 break;
                                             }
                                         }

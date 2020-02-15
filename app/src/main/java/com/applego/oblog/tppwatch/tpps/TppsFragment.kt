@@ -203,7 +203,7 @@ class TppsFragment : Fragment() {
         })
         searchView?.setOnCloseListener (object: SearchView.OnCloseListener {
             override fun onClose(): Boolean {
-                if (!lastTppsSearchViewQuery?.isNullOrBlank()) {
+                if (!lastTppsSearchViewQuery.isNullOrBlank()) {
                     viewModel.loadTpps(false)
                     lastTppsSearchViewQuery = ""
                 }
@@ -214,7 +214,7 @@ class TppsFragment : Fragment() {
         searchView?.findViewById<ImageButton>(R.id.search_close_btn)
                 ?.setOnClickListener(object: View.OnClickListener {
                     override fun onClick(v: View) {
-                        if (!lastTppsSearchViewQuery?.isNullOrBlank()) {
+                        if (!lastTppsSearchViewQuery.isNullOrBlank()) {
                             viewModel.loadTpps(false)
                             lastTppsSearchViewQuery = ""
                         }

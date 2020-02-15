@@ -23,6 +23,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.testing.FragmentScenario.launch
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -34,6 +35,10 @@ import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupRefreshLayout
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -96,7 +101,6 @@ class TppDetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel.start(args.tppId)
 
         val view = inflater.inflate(R.layout.tppdetail_frag, container, false)
 
@@ -112,6 +116,10 @@ class TppDetailFragment : Fragment() {
 
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
+        //coroutineScope {
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.start(args.tppId)
+        }
 
         setHasOptionsMenu(true)
         return view
