@@ -25,7 +25,7 @@ import timber.log.Timber
  * [BindingAdapter]s for the [EbaPassport]s list.
  */
 @BindingAdapter("app:items")
-fun setItems(listView: RecyclerView, items: List<EbaPassport.CountryVisa>) {
+fun setItems(listView: RecyclerView, items: List<EbaPassport.CountryVisa>?) {
     Timber.w("$$$$$$$$$$$$ The Adapter listView is: " + listView.adapter)
 
     (listView?.adapter as TppDetailAdapter).submitList(items)

@@ -40,7 +40,7 @@ class TppDetailAdapter(private val viewModel: TppDetailViewModel, ctx: Context, 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val vH = ViewHolder.from(parent)
-        val view : LinearLayout = vH.itemView as LinearLayout
+        val view = vH.itemView
         if (view != null) {
             //view.passtpp_title_text?.textSize = 10f
         }

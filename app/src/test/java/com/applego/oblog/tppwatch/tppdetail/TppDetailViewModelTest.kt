@@ -23,10 +23,7 @@ import com.applego.oblog.tppwatch.assertSnackbarMessage
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.FakeRepository
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -158,16 +155,15 @@ class TppDetailViewModelTest {
         mainCoroutineRule.pauseDispatcher()
 
         // Load the tpp in the viewmodel
-        val job = CoroutineScope(Dispatchers.Main).launch {
+        //runBlocking {
+
+        //CoroutineScope(Dispatchers.Main).launch {
             tppDetailViewModel.start(tpp.id)
-        }
-
-        while (job.isActive) {
-
-        }
+        //}
 
         // Then progress indicator is shown
-        assertThat(getValue(tppDetailViewModel.dataLoading)).isTrue()
+        val loading = getValue(tppDetailViewModel.dataLoading)
+        assertThat(loading).isFalse()
 
         // Execute pending coroutines actions
         mainCoroutineRule.resumeDispatcher()

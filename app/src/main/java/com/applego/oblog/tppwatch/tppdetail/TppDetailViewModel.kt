@@ -117,7 +117,7 @@ class TppDetailViewModel(
         showSnackbarMessage(if (activate) R.string.tpp_marked_active else R.string.tpp_marked_inactive)
     }
 
-    suspend fun start(tppId: String?, forceRefresh: Boolean = false) {
+    fun start(tppId: String?, forceRefresh: Boolean = false) {
         if (_isDataAvailable.value == true && !forceRefresh || _dataLoading.value == true) {
             return
         }
@@ -129,7 +129,7 @@ class TppDetailViewModel(
 
             runBlocking {
                 //val aJob =
-                coroutineScope {
+                //coroutineScope {
                 //withContext(ioDispatcher) {
                     if (tppId != null) {
                         tppsRepository.getTpp(tppId, forceRefresh).let { result ->
@@ -142,9 +142,6 @@ class TppDetailViewModel(
                     }
                     _dataLoading.value = false
                 //}
-
-              //  aJob.join()
-                }
             }
         }
     }
