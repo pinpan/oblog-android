@@ -40,9 +40,9 @@ interface  OblogEbaService  {
         val tppType: Type = object : TypeToken<Tpp>() {}.type
         val tppListType: Type = object : TypeToken<MutableList<Tpp>>() {}.type
         val tppsListResponseType: Type = object : TypeToken<TppsListResponse>() {}.type
-        val ebaPassportListType = object : TypeToken<List<EbaPassport>>() {}.type
-        val ebaPassportType: Type = object : TypeToken<EbaPassport>() {}.type
-        val tppServiceListType: Type = object : TypeToken<List<Service>>() {}.type
+        //val ebaPassportListType = object : TypeToken<List<EbaPassport>>() {}.type
+        //val ebaPassportType: Type = object : TypeToken<EbaPassport>() {}.type
+        //val tppServiceListType: Type = object : TypeToken<List<Service>>() {}.type
         val tppServiceType: Type = object : TypeToken<Service>() {}.type
 
         var gson = GsonBuilder()
@@ -136,14 +136,7 @@ interface  OblogEbaService  {
     @PUT("tpps/local/{id}")
     fun updateTpp(@Body tpp : Tpp) : Call<Tpp>
 
-
     abstract fun insertTpp(tpp: Tpp): Unit
 
     fun updateUnfollowed(id: String, b: Boolean): Unit
-
-    fun deleteFollowedTpps ()
-
-    fun deleteTpps(): Unit
-
-    fun deleteTppById(tppId: String)
 }

@@ -11,21 +11,10 @@ data class EbaPassport @JvmOverloads constructor(
 ) {
 
     /**
-     * Map of services and corresponding list of countries to which the service is passported
-     */
-    //@JvmField
-    //var serviceMap = HashMap<EbaService, MutableList<String>>()
-
-    /**
      * Map of counties and list of services which are passported to the corresponding country
      */
-    //@JvmField
     @Embedded
     var countryMap = HashMap<String, MutableList<Service>>()
-
-    val serviceCountries: String
-        get() = if (countryCode.isNotEmpty()) countryCode else id
-
 
     class CountryVisa {
 

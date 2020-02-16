@@ -28,7 +28,7 @@ import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.AddtppFragBinding
 import com.applego.oblog.tppwatch.tpps.ADD_EDIT_RESULT_OK
 import com.applego.oblog.tppwatch.util.getViewModelFactory
-import com.applego.oblog.tppwatch.util.setupRefreshLayout
+//import com.applego.oblog.tppwatch.util.setupRefreshLayout
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
 
@@ -60,7 +60,7 @@ class AddEditTppFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         setupSnackbar()
         setupNavigation()
-        this.setupRefreshLayout(viewDataBinding.refreshLayout)
+        //this.setupRefreshLayout(viewDataBinding.refreshLayout)
         viewModel.start(args.tppId)
     }
 

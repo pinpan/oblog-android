@@ -1,6 +1,5 @@
 package com.applego.oblog.tppwatch.data.source.local
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -55,8 +54,5 @@ interface TppServicesDao {
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertService(service: TppService)
-
-    @Query("SELECT tpps.id as tpp_id, services.title as service_title, tpp_services.service , services.* FROM tpps LEFT OUTER JOIN tpp_services on tpp_services.Tpp = tpps.id LEFT OUTER JOIN services on tpp_services.service = services.id")
-    fun getAllTppWithAssignedServices() : List<TppServicePair> //LiveData<>
 
 }

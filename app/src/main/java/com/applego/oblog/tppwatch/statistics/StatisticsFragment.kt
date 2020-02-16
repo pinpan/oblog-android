@@ -25,7 +25,7 @@ import androidx.fragment.app.viewModels
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.StatisticsFragBinding
 import com.applego.oblog.tppwatch.util.getViewModelFactory
-import com.applego.oblog.tppwatch.util.setupRefreshLayout
+//import com.applego.oblog.tppwatch.util.setupRefreshLayout
 
 /**
  * Main UI for the statistics screen.
@@ -51,7 +51,7 @@ class StatisticsFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewDataBinding.viewmodel = viewModel
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
-        this.setupRefreshLayout(viewDataBinding.refreshLayout)
+        //this.setupRefreshLayout(viewDataBinding.refreshLayout)
         viewModel.start()
     }
 }

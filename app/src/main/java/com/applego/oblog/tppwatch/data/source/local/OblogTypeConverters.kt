@@ -197,7 +197,7 @@ class OblogTypeConverters {
         val countryMap = HashMap<String, MutableList<Service>>()
         ebaPassport.countryMap = countryMap
 
-        val serviceMap = HashMap<EbaService, MutableList<String>>()
+        //val serviceMap = HashMap<EbaService, MutableList<String>>()
         //ebaPassport.serviceMap = serviceMap
 
         for (aMap in aList) {
@@ -212,23 +212,23 @@ class OblogTypeConverters {
 
                 if (entry.value is String) {
                     val ebaService = EbaService.findService(entry.value as String)
-                    var serviceCountries = serviceMap.get(ebaService)
+                    /*var serviceCountries = serviceMap.get(ebaService)
                     if (serviceCountries == null) {
                         serviceCountries = mutableListOf<String>()
-                        serviceMap.put(ebaService, serviceCountries)
-                    }
-                        serviceCountries.add(entry.key)
+                        //serviceMap.put(ebaService, serviceCountries)
+                    }*/
+                     //        serviceCountries.add(entry.key)
                     // TODO: Make Service a shared immutable value object
                     theServices.add(Service(ebaService.code, ebaService.description))
                 } else {
                     for (aService in entry.value as List<String>) {
                         val ebaService = EbaService.findService(aService)
-                        var serviceCountries = serviceMap.get(ebaService)
-                        if (serviceCountries == null) {
-                            serviceCountries = mutableListOf<String>()
-                            serviceMap.put(ebaService, serviceCountries)
-                        }
-                        serviceCountries.add(entry.key)
+                        //var serviceCountries = serviceMap.get(ebaService)
+                        //if (serviceCountries == null) {
+                        //    serviceCountries = mutableListOf<String>()
+                        //    serviceMap.put(ebaService, serviceCountries)
+                        //}
+                        //serviceCountries.add(entry.key)
 
                         theServices.add(Service(ebaService.code, ebaService.description))
                     }

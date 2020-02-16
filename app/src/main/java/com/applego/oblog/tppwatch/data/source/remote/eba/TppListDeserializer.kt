@@ -31,8 +31,6 @@ class TppListDeserializer : JsonDeserializer<List<Tpp>> {
 
         if (jsonObject != null) {
 
-            //var jsonObject: JsonObject? = json?.asJsonObject
-
             val itemsJsonArray : JsonArray = jsonObject?.get("content")?.getAsJsonArray() ?: JsonArray();
 
             for (itemsJsonElement:JsonElement in itemsJsonArray) run {

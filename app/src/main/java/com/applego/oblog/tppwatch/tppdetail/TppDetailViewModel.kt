@@ -28,10 +28,8 @@ import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.TppsRepository
 import com.applego.oblog.tppwatch.data.source.local.EbaPassport
-//import com.applego.oblog.tppwatch.data.source.local.EbaPassport
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
-import okhttp3.internal.Util
 
 /**
  * ViewModel for the Details screen.
@@ -73,14 +71,6 @@ class TppDetailViewModel(
         set(pass: EbaPassport?) {
             this.ebaPassport = pass
         }
-
-
-/*
-    private fun setEbaPassports(passes: List<EbaPassport>?) {
-        this.ebaPassports = passes
-        _isDataAvailable.value = passes != null
-    }*/
-
 
     // This LiveData depends on another so we can use a transformation.
     val followed: LiveData<Boolean> = Transformations.map(_tpp) { input: Tpp? ->
@@ -126,29 +116,23 @@ class TppDetailViewModel(
         _dataLoading.value = true
 
         wrapEspressoIdlingResource {
-
             runBlocking {
-                //val aJob =
-                //coroutineScope {
-                //withContext(ioDispatcher) {
-                    if (tppId != null) {
-                        tppsRepository.getTpp(tppId, forceRefresh).let { result ->
-                            if (result is Success) {
-                                onTppLoaded(result.data)
-                            } else {
-                                onDataNotAvailable(result)
-                            }
+                if (tppId != null) {
+                    tppsRepository.getTpp(tppId, forceRefresh).let { result ->
+                        if (result is Success) {
+                            onTppLoaded(result.data)
+                        } else {
+                            onDataNotAvailable(result)
                         }
                     }
-                    _dataLoading.value = false
-                //}
+                }
+                _dataLoading.value = false
             }
         }
     }
 
     private fun setTpp(tpp: Tpp?) {
         this._tpp.value = tpp
-        //this.ebaPassports = tpp?.ebaPassports
         _isDataAvailable.value = tpp != null
     }
 

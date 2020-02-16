@@ -33,221 +33,156 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-<!--
-        <com.applego.oblog.tppwatch.ScrollChildSwipeRefreshLayout
-            android:id="@+id/refresh_layout"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:onRefreshListener="@{viewmodel::refresh}"
-            app:refreshing="@{viewmodel.dataLoading}">
--->
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:id="@+id/detail_relative_layout"
+            android:visibility="@{viewmodel.isDataAvailable ? View.VISIBLE : View.GONE}">
 
-<!--
-            <LinearLayout
+            <!-- android:paddingTop specified to temporarily work around -->
+            <!-- https://github.com/robolectric/robolectric/issues/4588 -->
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:paddingTop="1dp"
+                android:text="@{viewmodel.tpp.title}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#006496"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/title"
+                android:layout_marginBottom="10dp"
+                android:background="?android:attr/listDivider" />
+
+            <CheckBox
+                android:id="@+id/checkbox_follow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title"
+                android:layout_gravity="left"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:checked="@{viewmodel.followed}"
+                android:gravity="left|center_vertical"
+                android:onClick="@{(view) -> viewmodel.setFollowed(((CompoundButton)view).isChecked())}"
+                android:text="@string/label_following"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#006496"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/checkbox_active"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/checkbox_follow"
+                android:layout_gravity="left"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_toRightOf="@id/checkbox_follow"
+                android:checked="@{viewmodel.active}"
+                android:gravity="left|center_vertical"
+                android:onClick="@{(view) -> viewmodel.setActive(((CompoundButton)view).isChecked())}"
+                android:paddingTop="1dp"
+                android:text="@string/label_activated"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#006496"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/checkbox_active"
+                android:layout_marginBottom="10dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/label_home_country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/divider"
+                android:clickable="false"
+                android:ems="10"
+                android:focusable="false"
+                android:hint="@string/tpp_home_country_label"
+                android:inputType="none"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textStyle="bold"
+                android:visibility="visible"
+                tools:text="@string/tpp_home_country_label" />
+
+            <TextView
+                android:id="@+id/home_country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/label_home_country"
+                android:layout_toRightOf="@id/label_home_country"
+                android:gravity="left"
+                android:text="@{viewmodel.tpp.country}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#006496"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/label_entity_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label_home_country"
+                android:text="@string/label_entity_code" />
+
+            <TextView
+                android:id="@+id/entity_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/home_country"
+                android:layout_alignLeft="@id/home_country"
+                android:paddingTop="1dp"
+                android:text="@{viewmodel.tpp.entityCode}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#006496"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/label_passports"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label_entity_code"
+                android:clickable="false"
+                android:ems="10"
+                android:enabled="false"
+                android:focusable="false"
+                android:inputType="none"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="12sp"
+                tools:text="@string/label_passports" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/passports_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin">
--->
+                android:layout_below="@id/label_entity_code"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#CDDC39"
+                android:fadeScrollbars="false"
+                android:scrollbars="horizontal|vertical"
+                android:textSize="10sp"
+                app:items="@{viewmodel.tpp.ebaPassport.services}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-                <!--<LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingTop="@dimen/activity_vertical_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingBottom="@dimen/activity_vertical_margin"
-                    android:visibility="@{viewmodel.isDataAvailable ? View.GONE : View.VISIBLE}">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/no_data"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:visibility="@{viewmodel.dataLoading ? View.GONE : View.VISIBLE}" />
-                </LinearLayout>
--->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingTop="@dimen/activity_vertical_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingBottom="@dimen/activity_vertical_margin"
-                    android:visibility="@{viewmodel.isDataAvailable ? View.VISIBLE : View.GONE}">
-
-                    <!-- android:paddingTop specified to temporarily work around -->
-                    <!-- https://github.com/robolectric/robolectric/issues/4588 -->
-
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:paddingTop="1dp"
-                        android:text="@{viewmodel.tpp.title}"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textColor="#006496"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:id="@+id/divider2"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_below="@id/title"
-                        android:layout_marginBottom="10dp"
-                        android:background="?android:attr/listDivider" />
-
-                    <CheckBox
-                        android:id="@+id/checkbox_follow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/title"
-                        android:layout_gravity="left"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin"
-                        android:checked="@{viewmodel.followed}"
-                        android:gravity="left|center_vertical"
-                        android:onClick="@{(view) -> viewmodel.setFollowed(((CompoundButton)view).isChecked())}"
-                        android:text="@string/label_following"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="#006496"
-                        android:textStyle="bold" />
-
-                    <CheckBox
-                        android:id="@+id/checkbox_active"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignTop="@id/checkbox_follow"
-                        android:layout_gravity="left"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin"
-                        android:layout_toRightOf="@id/checkbox_follow"
-                        android:checked="@{viewmodel.active}"
-                        android:gravity="left|center_vertical"
-                        android:onClick="@{(view) -> viewmodel.setActive(((CompoundButton)view).isChecked())}"
-                        android:paddingTop="1dp"
-                        android:text="@string/label_activated"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="#006496"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:id="@+id/divider"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_below="@id/checkbox_active"
-                        android:layout_marginBottom="10dp"
-                        android:background="?android:attr/listDivider" />
-
-                    <TextView
-                        android:id="@+id/label_home_country"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/divider"
-                        android:clickable="false"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:hint="@string/tpp_home_country_label"
-                        android:inputType="none"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textStyle="bold"
-                        android:visibility="visible"
-                        tools:text="@string/tpp_home_country_label" />
-
-                    <TextView
-                        android:id="@+id/home_country"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@id/label_home_country"
-                        android:layout_toRightOf="@id/label_home_country"
-                        android:gravity="left"
-                        android:text="@{viewmodel.tpp.country}"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="#006496"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/label_entity_code"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/label_home_country"
-                        android:text="@string/label_entity_code" />
-
-                    <TextView
-                        android:id="@+id/entity_code"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/home_country"
-                        android:layout_alignLeft="@id/home_country"
-                        android:paddingTop="1dp"
-                        android:text="@{viewmodel.tpp.entityCode}"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="#006496"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/label_passports"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/label_entity_code"
-                        android:clickable="false"
-                        android:ems="10"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:inputType="none"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textSize="12sp"
-                        tools:text="@string/label_passports" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/passports_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@id/label_entity_code"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="#CDDC39"
-                        android:fadeScrollbars="false"
-                        android:scrollbars="horizontal|vertical"
-                        android:textSize="10sp"
-                        app:items="@{viewmodel.tpp.ebaPassport.services}"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-                    <!--<RecycleView>
-                        android:id="@+id/tpp_passports"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-
-                        />-->
-                        <!--app:items="@{viewmodel.tpp.ebaPassports}"-->
-                        <!--<EditText
-                            android:id="@+id/tpp_detail_services_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:ems="10"
-                            android:focusable="false"
-                            android:inputType="none"
-                            tools:text="@string/tpp_services_label" />
-
-                        <TextView
-                            android:id="@+id/tpp_detail_licensed_services"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="1dp"
-                            android:text="@{viewmodel.description}"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Small" />-->
-                    <!--</RecycleView>-->
-                </RelativeLayout>
-<!--            </LinearLayout>-->
-<!--        </com.applego.oblog.tppwatch.ScrollChildSwipeRefreshLayout>-->
+        </RelativeLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/edit_tpp_fab"
@@ -256,7 +191,7 @@
             android:layout_margin="@dimen/fab_margin"
             android:src="@drawable/ic_edit"
             app:fabSize="normal"
-            app:layout_anchor="@id/refresh_layout"
+            app:layout_anchor="@id/detail_relative_layout"
             app:layout_anchorGravity="bottom|right|end" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

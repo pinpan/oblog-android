@@ -25,3 +25,20 @@ Thie in turn triggers creation of new repository. Question is:
   - Site branding and styling
      - Logo, Slogan
      - Colors palette, icon
+
+
+====================================================================================================
+SNIPETS
+=========================================================
+/*
+    @Override
+    fun deserialize(elem : JsonElement, type : Type, jsonDeserializationContext : JsonDeserializationContext) : Map<String, Date> {
+        return elem.getAsJsonObject()
+            .entrySet()
+            .stream()
+            .filter(e -> e.getValue().isJsonPrimitive())
+            .filter(e -> e.getValue().getAsJsonPrimitive().isString())
+            .collect(Collectors.toMap(Map.Entry::getKey, e -> formatDate(e.getValue())));
+     }
+*/
+--------------------------

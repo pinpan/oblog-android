@@ -31,8 +31,12 @@
 
         <EditTextPreference
             app:key="signature"
-            app:title="@string/signature_title"
+            app:title="@string/user_signature"
             app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreferenceCompat
+            app:key="sync"
+            app:title="@string/psd2_services_only" />
 
         <SwitchPreferenceCompat
             app:key="sync"

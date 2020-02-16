@@ -15,11 +15,8 @@ class TppServiceDeserializer : JsonDeserializer<Service> {
         return convertFrom(jsonObject)
     }
 
-    val __oblogTypeConverters = OblogTypeConverters()
-
     companion object {
         private var INSTANCE: TppServiceDeserializer? = null
-        //val tppDeserializer: TppServiceDeserializer
             get() {
                 if (INSTANCE == null) {
                     INSTANCE = TppServiceDeserializer()

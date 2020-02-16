@@ -30,7 +30,7 @@ import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.databinding.TppsFragBinding
 import com.applego.oblog.tppwatch.util.getViewModelFactory
-import com.applego.oblog.tppwatch.util.setupRefreshLayout
+//import com.applego.oblog.tppwatch.util.setupRefreshLayout
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -55,7 +55,6 @@ class TppsFragment : Fragment() {
 
     lateinit var countriesSpinner: Spinner
     lateinit var servicesSpinner: Spinner
-    //lateinit var revokedSwitch: Switch
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -118,7 +117,7 @@ class TppsFragment : Fragment() {
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
         setupSnackbar()
         setupListAdapter()
-        setupRefreshLayout(viewDataBinding.refreshLayout, viewDataBinding.tppsList)
+        //setupRefreshLayout(viewDataBinding.refreshLayout, viewDataBinding.tppsList)
         setupNavigation()
         setupTextSearch()
         setUpSearchForm();
@@ -129,7 +128,6 @@ class TppsFragment : Fragment() {
         val countryAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.eu_countries, android.R.layout.simple_spinner_item);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        //countriesSpinner
         countriesSpinner = activity?.findViewById(R.id.serarch_country)!!
         countriesSpinner.setAdapter(countryAdapter);
         countriesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
@@ -161,15 +159,6 @@ class TppsFragment : Fragment() {
                 // Another interface callback
             }
         })
-
-
-        /*revokedSwitch = activity?.findViewById(R.id.revokedSwitch)!!
-        revokedSwitch.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-            override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-                viewModel.showRevokedOnly()
-                //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-        })*/
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -289,26 +278,6 @@ class TppsFragment : Fragment() {
         if (viewModel != null) {
             listAdapter = TppsAdapter(viewModel, context!!, R.layout.tppitemlayout)
 
-            /* {
-
-                override fun getView(): View? {
-                    return super.getView()
-                }
-
-                Override
-                fun getView(position: Int, convertView : View, parent : ViewGroup) : View {
-                    /// Get the Item from ListView
-                    val view = super.getView(position, convertView, parent)
-
-                    val tv = (TextView) view.findViewById(android.R.id.text1)
-
-                    // Set the text size 25 dip for ListView each item
-                    tv.textSize = TypedValue.COMPLEX_UNIT_DIP
-
-                    // Return the view
-                    return view
-                }
-            }*/
             viewDataBinding.tppsList.adapter = listAdapter
 
         } else {

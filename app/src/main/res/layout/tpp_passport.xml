@@ -18,10 +18,6 @@
 
     <data>
 
-       <!-- <variable
-            name="tpp"
-            type="com.applego.oblog.tppwatch.data.source.local.Tpp" />-->
-
         <variable
             name="countryVisa"
             type="com.applego.oblog.tppwatch.data.source.local.EbaPassport.CountryVisa" />
@@ -40,28 +36,6 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingBottom="@dimen/list_item_padding"
     >
-<!--
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </TableLayout>
--->
         <TextView
             android:id="@+id/label_service"
             android:layout_width="0dp"

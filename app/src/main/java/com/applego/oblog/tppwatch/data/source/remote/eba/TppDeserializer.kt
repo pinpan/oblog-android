@@ -55,18 +55,6 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         return tpp
     }
 
-/*
-    @Override
-    fun deserialize(elem : JsonElement, type : Type, jsonDeserializationContext : JsonDeserializationContext) : Map<String, Date> {
-        return elem.getAsJsonObject()
-            .entrySet()
-            .stream()
-            .filter(e -> e.getValue().isJsonPrimitive())
-            .filter(e -> e.getValue().getAsJsonPrimitive().isString())
-            .collect(Collectors.toMap(Map.Entry::getKey, e -> formatDate(e.getValue())));
-     }
-*/
-
     private fun getStringFromJsonArray(jsounArray: JsonArray): String {
 
         var theString = ""

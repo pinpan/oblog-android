@@ -23,7 +23,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.testing.FragmentScenario.launch
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -32,12 +31,10 @@ import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.TppdetailFragBinding
 import com.applego.oblog.tppwatch.tpps.DELETE_RESULT_OK
 import com.applego.oblog.tppwatch.util.getViewModelFactory
-import com.applego.oblog.tppwatch.util.setupRefreshLayout
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -61,7 +58,7 @@ class TppDetailFragment : Fragment() {
         view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
         setupNavigation()
 
-        this.setupRefreshLayout(viewDataBinding.refreshLayout)
+        //this.setupRefreshLayout(viewDataBinding.refreshLayout)
     }
 
     private fun setupListAdapter() {
@@ -108,15 +105,8 @@ class TppDetailFragment : Fragment() {
             viewmodel = viewModel
         }
 
-/* DO NOT DO / INVESTIGATE: Empty Data
-       viewDataBinding = TppdetailFragBinding.inflate(inflater, container, false).apply {
-            viewmodel = viewModel
-        }
-*/
-
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
-        //coroutineScope {
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.start(args.tppId)
         }

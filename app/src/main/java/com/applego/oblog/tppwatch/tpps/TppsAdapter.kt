@@ -32,7 +32,6 @@ import kotlinx.android.synthetic.main.tppdetail_frag.view.*
  */
 class TppsAdapter(private val viewModel: TppsViewModel, ctx: Context, layoutId: Int) :
     ListAdapter<Tpp, TppsAdapter.ViewHolder>(TppDiffCallback()) {
-    //ArrayAdapter<Tpp>(ctx, layoutId) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
@@ -48,21 +47,6 @@ class TppsAdapter(private val viewModel: TppsViewModel, ctx: Context, layoutId: 
         }
         return vH
     }
-
-/*
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val rowView = convertView ?: inflater.inflate(R.layout.simple_expandable_list_item_2, parent, false)
-
-        val textView = rowView.findViewById(R.id.title_text) as TextView
-        val imageView: ImageView = rowView.findViewById(R.id.icon) as ImageView
-        textView.setText(values.get(position))
-        // Change the icon for Windows and iPhone
-
-        return rowView
-    }
-*/
 
     class ViewHolder private constructor(val binding: TppItemBinding) :
         RecyclerView.ViewHolder(binding.root) {

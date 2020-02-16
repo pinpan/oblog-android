@@ -37,7 +37,7 @@
     <string name="followed_tpps_cleared">Followed TPPs cleared</string>
     <string name="menu_filter">Filter</string>
     <string name="load_from_server">Reload from server</string>
-    <string name="settings_title">Settings</string>
+    <string name="preferences_title">Preferences</string>
     <string name="menu_delete_tpp">Delete TPP</string>
     <string name="navigation_view_header_title">OBLOG</string>
     <string name="title_hint">Title</string>
@@ -89,11 +89,13 @@
 
     <string name="sync_header">Sync</string>
 
-    <string name="signature_title">Your signature</string>
+    <string name="user_signature">Your signature</string>
+    <string name="psd2_services_only">Show only PSD2 SPs</string>
+    <string name="banks_as_psd2">Show banks as PSD2 SPs</string>
 
     <string name="actual_env_title">Actual environment</string>
     <string name="reply_title">Default reply action</string>
-    <string name="sync_title">Sync TPP directory periodically</string>
+    <string name="sync_title">Sync SPs directory periodically</string>
 
     <!-- Preference Titles -->
     <string name="attachment_title">Download incoming attachments</string>
