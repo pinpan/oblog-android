@@ -189,11 +189,13 @@ class OblogTypeConverters {
 
     @TypeConverter
     fun fromJsonElementToEbaPassport(json : JsonElement) : EbaPassport {
-        val aList: List<Map<String, Any>> = gson.fromJson(json, ebaPassportMapListType) //ebaPass   portCountryMapType) //ebaPassportsMapType) //<List<Map<String, String>>>
+        val aList: List<Map<String, List<Service>>> = gson.fromJson(json, ebaPassportMapListType) //ebaPass   portCountryMapType) //ebaPassportsMapType) //<List<Map<String, String>>>
 
         //val ebaPassportsList = ArrayList<EbaPassport>()
 
         val ebaPassport = EbaPassport()
+        ebaPassport.serviceMaps = aList
+
         val countryMap = HashMap<String, MutableList<Service>>()
         ebaPassport.countryMap = countryMap
 
@@ -219,7 +221,7 @@ class OblogTypeConverters {
                     }*/
                      //        serviceCountries.add(entry.key)
                     // TODO: Make Service a shared immutable value object
-                    theServices.add(Service(ebaService.code, ebaService.description))
+                    theServices.add(Service(ebaService.code, ebaService.psd2Code, ebaService.description))
                 } else {
                     for (aService in entry.value as List<String>) {
                         val ebaService = EbaService.findService(aService)
@@ -230,7 +232,7 @@ class OblogTypeConverters {
                         //}
                         //serviceCountries.add(entry.key)
 
-                        theServices.add(Service(ebaService.code, ebaService.description))
+                        theServices.add(Service(ebaService.code, ebaService.psd2Code, ebaService.description))
                     }
                 }
             }

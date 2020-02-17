@@ -26,6 +26,7 @@
     <string name="label_entity_code">Entity code</string>
     <string name="label_tpp_services">Servicess</string>
     <string name="label_role">Role</string>
+    <string name="label_roles">Roles</string>
     <string name="label_psd2_role">PSD2 role</string>
     <string name="label_license_revoked">Revoked</string>
     <string name="label_revoked">Revoked</string>

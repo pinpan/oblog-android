@@ -11,6 +11,7 @@ import java.util.*
 @TypeConverters(OblogTypeConverters::class)
 data class Service @JvmOverloads constructor(
         @ColumnInfo(name = "title") var title: String = "",
+        @ColumnInfo(name = "psd2Code") var psd2Code: String = "",
         @ColumnInfo(name = "description") var description: String = "",
         @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString()
 ) {

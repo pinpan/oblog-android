@@ -1,18 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2019 The Android Open Source Project
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~      http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
+<?xml version="1.0" encoding="utf-8"?>
+
 <layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -168,19 +155,79 @@
                 android:textSize="12sp"
                 tools:text="@string/label_passports" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/passports_list"
+            <LinearLayout
+                android:id="@+id/visas_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/label_entity_code"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="#CDDC39"
-                android:fadeScrollbars="false"
-                android:scrollbars="horizontal|vertical"
-                android:textSize="10sp"
-                app:items="@{viewmodel.tpp.ebaPassport.services}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                android:layout_below="@id/label_passports"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/visas_labels"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+                    <EditText
+                        android:id="@+id/label_visa_country"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:layout_below="@id/label_entity_code"
+                        android:layout_weight="1"
+                        android:clickable="false"
+                        android:editable="false"
+                        android:enabled="false"
+                        android:inputType="none|textPersonName"
+                        android:text="@string/label_country" />
+
+                    <EditText
+                        android:id="@+id/label_visa_psd2_roles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/label_visa_country"
+                        android:layout_below="@id/label_entity_code"
+                        android:layout_weight="3"
+                        android:clickable="false"
+                        android:editable="false"
+                        android:enabled="false"
+                        android:inputType="textPersonName"
+                        android:text="@string/label_roles" />
+
+                </LinearLayout>
+
+                <!--<ListView
+                    android:id="@+id/passports_expandable_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    app:items="@{viewmodel.tpp.ebaPassport.services}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    />-->
+                <!--<ExpandableListView
+                    android:id="@+id/passports_expandable_list"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+                    android:divider="@android:color/darker_gray"
+                    app:items="@{viewmodel.tpp.ebaPassport.services}"
+                    android:dividerHeight="0.5dp"
+                />-->
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/passports_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/visas_labels"
+                    android:layout_marginBottom="10dp"
+                    android:fadeScrollbars="false"
+                    android:scrollbars="horizontal|vertical"
+                    android:textSize="8sp"
+                    app:items="@{viewmodel.tpp.ebaPassport.services}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            </LinearLayout>
+            <!--android:background="#CDDC39"-->
 
         </RelativeLayout>
 

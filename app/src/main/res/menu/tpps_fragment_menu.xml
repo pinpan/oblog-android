@@ -41,6 +41,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/settings"
+        android:title="@string/preferences_title"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/revokedSwitchForActionBar"
         android:title="Revoked"
         android:layout_centerVertical="true"

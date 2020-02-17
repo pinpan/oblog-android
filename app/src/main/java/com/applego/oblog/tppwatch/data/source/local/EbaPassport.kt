@@ -16,6 +16,9 @@ data class EbaPassport @JvmOverloads constructor(
     @Embedded
     var countryMap = HashMap<String, MutableList<Service>>()
 
+    @Embedded
+    var serviceMaps : List<Map<String, List<Service>>> = ArrayList<Map<String, MutableList<Service>>>()
+
     class CountryVisa {
 
 
@@ -35,9 +38,9 @@ data class EbaPassport @JvmOverloads constructor(
         val servicesAsString : String
             get() {
                 val sb = StringBuilder()
-                services.forEach { sb.append(it).append(" ,")}
-                sb.removeSuffix(" ,")
-                return sb.toString()
+                services.forEach { sb.append(if (!it.psd2Code.isNullOrEmpty()) it.psd2Code else it.title).append(" ,")}
+                val str = sb.removeSuffix(" ,")
+                return str.toString()
             }
 
 

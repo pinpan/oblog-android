@@ -22,6 +22,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SimpleExpandableListAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -48,6 +49,8 @@ class TppDetailFragment : Fragment() {
 
     private lateinit var listAdapter: TppDetailAdapter
 
+    private lateinit var expandableListAdapter: SimpleExpandableListAdapter
+
     private val viewModel by viewModels<TppDetailViewModel> { getViewModelFactory() }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -66,6 +69,18 @@ class TppDetailFragment : Fragment() {
         if (viewModel != null) {
             listAdapter = TppDetailAdapter(viewModel, context!!, R.layout.tpp_passport)
             viewDataBinding.passportsList.adapter = listAdapter
+
+            /* TODO:
+            expandableListAdapter = SimpleExpandableListAdapter(
+                    context!!
+                    , viewModel.tpp.value?.ebaPassport?.serviceMaps
+                    , R.layout.tpp_passport
+                    , R.layout.tpp_passport
+                    , R.layout.tpp_passport
+                    ,
+            )
+            viewDataBinding.passportsExpandableList.setAdapter(expandableListAdapter)
+            */
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
         }

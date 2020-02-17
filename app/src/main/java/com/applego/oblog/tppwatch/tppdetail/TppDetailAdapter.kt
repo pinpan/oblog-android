@@ -18,6 +18,7 @@ package com.applego.oblog.tppwatch.tppdetail
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -39,10 +40,10 @@ class TppDetailAdapter(private val viewModel: TppDetailViewModel, ctx: Context, 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val vH = ViewHolder.from(parent)
-        val view = vH.itemView
+        /*val view : RelativeLayout = vH.itemView as RelativeLayout
         if (view != null) {
             //view.passtpp_title_text?.textSize = 10f
-        }
+        }*/
         return vH
     }
 
