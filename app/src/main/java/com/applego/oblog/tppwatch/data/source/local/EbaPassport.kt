@@ -21,7 +21,6 @@ data class EbaPassport @JvmOverloads constructor(
 
     class CountryVisa {
 
-
         var country = String()
         var services : List<Service> = ArrayList<Service>()
 

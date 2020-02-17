@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.applego.oblog.tppwatch.tpps
 
 import android.app.SearchManager
@@ -21,25 +5,21 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.*
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.applego.oblog.tppwatch.EventObserver
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.databinding.TppsFragBinding
 import com.applego.oblog.tppwatch.util.getViewModelFactory
-//import com.applego.oblog.tppwatch.util.setupRefreshLayout
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
 
-/**
- * Display a grid of [Tpp]s. User can choose to view all, active or followed tpps.
- */
 class TppsFragment : Fragment() {
 
     private val viewModel by viewModels<TppsViewModel> { getViewModelFactory() }
@@ -125,8 +105,7 @@ class TppsFragment : Fragment() {
     }
 
     private fun setUpSearchForm() {
-        val countryAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.eu_countries, android.R.layout.simple_spinner_item);
-        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        val countryAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.eu_countries, R.layout.spinner_item)
 
         countriesSpinner = activity?.findViewById(R.id.serarch_country)!!
         countriesSpinner.setAdapter(countryAdapter);
@@ -142,8 +121,7 @@ class TppsFragment : Fragment() {
             }
         })
 
-        val psd2RolesAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.psd2_roles, android.R.layout.simple_spinner_item);
-        psd2RolesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        val psd2RolesAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.psd2_roles, R.layout.spinner_item)
 
         servicesSpinner = activity?.findViewById(R.id.search_role)!!
         servicesSpinner.setAdapter(psd2RolesAdapter);

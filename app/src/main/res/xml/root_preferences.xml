@@ -36,10 +36,6 @@
 
         <SwitchPreferenceCompat
             app:key="sync"
-            app:title="@string/psd2_services_only" />
-
-        <SwitchPreferenceCompat
-            app:key="sync"
             app:title="@string/sync_title" />
 
         <SwitchPreferenceCompat

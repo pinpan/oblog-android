@@ -30,13 +30,17 @@ interface  OblogEbaService  {
                     actualEnvironment = "Dev"
                 }
             }
+
+            else if (key.equals("psd2")) {
+
+            }
         }
 
         //var BASE_URL = "http://192.168.0.15:8585/eba-registry/" //api.oblog.org:8443  10.0.2.2
         //var API_KEY = "2e65127e909e178d0af311a81f39948c"
         val EBA_CONTEXT = "/api/eba-registry/"
 
-        var currentEnv = "Dev"
+        var currentEnv = "TEST"
         val tppType: Type = object : TypeToken<Tpp>() {}.type
         val tppListType: Type = object : TypeToken<MutableList<Tpp>>() {}.type
         val tppsListResponseType: Type = object : TypeToken<TppsListResponse>() {}.type
@@ -69,7 +73,7 @@ interface  OblogEbaService  {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
             sharedPreferences.registerOnSharedPreferenceChangeListener(this)
 
-            currentEnv = sharedPreferences.getString("environment", "Dev")
+            currentEnv = sharedPreferences.getString("environment", "TEST")
 
             var baseUrl = ""
             val envsBaseUrls = context.applicationContext.resources.getStringArray(com.applego.oblog.tppwatch.R.array.env_base_url);
