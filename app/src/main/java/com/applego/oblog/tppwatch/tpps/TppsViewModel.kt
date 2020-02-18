@@ -218,7 +218,8 @@ class TppsViewModel(
     fun filterByTitle(searchString: String) {
         _dataLoading.value = true
 
-        _currentFilterString = searchString
+        //_currentFilterString = searchString
+        searchFilter.title = searchString
         wrapEspressoIdlingResource {
 
             viewModelScope.launch {

@@ -18,12 +18,14 @@ package com.applego.oblog.tppwatch.tppdetail
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.applego.oblog.tppwatch.data.source.local.EbaPassport
 import com.applego.oblog.tppwatch.databinding.TppPassportBinding
+import kotlinx.android.synthetic.main.tppdetail_frag.view.*
 
 
 /**
@@ -40,10 +42,10 @@ class TppDetailAdapter(private val viewModel: TppDetailViewModel, ctx: Context, 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val vH = ViewHolder.from(parent)
-        /*val view : RelativeLayout = vH.itemView as RelativeLayout
+        val view : LinearLayout = vH.itemView as LinearLayout
         if (view != null) {
-            //view.passtpp_title_text?.textSize = 10f
-        }*/
+            view.title?.textSize = 10f
+        }
         return vH
     }
 

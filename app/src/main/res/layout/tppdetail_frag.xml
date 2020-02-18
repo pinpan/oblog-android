@@ -41,72 +41,26 @@
                 android:layout_marginBottom="10dp"
                 android:paddingTop="1dp"
                 android:text="@{viewmodel.tpp.title}"
+                android:textSize="16sp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#006496"
                 android:textStyle="bold" />
-
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/title"
-                android:layout_marginBottom="10dp"
-                android:background="?android:attr/listDivider" />
-
-            <CheckBox
-                android:id="@+id/checkbox_follow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/title"
-                android:layout_gravity="left"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:checked="@{viewmodel.followed}"
-                android:gravity="left|center_vertical"
-                android:onClick="@{(view) -> viewmodel.setFollowed(((CompoundButton)view).isChecked())}"
-                android:text="@string/label_following"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#006496"
-                android:textStyle="bold" />
-
-            <CheckBox
-                android:id="@+id/checkbox_active"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/checkbox_follow"
-                android:layout_gravity="left"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_toRightOf="@id/checkbox_follow"
-                android:checked="@{viewmodel.active}"
-                android:gravity="left|center_vertical"
-                android:onClick="@{(view) -> viewmodel.setActive(((CompoundButton)view).isChecked())}"
-                android:paddingTop="1dp"
-                android:text="@string/label_activated"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#006496"
-                android:textStyle="bold" />
-
-            <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/checkbox_active"
-                android:layout_marginBottom="10dp"
-                android:background="?android:attr/listDivider" />
 
             <TextView
                 android:id="@+id/label_home_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/divider"
+                android:layout_below="@id/title"
                 android:clickable="false"
-                android:ems="10"
                 android:focusable="false"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:hint="@string/tpp_home_country_label"
                 android:inputType="none"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textStyle="bold"
                 android:visibility="visible"
-                tools:text="@string/tpp_home_country_label" />
+                tools:text="@string/tpp_home_country_label"
+                /> <!--android:ems="10"-->
 
             <TextView
                 android:id="@+id/home_country"
@@ -126,6 +80,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/label_home_country"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:clickable="false"
+                android:focusable="false"
+                android:inputType="none"
                 android:text="@string/label_entity_code" />
 
             <TextView
@@ -141,11 +99,60 @@
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/entity_code"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="?android:attr/listDivider" />
+
+            <CheckBox
+                android:id="@+id/checkbox_follow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/divider2"
+                android:layout_gravity="left"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:checked="@{viewmodel.followed}"
+                android:gravity="left|center_vertical"
+                android:onClick="@{(view) -> viewmodel.setFollowed(((CompoundButton)view).isChecked())}"
+                android:text="@string/label_following"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#006496"
+                 /> <!--android:textStyle="bold"-->
+
+            <CheckBox
+                android:id="@+id/checkbox_active"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/checkbox_follow"
+                android:layout_gravity="left"
+                android:layout_toRightOf="@id/checkbox_follow"
+                android:checked="@{viewmodel.active}"
+                android:gravity="left|center_vertical"
+                android:onClick="@{(view) -> viewmodel.setActive(((CompoundButton)view).isChecked())}"
+                android:paddingTop="1dp"
+                android:text="@string/label_activated"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#006496"
+                 />  <!--android:textStyle="bold"-->
+
+            <!--<View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/checkbox_active"
+                android:layout_marginBottom="10dp"
+                android:background="?android:attr/listDivider" />
+-->
+
             <TextView
                 android:id="@+id/label_passports"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/label_entity_code"
+                android:layout_below="@id/checkbox_follow"
                 android:clickable="false"
                 android:ems="10"
                 android:enabled="false"
@@ -174,11 +181,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="0dp"
-                        android:layout_below="@id/label_entity_code"
+                        android:layout_below="@id/checkbox_follow"
                         android:layout_weight="1"
                         android:clickable="false"
                         android:editable="false"
                         android:enabled="false"
+                        android:textSize="12sp"
                         android:inputType="none|textPersonName"
                         android:text="@string/label_country" />
 
@@ -187,11 +195,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/label_visa_country"
-                        android:layout_below="@id/label_entity_code"
+                        android:layout_below="@id/checkbox_active"
                         android:layout_weight="3"
                         android:clickable="false"
                         android:editable="false"
                         android:enabled="false"
+                        android:textSize="12sp"
                         android:inputType="textPersonName"
                         android:text="@string/label_roles" />
 
@@ -223,11 +232,14 @@
                     android:layout_marginBottom="10dp"
                     android:fadeScrollbars="false"
                     android:scrollbars="horizontal|vertical"
-                    android:textSize="8sp"
                     app:items="@{viewmodel.tpp.ebaPassport.services}"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                />
             </LinearLayout>
-            <!--android:background="#CDDC39"-->
+            <!--
+                android:background="#CDDC39"
+                android:textSize="8sp"
+            -->
 
         </RelativeLayout>
 

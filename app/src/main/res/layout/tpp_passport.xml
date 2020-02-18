@@ -29,6 +29,7 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:text="@{countryVisa.country}"
+            android:textSize="12sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
         <TextView
@@ -39,6 +40,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textSize="12sp"
             android:text="@{countryVisa.servicesAsString}"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
         />
