@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.room.ColumnInfo
 import com.applego.oblog.tppwatch.EventObserver
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.TppsFragBinding
@@ -18,6 +19,7 @@ import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
+import java.util.ArrayList
 
 
 class TppsFragment : Fragment() {
@@ -93,6 +95,8 @@ class TppsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        setupSearchFilter(savedInstanceState)
+
         // Set the lifecycle owner to the lifecycle of the view
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
         setupSnackbar()
@@ -104,6 +108,10 @@ class TppsFragment : Fragment() {
         setupFab()
     }
 
+    private fun setupSearchFilter(savedInstanceState: Bundle?) {
+        viewModel.setupSearchFilter(savedInstanceState)
+    }
+
     private fun setUpSearchForm() {
         val countryAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.eu_countries, R.layout.spinner_item)
 
@@ -113,7 +121,7 @@ class TppsFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 // An item was selected. You can retrieve the selected item using
                 val countryISO = context?.resources?.getStringArray(R.array.eu_countries_iso)!![pos];
-                viewModel.filterTppsByCountry(countryISO)
+                viewModel.filterTpps(countryISO)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -140,6 +148,8 @@ class TppsFragment : Fragment() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        viewModel.saveSearchFilter(outState)
+
         super.onSaveInstanceState(outState)
     }
 
