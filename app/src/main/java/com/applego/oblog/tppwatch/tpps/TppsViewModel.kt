@@ -39,8 +39,9 @@ class TppsViewModel(
     private val tppsRepository: TppsRepository
 ) : ViewModel() {
 
+    private var fetchedItems = ArrayList<Tpp>()
     private val _items = MutableLiveData<List<Tpp>>().apply { value = emptyList() }
-    val items: LiveData<List<Tpp>> = _items
+    val items: MutableLiveData<List<Tpp>> = _items
 
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
@@ -149,6 +150,13 @@ class TppsViewModel(
         //loadTpps(false)
     }
 
+
+    fun filterByTitle(searchString: String) : List<Tpp> {
+        searchFilter.title = searchString
+
+        return getTppsByGlobalFilter(fetchedItems)
+    }
+
     /**
      * Called by the Data Binding library and the FAB's click listener.
      */
@@ -187,23 +195,13 @@ class TppsViewModel(
                 val tppsResult = tppsRepository.getTpps(forceUpdate)
 
                 if (tppsResult is Success) {
-                    val tpps = tppsResult.data
+                    fetchedItems = ArrayList<Tpp>()
+                    fetchedItems.addAll(tppsResult.data)
 
-                    val tppsToShow = ArrayList<Tpp>()
-                    // We filter the tpps based on the requestType
-                    for (tpp in tpps) {
-                        when (_currentFiltering) {
-                            TppsFilterType.ALL_TPPS -> tppsToShow.add(tpp)
-                            TppsFilterType.USED_TPPS -> if (tpp.isActive) {
-                                tppsToShow.add(tpp)
-                            }
-                            TppsFilterType.FOLLOWED_TPPS -> if (tpp.isFollowed) {
-                                tppsToShow.add(tpp)
-                            }
-                        }
-                    }
+                    _items.value = getTppsByGlobalFilter(fetchedItems)
+
                     isDataLoadingError.value = false
-                    _items.value = ArrayList(tppsToShow)
+                    //items.value = tppsToShow
                 } else {
                     isDataLoadingError.value = false
                     _items.value = emptyList()
@@ -215,37 +213,48 @@ class TppsViewModel(
         }
     }
 
-    fun filterByTitle(searchString: String) {
-        _dataLoading.value = true
+    fun filterByTitle(tpps : List<Tpp>, searchString: String) {
+        //_dataLoading.value = true
 
         //_currentFilterString = searchString
         searchFilter.title = searchString
         wrapEspressoIdlingResource {
 
             viewModelScope.launch {
-                val tppsResult = tppsRepository.getTpps(false)
+                //val tppsResult = tppsRepository.getTpps(false)
 
-                if (tppsResult is Success) {
-                    val tpps = tppsResult.data
+                //if (tppsResult is Success) {
+                    //val tpps = tppsResult.data
 
                     val tppsToShow = getTppsByGlobalFilter(tpps)
-                    isDataLoadingError.value = false
-                    _items.value = ArrayList(tppsToShow)
-                } else {
+                    //isDataLoadingError.value = false
+                    _items.value = tppsToShow
+                /*} else {
                     isDataLoadingError.value = false
                     _items.value = emptyList()
                     showSnackbarMessage(R.string.loading_tpps_error)
-                }
+                }*/
 
                 _dataLoading.value = false
             }
         }
     }
 
-    private fun getTppsByGlobalFilter(tpps: List<Tpp>): List<Tpp> {
-        var tppsToShow : List<Tpp> = ArrayList<Tpp>()
+    fun getTppsByGlobalFilter(tpps: List<Tpp>): List<Tpp> {
+
+        //_dataLoading.value = true
+
+        /*viewModelScope.launch {
+            val tppsResult = tppsRepository.getTpps(false)
+            //var theItems: List<Tpp> ?= null
+            //if (tppsResult is Success) {
+            //theItems = getTppsByGlobalFilter(tppsResult.data)
+            //}
+        }*/
+
+        var tppsToShow : MutableList<Tpp> = ArrayList<Tpp>()
         if (searchFilter.title.isNullOrBlank()) {
-            tppsToShow = tpps
+            tppsToShow.addAll(tpps)
         } else {
             for (tpp in tpps) {
                 if (tpp.title.contains(searchFilter.title, true)) {
@@ -253,6 +262,28 @@ class TppsViewModel(
                 }
             }
         }
+
+        var tppsList : List<Tpp> = tppsToShow
+        tppsToShow = ArrayList<Tpp>()
+        for (tpp in tppsList) {
+            when (_currentFiltering) {
+                TppsFilterType.ALL_TPPS -> tppsToShow.add(tpp)
+                TppsFilterType.USED_TPPS -> if (tpp.isActive) {
+                    tppsToShow.add(tpp)
+                }
+                TppsFilterType.FOLLOWED_TPPS -> if (tpp.isFollowed) {
+                    tppsToShow.add(tpp)
+                }
+            }
+        }
+
+        tppsList = tppsToShow
+        tppsToShow = filterTppsByCountry(tppsList, searchFilter.countries)
+        tppsList = tppsToShow
+        tppsToShow = filterTppsByService(tppsList, searchFilter.services)
+        //tppsToShow = ArrayList<Tpp>()
+        //_dataLoading.value = false
+
         return tppsToShow
     }
 
@@ -260,7 +291,7 @@ class TppsViewModel(
         loadTpps(false)
     }
 
-    fun filterTppsByCountry(tppsToFilter : List<Tpp>?, country: String) : List<Tpp> {
+    fun filterTppsByCountry(tppsToFilter : List<Tpp>?, country: String) : MutableList<Tpp> {
 
         if (tppsToFilter.isNullOrEmpty()) {
             return ArrayList<Tpp>()
@@ -268,83 +299,99 @@ class TppsViewModel(
 
         _dataLoading.value = true
 
-        var theItems: List<Tpp> ?= null
+        //var theItems: MutableList<Tpp> = ArrayList<Tpp>()
         //viewModelScope.launch {
           /*  val tppsResult = tppsRepository.getTpps(false)
             if (tppsResult is Success) {
-             */   theItems = getTppsByGlobalFilter(tppsToFilter)
+             */   //theItems = getTppsByGlobalFilter(tppsToFilter)
             //}
 
-            if (theItems != null) {
-                var tppsToShow : MutableList<Tpp> = ArrayList<Tpp>()
-                if (!searchFilter.countries.isNullOrBlank()) {
-                    if(searchFilter.countries.equals("<ALL>")) {
-                        tppsToShow.addAll(tppsToFilter)
-                    } else {
-                        searchFilter.countries.forEach {
-                            theItems?.forEach {
-                                if (it.country.equals(country)) {
-                                    tppsToShow.add(it)
-                                }
-                            }
-                        }
+            //if (tppsToFilter != null) {
+        var tppsToShow : MutableList<Tpp> = ArrayList<Tpp>()
+        if (searchFilter.countries.isNullOrBlank() || searchFilter.countries.equals("<ALL>")) {
+                tppsToShow.addAll(tppsToFilter)
+        } else {
+            searchFilter.countries.forEach {
+                tppsToFilter?.forEach {
+                    if (it.country.equals(country)) {
+                        tppsToShow.add(it)
                     }
-
-                    theItems = tppsToShow
                 }
-                //_items.value = tppsToShow
-
-                isDataLoadingError.value = false
-                _dataLoading.value = false
             }
+        }
+        //theItems = tppsToShow
+        //_items.value = tppsToShow
+
+        isDataLoadingError.value = false
+        _dataLoading.value = false
+            //}
 
             //_dataLoading.value = false
-        return theItems
+        return tppsToShow
         //}
     }
 
-    fun filterTppsByService(service: String) {
+    fun filterTppsByService(service: String) : List<Tpp> {
+
+        searchFilter.services = service
+
+        return getTppsByGlobalFilter(fetchedItems)
+    }
+
+    fun filterTppsByCountry(country: String) : List<Tpp> {
+
+        searchFilter.countries = country
+
+        return getTppsByGlobalFilter(fetchedItems)
+    }
+
+    fun filterTppsByService(tppsToFilter: List<Tpp>, service: String) : MutableList<Tpp> {
 
         _dataLoading.value = true
 
-        viewModelScope.launch {
+        if (tppsToFilter.isNullOrEmpty()) {
+            return ArrayList<Tpp>()
+        }
 
-            val tppsResult = tppsRepository.getTpps(false)
-            var theItems: List<Tpp> ?= null
-            if (tppsResult is Success) {
-                theItems = getTppsByGlobalFilter(tppsResult.data)
-            }
+        //viewModelScope.launch {
+        //var workingItems: List<Tpp> = ArrayList<Tpp>()
+        var tppsToShow: MutableList<Tpp> = ArrayList<Tpp>()
 
-            if (theItems != null) {
-                if (!service.equals("<ALL>")) {
+            //val tppsResult = tppsRepository.getTpps(false)
+            //if (tppsResult is Success) {
+                //theItems = getTppsByGlobalFilter(tppsResult.data)
+            //}
 
-                    // TODO: Rework to serviceMap to avoid duplicity and shorten the filtering.
-
-                    val psdService = EbaService.findPsd2Service(service)
-                    var tppsToShow = ArrayList<Tpp>()
-                    theItems?.forEach {tpp ->
-                        if (tpp.ebaPassport != null) {
-                            tpp.ebaPassport.countryMap.entries.forEach() {
-                                if (it.value != null) {
-                                    val services = it.value as List<Service>
-                                    services.forEach lit@{serv ->
-                                        if (serv.title.equals(psdService.code)) {
-                                            tppsToShow.add(serv as Tpp)
-                                            return@lit;
-                                        }
-                                    }
+        //if (tppsToFilter != null) {
+        if (service.isNullOrBlank() || service.equals("<ALL>")) {
+            tppsToShow.addAll(tppsToFilter)
+        } else {
+            val psdService = EbaService.findPsd2Service(service)
+            //var tppsToShow = ArrayList<Tpp>()
+            tppsToFilter?.forEach {tpp ->
+                if (tpp.ebaPassport != null) {
+                    tpp.ebaPassport.countryMap.entries.forEach() {
+                        if (it.value != null) {
+                            val services = it.value as List<Service>
+                            services.forEach lit@{serv ->
+                                if (serv.title.equals(psdService.code)) {
+                                    tppsToShow.add(serv as Tpp)
+                                    return@lit;
                                 }
                             }
                         }
                     }
-                    theItems = tppsToShow
                 }
-                _items.value = ArrayList(theItems)
-
-                isDataLoadingError.value = false
-                _dataLoading.value = false
             }
+            //theItems = theItems
         }
+        //_items.value = ArrayList(theItems)
+
+        isDataLoadingError.value = false
+        _dataLoading.value = false
+        //}
+        //}
+        return tppsToShow
     }
 
     fun showRevokedOnly() {
