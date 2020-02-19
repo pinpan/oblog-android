@@ -121,7 +121,8 @@ class TppsFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 // An item was selected. You can retrieve the selected item using
                 val countryISO = context?.resources?.getStringArray(R.array.eu_countries_iso)!![pos];
-                viewModel.filterTpps(countryISO)
+
+                viewModel.filterTppsByCountry(countryISO)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
