@@ -75,7 +75,7 @@ class TppsAdapter(private val viewModel: TppsViewModel, ctx: Context, layoutId: 
  * Used by ListAdapter to calculate the minimum number of changes between and old list and a new
  * list that's been passed to `submitList`.
  */
-class TppDiffCallback : DiffUtil.ItemCallback<Tpp>() {
+class TppDiffCallback :  DiffUtil.ItemCallback<Tpp>() {
     override fun areItemsTheSame(oldItem: Tpp, newItem: Tpp): Boolean {
         return oldItem.id == newItem.id
     }

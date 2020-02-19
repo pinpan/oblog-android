@@ -318,9 +318,9 @@ class TppsViewModel(
             tppsToShow.addAll(tppsToFilter)
         } else {
             val psdService = EbaService.findPsd2Service(service)
-            tppsToFilter?.forEach {tpp ->
+            tppsToFilter?.forEach lit@{tpp ->
                 if (tpp.ebaPassport != null) {
-                    tpp.ebaPassport.countryMap.entries.forEach() lit@ {
+                    tpp.ebaPassport.countryMap.entries.forEach() {
                         if (it.value != null) {
                             val services = it.value as List<Service>
                             services.forEach {serv ->
