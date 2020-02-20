@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.room.ColumnInfo
 import com.applego.oblog.tppwatch.EventObserver
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.TppsFragBinding
@@ -19,7 +18,8 @@ import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
-import java.util.ArrayList
+
+
 
 
 class TppsFragment : Fragment() {
@@ -57,9 +57,73 @@ class TppsFragment : Fragment() {
 
         // Associate searchable configuration with the SearchView
         val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        (menu.findItem(R.id.search).actionView as SearchView).apply {
+        searchView = menu.findItem(R.id.search).actionView as SearchView
+        searchView?.apply {
             setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
         }
+
+        searchView?.setIconifiedByDefault(true)
+        searchView?.setQueryHint("Type text to filter listed TPPs")
+        searchView?.setOnQueryTextFocusChangeListener { v, hasFocus ->
+            //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+        // perform set on query text listener event
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                //val theID = id
+                lastTppsSearchViewQuery = query
+                searchBy(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                // do something when text changes
+                return false
+            }
+        })
+        searchView?.setOnCloseListener (object: SearchView.OnCloseListener {
+            override fun onClose(): Boolean {
+                if (!lastTppsSearchViewQuery.isNullOrBlank()) {
+                    viewModel.loadTpps(false)
+                    lastTppsSearchViewQuery = ""
+                }
+                return true
+            }
+        })
+
+        var searchPlateId = searchView?.context?.resources?.getIdentifier("android:id/search_src_text", null, null)
+        searchPlateId = searchView?.context?.resources?.getIdentifier("android:id/search_close_button", null, null)
+        if (searchPlateId != null) {
+            val closeBtn = searchView?.findViewById<ImageButton>(searchPlateId) /*as ImageView*/
+            //searchView?.findViewById<ImageButton>(R.id.search_close_btn)
+            closeBtn?.setOnClickListener(object: View.OnClickListener {
+                        override fun onClick(v: View) {
+                            if (!lastTppsSearchViewQuery.isNullOrBlank()) {
+                                viewModel.loadTpps(false)
+                                lastTppsSearchViewQuery = ""
+                            }
+                        }
+                    })
+        }
+
+
+/*
+        val searchPlateId = searchView?.context?.resources?.getIdentifier("android:id/search_src_text", null, null)
+        if (searchPlateId != null) {
+            val searchPlate = searchView?.findViewById(searchPlateId) as EditText ;
+            searchPlate.setOnEditorActionListener(object: TextView.OnEditorActionListener {
+                override fun onEditorAction(v : TextView , actionId : Int, event : KeyEvent ) : Boolean {
+
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        //Do something
+                    }
+                    return true;
+
+                }
+            })
+        }
+*/
+
 
 
         val item = menu!!.findItem(R.id.revokedSwitchForActionBar)
@@ -73,6 +137,20 @@ class TppsFragment : Fragment() {
             }
         })
     }
+
+/*
+    fun setOnQueryTextListener(listener: SearchView.OnQueryTextListener?) {
+        super.setOnQueryTextListener(listener)
+        this.listener = listener
+        mSearchSrcTextView = this.findViewById(android.support.v7.appcompat.R.id.search_src_text)
+        mSearchSrcTextView.setOnEditorActionListener({ textView, i, keyEvent ->
+            if (listener != null) {
+                listener!!.onQueryTextSubmit(getQuery().toString())
+            }
+            true
+        })
+    }
+*/
 
     override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {

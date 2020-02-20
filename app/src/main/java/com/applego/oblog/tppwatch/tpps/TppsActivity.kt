@@ -63,7 +63,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
         setupSharedPreferences();
 
-        handleIntent(intent);
+        // ??? ?handleIntent(intent);
     }
 
     private fun setupSharedPreferences() {
@@ -110,10 +110,11 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
         return super.onOptionsItemSelected(item)
     }
 
+/*
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent) //
 
-        handleIntent(intent)
+  //      handleIntent(intent)
     }
 
     private fun handleIntent(intent: Intent) {
@@ -122,26 +123,18 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
             val query = intent.getStringExtra(SearchManager.QUERY)
             val aFragment = supportFragmentManager.primaryNavigationFragment
             if (aFragment != null) {
-                aFragment.childFragmentManager.fragments
-            }
-            val tppsFragment = findTppsFragment()
-            tppsFragment.searchBy(query)
-        }
-    }
-
-    fun findTppsFragment() : TppsFragment {
-        lateinit var tppsFragment: TppsFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-        val childFragmentManager = navHostFragment?.childFragmentManager
-        val childFragments = childFragmentManager?.fragments
-        for (fragment in childFragments!!) {
-            if (fragment is TppsFragment)  {
-                tppsFragment = fragment
+                val frags = aFragment.childFragmentManager.fragments
+                if (!frags.isNullOrEmpty()) {
+                    frags.forEach() {
+                        if (it is TppsFragment)  {
+                            it.searchBy(query)
+                        }
+                    }
+                }
             }
         }
-
-        return tppsFragment
     }
+*/
 
     override fun onSupportNavigateUp(): Boolean {
         return findNavController(R.id.nav_host_fragment).navigateUp(appBarConfiguration)
