@@ -20,17 +20,38 @@ package com.applego.oblog.tppwatch.tpps
  */
 enum class TppsFilterType {
     /**
-     * Do not filter tpps.
+     * Use all Tpps.
      */
     ALL_TPPS,
 
     /**
-     * Filters only the active (not followed yet) tpps.
+     * Filter followed tpps (used tpps are implicitly followed).
+     */
+    FOLLOWED_TPPS,
+
+    /**
+     * Filter used tpps.
      */
     USED_TPPS,
 
     /**
-     * Filters only the followed tpps.
+     * Filter tpps, which have only PSD2 licence but are not FIS.
      */
-    FOLLOWED_TPPS
+    PSD2_ONLY_TPPS,
+
+    /**
+     * Filter tpps, which have PSD2 licence, including FIS.
+     */
+    ONLY_PSD2_TPPS,
+
+    /**
+     * Filter FIS.
+     */
+    FIS_AS_TPPS,
+
+    /**
+     * Filter revoked only Tpps.
+     */
+    REVOKED_ONLY_TPPS;
+
 }

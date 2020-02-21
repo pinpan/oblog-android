@@ -47,7 +47,7 @@ class TppsViewModel(
     val dataLoading: LiveData<Boolean> = _dataLoading
 
     private var searchFilter = SearchFilter()
-    private var _currentFilterString: String = ""
+    //private var _currentFilterString: String = ""
     private var _currentFiltering = TppsFilterType.ALL_TPPS
     private val _currentFilteringLabel = MutableLiveData<Int>()
     //val currentFilteringLabel: LiveData<Int> = _currentFilteringLabel
@@ -82,6 +82,10 @@ class TppsViewModel(
         // Set initial state
         setFiltering(TppsFilterType.ALL_TPPS)
 
+        refresh()
+    }
+
+    fun refresh() {
         loadTpps(false)
     }
 
@@ -93,7 +97,8 @@ class TppsViewModel(
      * [TppsFilterType.USED_TPPS]
      */
     fun setFiltering(requestType: TppsFilterType) {
-        _currentFiltering = requestType
+        //_currentFiltering = requestType
+        searchFilter.updateUserInterests(requestType)
 
         // Depending on the filter type, set the filtering label, icon drawables, etc.
         when (requestType) {
@@ -131,7 +136,7 @@ class TppsViewModel(
     fun loadEbaDirectory() {
         viewModelScope.launch {
             showSnackbarMessage(R.string.loading)
-            // Refresh list to show the new state
+            // Load from Eba
             loadTpps(true)
         }
     }
@@ -139,14 +144,16 @@ class TppsViewModel(
     fun followTpp(tpp: Tpp, followed: Boolean) = viewModelScope.launch {
         tppsRepository.setTppFollowedFlag(tpp, followed)
         showSnackbarMessage(R.string.tpp_marked_followed)
-        // Refresh list to show the new state
+
+        // Refresh single Tpp
         //loadTpps(false)
     }
 
     fun activateTpp(tpp: Tpp, active: Boolean) = viewModelScope.launch {
         tppsRepository.setTppActivateFlag(tpp, active)
         showSnackbarMessage(R.string.tpp_marked_active)
-        // Refresh list to show the new state
+
+        // Refresh single Tpp
         //loadTpps(false)
     }
 
@@ -162,18 +169,6 @@ class TppsViewModel(
      */
     fun openTpp(tppId: String) {
         _openTppEvent.value = Event(tppId)
-    }
-
-    fun showEditResultMessage(result: Int) {
-        when (result) {
-            EDIT_RESULT_OK -> showSnackbarMessage(R.string.successfully_saved_tpp_message)
-            ADD_EDIT_RESULT_OK -> showSnackbarMessage(R.string.successfully_added_tpp_message)
-            DELETE_RESULT_OK -> showSnackbarMessage(R.string.successfully_deleted_tpp_message)
-        }
-    }
-
-    private fun showSnackbarMessage(message: Int) {
-        _snackbarText.value = Event(message)
     }
 
     /**
@@ -223,35 +218,21 @@ class TppsViewModel(
 
         _dataLoading.value = true
 
-        val tpps = fetchedItems
-
-        var tppsToShow : MutableList<Tpp> = ArrayList<Tpp>()
-        if (searchFilter.title.isNullOrBlank()) {
-            tppsToShow.addAll(tpps)
-        } else {
-            for (tpp in tpps) {
-                if (tpp.title.contains(searchFilter.title, true)) {
-                    (tppsToShow as ArrayList<Tpp>).add(tpp)
-                }
-            }
+        var tppsList: List<Tpp> = fetchedItems
+        if (tppsList.isNullOrEmpty()) {
+            return tppsList
         }
 
-        var tppsList : List<Tpp> = tppsToShow
-        tppsToShow = ArrayList<Tpp>()
-        for (tpp in tppsList) {
-            when (_currentFiltering) {
-                TppsFilterType.ALL_TPPS -> tppsToShow.add(tpp)
-                TppsFilterType.USED_TPPS -> if (tpp.isActive) {
-                    tppsToShow.add(tpp)
-                }
-                TppsFilterType.FOLLOWED_TPPS -> if (tpp.isFollowed) {
-                    tppsToShow.add(tpp)
-                }
-            }
+        var tppsToShow: MutableList<Tpp> = filterTppsByName(tppsList)
+
+        if (!searchFilter.all) {
+            tppsList = tppsToShow
+            tppsToShow = filterTppsByUserInterest(tppsList, searchFilter.userInterests)
         }
 
         tppsList = tppsToShow
         tppsToShow = filterTppsByCountry(tppsList, searchFilter.countries)
+
         tppsList = tppsToShow
         tppsToShow = filterTppsByService(tppsList, searchFilter.services)
 
@@ -260,72 +241,89 @@ class TppsViewModel(
         return tppsToShow
     }
 
-    fun refresh() {
-        loadTpps(false)
-    }
+    private fun filterTppsByName(inputTpps: List<Tpp>): MutableList<Tpp> {
+        val filteredTpps = ArrayList<Tpp>()
 
-    fun filterTppsByCountry(tppsToFilter : List<Tpp>?, country: String) : MutableList<Tpp> {
-
-        _dataLoading.value = true
-
-        if (tppsToFilter.isNullOrEmpty()) {
-            return ArrayList<Tpp>()
+        if (searchFilter.title.isNullOrBlank()) {
+            filteredTpps.addAll(inputTpps)
+        } else {
+            for (tpp in inputTpps) {
+                if (tpp.title.contains(searchFilter.title, true)) {
+                    (filteredTpps as ArrayList<Tpp>).add(tpp)
+                }
+            }
         }
 
-        var tppsToShow : MutableList<Tpp> = ArrayList<Tpp>()
-        if (searchFilter.countries.isNullOrBlank() || searchFilter.countries.equals("<ALL>")) {
-                tppsToShow.addAll(tppsToFilter)
+        return filteredTpps
+    }
+
+    private fun filterTppsByUserInterest(inputTpps: List<Tpp>, userInterests: List<TppsFilterType>): MutableList<Tpp> {
+        val filteredTpps = ArrayList<Tpp>()
+
+        // userInterests works as discriminator. If empty -> show all
+        if (userInterests.isNullOrEmpty() || userInterests.contains(TppsFilterType.ALL_TPPS)) {
+            filteredTpps.addAll(inputTpps)
         } else {
-            searchFilter.countries.forEach {
-                tppsToFilter?.forEach {
-                    if (it.country.equals(country)) {
-                        tppsToShow.add(it)
+            // individual interests are then OR-ed
+            inputTpps.forEach { tpp ->
+                userInterests.forEach { interest ->
+                    when (interest) {
+                        //TppsFilterType.ALL_TPPS -> filteredTpps.add(tpp)
+                        TppsFilterType.USED_TPPS -> if (tpp.isActive) {
+                            filteredTpps.add(tpp)
+                        }
+                        TppsFilterType.FOLLOWED_TPPS -> if (tpp.isFollowed) {
+                            filteredTpps.add(tpp)
+                        }
                     }
                 }
             }
         }
 
-        isDataLoadingError.value = false
-        _dataLoading.value = false
-
-        return tppsToShow
+        return filteredTpps
     }
 
-    fun filterTppsByCountry(country: String) {
+    fun filterTppsByCountry(inputTpps : List<Tpp>?, country: String) : MutableList<Tpp> {
 
-        searchFilter.countries = country
-
-        _items.value = getTppsByGlobalFilter()
-    }
-
-    fun filterTppsByService(service: String) {
-
-        searchFilter.services = service
-
-        _items.value = getTppsByGlobalFilter()
-    }
-
-    fun filterTppsByService(tppsToFilter: List<Tpp>, service: String) : MutableList<Tpp> {
-
-        _dataLoading.value = true
-
-        if (tppsToFilter.isNullOrEmpty()) {
+        if (inputTpps.isNullOrEmpty()) {
             return ArrayList<Tpp>()
         }
 
-        var tppsToShow: MutableList<Tpp> = ArrayList<Tpp>()
+        var filteredTpps = ArrayList<Tpp>()
+        if (searchFilter.countries.isNullOrBlank() || searchFilter.countries.equals("<ALL>")) {
+                filteredTpps.addAll(inputTpps)
+        } else {
+            searchFilter.countries.forEach {
+                inputTpps?.forEach {
+                    if (it.country.equals(country)) {
+                        filteredTpps.add(it)
+                    }
+                }
+            }
+        }
+
+        return filteredTpps
+    }
+
+    fun filterTppsByService(inputTpps: List<Tpp>, service: String) : MutableList<Tpp> {
+
+        if (inputTpps.isNullOrEmpty()) {
+            return ArrayList<Tpp>()
+        }
+
+        val filteredTpps = ArrayList<Tpp>()
         if (service.isNullOrBlank() || service.equals("<ALL>")) {
-            tppsToShow.addAll(tppsToFilter)
+            filteredTpps.addAll(inputTpps)
         } else {
             val psdService = EbaService.findPsd2Service(service)
-            tppsToFilter?.forEach lit@{tpp ->
+            inputTpps?.forEach lit@{ tpp ->
                 if (tpp.ebaPassport != null) {
                     tpp.ebaPassport.countryMap.entries.forEach() {
                         if (it.value != null) {
                             val services = it.value as List<Service>
                             services.forEach {serv ->
                                 if (serv.title.equals(psdService.code)) {
-                                    tppsToShow.add(tpp)
+                                    filteredTpps.add(tpp)
                                     return@lit;
                                 }
                             }
@@ -335,14 +333,35 @@ class TppsViewModel(
             }
         }
 
-        isDataLoadingError.value = false
-        _dataLoading.value = false
+        return filteredTpps
+    }
 
-        return tppsToShow
+    fun filterTppsByCountry(country: String) {
+        searchFilter.countries = country
+
+        _items.value = getTppsByGlobalFilter()
+    }
+
+    fun filterTppsByService(service: String) {
+        searchFilter.services = service
+
+        _items.value = getTppsByGlobalFilter()
     }
 
     fun showRevokedOnly() {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    fun showEditResultMessage(result: Int) {
+        when (result) {
+            EDIT_RESULT_OK -> showSnackbarMessage(R.string.successfully_saved_tpp_message)
+            ADD_EDIT_RESULT_OK -> showSnackbarMessage(R.string.successfully_added_tpp_message)
+            DELETE_RESULT_OK -> showSnackbarMessage(R.string.successfully_deleted_tpp_message)
+        }
+    }
+
+    private fun showSnackbarMessage(message: Int) {
+        _snackbarText.value = Event(message)
     }
 
     fun saveSearchFilter(outState: Bundle) {
@@ -352,24 +371,53 @@ class TppsViewModel(
         outState.putBoolean("searchDescription", searchFilter.searchDescription)
         outState.putString("countries", searchFilter.countries)
         outState.putString("services", searchFilter.services)
+
+        outState.putBoolean("installed", searchFilter.installed)
         outState.putBoolean("psd2Only", searchFilter.psd2Only)
         outState.putBoolean("revokedOnly", searchFilter.revokedOnly)
         outState.putBoolean("showFis", searchFilter.showFis)
         outState.putBoolean("followed", searchFilter.followed)
-        outState.putBoolean("installed", searchFilter.installed)
         outState.putBoolean("active", searchFilter.active)
     }
 
     fun setupSearchFilter(savedInstanceState: Bundle?) {
-        searchFilter.title = savedInstanceState?.getString("", "") ?: ""
-        searchFilter.searchDescription = savedInstanceState?.getBoolean("searchDescription", false) ?: false
-        searchFilter.active = savedInstanceState?.getBoolean("active", true) ?: true
-        searchFilter.followed = savedInstanceState?.getBoolean("followed", true) ?: true
-        searchFilter.installed = savedInstanceState?.getBoolean("installed", true) ?: true
-        searchFilter.psd2Only = savedInstanceState?.getBoolean("psd2Only", false) ?: false
-        searchFilter.showFis = savedInstanceState?.getBoolean("showFis", false) ?: false
-        searchFilter.revokedOnly = savedInstanceState?.getBoolean("revokedOnly", false) ?: false
-        searchFilter.countries = savedInstanceState?.getString("countries", "") ?: ""
-        searchFilter.services = savedInstanceState?.getString("services", "") ?: ""
+        if (savedInstanceState != null) {
+            searchFilter.title = savedInstanceState?.getString("", "") ?: ""
+            searchFilter.searchDescription = savedInstanceState?.getBoolean("searchDescription", false)
+                    ?: false
+            searchFilter.countries = savedInstanceState?.getString("countries", "") ?: ""
+            searchFilter.services = savedInstanceState?.getString("services", "") ?: ""
+
+            if (savedInstanceState.getBoolean("installed", true)) {
+                searchFilter.userInterests.add(TppsFilterType.USED_TPPS)
+            }
+
+            // TODO: Duplicates installed or has semantic of: INSTALLED AND USED?
+            if (savedInstanceState.getBoolean("active", true)) {
+                searchFilter.userInterests.add(TppsFilterType.USED_TPPS) //searchFilter.active
+            }
+
+            if (savedInstanceState.getBoolean("followed", true)) {
+                searchFilter.userInterests.add(TppsFilterType.FOLLOWED_TPPS) //searchFilter.followed
+            }
+
+            if (savedInstanceState?.getBoolean("psd2Only", false)) {
+                searchFilter.userInterests.add(TppsFilterType.PSD2_ONLY_TPPS) //searchFilter.psd2Only
+            }
+
+            if (savedInstanceState?.getBoolean("onlyPsd2", false)) {
+                searchFilter.userInterests.add(TppsFilterType.ONLY_PSD2_TPPS) //searchFilter.psd2Only
+            }
+
+            if (savedInstanceState?.getBoolean("showFis", false)) {
+                searchFilter.userInterests.add(TppsFilterType.FIS_AS_TPPS) //searchFilter.showFis
+            }
+
+            // THIS is excluding all other filteres - means:
+            //    Get all whos PSD2 license was revoked regardless if are used, followed, fis ...
+            if (savedInstanceState?.getBoolean("revokedOnly", false)) {
+                searchFilter.userInterests.add(TppsFilterType.REVOKED_ONLY_TPPS) //searchFilter.revokedOnly
+            }
+        }
     }
 }

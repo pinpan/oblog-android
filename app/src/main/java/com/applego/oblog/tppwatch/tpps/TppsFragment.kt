@@ -94,8 +94,7 @@ class TppsFragment : Fragment() {
         var searchPlateId = searchView?.context?.resources?.getIdentifier("android:id/search_src_text", null, null)
         searchPlateId = searchView?.context?.resources?.getIdentifier("android:id/search_close_button", null, null)
         if (searchPlateId != null) {
-            val closeBtn = searchView?.findViewById<ImageButton>(searchPlateId) /*as ImageView*/
-            //searchView?.findViewById<ImageButton>(R.id.search_close_btn)
+            val closeBtn = searchView?.findViewById<ImageButton>(searchPlateId)
             closeBtn?.setOnClickListener(object: View.OnClickListener {
                         override fun onClick(v: View) {
                             if (!lastTppsSearchViewQuery.isNullOrBlank()) {
@@ -105,26 +104,6 @@ class TppsFragment : Fragment() {
                         }
                     })
         }
-
-
-/*
-        val searchPlateId = searchView?.context?.resources?.getIdentifier("android:id/search_src_text", null, null)
-        if (searchPlateId != null) {
-            val searchPlate = searchView?.findViewById(searchPlateId) as EditText ;
-            searchPlate.setOnEditorActionListener(object: TextView.OnEditorActionListener {
-                override fun onEditorAction(v : TextView , actionId : Int, event : KeyEvent ) : Boolean {
-
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        //Do something
-                    }
-                    return true;
-
-                }
-            })
-        }
-*/
-
-
 
         val item = menu!!.findItem(R.id.revokedSwitchForActionBar)
         item.setActionView(R.layout.switch_item)
@@ -137,20 +116,6 @@ class TppsFragment : Fragment() {
             }
         })
     }
-
-/*
-    fun setOnQueryTextListener(listener: SearchView.OnQueryTextListener?) {
-        super.setOnQueryTextListener(listener)
-        this.listener = listener
-        mSearchSrcTextView = this.findViewById(android.support.v7.appcompat.R.id.search_src_text)
-        mSearchSrcTextView.setOnEditorActionListener({ textView, i, keyEvent ->
-            if (listener != null) {
-                listener!!.onQueryTextSubmit(getQuery().toString())
-            }
-            true
-        })
-    }
-*/
 
     override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
@@ -181,7 +146,7 @@ class TppsFragment : Fragment() {
         setupListAdapter()
         //setupRefreshLayout(viewDataBinding.refreshLayout, viewDataBinding.tppsList)
         setupNavigation()
-        setupTextSearch()
+        //setupTextSearch()
         setUpSearchForm();
         setupFab()
     }
@@ -216,7 +181,6 @@ class TppsFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 // An item was selected. You can retrieve the selected item using
                 val service = parent.getItemAtPosition(pos).toString()
-                //val country : String = (item is String) ? item : ""
                 viewModel.filterTppsByService(service)
             }
 
@@ -232,8 +196,8 @@ class TppsFragment : Fragment() {
         super.onSaveInstanceState(outState)
     }
 
-    private fun setupTextSearch() {
-        searchView = activity?.findViewById<SearchView>(R.id.search/*textSearchView app_bar_search*/)
+ /*   private fun setupTextSearch() {
+        searchView = activity?.findViewById(R.id.search) as SearchView
         if (searchView != null) {
 
         }
@@ -277,7 +241,7 @@ class TppsFragment : Fragment() {
                     }
                 })
     }
-
+*/
     fun searchBy(query: String) {
         viewModel.filterByTitle(query)
     }
@@ -299,22 +263,24 @@ class TppsFragment : Fragment() {
     }
 
     private fun showFilteringPopUpMenu() {
-        val view = activity?.findViewById<View>(R.id.menu_filter) ?: return
-        PopupMenu(requireContext(), view).run {
-            menuInflater.inflate(com.applego.oblog.tppwatch.R.menu.filter_tpps, menu)
+        val view = activity?.findViewById<View>(R.id.menu_filter) //?: return
+        if (view != null) {
+            PopupMenu(requireContext(), view).run {
+                menuInflater.inflate(com.applego.oblog.tppwatch.R.menu.filter_tpps, menu)
 
-            setOnMenuItemClickListener {
-                viewModel.setFiltering(
-                    when (it.itemId) {
-                        R.id.active -> TppsFilterType.USED_TPPS
-                        R.id.followed -> TppsFilterType.FOLLOWED_TPPS
-                        else -> TppsFilterType.ALL_TPPS
-                    }
-                )
-                viewModel.loadTpps(false) // TODO: Use toggle on action bar - default to NO
-                true
+                setOnMenuItemClickListener {
+                    viewModel.setFiltering(
+                            when (it.itemId) {
+                                R.id.active -> TppsFilterType.USED_TPPS
+                                R.id.followed -> TppsFilterType.FOLLOWED_TPPS
+                                else -> TppsFilterType.ALL_TPPS
+                            }
+                    )
+                    viewModel.loadTpps(false) // TODO: Use toggle on action bar - default to NO
+                    true
+                }
+                show()
             }
-            show()
         }
     }
 
