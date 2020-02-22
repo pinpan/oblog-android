@@ -273,7 +273,9 @@ class TppsFragment : Fragment() {
                             when (it.itemId) {
                                 R.id.active -> TppsFilterType.USED_TPPS
                                 R.id.followed -> TppsFilterType.FOLLOWED_TPPS
-                                else -> TppsFilterType.ALL_TPPS
+                                R.id.fis -> TppsFilterType.FIS_AS_TPPS
+                                R.id.psd2Only-> TppsFilterType.PSD2_ONLY_TPPS
+                                else -> TppsFilterType.NONE
                             }
                     )
                     viewModel.loadTpps(false) // TODO: Use toggle on action bar - default to NO

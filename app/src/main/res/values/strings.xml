@@ -109,5 +109,10 @@
     <string name="settings_followed_tpps">Followed TPPs</string>
     <string name="settings_active_tpps">Active TPPs</string>
     <string name="environments">Environments</string>
+    <string name="label_fis">Financial institutions</string>
+    <string name="no_fis_tpps">No financial institutions</string>
+    <string name="label_psd2_only">TPPs with PSD2 only</string>
+    <string name="no_psd2_only">No TPPs with PSD2 license only</string>
+    <string name="no_revoked_tpps">No revoked institutions</string>
 
 </resources>

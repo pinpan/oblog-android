@@ -43,12 +43,16 @@ data class SearchFilter @JvmOverloads constructor(
 
     val all: Boolean
         get() {
-            userInterests.forEach() {
-                if (it.equals(TppsFilterType.ALL_TPPS)) {
-                    return true
+            if (allFilterTypes()?.contains(TppsFilterType.ALL_TPPS)) {
+                return true
+            }
+
+            allFilterTypes().forEach() {
+                if (!userInterests.contains(it)) {
+                    return false
                 }
             }
-            return false
+            return true
         }
 
     val psd2Only: Boolean
@@ -94,7 +98,7 @@ data class SearchFilter @JvmOverloads constructor(
     val revokedOnly: Boolean
         get() {
             userInterests.forEach() {
-                if (it.equals(TppsFilterType.REVOKED_ONLY_TPPS)) {
+                if (it.equals(TppsFilterType.REVOKED_TPPS)) {
                     return true
                 }
             }

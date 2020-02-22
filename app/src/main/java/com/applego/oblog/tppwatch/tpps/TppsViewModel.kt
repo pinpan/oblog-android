@@ -39,7 +39,7 @@ class TppsViewModel(
     private val tppsRepository: TppsRepository
 ) : ViewModel() {
 
-    private var fetchedItems = ArrayList<Tpp>()
+    private var fetchedItems : List<Tpp> = emptyList()
     private val _items = MutableLiveData<List<Tpp>>().apply { value = emptyList() }
     val items: MutableLiveData<List<Tpp>> = _items
 
@@ -47,10 +47,8 @@ class TppsViewModel(
     val dataLoading: LiveData<Boolean> = _dataLoading
 
     private var searchFilter = SearchFilter()
-    //private var _currentFilterString: String = ""
-    private var _currentFiltering = TppsFilterType.ALL_TPPS
+
     private val _currentFilteringLabel = MutableLiveData<Int>()
-    //val currentFilteringLabel: LiveData<Int> = _currentFilteringLabel
 
     private val _noTppsLabel = MutableLiveData<Int>()
     val noTppsLabel: LiveData<Int> = _noTppsLabel
@@ -101,24 +99,50 @@ class TppsViewModel(
         searchFilter.updateUserInterests(requestType)
 
         // Depending on the filter type, set the filtering label, icon drawables, etc.
-        when (requestType) {
-            TppsFilterType.ALL_TPPS -> {
-                setFilterStatusViews(
-                    R.string.label_all, R.string.no_tpps_all,
-                    R.drawable.logo_no_fill, true
-                )
-            }
-            TppsFilterType.USED_TPPS -> {
-                setFilterStatusViews(
-                    R.string.label_active, R.string.no_tpps_active,
-                    R.drawable.ic_check_circle_96dp, false
-                )
-            }
-            TppsFilterType.FOLLOWED_TPPS -> {
-                setFilterStatusViews(
-                    R.string.label_followed, R.string.no_tpps_followed,
-                    R.drawable.ic_verified_user_96dp, false
-                )
+        if (TppsFilterType.ALL_TPPS.equals(requestType) || searchFilter.all) {
+            setFilterStatusViews(
+                R.string.label_all, R.string.no_tpps_all,
+                R.drawable.logo_no_fill, true
+            )
+        } else {
+            when (requestType) {
+                TppsFilterType.USED_TPPS -> {
+                    setFilterStatusViews(
+                            R.string.label_active, R.string.no_tpps_active,
+                            R.drawable.ic_check_circle_96dp, false
+                    )
+                }
+                TppsFilterType.FOLLOWED_TPPS -> {
+                    setFilterStatusViews(
+                            R.string.label_followed, R.string.no_tpps_followed,
+                            R.drawable.ic_verified_user_96dp, false
+                    )
+                }
+                TppsFilterType.FIS_AS_TPPS -> {
+                    setFilterStatusViews(
+                            R.string.label_fis, R.string.no_fis_tpps,
+                            R.drawable.ic_verified_user_96dp, false
+                    )
+                }
+                TppsFilterType.PSD2_ONLY_TPPS -> {
+                    setFilterStatusViews(
+                            R.string.label_psd2_only, R.string.no_psd2_only,
+                            R.drawable.ic_verified_user_96dp, false
+                    )
+                }
+                /* This is handled by the slider
+                TppsFilterType.ONLY_PSD2_TPPS -> {
+                    setFilterStatusViews(
+                            R.string.label_followed, R.string.no_tpps_followed,
+                            R.drawable.ic_verified_user_96dp, false
+                    )
+                }*/
+                TppsFilterType.REVOKED_TPPS -> {
+                    setFilterStatusViews(
+                            R.string.label_revoked, R.string.no_revoked_tpps,
+                            R.drawable.ic_verified_user_96dp, false
+                    )
+                }
             }
         }
     }
@@ -183,8 +207,7 @@ class TppsViewModel(
                 val tppsResult = tppsRepository.getTpps(forceUpdate)
 
                 if (tppsResult is Success) {
-                    fetchedItems = ArrayList<Tpp>()
-                    fetchedItems.addAll(tppsResult.data)
+                    fetchedItems = tppsResult.data
 
                     _items.value = getTppsByGlobalFilter()
 
@@ -261,7 +284,7 @@ class TppsViewModel(
         val filteredTpps = ArrayList<Tpp>()
 
         // userInterests works as discriminator. If empty -> show all
-        if (userInterests.isNullOrEmpty() || userInterests.contains(TppsFilterType.ALL_TPPS)) {
+        if (userInterests.isNullOrEmpty() || searchFilter.all || userInterests.contains(TppsFilterType.ALL_TPPS)) {
             filteredTpps.addAll(inputTpps)
         } else {
             // individual interests are then OR-ed
@@ -416,7 +439,7 @@ class TppsViewModel(
             // THIS is excluding all other filteres - means:
             //    Get all whos PSD2 license was revoked regardless if are used, followed, fis ...
             if (savedInstanceState?.getBoolean("revokedOnly", false)) {
-                searchFilter.userInterests.add(TppsFilterType.REVOKED_ONLY_TPPS) //searchFilter.revokedOnly
+                searchFilter.userInterests.add(TppsFilterType.REVOKED_TPPS) //searchFilter.revokedOnly
             }
         }
     }

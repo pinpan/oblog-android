@@ -28,8 +28,21 @@
         android:title="@string/nav_followed" />
 
     <item
+        android:id="@+id/fis"
+        android:title="@string/label_fis"
+        android:checkable="true"
+        android:checked="true"
+        /> <!--android:onClick="@{() -> viewmodel}"-->
+
+    <item
         android:id="@+id/psd2Only"
         android:title="@string/psd2_services_only"
+        android:checkable="true"
+        android:checked="true"
+        /> <!--android:onClick="@{() -> viewmodel}"-->
+    <item
+        android:id="@+id/revoked"
+        android:title="@string/label_revoked"
         android:checkable="true"
         android:checked="true"
         /> <!--android:onClick="@{() -> viewmodel}"-->

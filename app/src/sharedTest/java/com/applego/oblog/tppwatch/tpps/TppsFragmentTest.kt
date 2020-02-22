@@ -221,8 +221,10 @@ class TppsFragmentTest {
     @Test
     fun showAllTpps() {
         // Add one active tpp and one followed tpp
-        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1"))
-        repository.saveTppBlocking(Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION2"))
+        var tpp1 = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
+        repository.saveTppBlocking(tpp1)
+        var tpp2 = Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION2")
+        repository.saveTppBlocking(tpp2)
 
         launchActivity()
 

@@ -19,6 +19,12 @@ package com.applego.oblog.tppwatch.tpps
  * Used with the filter countriesSpinner in the tpps list.
  */
 enum class TppsFilterType {
+
+    /**
+     * No criteria selected
+     */
+    NONE,
+
     /**
      * Use all Tpps.
      */
@@ -52,6 +58,5 @@ enum class TppsFilterType {
     /**
      * Filter revoked only Tpps.
      */
-    REVOKED_ONLY_TPPS;
-
+    REVOKED_TPPS
 }

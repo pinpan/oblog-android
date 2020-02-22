@@ -71,7 +71,7 @@ class TppsViewModelTest {
 
         // Given an initialized TppsViewModel with initialized tpps
         // When loading of Tpps is requested
-        tppsViewModel.setFiltering(TppsFilterType.ALL_TPPS)
+        tppsViewModel.setFiltering(TppsFilterType.PSD2_ONLY_TPPS)
 
         // Trigger loading of tpps
         tppsViewModel.loadTpps(true)
@@ -167,32 +167,6 @@ class TppsViewModelTest {
         assertLiveDataEventTriggered(tppsViewModel.openTppEvent, tppId)
     }
 
-/*
-    @Test
-    fun clearFollowedTpps_clearsTpps() = mainCoroutineRule.runBlockingTest {
-        // When followed tpps are cleared
-        tppsViewModel.loadEbaDirectory()
-
-        // Fetch tpps
-        val allTpps = LiveDataTestUtil.getValue(tppsViewModel.items)
-        // Verify active tpp is not cleared
-        assertThat(allTpps).hasSize(3)
-
-        var followedTpps = allTpps.filter { it.isFollowed}
-
-        // Verify there are no followed tpps left
-        assertThat(followedTpps).isEmpty()
-
-        val sTpps = allTpps.filter { it.title == "Title1" }.forEach { it.isFollowed = true }
-        followedTpps = allTpps.filter { it.isFollowed}
-        assertThat(followedTpps.size == 1)
-
-        // Verify snackbar is updated
-        assertSnackbarMessage(
-            tppsViewModel.snackbarText, R.string.followed_tpps_cleared
-        )
-    }
-*/
 
     @Test
     fun showEditResultMessages_editOk_snackbarUpdated() {
@@ -267,7 +241,7 @@ class TppsViewModelTest {
     @Test
     fun getTppsAddViewVisible() {
         // When the filter type is ALL_TPPS
-        tppsViewModel.setFiltering(TppsFilterType.ALL_TPPS)
+        tppsViewModel.setFiltering(TppsFilterType.PSD2_ONLY_TPPS)
 
         // Then the "Add tpp" action is visible
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.tppsAddViewVisible)).isTrue()
