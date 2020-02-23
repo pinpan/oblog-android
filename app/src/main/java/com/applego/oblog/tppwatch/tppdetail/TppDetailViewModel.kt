@@ -94,6 +94,7 @@ class TppDetailViewModel(
     }
 
     fun setFollowed(follow: Boolean) = viewModelScope.launch {
+        _tpp.value?.isFollowed = follow
         val tpp = _tpp.value ?: return@launch
         tppsRepository.setTppFollowedFlag(tpp, follow)
 

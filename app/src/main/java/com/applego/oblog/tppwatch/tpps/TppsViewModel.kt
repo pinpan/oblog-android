@@ -46,7 +46,8 @@ class TppsViewModel(
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
 
-    private var searchFilter = SearchFilter()
+    private var _searchFilter = SearchFilter()
+    val  searchFilter = _searchFilter
 
     private val _currentFilteringLabel = MutableLiveData<Int>()
 
@@ -95,11 +96,10 @@ class TppsViewModel(
      * [TppsFilterType.USED_TPPS]
      */
     fun setFiltering(requestType: TppsFilterType) {
-        //_currentFiltering = requestType
-        searchFilter.updateUserInterests(requestType)
+        _searchFilter.updateUserSelection(requestType)
 
         // Depending on the filter type, set the filtering label, icon drawables, etc.
-        if (TppsFilterType.ALL_TPPS.equals(requestType) || searchFilter.all) {
+        if (_searchFilter.all) {
             setFilterStatusViews(
                 R.string.label_all, R.string.no_tpps_all,
                 R.drawable.logo_no_fill, true
@@ -109,25 +109,25 @@ class TppsViewModel(
                 TppsFilterType.USED_TPPS -> {
                     setFilterStatusViews(
                             R.string.label_active, R.string.no_tpps_active,
-                            R.drawable.ic_check_circle_96dp, false
+                            R.drawable.ic_check_circle_96dp, true
                     )
                 }
                 TppsFilterType.FOLLOWED_TPPS -> {
                     setFilterStatusViews(
                             R.string.label_followed, R.string.no_tpps_followed,
-                            R.drawable.ic_verified_user_96dp, false
+                            R.drawable.ic_verified_user_96dp, true
                     )
                 }
                 TppsFilterType.FIS_AS_TPPS -> {
                     setFilterStatusViews(
                             R.string.label_fis, R.string.no_fis_tpps,
-                            R.drawable.ic_verified_user_96dp, false
+                            R.drawable.ic_verified_user_96dp, true
                     )
                 }
-                TppsFilterType.PSD2_ONLY_TPPS -> {
+                TppsFilterType.PSD2_TPPS -> {
                     setFilterStatusViews(
                             R.string.label_psd2_only, R.string.no_psd2_only,
-                            R.drawable.ic_verified_user_96dp, false
+                            R.drawable.ic_verified_user_96dp, true
                     )
                 }
                 /* This is handled by the slider
@@ -166,19 +166,24 @@ class TppsViewModel(
     }
 
     fun followTpp(tpp: Tpp, followed: Boolean) = viewModelScope.launch {
-        tppsRepository.setTppFollowedFlag(tpp, followed)
-        showSnackbarMessage(R.string.tpp_marked_followed)
+
+        viewModelScope.launch {
+            tppsRepository.setTppFollowedFlag(tpp, followed)
+            showSnackbarMessage(R.string.tpp_marked_followed)
+        }
 
         // Refresh single Tpp
         //loadTpps(false)
     }
 
     fun activateTpp(tpp: Tpp, active: Boolean) = viewModelScope.launch {
-        tppsRepository.setTppActivateFlag(tpp, active)
-        showSnackbarMessage(R.string.tpp_marked_active)
+        viewModelScope.launch {
+            tppsRepository.setTppActivateFlag(tpp, active)
+            showSnackbarMessage(R.string.tpp_marked_active)
 
-        // Refresh single Tpp
-        //loadTpps(false)
+        }
+            // Refresh single Tpp
+            //loadTpps(false)
     }
 
     /**
@@ -224,9 +229,9 @@ class TppsViewModel(
     }
 
     fun filterByTitle(searchString: String) {
-        searchFilter.title = searchString
+        _searchFilter.title = searchString
 
-        //wrapEspressoIdlingResource {
+        wrapEspressoIdlingResource {
 
             viewModelScope.launch {
                 val tppsToShow = getTppsByGlobalFilter()
@@ -234,7 +239,7 @@ class TppsViewModel(
 
                 _dataLoading.value = false
             }
-        //}
+        }
     }
 
     fun getTppsByGlobalFilter(): List<Tpp> {
@@ -248,16 +253,18 @@ class TppsViewModel(
 
         var tppsToShow: MutableList<Tpp> = filterTppsByName(tppsList)
 
-        if (!searchFilter.all) {
+        if (!_searchFilter.all) {
             tppsList = tppsToShow
-            tppsToShow = filterTppsByUserInterest(tppsList, searchFilter.userInterests)
+            tppsToShow = filterTppsByUserInterest(tppsList, _searchFilter.userSelectedFilterTypes)
+        }
+
+        if (!_searchFilter.countries.isNullOrBlank() && !_searchFilter.countries.equals("<ALL>")) {
+            tppsList = tppsToShow
+            tppsToShow = filterTppsByCountry(tppsList, _searchFilter.countries)
         }
 
         tppsList = tppsToShow
-        tppsToShow = filterTppsByCountry(tppsList, searchFilter.countries)
-
-        tppsList = tppsToShow
-        tppsToShow = filterTppsByService(tppsList, searchFilter.services)
+        tppsToShow = filterTppsByService(tppsList, _searchFilter.services)
 
         _dataLoading.value = false
 
@@ -267,11 +274,11 @@ class TppsViewModel(
     private fun filterTppsByName(inputTpps: List<Tpp>): MutableList<Tpp> {
         val filteredTpps = ArrayList<Tpp>()
 
-        if (searchFilter.title.isNullOrBlank()) {
+        if (_searchFilter.title.isNullOrBlank()) {
             filteredTpps.addAll(inputTpps)
         } else {
             for (tpp in inputTpps) {
-                if (tpp.title.contains(searchFilter.title, true)) {
+                if (tpp.title.contains(_searchFilter.title, true)) {
                     (filteredTpps as ArrayList<Tpp>).add(tpp)
                 }
             }
@@ -280,22 +287,28 @@ class TppsViewModel(
         return filteredTpps
     }
 
-    private fun filterTppsByUserInterest(inputTpps: List<Tpp>, userInterests: List<TppsFilterType>): MutableList<Tpp> {
+    private fun filterTppsByUserInterest(inputTpps: List<Tpp>, userInterests: Map<TppsFilterType, Boolean>): MutableList<Tpp> {
         val filteredTpps = ArrayList<Tpp>()
 
-        // userInterests works as discriminator. If empty -> show all
-        if (userInterests.isNullOrEmpty() || searchFilter.all || userInterests.contains(TppsFilterType.ALL_TPPS)) {
+        // userSelectedFilterTypes works as discriminator. If empty -> show all
+        if ((userInterests.get(TppsFilterType.ALL_TPPS) ?: false) || _searchFilter.all) {
             filteredTpps.addAll(inputTpps)
         } else {
             // individual interests are then OR-ed
             inputTpps.forEach { tpp ->
-                userInterests.forEach { interest ->
-                    when (interest) {
+                userInterests.forEach {
+                    when (it.key) {
                         //TppsFilterType.ALL_TPPS -> filteredTpps.add(tpp)
-                        TppsFilterType.USED_TPPS -> if (tpp.isActive) {
+                        TppsFilterType.USED_TPPS -> if (it.value && tpp.isActive) {
                             filteredTpps.add(tpp)
                         }
-                        TppsFilterType.FOLLOWED_TPPS -> if (tpp.isFollowed) {
+                        TppsFilterType.FOLLOWED_TPPS -> if (it.value && tpp.isFollowed) {
+                            filteredTpps.add(tpp)
+                        }
+                        TppsFilterType.PSD2_TPPS -> if (it.value && tpp.isPsd2) {
+                            filteredTpps.add(tpp)
+                        }
+                        TppsFilterType.PSD2_TPPS -> if (it.value && tpp.isFis) {
                             filteredTpps.add(tpp)
                         }
                     }
@@ -313,17 +326,17 @@ class TppsViewModel(
         }
 
         var filteredTpps = ArrayList<Tpp>()
-        if (searchFilter.countries.isNullOrBlank() || searchFilter.countries.equals("<ALL>")) {
+        /*if (_searchFilter.countries.isNullOrBlank() || _searchFilter.countries.equals("<ALL>")) {
                 filteredTpps.addAll(inputTpps)
-        } else {
-            searchFilter.countries.forEach {
+        } else {*/
+            _searchFilter.countries.forEach {
                 inputTpps?.forEach {
                     if (it.country.equals(country)) {
                         filteredTpps.add(it)
                     }
                 }
             }
-        }
+        //}
 
         return filteredTpps
     }
@@ -360,13 +373,13 @@ class TppsViewModel(
     }
 
     fun filterTppsByCountry(country: String) {
-        searchFilter.countries = country
+        _searchFilter.countries = country
 
         _items.value = getTppsByGlobalFilter()
     }
 
     fun filterTppsByService(service: String) {
-        searchFilter.services = service
+        _searchFilter.services = service
 
         _items.value = getTppsByGlobalFilter()
     }
@@ -388,58 +401,58 @@ class TppsViewModel(
     }
 
     fun saveSearchFilter(outState: Bundle) {
-        //outState.putBoolean("created", viewModel.searchFilter.created)
+        //outState.putBoolean("created", viewModel._searchFilter.created)
 
-        outState.putString("title", searchFilter.title)
-        outState.putBoolean("searchDescription", searchFilter.searchDescription)
-        outState.putString("countries", searchFilter.countries)
-        outState.putString("services", searchFilter.services)
+        outState.putString("title", _searchFilter.title)
+        outState.putBoolean("searchDescription", _searchFilter.searchDescription)
+        outState.putString("countries", _searchFilter.countries)
+        outState.putString("services", _searchFilter.services)
 
-        outState.putBoolean("installed", searchFilter.installed)
-        outState.putBoolean("psd2Only", searchFilter.psd2Only)
-        outState.putBoolean("revokedOnly", searchFilter.revokedOnly)
-        outState.putBoolean("showFis", searchFilter.showFis)
-        outState.putBoolean("followed", searchFilter.followed)
-        outState.putBoolean("active", searchFilter.active)
+        outState.putBoolean("installed", _searchFilter.installed)
+        outState.putBoolean("psd2Only", _searchFilter.psd2Only)
+        outState.putBoolean("revokedOnly", _searchFilter.revokedOnly)
+        outState.putBoolean("showFis", _searchFilter.showFis)
+        outState.putBoolean("followed", _searchFilter.followed)
+        outState.putBoolean("active", _searchFilter.active)
     }
 
     fun setupSearchFilter(savedInstanceState: Bundle?) {
         if (savedInstanceState != null) {
-            searchFilter.title = savedInstanceState?.getString("", "") ?: ""
-            searchFilter.searchDescription = savedInstanceState?.getBoolean("searchDescription", false)
+            _searchFilter.title = savedInstanceState?.getString("", "") ?: ""
+            _searchFilter.searchDescription = savedInstanceState?.getBoolean("searchDescription", false)
                     ?: false
-            searchFilter.countries = savedInstanceState?.getString("countries", "") ?: ""
-            searchFilter.services = savedInstanceState?.getString("services", "") ?: ""
+            _searchFilter.countries = savedInstanceState?.getString("countries", "") ?: ""
+            _searchFilter.services = savedInstanceState?.getString("services", "") ?: ""
 
             if (savedInstanceState.getBoolean("installed", true)) {
-                searchFilter.userInterests.add(TppsFilterType.USED_TPPS)
+                _searchFilter.userSelectedFilterTypes.put(TppsFilterType.USED_TPPS, true)
             }
 
             // TODO: Duplicates installed or has semantic of: INSTALLED AND USED?
             if (savedInstanceState.getBoolean("active", true)) {
-                searchFilter.userInterests.add(TppsFilterType.USED_TPPS) //searchFilter.active
+                _searchFilter.userSelectedFilterTypes.put(TppsFilterType.USED_TPPS, true) //_searchFilter.active
             }
 
             if (savedInstanceState.getBoolean("followed", true)) {
-                searchFilter.userInterests.add(TppsFilterType.FOLLOWED_TPPS) //searchFilter.followed
+                _searchFilter.userSelectedFilterTypes.put(TppsFilterType.FOLLOWED_TPPS, true) //_searchFilter.followed
             }
 
             if (savedInstanceState?.getBoolean("psd2Only", false)) {
-                searchFilter.userInterests.add(TppsFilterType.PSD2_ONLY_TPPS) //searchFilter.psd2Only
+                _searchFilter.userSelectedFilterTypes.put(TppsFilterType.PSD2_TPPS, true) //_searchFilter.psd2Only
             }
 
             if (savedInstanceState?.getBoolean("onlyPsd2", false)) {
-                searchFilter.userInterests.add(TppsFilterType.ONLY_PSD2_TPPS) //searchFilter.psd2Only
+                _searchFilter.userSelectedFilterTypes.put(TppsFilterType.ONLY_PSD2_TPPS, true) //_searchFilter.psd2Only
             }
 
             if (savedInstanceState?.getBoolean("showFis", false)) {
-                searchFilter.userInterests.add(TppsFilterType.FIS_AS_TPPS) //searchFilter.showFis
+                _searchFilter.userSelectedFilterTypes.put(TppsFilterType.FIS_AS_TPPS, true) //_searchFilter.showFis
             }
 
             // THIS is excluding all other filteres - means:
             //    Get all whos PSD2 license was revoked regardless if are used, followed, fis ...
             if (savedInstanceState?.getBoolean("revokedOnly", false)) {
-                searchFilter.userInterests.add(TppsFilterType.REVOKED_TPPS) //searchFilter.revokedOnly
+                _searchFilter.userSelectedFilterTypes.put(TppsFilterType.REVOKED_TPPS, true) //_searchFilter.revokedOnly
             }
         }
     }

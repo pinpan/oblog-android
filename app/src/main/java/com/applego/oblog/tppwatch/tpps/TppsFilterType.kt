@@ -43,7 +43,7 @@ enum class TppsFilterType {
     /**
      * Filter tpps, which have only PSD2 licence but are not FIS.
      */
-    PSD2_ONLY_TPPS,
+    PSD2_TPPS,
 
     /**
      * Filter tpps, which have PSD2 licence, including FIS.
@@ -58,5 +58,24 @@ enum class TppsFilterType {
     /**
      * Filter revoked only Tpps.
      */
-    REVOKED_TPPS
+    REVOKED_TPPS;
+
+
+    companion object {
+        //var allFilterTypes: MutableList<TppsFilterType> = ArrayList<TppsFilterType>()
+        val allFilterTypes = mutableListOf<TppsFilterType>()
+
+        init {
+        //fun get(): MutableList<TppsFilterType> {
+            //if (allFilterTypes.isEmpty()) {
+                allFilterTypes.add(TppsFilterType.FIS_AS_TPPS)
+                allFilterTypes.add(TppsFilterType.PSD2_TPPS)
+                allFilterTypes.add(TppsFilterType.USED_TPPS)
+                allFilterTypes.add(TppsFilterType.FOLLOWED_TPPS)
+                allFilterTypes.add(TppsFilterType.ONLY_PSD2_TPPS)
+            //}
+
+            //return allFilterTypes
+        }
+    }
 }

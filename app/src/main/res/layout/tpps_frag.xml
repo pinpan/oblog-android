@@ -42,6 +42,68 @@
 
             <include layout="@layout/tpps_search" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/list_item_padding"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingBottom="@dimen/list_item_padding"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/follow_checkbox_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|left"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="2"
+                    android:width="32dp"
+                    android:height="16dp"
+                    android:text="@string/F"
+                    android:textAlignment="gravity"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/active_checkbox_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="clip_horizontal|center|center_vertical"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="2"
+                    android:width="32dp"
+                    android:height="16dp"
+                    android:text="@string/A"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tpp_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="24sp"
+                    android:layout_weight="8"
+                    android:text="@string/tpp_name_label"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:foregroundTint="@color/design_default_color_primary_dark"
+                android:minHeight="2dp"
+                android:visibility="visible" />
+
             <com.applego.oblog.tppwatch.ScrollChildSwipeRefreshLayout
                 android:id="@+id/refresh_layout"
                 android:layout_width="match_parent"

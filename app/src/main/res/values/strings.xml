@@ -114,5 +114,7 @@
     <string name="label_psd2_only">TPPs with PSD2 only</string>
     <string name="no_psd2_only">No TPPs with PSD2 license only</string>
     <string name="no_revoked_tpps">No revoked institutions</string>
+    <string name="A">A</string>
+    <string name="F">F</string>
 
 </resources>

@@ -24,6 +24,7 @@ import com.applego.oblog.tppwatch.assertLiveDataEventTriggered
 import com.applego.oblog.tppwatch.assertSnackbarMessage
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.FakeRepository
+import com.applego.oblog.tppwatch.util.saveTppBlocking
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
@@ -69,12 +70,14 @@ class TppsViewModelTest {
         // Pause dispatcher so we can verify initial values
         mainCoroutineRule.pauseDispatcher()
 
-        // Given an initialized TppsViewModel with initialized tpps
-        // When loading of Tpps is requested
-        tppsViewModel.setFiltering(TppsFilterType.PSD2_ONLY_TPPS)
+        val aTpp = tppsViewModel.items.value?.get(0)
+        if (aTpp != null) {
+            aTpp.isPsd2 = true
+            tppsRepository.saveTppBlocking(aTpp)
+        }
 
         // Trigger loading of tpps
-        tppsViewModel.loadTpps(true)
+        tppsViewModel.loadTpps(false)
 
         // Then progress indicator is shown
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading)).isTrue()
@@ -87,6 +90,17 @@ class TppsViewModelTest {
 
         // And data correctly loaded
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.items)).hasSize(3)
+
+        // Given an initialized TppsViewModel with initialized tpps
+        // When loading of Tpps is requested
+        tppsViewModel.setFiltering(TppsFilterType.USED_TPPS)
+        tppsViewModel.loadTpps(false)
+        assertThat(LiveDataTestUtil.getValue(tppsViewModel.items)).hasSize(1)
+
+
+        tppsViewModel.setFiltering(TppsFilterType.PSD2_TPPS)
+        tppsViewModel.loadTpps(false)
+        assertThat(LiveDataTestUtil.getValue(tppsViewModel.items)).hasSize(0)
     }
 
     @Ignore
@@ -241,7 +255,7 @@ class TppsViewModelTest {
     @Test
     fun getTppsAddViewVisible() {
         // When the filter type is ALL_TPPS
-        tppsViewModel.setFiltering(TppsFilterType.PSD2_ONLY_TPPS)
+        tppsViewModel.setFiltering(TppsFilterType.PSD2_TPPS)
 
         // Then the "Add tpp" action is visible
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.tppsAddViewVisible)).isTrue()

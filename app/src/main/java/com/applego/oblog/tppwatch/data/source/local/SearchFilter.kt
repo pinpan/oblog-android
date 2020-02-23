@@ -5,6 +5,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.applego.oblog.tppwatch.tpps.TppsFilterType
+import com.applego.oblog.tppwatch.tpps.TppsFilterType.Companion.allFilterTypes
 import java.util.*
 
 @Entity(tableName = "searchfilter")
@@ -25,105 +26,89 @@ data class SearchFilter @JvmOverloads constructor(
     //@ColumnInfo(name = "active") var active: Boolean = true,
     //@ColumnInfo(name = "installed") var installed: Boolean = true,
 
-        @Embedded
-    val userInterests: MutableList<TppsFilterType> = ArrayList()
-
-    fun updateUserInterests(requestType: TppsFilterType) {
-        // If already set -> remove it
-        userInterests.forEach() {
-            if (it.equals(requestType)) {
-                userInterests.remove(it)
-                return
+    @Embedded
+    var userSelectedFilterTypes: MutableMap<TppsFilterType, Boolean> = HashMap<TppsFilterType, Boolean>()
+/*
+        get() {
+            if (userSelectedFilterTypes == null) {
+                userSelectedFilterTypes
             }
         }
+        set(m : MutableMap<TppsFilterType, Boolean>) {
+            if (userSelectedFilterTypes == null) {
+                userSelectedFilterTypes = m
+            }
+        }
+*/
 
-        // Otherwise add it
-        userInterests.add(requestType)
+
+    fun updateUserSelection(requestType: TppsFilterType) {
+
+        var wasChecked = userSelectedFilterTypes.get(requestType) ?: false
+
+        // If all was checked
+        val isAllClicked = TppsFilterType.ALL_TPPS.equals(requestType)
+        if (isAllClicked) {
+            userSelectedFilterTypes.put(TppsFilterType.ALL_TPPS, !wasChecked)
+            setAll(!wasChecked)
+        } else {
+            userSelectedFilterTypes.put(requestType, !wasChecked)
+            userSelectedFilterTypes.put(TppsFilterType.ALL_TPPS, all)
+        }
+    }
+
+    private fun setAll(b: Boolean) {
+        allFilterTypes.forEach {userSelectedFilterTypes.put(it, b)}
     }
 
     val all: Boolean
         get() {
-            if (allFilterTypes()?.contains(TppsFilterType.ALL_TPPS)) {
-                return true
+            if (userSelectedFilterTypes == null) {
+                return false
             }
 
-            allFilterTypes().forEach() {
-                if (!userInterests.contains(it)) {
+            allFilterTypes.forEach() {
+                val value = userSelectedFilterTypes.get(it)
+                if ((value == null) || !value) {
                     return false
                 }
             }
+
             return true
+        }
+
+    val noneSelected: Boolean
+        get() {
+            return userSelectedFilterTypes.isNullOrEmpty()
         }
 
     val psd2Only: Boolean
         get() {
-            userInterests.forEach() {
-                if (it.equals(TppsFilterType.PSD2_ONLY_TPPS)) {
-                    return true
-                }
-            }
-            return false
+            return userSelectedFilterTypes.get(TppsFilterType.PSD2_TPPS) ?: false
         }
 
     val active: Boolean
         get() {
-            userInterests.forEach() {
-                if (it.equals(TppsFilterType.USED_TPPS)) {
-                    return true
-                }
-            }
-            return false
+            return userSelectedFilterTypes.get(TppsFilterType.USED_TPPS) ?: false
         }
 
     val followed: Boolean
         get() {
-            userInterests.forEach() {
-                if (it.equals(TppsFilterType.FOLLOWED_TPPS)) {
-                    return true
-                }
-            }
-            return false
+            return userSelectedFilterTypes.get(TppsFilterType.FOLLOWED_TPPS) ?: false
         }
 
     val showFis: Boolean
         get() {
-            userInterests.forEach() {
-                if (it.equals(TppsFilterType.FIS_AS_TPPS)) {
-                    return true
-                }
-            }
-            return false
+            return userSelectedFilterTypes.get(TppsFilterType.FIS_AS_TPPS) ?: false
         }
 
     val revokedOnly: Boolean
         get() {
-            userInterests.forEach() {
-                if (it.equals(TppsFilterType.REVOKED_TPPS)) {
-                    return true
-                }
-            }
-            return false
+            return userSelectedFilterTypes.get(TppsFilterType.REVOKED_TPPS) ?: false
         }
 
     val installed: Boolean
        get() {
-           userInterests.forEach() {
-               if (it.equals(TppsFilterType.USED_TPPS)) {
-                   return true
-               }
-           }
-           return false
+           return userSelectedFilterTypes.get(TppsFilterType.USED_TPPS) ?: false
        }
-
-    fun allFilterTypes() : List<TppsFilterType> {
-        var theList : ArrayList<TppsFilterType> = ArrayList<TppsFilterType>()
-        theList.add(TppsFilterType.FIS_AS_TPPS)
-        theList.add(TppsFilterType.PSD2_ONLY_TPPS)
-        theList.add(TppsFilterType.USED_TPPS)
-        theList.add(TppsFilterType.FOLLOWED_TPPS)
-        theList.add(TppsFilterType.ONLY_PSD2_TPPS)
-
-        return theList
-    }
-
 }

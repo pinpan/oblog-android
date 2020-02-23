@@ -33,14 +33,20 @@ import java.util.*
 @Entity(tableName = "tpps")
 @TypeConverters(OblogTypeConverters::class)
 data class Tpp @JvmOverloads constructor(
-        @ColumnInfo(name = "entityCode") var entityCode: String = "",   // Entity Code retruned by EBA or NCA
-        @ColumnInfo(name = "title") var title: String = "",             // Description  provided by original source. For additional details see detail
-        @ColumnInfo(name = "description") var description: String = "",             // TPP is followed by user
-        @ColumnInfo(name = "globalUrn") var globalUrn: String = "",                 // A Global Unified identifier. Used by Preta as own ID.
-        @ColumnInfo(name = "ebaEntityVersion") var ebaEntityVersion: String = "",   // New, Updated, Removed (from original source), Deleted (From our DB) ...
+        @ColumnInfo(name = "entityCode") var entityCode: String = "",  // Entity Code retruned by EBA or NCA
+        @ColumnInfo(name = "title") var title: String = "",
+        @ColumnInfo(name = "description") var description: String = "",
+        @ColumnInfo(name = "globalUrn") var globalUrn: String = "",    // A Global Unified identifier.
+        @ColumnInfo(name = "ebaEntityVersion") var ebaEntityVersion: String = "",
 
         @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString()
 ) {
+
+    @ColumnInfo(name = "fis")
+    var isFis: Boolean = false
+
+    @ColumnInfo(name = "psd2")
+    var isPsd2: Boolean = false
 
     @ColumnInfo(name = "followed")
     var isFollowed: Boolean = false
@@ -57,21 +63,17 @@ data class Tpp @JvmOverloads constructor(
     @ColumnInfo(name = "active")
     var isActive: Boolean = false
 
-    //@JvmField
     var ebaPassport : EbaPassport = EbaPassport()
+    // FOLLOWING DOES NOT COMPILE BECAUSE ROOM DOES OT KOW HOW TO SAVE IT
+    //var ebaPassportsMap: Map<String, List<EbaService>> = HashMap<String, List<EbaService>>()
 
 
-    // TODO: Remove this "special" field used only for validation
+    // TODO#1: Remove this "special" field used only for validation
     val isEmpty
         get() = title.isEmpty() || description.isEmpty()
 
-    // DOES NOT COMPILE BECAUSE ROOM DOES OT KOW HOW TO SAVE IT
-    //@JvmField
-    //var ebaPassportsMap: Map<String, List<EbaService>> = HashMap<String, List<EbaService>>()
-
+    // TODO#2: Consider Following fields
     //  details aka properties from EBA
     //  apps,
     //  tppRoles, - CZ has, Eba hasn't
-    //  var d : Date = Date()
-    //  get() = if (dateAcquired != null) dateAcquired else Date()
 }

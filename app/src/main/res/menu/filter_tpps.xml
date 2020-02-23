@@ -13,38 +13,41 @@
 
     <item
         android:id="@+id/all"
-        android:title="@string/nav_all" />
+        android:checkable="true"
+        android:title="@string/nav_all"
+
+    /> <!--android:checked="true"-->
 
     <item
         android:id="@+id/active"
         android:checkable="true"
-        android:checked="true"
-        android:title="@string/nav_active" />
+        android:title="@string/nav_active"
+    /> <!--android:checked="true"-->
 
     <item
         android:id="@+id/followed"
         android:checkable="true"
         android:checked="true"
-        android:title="@string/nav_followed" />
+        android:title="@string/nav_followed"
+    />
 
     <item
         android:id="@+id/fis"
         android:title="@string/label_fis"
         android:checkable="true"
         android:checked="true"
-        /> <!--android:onClick="@{() -> viewmodel}"-->
+    /> <!--android:onClick="@{() -> viewmodel}"-->
 
     <item
         android:id="@+id/psd2Only"
         android:title="@string/psd2_services_only"
         android:checkable="true"
         android:checked="true"
-        /> <!--android:onClick="@{() -> viewmodel}"-->
+    /> <!--android:onClick="@{() -> viewmodel}"-->
+
     <item
         android:id="@+id/revoked"
-        android:title="@string/label_revoked"
         android:checkable="true"
         android:checked="true"
-        /> <!--android:onClick="@{() -> viewmodel}"-->
-
+        android:title="@string/label_revoked" /> <!--android:onClick="@{() -> viewmodel}"-->
 </menu>

@@ -35,6 +35,8 @@ import com.applego.oblog.tppwatch.PreferencesActivity
 import com.google.android.material.navigation.NavigationView
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import android.view.WindowManager
+import com.applego.oblog.tppwatch.BuildConfig
 
 
 /**
@@ -63,7 +65,9 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
         setupSharedPreferences();
 
-        // ??? ?handleIntent(intent);
+        if (BuildConfig.DEBUG){
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }        // ??? ?handleIntent(intent);
     }
 
     private fun setupSharedPreferences() {

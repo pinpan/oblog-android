@@ -135,6 +135,12 @@ class TppsFragment : Fragment() {
         }
 
 
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.refresh()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -144,9 +150,7 @@ class TppsFragment : Fragment() {
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
         setupSnackbar()
         setupListAdapter()
-        //setupRefreshLayout(viewDataBinding.refreshLayout, viewDataBinding.tppsList)
         setupNavigation()
-        //setupTextSearch()
         setUpSearchForm();
         setupFab()
     }
@@ -196,52 +200,6 @@ class TppsFragment : Fragment() {
         super.onSaveInstanceState(outState)
     }
 
- /*   private fun setupTextSearch() {
-        searchView = activity?.findViewById(R.id.search) as SearchView
-        if (searchView != null) {
-
-        }
-
-        searchView?.setIconifiedByDefault(true)
-        searchView?.setQueryHint("Type text to filter listed TPPs")
-        searchView?.setOnQueryTextFocusChangeListener { v, hasFocus ->
-            //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-        // perform set on query text listener event
-        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                //val theID = id
-                lastTppsSearchViewQuery = query
-                searchBy(query)
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                // do something when text changes
-                return false
-            }
-        })
-        searchView?.setOnCloseListener (object: SearchView.OnCloseListener {
-            override fun onClose(): Boolean {
-                if (!lastTppsSearchViewQuery.isNullOrBlank()) {
-                    viewModel.loadTpps(false)
-                    lastTppsSearchViewQuery = ""
-                }
-                return true
-            }
-        })
-
-        searchView?.findViewById<ImageButton>(R.id.search_close_btn)
-                ?.setOnClickListener(object: View.OnClickListener {
-                    override fun onClick(v: View) {
-                        if (!lastTppsSearchViewQuery.isNullOrBlank()) {
-                            viewModel.loadTpps(false)
-                            lastTppsSearchViewQuery = ""
-                        }
-                    }
-                })
-    }
-*/
     fun searchBy(query: String) {
         viewModel.filterByTitle(query)
     }
@@ -268,13 +226,33 @@ class TppsFragment : Fragment() {
             PopupMenu(requireContext(), view).run {
                 menuInflater.inflate(com.applego.oblog.tppwatch.R.menu.filter_tpps, menu)
 
+                TppsFilterType.allFilterTypes.forEach { ft ->
+                    val userFilter = viewModel.searchFilter.userSelectedFilterTypes.get(ft) ?: false
+
+                    val menuItem = menu.findItem(
+                        when (ft) {
+                            //TppsFilterType.ALL_TPPS -> R.id.all
+                            TppsFilterType.FOLLOWED_TPPS -> R.id.followed
+                            TppsFilterType.USED_TPPS -> R.id.active
+                            TppsFilterType.FIS_AS_TPPS -> R.id.fis
+                            TppsFilterType.PSD2_TPPS -> R.id.psd2Only
+                            TppsFilterType.REVOKED_TPPS -> R.id.revoked
+                            else -> R.id.all
+                        })
+
+                    menuItem.isChecked = userFilter
+                    }
+
                 setOnMenuItemClickListener {
+                    it.isChecked = !it.isChecked
                     viewModel.setFiltering(
                             when (it.itemId) {
+                                R.id.all -> TppsFilterType.ALL_TPPS
                                 R.id.active -> TppsFilterType.USED_TPPS
                                 R.id.followed -> TppsFilterType.FOLLOWED_TPPS
                                 R.id.fis -> TppsFilterType.FIS_AS_TPPS
-                                R.id.psd2Only-> TppsFilterType.PSD2_ONLY_TPPS
+                                R.id.psd2Only-> TppsFilterType.PSD2_TPPS
+                                R.id.revoked-> TppsFilterType.REVOKED_TPPS
                                 else -> TppsFilterType.NONE
                             }
                     )

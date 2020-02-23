@@ -31,7 +31,6 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.hasSibling
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -106,8 +105,12 @@ class TppsFragmentTest {
 
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_active)).perform(click())
-        onView(withText("TITLE1")).check(matches(isDisplayed()))
+        onView(withText(R.string.nav_active)).perform(click()) // Goes to FALSE
+        onView(withText("TITLE1")).check(matches(not(isDisplayed())))
+
+        tpp.isActive = false
+        tpp.isFollowed = true
+        repository.saveTppBlocking(tpp)
 
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_followed)).perform(click())
@@ -126,11 +129,11 @@ class TppsFragmentTest {
 
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_active)).perform(click())
-        onView(withText("TITLE1")).check(matches(not(isDisplayed())))
+        onView(withText("TITLE1")).check(matches(isDisplayed()))
 
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_followed)).perform(click())
-        onView(withText("TITLE1")).check(matches(isDisplayed()))
+        onView(withText("TITLE1")).check(matches(not(isDisplayed())))
     }
 
     //@Test
@@ -180,20 +183,20 @@ class TppsFragmentTest {
         launchActivity()
 
         // Mark the tpp as followed
-        onView(checkboxWithText("TITLE1")).perform(click())
+        onView(checkboxFollowed()).perform(click())
 
         // Verify tpp is shown as followed
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_all)).perform(click())
-        onView(withText("TITLE1")).check(matches(isDisplayed()))
-        onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_active)).perform(click())
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
+
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_followed)).perform(click())
-
-
         onView(withText("TITLE1")).check(matches(isDisplayed()))
+
+        onView(withId(R.id.menu_filter)).perform(click())
+        onView(withText(R.string.nav_followed)).perform(click())
+        onView(withText("TITLE1")).check(matches(not(isDisplayed())))
     }
 
     @Test
@@ -204,18 +207,18 @@ class TppsFragmentTest {
         launchActivity()
 
         // Mark the tpp as active
-        onView(checkboxWithText("TITLE1")).perform(click())
+        onView(checkboxActive()).perform(click())
 
         // Verify tpp is shown as active
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_all)).perform(click())
+        onView(withText("TITLE1")).check(matches(not(isDisplayed())))
+        onView(withId(R.id.menu_filter)).perform(click())
+        onView(withText(R.string.nav_active)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_active)).perform(click())
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
-        onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_followed)).perform(click())
-        onView(withText("TITLE1")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -227,6 +230,15 @@ class TppsFragmentTest {
         repository.saveTppBlocking(tpp2)
 
         launchActivity()
+
+        onView(withText("TITLE1")).check(matches(isDisplayed()))
+        onView(withText("TITLE2")).check(matches(isDisplayed()))
+
+        // Verify that both of our tpps are shown
+        onView(withId(R.id.menu_filter)).perform(click())
+        onView(withText(R.string.nav_all)).perform(click())
+        onView(withText("TITLE1")).check(matches(not(isDisplayed())))
+        onView(withText("TITLE2")).check(matches(not(isDisplayed())))
 
         // Verify that both of our tpps are shown
         onView(withId(R.id.menu_filter)).perform(click())
@@ -250,19 +262,32 @@ class TppsFragmentTest {
         repository.saveTppBlocking(tpp3)
 
         launchActivity()
+        // By default ALL is selected
+        onView(withText("TITLE1")).check(matches(isDisplayed()))
+        onView(withText("TITLE2")).check(matches(isDisplayed()))
+        onView(withText("TITLE3")).check(matches(isDisplayed()))
 
-        // Verify that the active tpps (but not the followed tpp) are shown
+        // Verify that the active tpps are not shown, but others (e.g. followed) are shown
+        onView(withId(R.id.menu_filter)).perform(click())
+        onView(withText(R.string.nav_active)).perform(click())
+        onView(withText("TITLE1")).check(doesNotExist())
+        onView(withText("TITLE2")).check(doesNotExist())
+        onView(withText("TITLE3")).check(matches(isDisplayed()))
+
+        // Verify that the active tpps are not shown, but others (e.g. followed) are shown
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_active)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withText("TITLE2")).check(matches(isDisplayed()))
-        //onView(withText("TITLE3")).check(doesNotExist())
+        onView(withText("TITLE3")).check(matches(isDisplayed()))
     }
 
     @Test
     fun showFollowedTpps() {
         // Add one active tpp and 2 followed tpps
         var tpp1 = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
+        tpp1.isActive = true
+
         var tpp2 = Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION2")
         tpp2.isFollowed = true
         var tpp3 = Tpp("Entity_CZ28173283", "TITLE3", "DESCRIPTION3")
@@ -273,10 +298,20 @@ class TppsFragmentTest {
 
         launchActivity()
 
+        onView(withText("TITLE1")).check(matches(isDisplayed()))
+        onView(withText("TITLE2")).check(matches(isDisplayed()))
+        onView(withText("TITLE3")).check(matches(isDisplayed()))
+
         // Verify that the followed tpps (but not the active tpp) are shown
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_followed)).perform(click())
-        onView(withText("TITLE1")).check(doesNotExist())
+        onView(withText("TITLE1")).check(matches(isDisplayed()))
+        onView(withText("TITLE2")).check(doesNotExist())
+        onView(withText("TITLE3")).check(doesNotExist())
+
+        onView(withId(R.id.menu_filter)).perform(click())
+        onView(withText(R.string.nav_followed)).perform(click())
+        onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withText("TITLE2")).check(matches(isDisplayed()))
         onView(withText("TITLE3")).check(matches(isDisplayed()))
     }
@@ -353,8 +388,18 @@ class TppsFragmentTest {
         return fragmentScenario
     }
 
+/*
 
     private fun checkboxWithText(text: String): Matcher<View> {
         return allOf(withId(R.id.follow_checkbox), hasSibling(withText(text)))
+    }
+*/
+
+    private fun checkboxFollowed(): Matcher<View> {
+        return allOf(withId(R.id.follow_checkbox))
+    }
+
+    private fun checkboxActive(): Matcher<View> {
+        return allOf(withId(R.id.active_checkbox))
     }
 }
