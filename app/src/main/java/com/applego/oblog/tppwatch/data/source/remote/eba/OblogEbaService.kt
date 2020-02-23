@@ -74,6 +74,10 @@ interface  OblogEbaService  {
             sharedPreferences.registerOnSharedPreferenceChangeListener(this)
 
             currentEnv = sharedPreferences.getString("environment", "TEST")
+            // HACK-HACK-HACK
+            if (currentEnv.startsWith("@")) {
+                currentEnv = "TEST"
+            }
 
             var baseUrl = ""
             val envsBaseUrls = context.applicationContext.resources.getStringArray(com.applego.oblog.tppwatch.R.array.env_base_url);
