@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.applego.oblog.tppwatch.EventObserver
 import com.applego.oblog.tppwatch.R
+import com.applego.oblog.tppwatch.about.AboutFragmentDirections
 import com.applego.oblog.tppwatch.databinding.TppsFragBinding
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
@@ -119,6 +120,10 @@ class TppsFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
+            R.id.about_frag-> {
+                openAbout()
+                true
+            }
             R.id.load_directory -> {
                 viewModel.loadEbaDirectory()
                 true
@@ -211,6 +216,9 @@ class TppsFragment : Fragment() {
         viewModel.newTppEvent.observe(this, EventObserver {
             navigateToAddNewTpp()
         })
+        viewModel.aboutEvent.observe(this, EventObserver {
+            openAbout()
+        })
     }
 
     private fun setupSnackbar() {
@@ -283,6 +291,11 @@ class TppsFragment : Fragment() {
 
     private fun openTppDetails(tppId: String) {
         val action = TppsFragmentDirections.actionTppsFragmentToTppDetailFragment(tppId)
+        findNavController().navigate(action)
+    }
+
+    private fun openAbout() {
+        val action = AboutFragmentDirections.actionAboutFragmentToTppsFragment()
         findNavController().navigate(action)
     }
 

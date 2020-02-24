@@ -44,11 +44,11 @@
             />
     </fragment>
     <fragment
-        android:id="@+id/settings_fragment_dest"
-        android:name="com.applego.oblog.tppwatch.settings.SettingsFragment"
+        android:id="@+id/about_fragment_dest"
+        android:name="com.applego.oblog.tppwatch.about.AboutFragment"
         android:label="@string/app_name">
         <action
-            android:id="@+id/action_settingsFragment_to_tppsFragment"
+            android:id="@+id/action_aboutFragment_to_tppsFragment"
             app:destination="@id/tpps_fragment_dest"
             />
     </fragment>
@@ -66,6 +66,9 @@
         <action
             android:id="@+id/action_tppsFragment_to_addEditTppFragment"
             app:destination="@id/add_edit_tpp_fragment_dest" />
+        <action
+            android:id="@+id/action_tppsFragment_to_aboutFragment"
+            app:destination="@id/about_fragment_dest" />
         <argument
             android:name="userMessage"
             app:argType="integer"

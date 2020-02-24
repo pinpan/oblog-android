@@ -114,14 +114,8 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
         return super.onOptionsItemSelected(item)
     }
 
-/*
     override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent) //
-
-  //      handleIntent(intent)
-    }
-
-    private fun handleIntent(intent: Intent) {
+        super.onNewIntent(intent)
 
         if (Intent.ACTION_SEARCH == intent.action) {
             val query = intent.getStringExtra(SearchManager.QUERY)
@@ -130,15 +124,16 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                 val frags = aFragment.childFragmentManager.fragments
                 if (!frags.isNullOrEmpty()) {
                     frags.forEach() {
+/*
                         if (it is TppsFragment)  {
                             it.searchBy(query)
                         }
+*/
                     }
                 }
             }
         }
     }
-*/
 
     override fun onSupportNavigateUp(): Boolean {
         return findNavController(R.id.nav_host_fragment).navigateUp(appBarConfiguration)

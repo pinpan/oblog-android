@@ -72,6 +72,9 @@ class TppsViewModel(
     private val _newTppEvent = MutableLiveData<Event<Unit>>()
     val newTppEvent: LiveData<Event<Unit>> = _newTppEvent
 
+    private val _aboutEvent = MutableLiveData<Event<Unit>>()
+    val aboutEvent: LiveData<Event<Unit>> = _aboutEvent
+
     // This LiveData depends on another so we can use a transformation.
     val empty: LiveData<Boolean> = Transformations.map(_items) {
         it.isEmpty()

@@ -31,6 +31,11 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/about_frag"
+        android:title="@string/about_menu_item"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/menu_refresh"
         android:title="@string/refresh"
         app:showAsAction="never" />

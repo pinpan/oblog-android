@@ -57,6 +57,12 @@ class TppWatchApplication : Application() , SharedPreferences.OnSharedPreference
         if (BuildConfig.DEBUG) Timber.plant(DebugTree())
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val currentEnv = sharedPreferences.getString("environment", null)
+        if (currentEnv == null) {
+            sharedPreferences.edit().putString("environment", "PRODUCTION")
+        }
+
+
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 }

@@ -116,5 +116,7 @@
     <string name="no_revoked_tpps">No revoked institutions</string>
     <string name="A">A</string>
     <string name="F">F</string>
+    <string name="about_menu_item">About</string>
+    <string name="about_header">About</string>
 
 </resources>
