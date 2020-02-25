@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
  * ViewModel for the Add/Edit screen.
  */
 class AboutViewModel(
-    private val tppsRepository: TppsRepository
+    //private val tppsRepository: TppsRepository
 ) : ViewModel() {
 
     // Two-way databinding, exposing MutableLiveData
@@ -92,28 +92,6 @@ class AboutViewModel(
             _snackbarText.value = Event(R.string.empty_tpp_message)
             return
         }
-
-        val currentTppId = tppId
-        if (isNewTpp || currentTppId == null) {
-            createTpp(Tpp("Entity_CZ28173282", currentTitle, currentDescription))
-        } else {
-            val tpp = Tpp("Entity_CZ28173282", currentTitle, currentDescription, "", currentTppId)
-            updateTpp(tpp)
-        }
     }
 
-    private fun createTpp(newTpp: Tpp) = viewModelScope.launch {
-        tppsRepository.saveTpp(newTpp)
-        _tppUpdatedEvent.value = Event(Unit)
-    }
-
-    private fun updateTpp(tpp: Tpp) {
-        if (isNewTpp) {
-            throw RuntimeException("updateTpp() was called but tpp is new.")
-        }
-        viewModelScope.launch {
-            tppsRepository.saveTpp(tpp)
-            _tppUpdatedEvent.value = Event(Unit)
-        }
-    }
 }

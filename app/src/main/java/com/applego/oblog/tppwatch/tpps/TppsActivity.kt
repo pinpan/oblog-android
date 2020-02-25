@@ -37,6 +37,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.view.WindowManager
 import com.applego.oblog.tppwatch.BuildConfig
+import com.applego.oblog.tppwatch.about.AboutFragment
 
 
 /**
@@ -109,6 +110,32 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
         if (id == R.id.settings) {
             val intent = Intent(this@TppsActivity, PreferencesActivity::class.java)
             startActivity(intent);
+            return true;
+        }
+        if (id == R.id.about_frag) {
+            /*val intent = Intent(this@TppsActivity, PreferencesActivity::class.java)
+            startActivity(intent);*/
+
+            val aFragment = supportFragmentManager.primaryNavigationFragment
+            if (aFragment != null) {
+                val frags = aFragment.childFragmentManager.fragments
+                if (!frags.isNullOrEmpty()) {
+                    frags.forEach() {
+                        if (it is TppsFragment)  {
+                            /*
+                                it.searchBy(query)
+                            */
+                        }
+                    }
+                }
+            }
+
+            val manager = supportFragmentManager
+            val transaction = manager.beginTransaction()
+            if (aFragment != null) {
+                transaction.replace(aFragment.id /*com.applego.oblog.tppwatch.R.id.nav_host_fragment*/, AboutFragment()).commit()
+            }
+
             return true;
         }
         return super.onOptionsItemSelected(item)

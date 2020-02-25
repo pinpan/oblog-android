@@ -41,12 +41,6 @@
                 android:theme="@style/Toolbar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-            <!--<LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-            </LinearLayout>-->
-
         </com.google.android.material.appbar.AppBarLayout>
 
         <LinearLayout

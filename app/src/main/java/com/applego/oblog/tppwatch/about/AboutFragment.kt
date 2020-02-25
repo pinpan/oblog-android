@@ -45,7 +45,7 @@ class AboutFragment : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.about_frag, container, false)
         viewDataBinding = AboutFragBinding.bind(root).apply {
-            //this.viewModel = viewModel
+            this.viewmodel = viewModel
         }
         // Set the lifecycle owner to the lifecycle of the view
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
