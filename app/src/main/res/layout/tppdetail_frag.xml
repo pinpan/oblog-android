@@ -22,113 +22,50 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:id="@+id/detail_relative_layout"
-            android:visibility="@{viewmodel.isDataAvailable ? View.VISIBLE : View.GONE}">
+            android:layout_height="match_parent">
 
-            <!-- android:paddingTop specified to temporarily work around -->
-            <!-- https://github.com/robolectric/robolectric/issues/4588 -->
             <LinearLayout
+                android:id="@+id/details_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="10">
-            >
+                >
 
                 <TextView
                     android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="6"
                     android:paddingTop="1dp"
                     android:text="@{viewmodel.tpp.title}"
-                    android:textSize="16sp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#006496"
-                    android:textStyle="bold"
-                    />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/refresh_tpp"
+                    style="@style/Widget.MaterialComponents.Button.Icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_weight="2"
-                    android:text="refresh" />
+                    android:text="refresh"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/label_home_country"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="false"
-                android:focusable="false"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:hint="@string/tpp_home_country_label"
-                android:inputType="none"
-                android:textStyle="bold"
-                android:visibility="visible"
-                tools:text="@string/tpp_home_country_label"
-                /> <!--android:ems="10" android:layout_below="@id/title"-->
-
-            <TextView
-                android:id="@+id/home_country"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/label_home_country"
-                android:layout_toRightOf="@id/label_home_country"
-                android:gravity="left"
-                android:text="@{viewmodel.tpp.country}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#006496"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/label_entity_code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/label_home_country"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:clickable="false"
-                android:focusable="false"
-                android:inputType="none"
-                android:text="@string/label_entity_code" />
-
-            <TextView
-                android:id="@+id/entity_code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/home_country"
-                android:layout_alignLeft="@id/home_country"
-                android:paddingTop="1dp"
-                android:text="@{viewmodel.tpp.entityCode}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#006496"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/entity_code"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
-                android:background="?android:attr/listDivider" />
 
             <CheckBox
                 android:id="@+id/checkbox_follow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/divider2"
+                android:layout_below="@id/details_header"
                 android:layout_gravity="left"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:checked="@{viewmodel.followed}"
@@ -136,26 +73,128 @@
                 android:onClick="@{(view) -> viewmodel.setFollowed(((CompoundButton)view).isChecked())}"
                 android:text="@string/label_following"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#006496"
-                 /> <!--android:textStyle="bold"-->
+                android:textColor="#006496" />
 
             <CheckBox
                 android:id="@+id/checkbox_active"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@id/checkbox_follow"
+                android:layout_below="@id/details_header"
                 android:layout_gravity="left"
-                android:layout_toRightOf="@id/checkbox_follow"
                 android:checked="@{viewmodel.active}"
                 android:gravity="left|center_vertical"
                 android:onClick="@{(view) -> viewmodel.setActive(((CompoundButton)view).isChecked())}"
                 android:paddingTop="1dp"
                 android:text="@string/label_activated"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#006496"
-                 />  <!--android:textStyle="bold"-->
+                android:textColor="#006496" />
 
-            <!--<View
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/detail_tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/checkbox_follow">
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/eba_details_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EBA" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/nca_details_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NCA" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/apps_details_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="APPs" />
+
+            </com.google.android.material.tabs.TabLayout>
+
+            <RelativeLayout
+                android:id="@+id/detail_relative_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/detail_tabs"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:visibility="@{viewmodel.isDataAvailable ? View.VISIBLE : View.GONE}">
+
+                <!-- android:paddingTop specified to temporarily work around -->
+                <!-- https://github.com/robolectric/robolectric/issues/4588 -->
+
+                <TextView
+                    android:id="@+id/label_home_country"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:hint="@string/tpp_home_country_label"
+                    android:inputType="none"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    tools:text="@string/tpp_home_country_label" /> <!--android:ems="10" android:layout_below="@id/title"-->
+
+                <TextView
+                    android:id="@+id/home_country"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/label_home_country"
+                    android:layout_toRightOf="@id/label_home_country"
+                    android:gravity="left"
+                    android:text="@{viewmodel.tpp.country}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#006496"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/label_entity_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/label_home_country"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:inputType="none"
+                    android:text="@string/label_entity_code" />
+
+                <TextView
+                    android:id="@+id/entity_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/home_country"
+                    android:layout_alignLeft="@id/home_country"
+                    android:paddingTop="1dp"
+                    android:text="@{viewmodel.tpp.entityCode}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#006496"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/entity_code"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="?android:attr/listDivider" />
+
+                <!--android:textStyle="bold"-->
+
+                <!--android:textStyle="bold"-->
+
+                <!--<View
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -164,65 +203,65 @@
                 android:background="?android:attr/listDivider" />
 -->
 
-            <TextView
-                android:id="@+id/label_passports"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/checkbox_follow"
-                android:clickable="false"
-                android:ems="10"
-                android:enabled="false"
-                android:focusable="false"
-                android:inputType="none"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textSize="12sp"
-                tools:text="@string/label_passports" />
-
-            <LinearLayout
-                android:id="@+id/visas_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/label_passports"
-                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/label_passports"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/checkbox_follow"
+                    android:clickable="false"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:focusable="false"
+                    android:inputType="none"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textSize="12sp"
+                    tools:text="@string/label_passports" />
 
                 <LinearLayout
-                    android:id="@+id/visas_labels"
+                    android:id="@+id/visas_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="4">
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/label_passports"
+                    android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/label_visa_country"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/visas_labels"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="0dp"
-                        android:layout_below="@id/checkbox_follow"
-                        android:layout_weight="1"
-                        android:clickable="false"
-                        android:editable="false"
-                        android:enabled="false"
-                        android:textSize="12sp"
-                        android:inputType="none|textPersonName"
-                        android:text="@string/label_country" />
+                        android:orientation="horizontal"
+                        android:weightSum="4">
 
-                    <EditText
-                        android:id="@+id/label_visa_psd2_roles"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/label_visa_country"
-                        android:layout_below="@id/checkbox_active"
-                        android:layout_weight="3"
-                        android:clickable="false"
-                        android:editable="false"
-                        android:enabled="false"
-                        android:textSize="12sp"
-                        android:inputType="textPersonName"
-                        android:text="@string/label_roles" />
+                        <EditText
+                            android:id="@+id/label_visa_country"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/checkbox_follow"
+                            android:layout_marginTop="0dp"
+                            android:layout_weight="1"
+                            android:clickable="false"
+                            android:editable="false"
+                            android:enabled="false"
+                            android:inputType="none|textPersonName"
+                            android:text="@string/label_country"
+                            android:textSize="12sp" />
 
-                </LinearLayout>
+                        <EditText
+                            android:id="@+id/label_visa_psd2_roles"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/checkbox_active"
+                            android:layout_toRightOf="@id/label_visa_country"
+                            android:layout_weight="3"
+                            android:clickable="false"
+                            android:editable="false"
+                            android:enabled="false"
+                            android:inputType="textPersonName"
+                            android:text="@string/label_roles"
+                            android:textSize="12sp" />
 
-                <!--<ListView
+                    </LinearLayout>
+
+                    <!--<ListView
                     android:id="@+id/passports_expandable_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -230,7 +269,7 @@
                     app:items="@{viewmodel.tpp.ebaPassport.services}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     />-->
-                <!--<ExpandableListView
+                    <!--<ExpandableListView
                     android:id="@+id/passports_expandable_list"
                     android:layout_height="match_parent"
                     android:layout_width="match_parent"
@@ -240,22 +279,23 @@
                     android:dividerHeight="0.5dp"
                 />-->
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/passports_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/visas_labels"
-                    android:layout_marginBottom="10dp"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="horizontal|vertical"
-                    app:items="@{viewmodel.tpp.ebaPassport.services}"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                />
-            </LinearLayout>
-            <!--
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/passports_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/visas_labels"
+                        android:layout_marginBottom="10dp"
+                        android:fadeScrollbars="false"
+                        android:scrollbars="horizontal|vertical"
+                        app:items="@{viewmodel.tpp.ebaPassport.services}"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                </LinearLayout>
+                <!--
                 android:background="#CDDC39"
                 android:textSize="8sp"
             -->
+
+            </RelativeLayout>
 
         </RelativeLayout>
 
@@ -265,9 +305,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
             android:src="@drawable/ic_edit"
-            app:fabSize="normal"
-            app:layout_anchor="@id/detail_relative_layout"
-            app:layout_anchorGravity="bottom|right|end" />
+            app:fabSize="mini"
+            app:layout_anchorGravity="bottom|right" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

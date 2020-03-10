@@ -105,12 +105,15 @@ dependencies {
     // https://mvnrepository.com/artifact/com.google.dagger/dagger-compiler
     //compile group: 'com.google.dagger', name: 'dagger-compiler', version: '2.21'
     implementation 'androidx.preference:preference:1.1.0-alpha05'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
     annotationProcessor group: 'com.google.dagger', name: 'dagger-compiler', version: '2.21'
     //'com.google.dagger:dagger-compiler:2.16.1'
 
     // App dependencies
-     implementation "androidx.appcompat:appcompat:$appCompatVersion"
-       // implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation "androidx.appcompat:appcompat:$appCompatVersion"
+    // implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation "androidx.cardview:cardview:$cardVersion"
     implementation "com.google.android.material:material:$materialVersion"
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
