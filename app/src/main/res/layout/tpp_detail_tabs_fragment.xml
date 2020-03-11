@@ -1,52 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TppDetailTabsFragment">
+    tools:context=".TppDetailTabsFragment"-->
+    <data>
 
-    <TextView
+        <import type="android.view.View" />
+
+        <import type="android.widget.CompoundButton" />
+
+        <variable
+            name="viewmodel"
+            type="com.applego.oblog.tppwatch.tppdetail.TppDetailViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout_2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="match_parent">
 
-    <androidx.viewpager.widget.ViewPager
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <SeekBar
-            android:id="@+id/seekBar"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:max="10"
-            android:progress="3" />
-
-        <com.google.android.material.tabs.TabLayout
+        <RelativeLayout
+            android:id="@+id/details_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.tabs.TabItem
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:layout_weight="6"
+                android:paddingTop="1dp"
+                android:text="@{viewmodel.tpp.title}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#006496"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/follow_active"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkbox_follow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:checked="@{viewmodel.followed}"
+                    android:gravity="left|center_vertical"
+                    android:onClick="@{(view) -> viewmodel.setFollowed(((CompoundButton)view).isChecked())}"
+                    android:text="@string/label_following"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#006496" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_active"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:checked="@{viewmodel.active}"
+                    android:gravity="left|center_vertical"
+                    android:onClick="@{(view) -> viewmodel.setActive(((CompoundButton)view).isChecked())}"
+                    android:paddingTop="1dp"
+                    android:text="@string/label_activated"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#006496" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/refresh_tpp"
+                style="@style/Widget.MaterialComponents.Button.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@id/title"
+                android:layout_alignRight="@id/follow_active"
+                android:layout_alignBottom="@id/follow_active"
+                android:layout_marginEnd="5dp"
+                android:text="refresh"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <!--<RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                style="@style/Widget.AppCompat.SeekBar.Discrete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Monday" />
+                android:max="10"
+                android:progress="3" />-->
+        </RelativeLayout>
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/detail_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/details_header">
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/eba_details_tab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tuesday" />
+                android:text="EBA" />
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/nca_details_tab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Wednesday" />
+                android:text="NCA" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/apps_details_tab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="APPs" />
+
         </com.google.android.material.tabs.TabLayout>
-    </androidx.viewpager.widget.ViewPager>
 
-</FrameLayout>
+        <androidx.viewpager.widget.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            >
+        </androidx.viewpager.widget.ViewPager>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

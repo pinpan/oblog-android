@@ -40,7 +40,7 @@ import timber.log.Timber
 /**
  * Main UI for the tpp detail screen.
  */
-class TppDetailFragment : Fragment() {
+class TppDetailAppsFragment : Fragment() {
     private lateinit var viewDataBinding: TppdetailFragBinding
 
     private val args: TppDetailFragmentArgs by navArgs()

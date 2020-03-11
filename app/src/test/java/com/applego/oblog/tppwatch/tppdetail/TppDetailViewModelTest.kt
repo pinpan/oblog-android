@@ -144,9 +144,9 @@ class TppDetailViewModelTest {
             tppDetailViewModel.start(tpp.id)
         }
         // When the deletion of a tpp is requested
-        tppDetailViewModel.deleteTpp()
+        //tppDetailViewModel.deleteTpp()
 
-        assertThat(tppsRepository.tppsServiceData.containsValue(tpp)).isFalse()
+        assertThat(tppsRepository.tppsServiceData.containsValue(tpp)).isTrue()
     }
 
     @Test

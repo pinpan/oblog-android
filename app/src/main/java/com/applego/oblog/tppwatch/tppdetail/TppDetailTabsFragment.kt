@@ -19,6 +19,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SimpleExpandableListAdapter
@@ -28,7 +29,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.applego.oblog.tppwatch.EventObserver
 import com.applego.oblog.tppwatch.R
+import com.applego.oblog.tppwatch.databinding.TppDetailTabsFragmentBinding
 import com.applego.oblog.tppwatch.databinding.TppdetailFragBinding
+import com.applego.oblog.tppwatch.tpps.DELETE_RESULT_OK
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
@@ -40,48 +43,21 @@ import timber.log.Timber
 /**
  * Main UI for the tpp detail screen.
  */
-class TppDetailFragment : Fragment() {
-    private lateinit var viewDataBinding: TppdetailFragBinding
+class TppDetailTabsFragment : Fragment() {
+    private lateinit var viewDataBinding: TppDetailTabsFragmentBinding
 
     private val args: TppDetailFragmentArgs by navArgs()
-
-    private lateinit var listAdapter: TppDetailAdapter
-
-    private lateinit var expandableListAdapter: SimpleExpandableListAdapter
 
     private val viewModel by viewModels<TppDetailViewModel> { getViewModelFactory() }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
-        setupListAdapter()
-        setupFab()
+        viewDataBinding.lifecycleOwner = this.viewLifecycleOwner // ???
+        //setupFab()
         view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
         setupNavigation()
 
         //this.setupRefreshLayout(viewDataBinding.refreshLayout)
-    }
-
-    private fun setupListAdapter() {
-        val viewModel = viewDataBinding.viewmodel
-        if (viewModel != null) {
-            listAdapter = TppDetailAdapter(viewModel, context!!, R.layout.tpp_passport)
-            viewDataBinding.passportsList.adapter = listAdapter
-
-            /* TODO:
-            expandableListAdapter = SimpleExpandableListAdapter(
-                    context!!
-                    , viewModel.tpp.value?.ebaPassport?.serviceMaps
-                    , R.layout.tpp_passport
-                    , R.layout.tpp_passport
-                    , R.layout.tpp_passport
-                    ,
-            )
-            viewDataBinding.passportsExpandableList.setAdapter(expandableListAdapter)
-            */
-        } else {
-            Timber.w("ViewModel not initialized when attempting to set up adapter.")
-        }
     }
 
     private fun setupNavigation() {
@@ -112,9 +88,9 @@ class TppDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val view = inflater.inflate(R.layout.tppdetail_frag, container, false)
+        val view = inflater.inflate(R.layout.tpp_detail_tabs_fragment, container, false)
 
-        viewDataBinding = TppdetailFragBinding.bind(view).apply {
+        viewDataBinding = TppDetailTabsFragmentBinding.bind(view).apply {
             viewmodel = viewModel
         }
 
@@ -128,7 +104,8 @@ class TppDetailFragment : Fragment() {
         return view
     }
 
-    /*override fun onOptionsItemSelected(item: MenuItem): Boolean {
+/*
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_delete -> {
                 viewModel.deleteTpp()
@@ -136,7 +113,19 @@ class TppDetailFragment : Fragment() {
             }
             else -> false
         }
-    }*/
+    }
+*/
+/*
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_delete -> {
+                viewModel.deleteTpp()
+                true
+            }
+            else -> false
+        }
+    }
+*/
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.tppdetail_fragment_menu, menu)

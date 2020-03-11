@@ -24,21 +24,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/details_header"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10">
-                >
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
                     android:layout_weight="6"
                     android:paddingTop="1dp"
                     android:text="@{viewmodel.tpp.title}"
@@ -47,53 +44,68 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
+                <LinearLayout
+                    android:id="@+id/follow_active"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/checkbox_follow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:checked="@{viewmodel.followed}"
+                        android:gravity="left|center_vertical"
+                        android:onClick="@{(view) -> viewmodel.setFollowed(((CompoundButton)view).isChecked())}"
+                        android:text="@string/label_following"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="#006496" />
+
+                    <CheckBox
+                        android:id="@+id/checkbox_active"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:checked="@{viewmodel.active}"
+                        android:gravity="left|center_vertical"
+                        android:onClick="@{(view) -> viewmodel.setActive(((CompoundButton)view).isChecked())}"
+                        android:paddingTop="1dp"
+                        android:text="@string/label_activated"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="#006496" />
+
+                </LinearLayout>
+
                 <Button
                     android:id="@+id/refresh_tpp"
                     style="@style/Widget.MaterialComponents.Button.Icon"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="2"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/title"
+                    android:layout_alignRight="@id/follow_active"
+                    android:layout_alignBottom="@id/follow_active"
+                    android:layout_marginEnd="5dp"
                     android:text="refresh"
                     android:textSize="10sp"
                     android:textStyle="bold" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
-            <CheckBox
-                android:id="@+id/checkbox_follow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_below="@id/details_header"
-                android:layout_gravity="left"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:checked="@{viewmodel.followed}"
-                android:gravity="left|center_vertical"
-                android:onClick="@{(view) -> viewmodel.setFollowed(((CompoundButton)view).isChecked())}"
-                android:text="@string/label_following"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#006496" />
-
-            <CheckBox
-                android:id="@+id/checkbox_active"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/details_header"
-                android:layout_gravity="left"
-                android:checked="@{viewmodel.active}"
-                android:gravity="left|center_vertical"
-                android:onClick="@{(view) -> viewmodel.setActive(((CompoundButton)view).isChecked())}"
-                android:paddingTop="1dp"
-                android:text="@string/label_activated"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#006496" />
+                android:background="?android:attr/listDivider" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/detail_tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/checkbox_follow">
+                android:layout_below="@id/details_header">
 
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/eba_details_tab"
@@ -127,9 +139,6 @@
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 android:visibility="@{viewmodel.isDataAvailable ? View.VISIBLE : View.GONE}">
 
-                <!-- android:paddingTop specified to temporarily work around -->
-                <!-- https://github.com/robolectric/robolectric/issues/4588 -->
-
                 <TextView
                     android:id="@+id/label_home_country"
                     android:layout_width="wrap_content"
@@ -142,7 +151,7 @@
                     android:inputType="none"
                     android:textStyle="bold"
                     android:visibility="visible"
-                    tools:text="@string/tpp_home_country_label" /> <!--android:ems="10" android:layout_below="@id/title"-->
+                    tools:text="@string/tpp_home_country_label" />
 
                 <TextView
                     android:id="@+id/home_country"
@@ -190,24 +199,11 @@
                     android:layout_marginBottom="5dp"
                     android:background="?android:attr/listDivider" />
 
-                <!--android:textStyle="bold"-->
-
-                <!--android:textStyle="bold"-->
-
-                <!--<View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/checkbox_active"
-                android:layout_marginBottom="10dp"
-                android:background="?android:attr/listDivider" />
--->
-
                 <TextView
                     android:id="@+id/label_passports"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/checkbox_follow"
+                    android:layout_below="@+id/divider2"
                     android:clickable="false"
                     android:ems="10"
                     android:enabled="false"
@@ -261,24 +257,6 @@
 
                     </LinearLayout>
 
-                    <!--<ListView
-                    android:id="@+id/passports_expandable_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    app:items="@{viewmodel.tpp.ebaPassport.services}"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    />-->
-                    <!--<ExpandableListView
-                    android:id="@+id/passports_expandable_list"
-                    android:layout_height="match_parent"
-                    android:layout_width="match_parent"
-                    android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
-                    android:divider="@android:color/darker_gray"
-                    app:items="@{viewmodel.tpp.ebaPassport.services}"
-                    android:dividerHeight="0.5dp"
-                />-->
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/passports_list"
                         android:layout_width="match_parent"
@@ -290,10 +268,6 @@
                         app:items="@{viewmodel.tpp.ebaPassport.services}"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
                 </LinearLayout>
-                <!--
-                android:background="#CDDC39"
-                android:textSize="8sp"
-            -->
 
             </RelativeLayout>
 
@@ -303,7 +277,11 @@
             android:id="@+id/edit_tpp_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
+            android:layout_gravity="bottom|right"
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
             android:src="@drawable/ic_edit"
             app:fabSize="mini"
             app:layout_anchorGravity="bottom|right" />
