@@ -290,7 +290,7 @@ class TppsFragment : Fragment() {
     }
 
     private fun openTppDetails(tppId: String) {
-        val action = TppsFragmentDirections.actionTppsFragmentToTppDetailFragment(tppId)
+        val action = TppsFragmentDirections.actionTppsFragmentToTppDetailTabsFragment(tppId)
         findNavController().navigate(action)
     }
 
