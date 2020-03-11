@@ -24,16 +24,16 @@ import androidx.fragment.app.FragmentPagerAdapter
 /**
  * Adapter for the tpp details. Has a reference to the [TppDetailViewModel] to send actions back to it.
  */
-class TppDetailTabsAdapter(private val viewModel: TppDetailTabsViewModel, @NonNull fm : FragmentManager) : FragmentPagerAdapter (fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class TppDetailTabsAdapter(private val viewModel: TppDetailViewModel, @NonNull fm : FragmentManager) : FragmentPagerAdapter (fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
         var fragment: Fragment? = null
         if (position == 0) {
-            fragment = TppDetailEbaFragment()
+            fragment = TppDetailEbaFragment(viewModel, (viewModel.tpp.value?.id) ?: "")
         } else if (position == 1) {
-            fragment = TppDetailNcaFragment()
+            fragment = TppDetailNcaFragment(viewModel, (viewModel.tpp.value?.id) ?: "")
         } else { //if (position == 2) {
-            fragment = TppDetailAppsFragment()
+            fragment = TppDetailAppsFragment(viewModel, (viewModel.tpp.value?.id) ?: "")
         }
         return fragment
     }

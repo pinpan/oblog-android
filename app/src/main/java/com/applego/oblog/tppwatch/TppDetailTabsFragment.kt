@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.applego.oblog.tppwatch.tppdetail.TppDetailTabsViewModel
+import com.applego.oblog.tppwatch.tppdetail.TppDetailViewModel
+
+//import com.applego.oblog.tppwatch.tppdetail.TppDetailTabsViewModel
 
 
 class TppDetailTabsFragment : Fragment() {
@@ -15,7 +17,7 @@ class TppDetailTabsFragment : Fragment() {
         fun newInstance() = TppDetailTabsFragment()
     }
 
-    private lateinit var viewModel: TppDetailTabsViewModel
+    private lateinit var viewModel: TppDetailViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -24,7 +26,7 @@ class TppDetailTabsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(TppDetailTabsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(TppDetailViewModel::class.java)
         // TODO: Use the ViewModel
     }
 

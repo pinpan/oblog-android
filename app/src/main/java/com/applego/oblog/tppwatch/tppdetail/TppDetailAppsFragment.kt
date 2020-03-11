@@ -22,6 +22,7 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SimpleExpandableListAdapter
+import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -41,16 +42,14 @@ import timber.log.Timber
 /**
  * Main UI for the tpp detail screen.
  */
-class TppDetailAppsFragment : Fragment() {
+class TppDetailAppsFragment(private val viewModel: TppDetailViewModel, @Nullable private val tppId : String) : Fragment() {
     private lateinit var viewDataBinding: TppdetailAppsFragBinding
 
     private val args: TppDetailFragmentArgs by navArgs()
 
     private lateinit var listAdapter: TppDetailAdapter
 
-    private lateinit var expandableListAdapter: SimpleExpandableListAdapter
-
-    private val viewModel by viewModels<TppDetailAppsViewModel> { getViewModelFactory() }
+    //private val viewModel by viewModels<TppDetailAppsViewModel> { getViewModelFactory() }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -121,9 +120,10 @@ class TppDetailAppsFragment : Fragment() {
 
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
-        CoroutineScope(Dispatchers.Main).launch {
-            viewModel.start(viewModel.tpp.value?.id) //args.tppId)
-        }
+        /*CoroutineScope(Dispatchers.Main).launch {
+            viewModel.start(viewModel.tpp.value?.id)
+            viewModel.start(tppId) //args.tppId)
+        }*/
 
         setHasOptionsMenu(true)
         return view
@@ -139,7 +139,7 @@ class TppDetailAppsFragment : Fragment() {
         }
     }*/
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    /*override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.tppdetail_fragment_menu, menu)
-    }
+    }*/
 }

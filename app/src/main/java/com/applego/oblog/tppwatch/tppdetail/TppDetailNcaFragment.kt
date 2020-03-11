@@ -19,6 +19,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -35,14 +36,14 @@ import timber.log.Timber
 /**
  * Main UI for the tpp detail screen.
  */
-class TppDetailNcaFragment : Fragment() {
+class TppDetailNcaFragment(private val viewModel: TppDetailViewModel, @Nullable private val tppId : String) : Fragment() {
     private lateinit var viewDataBinding: TppdetailNcaFragBinding
 
     private val args: TppDetailFragmentArgs by navArgs()
 
     private lateinit var listAdapter: TppDetailAdapter
 
-    private val viewModel by viewModels<TppDetailNcaViewModel> { getViewModelFactory() }
+    //private val viewModel by viewModels<TppDetailNcaViewModel> { getViewModelFactory() }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -88,9 +89,10 @@ class TppDetailNcaFragment : Fragment() {
 
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
-        CoroutineScope(Dispatchers.Main).launch {
+        /*CoroutineScope(Dispatchers.Main).launch {
             viewModel.start(viewModel.tpp.value?.id) //args.tppId)
-        }
+            viewModel.start(tppId)
+        }*/
 
         setHasOptionsMenu(true)
         return view

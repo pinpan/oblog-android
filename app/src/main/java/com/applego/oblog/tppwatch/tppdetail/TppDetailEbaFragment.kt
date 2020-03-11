@@ -19,6 +19,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -37,19 +38,19 @@ import timber.log.Timber
 /**
  * Main UI for the tpp detail screen.
  */
-class TppDetailEbaFragment : Fragment() {
+class TppDetailEbaFragment (private val viewModel: TppDetailViewModel, @Nullable private val tppId : String) : Fragment() {
     private lateinit var viewDataBinding: TppdetailEbaFragBinding
 
-    private val args: TppDetailFragmentArgs by navArgs()
+    private val args: TppDetailTabsFragmentArgs by navArgs()
 
-    private lateinit var listAdapter: TppDetailAdapter
+    private lateinit var fragmentAdapter: TppDetailAdapter
 
-    private val viewModel by viewModels<TppDetailEbaViewModel> { getViewModelFactory() }
+    //private val viewModel by viewModels<TppDetailEbaViewModel> { getViewModelFactory() }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
-        setupListAdapter()
+
         setupFab()
         view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
         setupNavigation()
@@ -58,10 +59,10 @@ class TppDetailEbaFragment : Fragment() {
     }
 
     private fun setupListAdapter() {
-        val viewModel = viewDataBinding.viewmodel
+        //val viewModel = viewDataBinding.viewmodel
         if (viewModel != null) {
-            listAdapter = TppDetailAdapter(viewModel, context!!, R.layout.tpp_passport)
-            viewDataBinding.passportsList.adapter = listAdapter
+            fragmentAdapter = TppDetailAdapter(viewModel, context!!, R.layout.tpp_passport)
+            viewDataBinding.passportsList.adapter = fragmentAdapter
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
         }
@@ -84,6 +85,10 @@ class TppDetailEbaFragment : Fragment() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupListAdapter()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -98,9 +103,10 @@ class TppDetailEbaFragment : Fragment() {
 
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
-        CoroutineScope(Dispatchers.Main).launch {
+        /*CoroutineScope(Dispatchers.Main).launch {
             viewModel.start(viewModel.tpp.value?.id)
-        }
+            viewModel.start(args.tppId)
+        }*/
 
         setHasOptionsMenu(true)
         return view

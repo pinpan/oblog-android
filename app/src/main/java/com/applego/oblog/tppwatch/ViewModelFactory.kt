@@ -39,8 +39,10 @@ class ViewModelFactory constructor(
                     StatisticsViewModel(tppsRepository)
                 isAssignableFrom(TppDetailViewModel::class.java) ->
                     TppDetailViewModel(tppsRepository)
+/*
                 isAssignableFrom(TppDetailTabsViewModel::class.java) ->
                     TppDetailTabsViewModel(tppsRepository)
+*/
                 isAssignableFrom(TppDetailEbaViewModel::class.java) ->
                     TppDetailEbaViewModel(tppsRepository)
                 isAssignableFrom(TppDetailNcaViewModel::class.java) ->

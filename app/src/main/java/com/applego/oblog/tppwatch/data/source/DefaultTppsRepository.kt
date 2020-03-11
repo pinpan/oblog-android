@@ -128,26 +128,31 @@ class DefaultTppsRepository (
         forceUpdate: Boolean
     ): Result<Tpp> {
         // Remote first
-        val remoteTpp = tppsRemoteDataSource.getTpp(tppId)
-        when (remoteTpp) {
+        val result = tppsRemoteDataSource.getTpp(tppId)
+        when (result) {
             is Error -> Timber.w("Remote data source fetch failed")
+            is Result.Warn -> Timber.w("Remote data source fetch failed die to '" + result.message + "'")
             is Success -> {
-                refreshLocalDataSource(remoteTpp.data)
-                return remoteTpp
+                refreshLocalDataSource(result.data)
+                return result
             }
             is Loading -> {
+                //return result
             }
         }
 
-        // Don't read from local if it's forced
+        // Don't read from local if refresh is forced but remote returned error or warning
         if (forceUpdate) {
-            return Error(Exception("Refresh failed"))
+            return result //Error(Exception("Refresh failed"))
         }
 
-        // Local if remote fails
-        val localTpps = tppsLocalDataSource.getTpp(tppId)
-        if (localTpps is Success) return localTpps
-        return Error(Exception("Error fetching from remote and local"))
+        // Local if remote fails with Warning
+        val localTpps : Result<Tpp> = tppsLocalDataSource.getTpp(tppId)
+        when (localTpps) {
+            is Success -> return localTpps
+            is Error -> return localTpps
+            else -> return Error(Exception("Error fetching from remote and local"))
+        }
     }
 
     override suspend fun saveTpp(tpp: Tpp) {

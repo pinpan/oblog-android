@@ -68,8 +68,9 @@ class TppsEbaDataSource internal constructor (
 
 
     override suspend fun getTpp(tppId: String): Result<Tpp> {
-        if (tppId == "") {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (tppId.isNullOrBlank()) {
+            //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            Result.Warn("TPP Not Found", "Cannot find a TPP with empty ID")
         }
         return Result.Loading(Timeout().timeout(100, TimeUnit.MILLISECONDS));
     }

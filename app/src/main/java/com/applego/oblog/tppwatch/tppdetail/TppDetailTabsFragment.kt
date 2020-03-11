@@ -28,7 +28,9 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
 import com.applego.oblog.tppwatch.EventObserver
 import com.applego.oblog.tppwatch.R
+import com.applego.oblog.tppwatch.addedittpp.AddEditTppFragmentDirections
 import com.applego.oblog.tppwatch.databinding.TppDetailTabsFragmentBinding
+import com.applego.oblog.tppwatch.tpps.ADD_EDIT_RESULT_OK
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
@@ -47,14 +49,15 @@ class TppDetailTabsFragment : Fragment() {
 
     private lateinit var viewDataBinding: TppDetailTabsFragmentBinding
 
-    private val args: TppDetailFragmentArgs by navArgs()
+    private val  args: TppDetailTabsFragmentArgs by navArgs()
 
-    private val viewModel by viewModels<TppDetailTabsViewModel> { getViewModelFactory() }
+    private val viewModel by viewModels<TppDetailViewModel> { getViewModelFactory() }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner // ???
-        //setupFab()
+        setupFab()
+
         view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
         setupNavigation()
 
@@ -62,11 +65,12 @@ class TppDetailTabsFragment : Fragment() {
     }
 
     private fun setupNavigation() {
-        /*viewModel.deleteTppEvent.observe(this, EventObserver {
+        viewModel.tppUpdatedEvent.observe(this, EventObserver {
             val action = TppDetailFragmentDirections
-                .actionTppDetailFragmentToTppsFragment(DELETE_RESULT_OK)
+                .actionTppDetailFragmentToTppsFragment()
             findNavController().navigate(action)
-        })*/
+        })
+
         viewModel.editTppEvent.observe(this, EventObserver {
             val action = TppDetailFragmentDirections
                 .actionTppDetailFragmentToAddEditTppFragment(
@@ -111,29 +115,6 @@ class TppDetailTabsFragment : Fragment() {
         setHasOptionsMenu(true)
         return view
     }
-
-/*
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_delete -> {
-                viewModel.deleteTpp()
-                true
-            }
-            else -> false
-        }
-    }
-*/
-/*
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_delete -> {
-                viewModel.deleteTpp()
-                true
-            }
-            else -> false
-        }
-    }
-*/
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.tppdetail_fragment_menu, menu)

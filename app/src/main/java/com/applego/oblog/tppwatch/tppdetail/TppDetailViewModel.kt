@@ -50,6 +50,9 @@ open class TppDetailViewModel(
     private val _editTppEvent = MutableLiveData<Event<Unit>>()
     val editTppEvent: LiveData<Event<Unit>> = _editTppEvent
 
+    private val _tppUpdatedEvent = MutableLiveData<Event<Unit>>()
+    val tppUpdatedEvent: LiveData<Event<Unit>> = _tppUpdatedEvent
+
     //private val _deleteTppEvent = MutableLiveData<Event<Unit>>()
     //val deleteTppEvent: LiveData<Event<Unit>> = _deleteTppEvent
 
