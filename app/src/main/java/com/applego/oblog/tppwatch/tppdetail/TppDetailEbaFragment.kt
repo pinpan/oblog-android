@@ -17,18 +17,15 @@ package com.applego.oblog.tppwatch.tppdetail
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SimpleExpandableListAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.applego.oblog.tppwatch.EventObserver
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.databinding.TppdetailFragBinding
+import com.applego.oblog.tppwatch.databinding.TppdetailEbaFragBinding
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
@@ -41,15 +38,13 @@ import timber.log.Timber
  * Main UI for the tpp detail screen.
  */
 class TppDetailEbaFragment : Fragment() {
-    private lateinit var viewDataBinding: TppdetailFragBinding
+    private lateinit var viewDataBinding: TppdetailEbaFragBinding
 
     private val args: TppDetailFragmentArgs by navArgs()
 
     private lateinit var listAdapter: TppDetailAdapter
 
-    private lateinit var expandableListAdapter: SimpleExpandableListAdapter
-
-    private val viewModel by viewModels<TppDetailViewModel> { getViewModelFactory() }
+    private val viewModel by viewModels<TppDetailEbaViewModel> { getViewModelFactory() }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -97,21 +92,21 @@ class TppDetailEbaFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.tppdetail_eba_frag, container, false)
 
-        viewDataBinding = TppdetailFragBinding.bind(view).apply {
+        viewDataBinding = TppdetailEbaFragBinding.bind(view).apply {
             viewmodel = viewModel
         }
 
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
         CoroutineScope(Dispatchers.Main).launch {
-            viewModel.start(args.tppId)
+            viewModel.start(viewModel.tpp.value?.id)
         }
 
         setHasOptionsMenu(true)
         return view
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+/*    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.tppdetail_fragment_menu, menu)
-    }
+    }*/
 }

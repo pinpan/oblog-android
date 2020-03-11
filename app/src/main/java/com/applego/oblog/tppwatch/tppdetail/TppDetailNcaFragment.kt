@@ -17,18 +17,13 @@ package com.applego.oblog.tppwatch.tppdetail
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SimpleExpandableListAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.applego.oblog.tppwatch.EventObserver
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.databinding.TppdetailFragBinding
+import com.applego.oblog.tppwatch.databinding.TppdetailNcaFragBinding
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
@@ -41,15 +36,13 @@ import timber.log.Timber
  * Main UI for the tpp detail screen.
  */
 class TppDetailNcaFragment : Fragment() {
-    private lateinit var viewDataBinding: TppdetailFragBinding
+    private lateinit var viewDataBinding: TppdetailNcaFragBinding
 
     private val args: TppDetailFragmentArgs by navArgs()
 
     private lateinit var listAdapter: TppDetailAdapter
 
-    private lateinit var expandableListAdapter: SimpleExpandableListAdapter
-
-    private val viewModel by viewModels<TppDetailViewModel> { getViewModelFactory() }
+    private val viewModel by viewModels<TppDetailNcaViewModel> { getViewModelFactory() }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -62,42 +55,17 @@ class TppDetailNcaFragment : Fragment() {
         //this.setupRefreshLayout(viewDataBinding.refreshLayout)
     }
 
+    private fun setupNavigation() {
+    }
+
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.viewmodel
         if (viewModel != null) {
             listAdapter = TppDetailAdapter(viewModel, context!!, R.layout.tpp_passport)
             viewDataBinding.passportsList.adapter = listAdapter
-
-            /* TODO:
-            expandableListAdapter = SimpleExpandableListAdapter(
-                    context!!
-                    , viewModel.tpp.value?.ebaPassport?.serviceMaps
-                    , R.layout.tpp_passport
-                    , R.layout.tpp_passport
-                    , R.layout.tpp_passport
-                    ,
-            )
-            viewDataBinding.passportsExpandableList.setAdapter(expandableListAdapter)
-            */
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
         }
-    }
-
-    private fun setupNavigation() {
-        /*viewModel.deleteTppEvent.observe(this, EventObserver {
-            val action = TppDetailFragmentDirections
-                .actionTppDetailFragmentToTppsFragment(DELETE_RESULT_OK)
-            findNavController().navigate(action)
-        })*/
-        viewModel.editTppEvent.observe(this, EventObserver {
-            val action = TppDetailFragmentDirections
-                .actionTppDetailFragmentToAddEditTppFragment(
-                    args.tppId,
-                    resources.getString(R.string.edit_tpp)
-                )
-            findNavController().navigate(action)
-        })
     }
 
     private fun setupFab() {
@@ -112,33 +80,23 @@ class TppDetailNcaFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val view = inflater.inflate(R.layout.tppdetail_frag, container, false)
+        val view = inflater.inflate(R.layout.tppdetail_nca_frag, container, false)
 
-        viewDataBinding = TppdetailFragBinding.bind(view).apply {
+        viewDataBinding = TppdetailNcaFragBinding.bind(view).apply {
             viewmodel = viewModel
         }
 
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
         CoroutineScope(Dispatchers.Main).launch {
-            viewModel.start(args.tppId)
+            viewModel.start(viewModel.tpp.value?.id) //args.tppId)
         }
 
         setHasOptionsMenu(true)
         return view
     }
 
-    /*override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_delete -> {
-                viewModel.deleteTpp()
-                true
-            }
-            else -> false
-        }
-    }*/
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    /*override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.tppdetail_fragment_menu, menu)
-    }
+    }*/
 }

@@ -19,36 +19,37 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SimpleExpandableListAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager.widget.ViewPager
 import com.applego.oblog.tppwatch.EventObserver
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.TppDetailTabsFragmentBinding
-import com.applego.oblog.tppwatch.databinding.TppdetailFragBinding
-import com.applego.oblog.tppwatch.tpps.DELETE_RESULT_OK
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 /**
  * Main UI for the tpp detail screen.
  */
 class TppDetailTabsFragment : Fragment() {
+
+    private lateinit var tppDetailTabsAdapter: TppDetailTabsAdapter
+    private lateinit var viewPager: ViewPager
+
     private lateinit var viewDataBinding: TppDetailTabsFragmentBinding
 
     private val args: TppDetailFragmentArgs by navArgs()
 
-    private val viewModel by viewModels<TppDetailViewModel> { getViewModelFactory() }
+    private val viewModel by viewModels<TppDetailTabsViewModel> { getViewModelFactory() }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -89,6 +90,13 @@ class TppDetailTabsFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.tpp_detail_tabs_fragment, container, false)
+
+        tppDetailTabsAdapter = TppDetailTabsAdapter(viewModel, childFragmentManager)
+        viewPager = view.findViewById(R.id.detail_tabs_pager)
+        viewPager.adapter = tppDetailTabsAdapter
+
+        val tabLayout = view.findViewById(R.id.detail_tabs) as TabLayout
+        tabLayout.setupWithViewPager(viewPager)
 
         viewDataBinding = TppDetailTabsFragmentBinding.bind(view).apply {
             viewmodel = viewModel

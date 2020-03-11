@@ -28,6 +28,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.applego.oblog.tppwatch.EventObserver
 import com.applego.oblog.tppwatch.R
+import com.applego.oblog.tppwatch.databinding.TppdetailAppsFragBinding
 import com.applego.oblog.tppwatch.databinding.TppdetailFragBinding
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
@@ -41,7 +42,7 @@ import timber.log.Timber
  * Main UI for the tpp detail screen.
  */
 class TppDetailAppsFragment : Fragment() {
-    private lateinit var viewDataBinding: TppdetailFragBinding
+    private lateinit var viewDataBinding: TppdetailAppsFragBinding
 
     private val args: TppDetailFragmentArgs by navArgs()
 
@@ -49,7 +50,7 @@ class TppDetailAppsFragment : Fragment() {
 
     private lateinit var expandableListAdapter: SimpleExpandableListAdapter
 
-    private val viewModel by viewModels<TppDetailViewModel> { getViewModelFactory() }
+    private val viewModel by viewModels<TppDetailAppsViewModel> { getViewModelFactory() }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -112,16 +113,16 @@ class TppDetailAppsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val view = inflater.inflate(R.layout.tppdetail_frag, container, false)
+        val view = inflater.inflate(R.layout.tppdetail_apps_frag, container, false)
 
-        viewDataBinding = TppdetailFragBinding.bind(view).apply {
+        viewDataBinding = TppdetailAppsFragBinding.bind(view).apply {
             viewmodel = viewModel
         }
 
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
         CoroutineScope(Dispatchers.Main).launch {
-            viewModel.start(args.tppId)
+            viewModel.start(viewModel.tpp.value?.id) //args.tppId)
         }
 
         setHasOptionsMenu(true)

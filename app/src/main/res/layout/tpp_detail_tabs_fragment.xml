@@ -16,7 +16,7 @@
 
         <variable
             name="viewmodel"
-            type="com.applego.oblog.tppwatch.tppdetail.TppDetailViewModel" />
+            type="com.applego.oblog.tppwatch.tppdetail.TppDetailTabsViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -117,39 +117,42 @@
                 android:layout_below="@id/details_header"
                 android:background="?android:attr/listDivider" />
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/detail_tabs"
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/detail_tabs_pager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/divider4">
+                android:layout_height="match_parent"
+                android:layout_below="@id/divider4"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/eba_details_tab"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/detail_tabs"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="EBA" />
+                    android:layout_below="@id/divider4">
 
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/nca_details_tab"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="NCA" />
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/eba_details_tab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EBA" />
 
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/apps_details_tab"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="APPs" />
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/nca_details_tab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="NCA" />
 
-            </com.google.android.material.tabs.TabLayout>
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/apps_details_tab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="APPs" />
+
+                </com.google.android.material.tabs.TabLayout>
+            </androidx.viewpager.widget.ViewPager>
 
         </RelativeLayout>
-
-        <androidx.viewpager.widget.ViewPager
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"></androidx.viewpager.widget.ViewPager>
-
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

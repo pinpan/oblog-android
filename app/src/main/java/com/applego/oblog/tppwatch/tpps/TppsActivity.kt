@@ -66,6 +66,8 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
         setupSharedPreferences();
 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
         if (BuildConfig.DEBUG){
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }        // ??? ?handleIntent(intent);

@@ -19,13 +19,12 @@ import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.applego.oblog.tppwatch.TppDetailTabsViewModel
 
 
 /**
  * Adapter for the tpp details. Has a reference to the [TppDetailViewModel] to send actions back to it.
  */
-class TppDetailTabsAdapter(private val viewModel: TppDetailTabsViewModel, @NonNull fm : FragmentManager) : FragmentPagerAdapter (fm) {
+class TppDetailTabsAdapter(private val viewModel: TppDetailTabsViewModel, @NonNull fm : FragmentManager) : FragmentPagerAdapter (fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
         var fragment: Fragment? = null
@@ -46,11 +45,11 @@ class TppDetailTabsAdapter(private val viewModel: TppDetailTabsViewModel, @NonNu
     override fun getPageTitle(position: Int): CharSequence? {
         var title: String? = null
         if (position == 0) {
-            title = "Tab-1"
+            title = "EBA"
         } else if (position == 1) {
-            title = "Tab-2"
+            title = "NCA()"
         } else if (position == 2) {
-            title = "Tab-3"
+            title = "TPP's apps"
         }
         return title
     }

@@ -21,7 +21,7 @@ import com.applego.oblog.tppwatch.about.AboutViewModel
 import com.applego.oblog.tppwatch.addedittpp.AddEditTppViewModel
 import com.applego.oblog.tppwatch.data.source.TppsRepository
 import com.applego.oblog.tppwatch.statistics.StatisticsViewModel
-import com.applego.oblog.tppwatch.tppdetail.TppDetailViewModel
+import com.applego.oblog.tppwatch.tppdetail.*
 import com.applego.oblog.tppwatch.tpps.TppsViewModel
 
 /**
@@ -39,6 +39,14 @@ class ViewModelFactory constructor(
                     StatisticsViewModel(tppsRepository)
                 isAssignableFrom(TppDetailViewModel::class.java) ->
                     TppDetailViewModel(tppsRepository)
+                isAssignableFrom(TppDetailTabsViewModel::class.java) ->
+                    TppDetailTabsViewModel(tppsRepository)
+                isAssignableFrom(TppDetailEbaViewModel::class.java) ->
+                    TppDetailEbaViewModel(tppsRepository)
+                isAssignableFrom(TppDetailNcaViewModel::class.java) ->
+                    TppDetailNcaViewModel(tppsRepository)
+                isAssignableFrom(TppDetailAppsViewModel::class.java) ->
+                    TppDetailAppsViewModel(tppsRepository)
                 isAssignableFrom(AddEditTppViewModel::class.java) ->
                     AddEditTppViewModel(tppsRepository)
                 isAssignableFrom(TppsViewModel::class.java) ->

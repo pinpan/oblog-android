@@ -1,42 +1,22 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.tppdetail
 
 import androidx.annotation.StringRes
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.applego.oblog.tppwatch.Event
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.Result
-import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.TppsRepository
 import com.applego.oblog.tppwatch.data.source.local.EbaPassport
+import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-/**
- * ViewModel for the Details screen.
- */
-open class TppDetailViewModel(
-    private val tppsRepository: TppsRepository
-) : ViewModel() {
+class TppDetailTabsViewModel (
+        private val tppsRepository: TppsRepository
+    ) : ViewModel() {
 
     private val _tpp = MutableLiveData<Tpp>()
     val tpp: LiveData<Tpp> = _tpp
@@ -120,7 +100,7 @@ open class TppDetailViewModel(
             runBlocking {
                 if (tppId != null) {
                     tppsRepository.getTpp(tppId, forceRefresh).let { result ->
-                        if (result is Success) {
+                        if (result is Result.Success) {
                             onTppLoaded(result.data)
                         } else {
                             onDataNotAvailable(result)
