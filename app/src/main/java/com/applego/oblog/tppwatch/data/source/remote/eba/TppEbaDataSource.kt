@@ -34,13 +34,14 @@ import java.util.concurrent.TimeUnit
 /**
  * Concrete implementation of a data source as a db.
  */
-class TppsEbaDataSource internal constructor (
+class TppEbaDataSource internal constructor (
         private val tppsService: OblogEbaService,
         private val tppsDao: TppsDao,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : RemoteTppDataSource {
 
     // TODO: Get the String from config per Base URL
+    // Old key MyhCyIKQ0IlIG5dFVk6sjXcG2aHhFbj0
     var theApiKey : ApiKey = ApiKey("GaW42ue9mRsgvlL0eIrrD6biU1tlpr8Y")
 
     override suspend fun getAllTpps(): Result<TppsListResponse> = withContext(ioDispatcher) {

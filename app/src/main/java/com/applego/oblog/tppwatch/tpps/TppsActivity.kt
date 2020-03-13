@@ -36,6 +36,7 @@ import com.google.android.material.navigation.NavigationView
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.view.WindowManager
+import androidx.navigation.NavArgument
 import com.applego.oblog.tppwatch.BuildConfig
 import com.applego.oblog.tppwatch.about.AboutFragment
 
@@ -63,6 +64,19 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                 .build()
         setupActionBarWithNavController(navController, appBarConfiguration)
         findViewById<NavigationView>(com.applego.oblog.tppwatch.R.id.nav_view).setupWithNavController(navController)
+
+        // This is for passing arguments to a destination fragment when changing whole screen
+        //    - call it master fragment change.
+        // When using tabview we have multiple fragments which does not occur in the navigation flow.
+        // We need to pass data in a different way - inject or pass on creation.
+        /*navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            when(destination.id) {
+                R.id.homeFragment -> {
+                    val argument = NavArgument.Builder().setDefaultValue(6).build()
+                    destination.addArgument("Argument", argument)
+                }
+            }
+        }*/
 
         setupSharedPreferences();
 

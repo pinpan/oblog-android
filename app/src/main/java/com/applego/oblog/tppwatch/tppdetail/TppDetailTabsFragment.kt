@@ -28,9 +28,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
 import com.applego.oblog.tppwatch.EventObserver
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.addedittpp.AddEditTppFragmentDirections
 import com.applego.oblog.tppwatch.databinding.TppDetailTabsFragmentBinding
-import com.applego.oblog.tppwatch.tpps.ADD_EDIT_RESULT_OK
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
@@ -55,11 +53,13 @@ class TppDetailTabsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewDataBinding.lifecycleOwner = this.viewLifecycleOwner // ???
+
+        viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
+
         setupFab()
+        setupNavigation()
 
         view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
-        setupNavigation()
 
         //this.setupRefreshLayout(viewDataBinding.refreshLayout)
     }
@@ -93,6 +93,10 @@ class TppDetailTabsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.start(args.tppId)
+        }
+
         val view = inflater.inflate(R.layout.tpp_detail_tabs_fragment, container, false)
 
         tppDetailTabsAdapter = TppDetailTabsAdapter(viewModel, childFragmentManager)
@@ -108,11 +112,8 @@ class TppDetailTabsFragment : Fragment() {
 
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
-        CoroutineScope(Dispatchers.Main).launch {
-            viewModel.start(args.tppId)
-        }
-
         setHasOptionsMenu(true)
+
         return view
     }
 

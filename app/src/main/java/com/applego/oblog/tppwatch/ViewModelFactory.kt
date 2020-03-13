@@ -35,7 +35,7 @@ class ViewModelFactory constructor(
     override fun <T : ViewModel> create(modelClass: Class<T>) =
         with(modelClass) {
             when {
-                isAssignableFrom(StatisticsViewModel::class.java) ->
+               isAssignableFrom(StatisticsViewModel::class.java) ->
                     StatisticsViewModel(tppsRepository)
                 isAssignableFrom(TppDetailViewModel::class.java) ->
                     TppDetailViewModel(tppsRepository)

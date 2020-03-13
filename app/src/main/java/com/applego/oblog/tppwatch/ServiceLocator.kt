@@ -26,7 +26,7 @@ import com.applego.oblog.tppwatch.data.source.TppsRepository
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.local.TppDatabase
 import com.applego.oblog.tppwatch.data.source.remote.eba.OblogEbaService
-import com.applego.oblog.tppwatch.data.source.remote.eba.TppsEbaDataSource
+import com.applego.oblog.tppwatch.data.source.remote.eba.TppEbaDataSource
 
 /**
  * A Service Locator for the [TppsRepository]. This is the prod version, with a
@@ -63,7 +63,7 @@ object ServiceLocator {
 
     private fun createTppsRestDataSource(context: Context): RemoteTppDataSource {
         val database = database ?: createDataBase(context)
-        return TppsEbaDataSource(OblogEbaService.create(context), database.tppDao())
+        return TppEbaDataSource(OblogEbaService.create(context), database.tppDao())
     }
 
     private fun createDataBase(context: Context): TppDatabase {
