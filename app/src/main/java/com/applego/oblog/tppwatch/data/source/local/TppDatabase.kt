@@ -12,7 +12,7 @@ import androidx.room.TypeConverters
  * Note that exportSchema should be true in production databases.
  */
 // TODO: Set schema export to true and provide `room.schemaLocation` annotation processor argument
-@Database(entities = [Tpp::class, Service::class, Role::class, App::class], version = 19, exportSchema = false)
+@Database(entities = [TppEntity::class, Service::class, Role::class, App::class], version = 20, exportSchema = false)
 @TypeConverters(OblogTypeConverters::class)
 abstract class TppDatabase : RoomDatabase() {
 

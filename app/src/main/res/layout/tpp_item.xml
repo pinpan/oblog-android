@@ -19,7 +19,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> viewmodel.openTpp(tpp.id)}"
+        android:onClick="@{() -> viewmodel.openTpp(tpp.tppEntity.id)}"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/list_item_padding"
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:checked="@{tpp.followed}"
+            android:checked="@{tpp.tppEntity.followed}"
             android:textSize="10sp"
             android:onClick="@{(view) -> viewmodel.followTpp(tpp, ((CompoundButton)view).isChecked())}" />
         <CheckBox
@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:checked="@{tpp.active}"
+            android:checked="@{tpp.tppEntity.active}"
             android:textSize="10sp"
             android:onClick="@{(view) -> viewmodel.activateTpp(tpp, ((CompoundButton)view).isChecked())}" />
 

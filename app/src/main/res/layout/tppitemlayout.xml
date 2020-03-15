@@ -37,7 +37,7 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingBottom="@dimen/list_item_padding"
         android:paddingTop="@dimen/list_item_padding"
-        android:onClick="@{() -> viewmodel.openTpp(tpp.id)}">
+        android:onClick="@{() -> viewmodel.openTpp(tpp.tppEntity.id)}">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:onClick="@{(view) -> viewmodel.followTpp(tpp, ((CompoundButton)view).isChecked())}"
-                android:checked="@{tpp.followed}" />
+                android:checked="@{tpp.tppEntity.followed}" />
 
             <TextView
                 android:id="@+id/tpp_name"
@@ -60,7 +60,7 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:text="@{tpp.titleForList}"
+                android:text="@{tpp.tppEntity.titleForList}"
                 /> <!--app:followedTpp="@{tpp.followed}"-->
 
         </RelativeLayout>

@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.applego.oblog.tppwatch.data.source.local
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -65,42 +49,42 @@ class TppsDaoTest {
     @Test
     fun insertTppAndGetById() = runBlockingTest {
         // GIVEN - insert a tpp
-        val tpp = Tpp("Entity_CZ28173281", "title", "description")
+        val tpp = TppEntity("Entity_CZ28173281", "title", "description")
         database.tppDao().insertTpp(tpp)
 
         // WHEN - Get the tpp by id from the database
-        val loaded = database.tppDao().getTppById(tpp.id)
+        val loaded = database.tppDao().getTppById(tpp.getId())
 
         // THEN - The loaded data contains the expected values
-        assertThat<Tpp>(loaded as Tpp, notNullValue())
-        assertThat(loaded.id, `is`(tpp.id))
-        assertThat(loaded.title, `is`(tpp.title))
-        assertThat(loaded.description, `is`(tpp.description))
-        assertThat(loaded.isFollowed, `is`(tpp.isFollowed))
+        assertThat<TppEntity>(loaded as TppEntity, notNullValue())
+        assertThat(loaded.getId(), `is`(tpp.getId()))
+        assertThat(loaded.getTitle(), `is`(tpp.getTitle()))
+        assertThat(loaded.getDescription(), `is`(tpp.getDescription()))
+        assertThat(loaded.isFollowed(), `is`(tpp.isFollowed()))
     }
 
     @Test
     fun insertTppReplacesOnConflict() = runBlockingTest {
         // Given that a tpp is inserted
-        val tpp = Tpp("Entity_CZ28173281", "title", "description")
+        val tpp = TppEntity("Entity_CZ28173281", "title", "description")
         database.tppDao().insertTpp(tpp)
 
         // When a tpp with the same id is inserted
-        val newTpp = Tpp("Entity_CZ28173282", "title2", "description2")
+        val newTpp = TppEntity("Entity_CZ28173282", "title2", "description2")
         database.tppDao().insertTpp(newTpp)
 
         // THEN - The loaded data contains the expected values
-        val loaded = database.tppDao().getTppById(tpp.id)
-        assertThat(loaded?.id, `is`(tpp.id))
-        assertThat(loaded?.title, `is`("title"))
-        assertThat(loaded?.description, `is`("description"))
-        assertThat(loaded?.isFollowed, `is`(false))
+        val loaded = database.tppDao().getTppById(tpp.getId())
+        assertThat(loaded?.getId(), `is`(tpp.getId()))
+        assertThat(loaded?.getTitle(), `is`("title"))
+        assertThat(loaded?.getDescription(), `is`("description"))
+        assertThat(loaded?.isFollowed(), `is`(false))
     }
 
     @Test
     fun insertTppAndGetTpps() = runBlockingTest {
         // GIVEN - insert a tpp
-        val tpp = Tpp("Entity_CZ28173281", "title", "description")
+        val tpp = TppEntity("Entity_CZ28173281", "title", "description")
         database.tppDao().insertTpp(tpp)
 
         // WHEN - Get tpps from the database
@@ -108,56 +92,56 @@ class TppsDaoTest {
 
         // THEN - There is only 1 tpp in the database, and contains the expected values
         assertThat(tpps.size, `is`(1))
-        assertThat(tpps[0].id, `is`(tpp.id))
-        assertThat(tpps[0].title, `is`(tpp.title))
-        assertThat(tpps[0].description, `is`(tpp.description))
-        assertThat(tpps[0].isFollowed, `is`(tpp.isFollowed))
+        assertThat(tpps[0].getId(), `is`(tpp.getId()))
+        assertThat(tpps[0].getTitle(), `is`(tpp.getTitle()))
+        assertThat(tpps[0].getDescription(), `is`(tpp.getDescription()))
+        assertThat(tpps[0].isFollowed(), `is`(tpp.isFollowed()))
     }
 
     @Test
     fun updateTppAndGetById() = runBlockingTest {
         // When inserting a tpp
-        val originalTpp = Tpp("Entity_CZ28173281", "title", "description")
+        val originalTpp = TppEntity("Entity_CZ28173281", "title", "description")
         database.tppDao().insertTpp(originalTpp)
 
         // When the tpp is updated
-        val updatedTpp = Tpp("Entity_CZ28173282", "new title", "new description", originalTpp.id, originalTpp.ebaEntityVersion, originalTpp.id)
-        updatedTpp.isFollowed = true
+        val updatedTpp = TppEntity("Entity_CZ28173282", "new title", "new description", originalTpp.getId(), originalTpp.getEbaEntityVersion(), originalTpp.getId())
+        updatedTpp.followed = true
         database.tppDao().updateTpp(updatedTpp)
 
         // THEN - The loaded data contains the expected values
-        val loaded = database.tppDao().getTppById(originalTpp.id)
-        assertThat(loaded?.id, `is`(originalTpp.id))
-        assertThat(loaded?.title, `is`("new title"))
-        assertThat(loaded?.description, `is`("new description"))
-        assertThat(loaded?.isFollowed, `is`(true))
+        val loaded = database.tppDao().getTppById(originalTpp.getId())
+        assertThat(loaded?.getId(), `is`(originalTpp.getId()))
+        assertThat(loaded?.getTitle(), `is`("new title"))
+        assertThat(loaded?.getDescription(), `is`("new description"))
+        assertThat(loaded?.isFollowed(), `is`(true))
     }
 
     @Test
     fun updateFollowedAndGetById() = runBlockingTest {
         // When inserting a tpp
-        val tpp = Tpp("Entity_CZ28173281", "title", "description")
+        val tpp = TppEntity("Entity_CZ28173281", "title", "description")
         database.tppDao().insertTpp(tpp)
 
         // When the tpp is updated
-        database.tppDao().updateFollowed(tpp.id, false)
+        database.tppDao().updateFollowed(tpp.getId(), false)
 
         // THEN - The loaded data contains the expected values
-        val loaded = database.tppDao().getTppById(tpp.id)
-        assertThat(loaded?.id, `is`(tpp.id))
-        assertThat(loaded?.title, `is`(tpp.title))
-        assertThat(loaded?.description, `is`(tpp.description))
-        assertThat(loaded?.isFollowed, `is`(false))
+        val loaded = database.tppDao().getTppById(tpp.getId())
+        assertThat(loaded?.getId(), `is`(tpp.getId()))
+        assertThat(loaded?.getTitle(), `is`(tpp.getTitle()))
+        assertThat(loaded?._description, `is`(tpp.getDescription()))
+        assertThat(loaded?.isFollowed(), `is`(false))
     }
 
     @Test
     fun deleteTppByIdAndGettingTpps() = runBlockingTest {
         // Given a tpp inserted
-        val tpp = Tpp("Entity_CZ28173281", "title", "description")
+        val tpp = TppEntity("Entity_CZ28173281", "title", "description")
         database.tppDao().insertTpp(tpp)
 
         // When deleting a tpp by id
-        database.tppDao().deleteTppById(tpp.id)
+        database.tppDao().deleteTppById(tpp.getId())
 
         // THEN - The list is empty
         val tpps = database.tppDao().getTpps()
@@ -167,7 +151,7 @@ class TppsDaoTest {
     @Test
     fun deleteTppsAndGettingTpps() = runBlockingTest {
         // Given a tpp inserted
-        database.tppDao().insertTpp(Tpp("Entity_CZ28173281", "title", "description"))
+        database.tppDao().insertTpp(TppEntity("Entity_CZ28173281", "title", "description"))
 
         // When deleting all tpps
         database.tppDao().deleteTpps()
@@ -180,8 +164,8 @@ class TppsDaoTest {
     @Test
     fun deleteUnfollowedTppsAndGettingTpps() = runBlockingTest {
         // Given a followed tpp inserted
-        var aTpp = Tpp("Entity_CZ28173281", "followed", "tpp")
-        aTpp.isFollowed = true // Followed is not set in constructor
+        var aTpp = TppEntity("Entity_CZ28173281", "followed", "tpp")
+        aTpp.followed = true // Followed is not set in constructor
         database.tppDao().insertTpp(aTpp)
 
         // When deleting followed tpps

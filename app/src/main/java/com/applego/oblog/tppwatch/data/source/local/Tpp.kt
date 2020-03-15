@@ -1,76 +1,57 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.data.source.local
-
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import java.util.*
 
 /**
  * Immutable model class for a Tpp. In order to compile with Room, we can't use @JvmOverloads to
  * generate multiple constructors.
  *
- * @param title       title of the tpp
- * @param description description of the tpp
- * @param isFollowed whether or not this tpp is followed
- * @param id          id of the tpp
  */
-@Entity(tableName = "tpps")
-@TypeConverters(OblogTypeConverters::class)
-data class Tpp @JvmOverloads constructor(
-        @ColumnInfo(name = "entityCode") var entityCode: String = "",  // Entity Code retruned by EBA or NCA
-        @ColumnInfo(name = "title") var title: String = "",
-        @ColumnInfo(name = "description") var description: String = "",
-        @ColumnInfo(name = "globalUrn") var globalUrn: String = "",    // A Global Unified identifier.
-        @ColumnInfo(name = "ebaEntityVersion") var ebaEntityVersion: String = "",
+class Tpp : TppModel {
 
-        @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString()
-) {
+    constructor(entity : TppEntity) {
+        tppEntity = entity
+    }
 
-    @ColumnInfo(name = "fis")
-    var isFis: Boolean = false
+    var tppEntity : TppEntity
 
-    @ColumnInfo(name = "psd2")
-    var isPsd2: Boolean = false
+    override fun getId() = tppEntity.getId()
 
-    @ColumnInfo(name = "followed")
-    var isFollowed: Boolean = false
+    override fun getDescription() = tppEntity.getDescription()
 
-    @ColumnInfo(name = "status")
-    var status: RecordStatus = RecordStatus.NEW
+    override fun getTitle() = tppEntity.getTitle()
 
-    @ColumnInfo(name = "country")
-    var country: String = ""
+    override fun getEntityCode() = tppEntity.getEntityCode()
 
-    val titleForList: String
-        get() = if (title.isNotEmpty()) title else description
+    override fun getGlobalUrn() = tppEntity.getGlobalUrn()
 
-    @ColumnInfo(name = "active")
-    var isActive: Boolean = false
+    override fun getEbaEntityVersion() = tppEntity.getEbaEntityVersion()
 
-    var ebaPassport : EbaPassport = EbaPassport()
-    // FOLLOWING DOES NOT COMPILE BECAUSE ROOM DOES OT KOW HOW TO SAVE IT
-    //var ebaPassportsMap: Map<String, List<EbaService>> = HashMap<String, List<EbaService>>()
+    override fun getCountry() = tppEntity.getCountry()
 
+    override fun getEbaPassport() = tppEntity.getEbaPassport()
 
-    // TODO#1: Remove this "special" field used only for validation
-    val isEmpty
-        get() = title.isEmpty() || description.isEmpty()
+    override fun getStatus() = tppEntity.getStatus()
+
+    override fun isActive() = tppEntity.isActive()
+
+    override fun isFis(): Boolean = tppEntity.isFis()
+
+    override fun isPsd2(): Boolean = tppEntity.isPsd2()
+
+    override fun isFollowed(): Boolean = tppEntity.isFollowed()
+
+    /*override */fun setFollowed(f: Boolean) {
+        tppEntity.followed = f
+    }
+
+    fun setActive(a: Boolean) {
+        tppEntity.active = a
+    }
+
+    override fun getTitleForList(): String = tppEntity.getTitleForList()
+
+    fun equals(other: Tpp) : Boolean {
+        return (other != null) && other.getId().equals(getId());
+    }
 
     // TODO#2: Consider Following fields
     //  details aka properties from EBA

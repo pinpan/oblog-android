@@ -77,10 +77,10 @@ class TppsAdapter(private val viewModel: TppsViewModel, ctx: Context, layoutId: 
  */
 class TppDiffCallback :  DiffUtil.ItemCallback<Tpp>() {
     override fun areItemsTheSame(oldItem: Tpp, newItem: Tpp): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.getId() == newItem.getId()
     }
 
     override fun areContentsTheSame(oldItem: Tpp, newItem: Tpp): Boolean {
-        return oldItem == newItem
+        return oldItem.equals(newItem)
     }
 }

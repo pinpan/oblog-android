@@ -1,6 +1,7 @@
 package com.applego.oblog.tppwatch.data.source.remote.nca
 
 import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.source.local.TppEntity
 import com.google.gson.*
 import java.lang.reflect.Type
 import kotlin.collections.ArrayList
@@ -22,7 +23,7 @@ class TppListDeserializer : JsonDeserializer<List<Tpp>> {
             val name: String = itemJsonObject.get("entityName")?.getAsString() ?: ""
             val description: String = itemJsonObject?.get("description")?.asString ?: ""
 
-            items.add(Tpp("Entity_CZ28173282", name, description));
+            items.add(Tpp(TppEntity("Entity_CZ28173282", name, description)))
         }
 
         return items

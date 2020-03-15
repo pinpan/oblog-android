@@ -281,7 +281,7 @@ class TppsViewModel(
             filteredTpps.addAll(inputTpps)
         } else {
             for (tpp in inputTpps) {
-                if (tpp.title.contains(_searchFilter.title, true)) {
+                if (tpp.getTitle().contains(_searchFilter.title, true)) {
                     (filteredTpps as ArrayList<Tpp>).add(tpp)
                 }
             }
@@ -302,16 +302,16 @@ class TppsViewModel(
                 userInterests.forEach {
                     when (it.key) {
                         //TppsFilterType.ALL_TPPS -> filteredTpps.add(tpp)
-                        TppsFilterType.USED_TPPS -> if (it.value && tpp.isActive) {
+                        TppsFilterType.USED_TPPS -> if (it.value && tpp.isActive()) {
                             filteredTpps.add(tpp)
                         }
-                        TppsFilterType.FOLLOWED_TPPS -> if (it.value && tpp.isFollowed) {
+                        TppsFilterType.FOLLOWED_TPPS -> if (it.value && tpp.isFollowed()) {
                             filteredTpps.add(tpp)
                         }
-                        TppsFilterType.PSD2_TPPS -> if (it.value && tpp.isPsd2) {
+                        TppsFilterType.PSD2_TPPS -> if (it.value && tpp.isPsd2()) {
                             filteredTpps.add(tpp)
                         }
-                        TppsFilterType.PSD2_TPPS -> if (it.value && tpp.isFis) {
+                        TppsFilterType.PSD2_TPPS -> if (it.value && tpp.isFis()) {
                             filteredTpps.add(tpp)
                         }
                     }
@@ -334,7 +334,7 @@ class TppsViewModel(
         } else {*/
             _searchFilter.countries.forEach {
                 inputTpps?.forEach {
-                    if (it.country.equals(country)) {
+                    if (it.getCountry().equals(country)) {
                         filteredTpps.add(it)
                     }
                 }
@@ -356,8 +356,8 @@ class TppsViewModel(
         } else {
             val psdService = EbaService.findPsd2Service(service)
             inputTpps?.forEach lit@{ tpp ->
-                if (tpp.ebaPassport != null) {
-                    tpp.ebaPassport.countryMap.entries.forEach() {
+                if (tpp.getEbaPassport() != null) {
+                    tpp.getEbaPassport().countryMap.entries.forEach() {
                         if (it.value != null) {
                             val services = it.value as List<Service>
                             services.forEach {serv ->

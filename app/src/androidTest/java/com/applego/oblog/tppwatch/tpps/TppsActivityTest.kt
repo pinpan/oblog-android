@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.tpps
 
 import androidx.test.core.app.ActivityScenario
@@ -38,6 +23,7 @@ import com.applego.oblog.tppwatch.R.string
 import com.applego.oblog.tppwatch.ServiceLocator
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.source.local.TppEntity
 import com.applego.oblog.tppwatch.util.DataBindingIdlingResource
 import com.applego.oblog.tppwatch.util.EspressoIdlingResource
 import com.applego.oblog.tppwatch.util.deleteAllTppsBlocking
@@ -94,7 +80,7 @@ class TppsActivityTest {
 
     @Test
     fun editTpp() {
-        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION"))
+        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION")))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -146,8 +132,8 @@ class TppsActivityTest {
 
     //@Test
     fun createTwoTpps_deleteOneTpp() {
-        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION"))
-        repository.saveTppBlocking(Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION"))
+        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION")))
+        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173282", "TITLE2", "DESCRIPTION")))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -169,7 +155,7 @@ class TppsActivityTest {
     fun markTppAsFollowedOnDetailScreen_tppIsFollowInList() {
         // Add 1 active tpp
         val tppTitle = "FOLLOWED"
-        repository.saveTppBlocking(Tpp("Entity_CZ28173281", tppTitle, "DESCRIPTION"))
+        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173281", tppTitle, "DESCRIPTION")))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -197,7 +183,7 @@ class TppsActivityTest {
     fun markTppAsActiveOnDetailScreen_tppIsActiveInList() {
         // Add 1 followed tpp
         val tppTitle = "ACTIVE"
-        repository.saveTppBlocking(Tpp("Entity_CZ28173281", tppTitle, "DESCRIPTION"))
+        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173281", tppTitle, "DESCRIPTION")))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -224,7 +210,7 @@ class TppsActivityTest {
     fun markTppAsFollowAndActiveOnDetailScreen_tppIsActiveInList() {
         // Add 1 active tpp
         val tppTitle = "ACT-COMP"
-        repository.saveTppBlocking(Tpp("Entity_CZ28173281", tppTitle, "DESCRIPTION"))
+        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173281", tppTitle, "DESCRIPTION")))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -253,7 +239,7 @@ class TppsActivityTest {
     fun markTppAsActiveAndFollowOnDetailScreen_tppIsFollowInList() {
         // Add 1 followed tpp
         val tppTitle = "COMP-ACT"
-        repository.saveTppBlocking(Tpp("Entity_CZ28173281", tppTitle, "DESCRIPTION"))
+        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173281", tppTitle, "DESCRIPTION")))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)

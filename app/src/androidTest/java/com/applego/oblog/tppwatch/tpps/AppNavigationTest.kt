@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.tpps
 
 import android.view.Gravity
@@ -39,6 +24,7 @@ import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.ServiceLocator
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.source.local.TppEntity
 import com.applego.oblog.tppwatch.util.DataBindingIdlingResource
 import com.applego.oblog.tppwatch.util.EspressoIdlingResource
 import com.applego.oblog.tppwatch.util.monitorActivity
@@ -172,8 +158,8 @@ class AppNavigationTest {
 
     @Test
     fun tppDetailScreen_doubleUIBackButton() {
-        val tpp = Tpp("Entity_CZ28173281", "UI <- button", "Description")
-        tppsRepository.saveTppBlocking(tpp)
+        val tppEntity = TppEntity("Entity_CZ28173281", "UI <- button", "Description")
+        tppsRepository.saveTppBlocking(Tpp(tppEntity))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -205,8 +191,8 @@ class AppNavigationTest {
 
     @Test
     fun tppDetailScreen_doubleBackButton() {
-        val tpp = Tpp("Entity_CZ28173281", "Back button", "Description")
-        tppsRepository.saveTppBlocking(tpp)
+        val tppEntity = TppEntity("Entity_CZ28173281", "Back button", "Description")
+        tppsRepository.saveTppBlocking(Tpp(tppEntity))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)

@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.data.source
 
 import com.applego.oblog.tppwatch.data.Result
@@ -170,23 +155,23 @@ class DefaultTppsRepository (
         }
     }
 
-    override suspend fun setTppFollowedFlag(tpp: Tpp, followed: Boolean) {
+    override suspend fun setTppFollowedFlag(tpp: Tpp, f: Boolean) {
         cacheAndPerform(tpp) {
             tpp.let {
-                it.isFollowed = followed
-                coroutineScope {
-                    launch { tppsLocalDataSource.udateFollowing(it, it.isFollowed) }
+                it.tppEntity.followed = f
+                        coroutineScope {
+                    launch { tppsLocalDataSource.udateFollowing(it, it.tppEntity.isFollowed()) }
                 }
             }
         }
     }
 
-    override suspend fun setTppActivateFlag(tpp: Tpp, active: Boolean) = withContext(ioDispatcher) {
+    override suspend fun setTppActivateFlag(tpp: Tpp, a: Boolean) = withContext(ioDispatcher) {
         // Do in memory cache update to keep the app UI up to date
         cacheAndPerform(tpp) {
-            it.isActive = active
+            it.tppEntity.active = a
             coroutineScope {
-                launch { tppsLocalDataSource.setTppActivateFlag(it.id, active) }
+                launch { tppsLocalDataSource.setTppActivateFlag(it.tppEntity.getId(), a) }
             }
         }
     }
@@ -214,13 +199,13 @@ class DefaultTppsRepository (
     }
 
     private fun refreshCache(tpps: List<Tpp>) {
-        tpps.sortedBy { it.id }.forEach {
+        tpps.sortedBy { it.tppEntity.getId()}.forEach {
             cacheAndPerform(it) {}
         }
     }
 
     private suspend fun refreshLocalDataSource(tpps: List<Tpp>?) {
-        tppsLocalDataSource.deleteAllTpps()
+        //TODO: Restore: tppsLocalDataSource.deleteAllTpps()
         if (tpps != null) {
             for (tpp in tpps) {
                 tppsLocalDataSource.saveTpp(tpp)

@@ -33,7 +33,7 @@ interface LocalTppDataSource {
 
     suspend fun setTppActivateFlag(tppId: String, active: Boolean)
 
-    suspend fun clearFollowedTpps()
+    /*suspend fun clearFollowedTpps() */
 
     suspend fun deleteAllTpps()
 

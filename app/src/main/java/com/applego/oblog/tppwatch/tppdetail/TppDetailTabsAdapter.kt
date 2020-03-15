@@ -29,11 +29,11 @@ class TppDetailTabsAdapter(private val viewModel: TppDetailViewModel, @NonNull f
     override fun getItem(position: Int): Fragment {
         var fragment: Fragment? = null
         if (position == 0) {
-            fragment = TppDetailEbaFragment(viewModel, (viewModel.tpp.value?.id) ?: "")
+            fragment = TppDetailEbaFragment(viewModel, (viewModel.tpp.value?.getId()) ?: "")
         } else if (position == 1) {
-            fragment = TppDetailNcaFragment(viewModel, (viewModel.tpp.value?.id) ?: "")
+            fragment = TppDetailNcaFragment(viewModel, (viewModel.tpp.value?.getId()) ?: "")
         } else { //if (position == 2) {
-            fragment = TppDetailAppsFragment(viewModel, (viewModel.tpp.value?.id) ?: "")
+            fragment = TppDetailAppsFragment(viewModel, (viewModel.tpp.value?.getId()) ?: "")
         }
         return fragment
     }

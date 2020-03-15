@@ -44,7 +44,7 @@ object TppsRemoteDataSource : RemoteTppDataSource {
         return Success(tpps)
     }
 
-    override suspend fun getTpp(tppId: String): Result<Tpp> {
+    override suspend fun getTppEntity(tppId: String): Result<Tpp> {
         // Simulate network by delaying the execution.
         delay(SERVICE_LATENCY_IN_MILLIS)
         TPPS_SERVICE_DATA[tppId]?.let {

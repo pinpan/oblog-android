@@ -37,7 +37,7 @@ class TppsNcaDataSource internal constructor (
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : RemoteTppDataSource {
 
-    var tppsList: List<Tpp> = List<Tpp>(0){ Tpp() }
+    var tppsList: List<Tpp> = emptyList() //List<Tpp>(0){ Tpp() }
 
     override suspend fun getAllTpps(): Result<TppsListResponse/*List<Tpp>*/> = withContext(ioDispatcher) {
         val call = tppsService.listTpps("BudgetBakers") // TODO: get filter parameters from UI
@@ -48,13 +48,13 @@ class TppsNcaDataSource internal constructor (
                     //var tppsList : List<Tpp>
                     tppsList = response.body()?.tppsList!!
                     tppsList.forEach { tpp ->
-                        System.out.println("Insert/Update tpp: " + tpp.title + " into database")
+                        System.out.println("Insert/Update tpp: " + tpp.getTitle() + " into database")
 
                         runBlocking<Unit> {
-                            if (tppsDao.getTppById(tpp.id) == null) {
-                                tppsDao.insertTpp(tpp)
+                            if (tppsDao.getTppById(tpp.getId()) == null) {
+                                tppsDao.insertTpp(tpp.tppEntity)
                             } else {
-                                tppsDao.updateTpp(tpp)
+                                tppsDao.updateTpp(tpp.tppEntity)
                             }
                         }
                     }

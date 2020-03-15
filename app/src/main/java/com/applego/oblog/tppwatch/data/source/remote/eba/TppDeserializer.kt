@@ -2,15 +2,16 @@ package com.applego.oblog.tppwatch.data.source.remote.eba
 
 import com.applego.oblog.tppwatch.data.source.local.OblogTypeConverters
 import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.source.local.TppEntity
 import com.google.gson.*
 import java.lang.reflect.Type
 
 class TppDeserializer : JsonDeserializer<Tpp> {
-    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Tpp {
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Tpp? {
 
         var jsonObject: JsonObject? = json?.asJsonObject
-
-        return convertFrom(jsonObject)
+        val tpp = convertFrom(jsonObject)
+        return tpp
     }
 
     val __oblogTypeConverters = OblogTypeConverters()
@@ -26,10 +27,11 @@ class TppDeserializer : JsonDeserializer<Tpp> {
             }
     }
 
-    fun convertFrom(jsonObject: JsonObject?) : Tpp {
+    fun convertFrom(jsonObject: JsonObject?) : Tpp? {
         if (jsonObject == null) {
-            return Tpp();
+            return null //Tpp()
         }
+
         val entityId: String = jsonObject.get("entityId")?.asString ?:""
         val entityCode: String  = jsonObject?.get("entityCode")?.getAsString() ?: ""
 
@@ -43,13 +45,13 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         // val status: String = jsonObject?.get("status")?.asString ?: ""
         val description: String = jsonObject?.get("description")?.asString ?: ""
 
-        var tpp = Tpp(entityCode, entityName, description, jsonObject?.get("globalUrn")?.asString ?:"", ebaEntityVersion)
-        tpp.country = cou
+        var tpp = Tpp(TppEntity(entityCode, entityName, description, jsonObject?.get("globalUrn")?.asString ?:"", ebaEntityVersion))
+        tpp.tppEntity._country = cou
 
         val services = jsonObject?.get("services").asJsonArray ?: JsonArray()
         if (services != null) {
             val passportedServices = __oblogTypeConverters.fromJsonElementToEbaPassport(services)
-            tpp.ebaPassport = passportedServices
+            tpp.tppEntity._ebaPassport = passportedServices
         }
 
         return tpp

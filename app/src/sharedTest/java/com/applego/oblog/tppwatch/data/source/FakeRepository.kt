@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.data.source
 
 import androidx.annotation.VisibleForTesting
@@ -58,28 +43,28 @@ class FakeRepository : TppsRepository {
     }
 
     override suspend fun saveTpp(tpp: Tpp) {
-        tppsServiceData[tpp.id] = tpp
+        tppsServiceData[tpp.tppEntity.getId()] = tpp
     }
 
     override suspend fun setTppFollowedFlag(tppId: String, followed: Boolean) {
-        tppsServiceData[tppId]?.isFollowed = true
+        tppsServiceData[tppId]?.tppEntity?.followed = true
     }
 
     override suspend fun setTppFollowedFlag(tpp: Tpp, followed: Boolean) {
-        tppsServiceData[tpp.id]?.isFollowed = true
+        tppsServiceData[tpp.tppEntity.getId()]?.tppEntity?.followed = true
     }
 
     override suspend fun setTppActivateFlag(tpp: Tpp, active: Boolean) {
-        tpp.isActive = active
+        tpp.tppEntity.active = active
     }
 
-    override suspend fun setTppActivateFlag(tppId: String, active: Boolean) {
-        tppsServiceData[tppId]?.isActive = active
+    override suspend fun setTppActivateFlag(tppId: String, a: Boolean) {
+        tppsServiceData[tppId]?.tppEntity?.active = a
     }
 
     suspend fun clearFollowedTpps() {
         tppsServiceData = tppsServiceData.filterValues {
-            !it.isFollowed
+            !it.tppEntity?.isFollowed()
         } as LinkedHashMap<String, Tpp>
     }
 
@@ -94,7 +79,7 @@ class FakeRepository : TppsRepository {
     @VisibleForTesting
     fun addTpps(vararg tpps: Tpp) {
         for (tpp in tpps) {
-            tppsServiceData[tpp.id] = tpp
+            tppsServiceData[tpp.tppEntity.getId()] = tpp
         }
     }
 }

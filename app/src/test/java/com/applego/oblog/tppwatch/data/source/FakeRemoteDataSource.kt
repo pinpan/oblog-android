@@ -33,7 +33,7 @@ class FakeRemoteDataSource(var tppsListResponse: TppsListResponse?/*MutableList<
     }
 
     override suspend fun getTpp(tppId: String): Result<Tpp> {
-        tppsListResponse?.tppsList?.firstOrNull { it.id == tppId }?.let { return Success(it) }
+        tppsListResponse?.tppsList?.firstOrNull { it.getId() == tppId }?.let { return Success(it) }
         return Error(
             Exception("Tpp not found")
         )
@@ -43,20 +43,20 @@ class FakeRemoteDataSource(var tppsListResponse: TppsListResponse?/*MutableList<
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    /*override suspend fun saveTpp(tpp: Tpp) {
-        tpps?.add(tpp)
+    /*override suspend fun saveTpp(tppEntity: Tpp) {
+        tpps?.add(tppEntity)
     }
 
-    override suspend fun setTppFollowedFlag(tpp: Tpp) {
-        tpps?.firstOrNull { it.id == tpp.id }?.let { it.isFollowed = true }
+    override suspend fun setTppFollowedFlag(tppEntity: Tpp) {
+        tpps?.firstOrNull { it.id == tppEntity.id }?.let { it.isFollowed = true }
     }
 
     override suspend fun setTppFollowedFlag(tppId: String) {
         tpps?.firstOrNull { it.id == tppId }?.let { it.isFollowed = true }
     }
 
-    override suspend fun updateActive(tpp: Tpp) {
-        tpps?.firstOrNull { it.id == tpp.id }?.let { it.isFollowed = false }
+    override suspend fun updateActive(tppEntity: Tpp) {
+        tpps?.firstOrNull { it.id == tppEntity.id }?.let { it.isFollowed = false }
     }
 
     override suspend fun updateActive(tppId: String) {

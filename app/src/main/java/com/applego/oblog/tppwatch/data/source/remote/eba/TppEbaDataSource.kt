@@ -15,7 +15,6 @@
  */
 package com.applego.oblog.tppwatch.data.source.remote.eba
 
-import android.content.SharedPreferences
 import com.applego.oblog.apikey.ApiKey
 import com.applego.oblog.tppwatch.data.Paging
 import com.applego.oblog.tppwatch.data.Result
@@ -93,13 +92,13 @@ class TppEbaDataSource internal constructor (
                 val tppsListResponse = response.body()!!
                 Timber.d("tppsList=" + tppsListResponse.tppsList)
                 tppsListResponse.tppsList?.forEach { tpp ->
-                    System.out.println("Insert/Update tpp: " + tpp.title + " into database")
+                    System.out.println("Insert/Update tpp: " + tpp.tppEntity.getTitle() + " into database")
 
                     runBlocking<Unit> {
-                        if (tppsDao.getTppByEntityCode(tpp.entityCode) == null) {
-                            tppsDao.insertTpp(tpp)
+                        if (tppsDao.getTppByEntityCode(tpp.tppEntity.getEntityCode()) == null) {
+                            tppsDao.insertTpp(tpp.tppEntity)
                         } else {
-                            tppsDao.updateTpp(tpp)
+                            tppsDao.updateTpp(tpp.tppEntity)
                         }
                     }
                 }

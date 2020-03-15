@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.data.source.local
 
 import com.applego.oblog.tppwatch.data.Result
@@ -32,15 +17,20 @@ class TppsDaoDataSource internal constructor(
 ) : LocalTppDataSource {
 
     override suspend fun getTpps(filter: TppsFilter): Result<List<Tpp>> = withContext(ioDispatcher) {
-        return@withContext try {
-            var tpps: List<Tpp>
+        var tpps = ArrayList<Tpp>()
+        try {
+            var tppEntities : List<TppEntity>
             if (isOnlyCountry(filter)) {
-                tpps = tppsDao.getTppsByCountry(filter.country)
+                tppEntities = tppsDao.getTppsByCountry(filter.country)
+            } else {
+                tppEntities = tppsDao.getTpps()
             }
-            Success(tppsDao.getTpps())
+            tppEntities.forEach {tppEntity ->
+                tpps.add(Tpp(tppEntity))}
         } catch (e: Exception) {
             Error(e)
         }
+        return@withContext Success(tpps)
     }
 
     private fun isOnlyCountry(filter: TppsFilter): Boolean {
@@ -49,11 +39,11 @@ class TppsDaoDataSource internal constructor(
 
     override suspend fun getTpp(tppId: String): Result<Tpp> = withContext(ioDispatcher) {
         try {
-            val tpp = tppsDao.getTppById(tppId)
-            if (tpp != null) {
-                return@withContext Success(tpp)
+            val tppEntity = tppsDao.getTppById(tppId)
+            if (tppEntity != null) {
+                return@withContext Success(Tpp(tppEntity))
             } else {
-                return@withContext Error(Exception("Tpp not found!"))
+                return@withContext Error(Exception("TppEntity not found!"))
             }
         } catch (e: Exception) {
             return@withContext Error(e)
@@ -61,18 +51,18 @@ class TppsDaoDataSource internal constructor(
     }
 
     override suspend fun saveTpp(tpp: Tpp) = withContext(ioDispatcher) {
-        tppsDao.insertTpp(tpp)
+        tppsDao.insertTpp(tpp.tppEntity)
     }
 
     override suspend fun udateFollowing(tpp: Tpp, follow: Boolean) = withContext(ioDispatcher) {
-        tppsDao.updateFollowed(tpp.id, follow)
+        tppsDao.updateFollowed(tpp.tppEntity.getId(), follow)
     }
 
     override suspend fun setTppActivateFlag(tppId: String, active: Boolean)  = withContext(ioDispatcher) {
         tppsDao.updateActive(tppId, active)
     }
 
-    override suspend fun clearFollowedTpps() = withContext<Unit>(ioDispatcher) {
+    suspend fun clearFollowedTpps() = withContext<Unit>(ioDispatcher) {
         tppsDao.deleteFollowedTpps()
     }
 

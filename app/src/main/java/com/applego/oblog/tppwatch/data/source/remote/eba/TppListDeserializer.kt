@@ -5,6 +5,7 @@ import com.google.gson.*
 import java.lang.reflect.Type
 import kotlin.collections.ArrayList
 import kotlin.collections.List
+import kotlin.math.log
 
 class TppListDeserializer : JsonDeserializer<List<Tpp>> {
 
@@ -36,9 +37,12 @@ class TppListDeserializer : JsonDeserializer<List<Tpp>> {
             for (itemsJsonElement:JsonElement in itemsJsonArray) run {
 
                 val itemJsonObject: JsonObject = itemsJsonElement.getAsJsonObject();
-                var tpp : Tpp = TppDeserializer.tppDeserializer.convertFrom(itemJsonObject)
-
-                items.add(tpp)
+                var tpp : Tpp? = TppDeserializer.tppDeserializer.convertFrom(itemJsonObject)
+                if (tpp != null) {
+                    items.add(tpp)
+                } else {
+                    //TODO: log()
+                }
             }
         }
 

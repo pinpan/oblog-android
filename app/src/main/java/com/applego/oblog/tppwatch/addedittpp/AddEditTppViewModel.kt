@@ -25,6 +25,7 @@ import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.source.local.TppEntity
 import kotlinx.coroutines.launch
 
 /**
@@ -88,9 +89,9 @@ class AddEditTppViewModel(
     }
 
     private fun onTppLoaded(tpp: Tpp) {
-        title.value = tpp.title
-        description.value = tpp.description
-        tppFollowed = tpp.isFollowed
+        title.value = tpp.getTitle()
+        description.value = tpp.getDescription()
+        tppFollowed = tpp.isFollowed()
         _dataLoading.value = false
         isDataLoaded = true
     }
@@ -108,16 +109,12 @@ class AddEditTppViewModel(
             _snackbarText.value = Event(R.string.empty_tpp_message)
             return
         }
-        if (Tpp("Entity_CZ28173282", currentTitle, currentDescription).isEmpty) {
-            _snackbarText.value = Event(R.string.empty_tpp_message)
-            return
-        }
 
         val currentTppId = tppId
         if (isNewTpp || currentTppId == null) {
-            createTpp(Tpp("Entity_CZ28173282", currentTitle, currentDescription))
+            createTpp(Tpp(TppEntity("Entity_CZ28173282", currentTitle, currentDescription)))
         } else {
-            val tpp = Tpp("Entity_CZ28173282", currentTitle, currentDescription, "", currentTppId)
+            val tpp = Tpp(TppEntity("Entity_CZ28173282", currentTitle, currentDescription, "", currentTppId))
             updateTpp(tpp)
         }
     }

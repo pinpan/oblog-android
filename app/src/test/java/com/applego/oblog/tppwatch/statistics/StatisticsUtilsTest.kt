@@ -1,22 +1,7 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.applego.oblog.tppwatch.statistics
 
 import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.source.local.TppEntity
 import org.hamcrest.core.Is.`is`
 import org.junit.Assert.assertThat
 import org.junit.Test
@@ -28,12 +13,12 @@ class StatisticsUtilsTest {
 
     @Test
     fun getActiveAndFollowedStats_noFollowed() {
-        val aTpp = Tpp("Entity_CZ28173281", "title", "desc")
-        aTpp.isActive = true
+        val aTppEntity = TppEntity("Entity_CZ28173281", "title", "desc")
+        aTppEntity.active = true
         val tpps = listOf(
-                aTpp
+                Tpp(aTppEntity)
         )
-        // When the list of tpps is computed with an active tpp
+        // When the list of tpps is computed with an active tppEntity
         val result = getActiveAndFollowedStats(tpps)
 
         // Then the percentages are 100 and 0
@@ -43,12 +28,12 @@ class StatisticsUtilsTest {
 
     @Test
     fun getActiveAndFollowedStats_noActive() {
-        var tpp1 = Tpp("Entity_CZ28173281", "title", "desc")
-        tpp1.isFollowed = true
+        var tppEntity1 = TppEntity("Entity_CZ28173281", "title", "desc")
+        tppEntity1.followed = true
         val tpps = listOf(
-                tpp1
+                Tpp(tppEntity1)
         )
-        // When the list of tpps is computed with a followed tpp
+        // When the list of tpps is computed with a followed tppEntity
         val result = getActiveAndFollowedStats(tpps)
 
         // Then the percentages are 0 and 100
@@ -59,24 +44,24 @@ class StatisticsUtilsTest {
     @Test
     fun getActiveAndFollowedStats_both() {
         // Given 3 followed tpps and 2 active tpps
-        var tpp1 = Tpp("Entity_CZ28173281", "title", "desc")
-            tpp1.isFollowed = true
-        var tpp2 = Tpp("Entity_CZ28173282", "title", "desc")
-            tpp2.isFollowed = true
-        var tpp3 = Tpp("Entity_CZ28173283", "title", "desc")
-            tpp3.isFollowed = true
+        var tpp1 = TppEntity("Entity_CZ28173281", "title", "desc")
+            tpp1.followed = true
+        var tpp2 = TppEntity("Entity_CZ28173282", "title", "desc")
+            tpp2.followed = true
+        var tpp3 = TppEntity("Entity_CZ28173283", "title", "desc")
+            tpp3.followed = true
 
-        var tpp4 = Tpp("Entity_CZ28173284", "title", "desc")
-            tpp4.isActive = true
-        var tpp5 = Tpp("Entity_CZ28173285", "title", "desc")
-            tpp5.isActive = true
+        var tpp4 = TppEntity("Entity_CZ28173284", "title", "desc")
+            tpp4.active = true
+        var tpp5 = TppEntity("Entity_CZ28173285", "title", "desc")
+            tpp5.active = true
 
         val tpps = listOf(
-                tpp1,
-                tpp2,
-                tpp3,
-                tpp4,
-                tpp5
+                Tpp(tpp1),
+                Tpp(tpp2),
+                Tpp(tpp3),
+                Tpp(tpp4),
+                Tpp(tpp5)
         )
         // When the list of tpps is computed
         val result = getActiveAndFollowedStats(tpps)

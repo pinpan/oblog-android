@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 package com.applego.oblog.tppwatch.data.source.local
 
@@ -34,7 +19,7 @@ interface TppsDao {
      * @return all tpps.
      */
     @Query("SELECT * FROM Tpps")
-    suspend fun getTpps(): List<Tpp>
+    suspend fun getTpps(): List<TppEntity>
 
     /**
      * Select a tpp by id.
@@ -43,7 +28,7 @@ interface TppsDao {
      * @return the tpp with tppId.
      */
     @Query("SELECT * FROM Tpps WHERE id = :tppId")
-    suspend fun getTppById(tppId: String): Tpp?
+    suspend fun getTppById(tppId: String): TppEntity?
 
     /**
      * Select a tpp by id.
@@ -52,7 +37,7 @@ interface TppsDao {
      * @return the tpp with tppId.
      */
     @Query("SELECT * FROM Tpps WHERE globalUrn = :globalUrn")
-    suspend fun getTppByGlobalUrn(globalUrn: String): Tpp?
+    suspend fun getTppByGlobalUrn(globalUrn: String): TppEntity?
 
     /**
      * Select a tpp by entityCode (provided by Backend).
@@ -61,7 +46,7 @@ interface TppsDao {
      * @return the tpp with entityCode.
      */
     @Query("SELECT * FROM Tpps WHERE entityCode = :entityCode")
-    suspend fun getTppByEntityCode(entityCode: String): Tpp?
+    suspend fun getTppByEntityCode(entityCode: String): TppEntity?
 
     /**
      * Insert a tpp in the database. If the tpp already exists, replace it.
@@ -69,7 +54,7 @@ interface TppsDao {
      * @param tpp the tpp to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTpp(tpp: Tpp)
+    suspend fun insertTpp(tpp: TppEntity)
 
     /**
      * Update a tpp.
@@ -78,7 +63,7 @@ interface TppsDao {
      * @return the number of tpps updated. This should always be 1.
      */
     @Update
-    suspend fun updateTpp(tpp: Tpp): Int
+    suspend fun updateTpp(tpp: TppEntity): Int
 
     /**
      * Update the followed status of a tpp
@@ -121,5 +106,5 @@ interface TppsDao {
     suspend fun deleteFollowedTpps(): Int
 
     @Query("SELECT * FROM Tpps WHERE country = :country")
-    fun getTppsByCountry(country: String): List<Tpp>
+    fun getTppsByCountry(country: String): List<TppEntity>
 }

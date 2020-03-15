@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.applego.oblog.tppwatch.tpps
 
 import android.content.Context
@@ -41,6 +25,7 @@ import com.applego.oblog.tppwatch.ServiceLocator
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.FakeRepository
 import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.source.local.TppEntity
 import com.applego.oblog.tppwatch.util.saveTppBlocking
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -83,7 +68,7 @@ class TppsFragmentTest {
     @Test
     fun displayTpp_whenRepositoryHasData() {
         // GIVEN - One tpp already in the repository
-        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1"))
+        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")))
 
         // WHEN - On startup
         launchActivity()
@@ -94,10 +79,10 @@ class TppsFragmentTest {
 
     @Test
     fun displayActiveTpp() {
-        val tpp = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
-        tpp.isActive = true
-        tpp.isFollowed = false
-        repository.saveTppBlocking(tpp)
+        val tppEntity = TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
+        tppEntity.active = true
+        tppEntity.followed = false
+        repository.saveTppBlocking(Tpp(tppEntity))
 
         launchActivity()
 
@@ -108,9 +93,9 @@ class TppsFragmentTest {
         onView(withText(R.string.nav_active)).perform(click()) // Goes to FALSE
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
 
-        tpp.isActive = false
-        tpp.isFollowed = true
-        repository.saveTppBlocking(tpp)
+        tppEntity.active = false
+        tppEntity.followed = true
+        repository.saveTppBlocking(Tpp(tppEntity))
 
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_followed)).perform(click())
@@ -119,9 +104,9 @@ class TppsFragmentTest {
 
     @Test
     fun displayFollowedTpp() {
-        var tpp1 = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
-        tpp1.isFollowed = true
-        repository.saveTppBlocking(tpp1)
+        var tppEntity1 = TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
+        tppEntity1.followed = true
+        repository.saveTppBlocking(Tpp(tppEntity1))
 
         launchActivity()
 
@@ -138,7 +123,7 @@ class TppsFragmentTest {
 
     //@Test
     fun deleteOneTpp() {
-        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1"))
+        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")))
 
         launchActivity()
 
@@ -156,8 +141,8 @@ class TppsFragmentTest {
 
     //@Test
     fun deleteOneOfTwoTpps() {
-        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1"))
-        repository.saveTppBlocking(Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION2"))
+        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")))
+        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173282", "TITLE2", "DESCRIPTION2")))
 
         launchActivity()
 
@@ -177,8 +162,8 @@ class TppsFragmentTest {
 
     @Test
     fun markTppAsFollowed() {
-        var tpp1 = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
-        repository.saveTppBlocking(tpp1)
+        var tppEntity1 = TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
+        repository.saveTppBlocking(Tpp(tppEntity1))
 
         launchActivity()
 
@@ -201,8 +186,8 @@ class TppsFragmentTest {
 
     @Test
     fun markTppAsActive() {
-        var aTpp = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
-        repository.saveTppBlocking(aTpp)
+        var aTpp = TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
+        repository.saveTppBlocking(Tpp(aTpp))
 
         launchActivity()
 
@@ -224,10 +209,10 @@ class TppsFragmentTest {
     @Test
     fun showAllTpps() {
         // Add one active tpp and one followed tpp
-        var tpp1 = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
-        repository.saveTppBlocking(tpp1)
-        var tpp2 = Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION2")
-        repository.saveTppBlocking(tpp2)
+        var tpp1 = TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
+        repository.saveTppBlocking(Tpp(tpp1))
+        var tpp2 = TppEntity("Entity_CZ28173282", "TITLE2", "DESCRIPTION2")
+        repository.saveTppBlocking(Tpp(tpp2))
 
         launchActivity()
 
@@ -250,16 +235,16 @@ class TppsFragmentTest {
     @Test
     fun showActiveTpps() {
         // Add 2 active tpps and one followed tpp
-        var tpp1 = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
-        tpp1.isActive = true
-        var tpp2 = Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION2")
-        tpp2.isActive = true
-        var tpp3 = Tpp("Entity_CZ28173283", "TITLE3", "DESCRIPTION3")
-        tpp3.isFollowed = true
+        var tppEntity1 = TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
+        tppEntity1.active = true
+        var tppEntity2 = TppEntity("Entity_CZ28173282", "TITLE2", "DESCRIPTION2")
+        tppEntity2.active = true
+        var tppEntity3 = TppEntity("Entity_CZ28173283", "TITLE3", "DESCRIPTION3")
+        tppEntity3.followed = true
 
-        repository.saveTppBlocking(tpp1)
-        repository.saveTppBlocking(tpp2)
-        repository.saveTppBlocking(tpp3)
+        repository.saveTppBlocking(Tpp(tppEntity1))
+        repository.saveTppBlocking(Tpp(tppEntity2))
+        repository.saveTppBlocking(Tpp(tppEntity3))
 
         launchActivity()
         // By default ALL is selected
@@ -285,16 +270,15 @@ class TppsFragmentTest {
     @Test
     fun showFollowedTpps() {
         // Add one active tpp and 2 followed tpps
-        var tpp1 = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
-        tpp1.isActive = true
-
-        var tpp2 = Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION2")
-        tpp2.isFollowed = true
-        var tpp3 = Tpp("Entity_CZ28173283", "TITLE3", "DESCRIPTION3")
-        tpp3.isFollowed = true
-        repository.saveTppBlocking(tpp1)
-        repository.saveTppBlocking(tpp2)
-        repository.saveTppBlocking(tpp3)
+        var tppEntity1 = TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
+        tppEntity1.active = true
+        var tppEntity2 = TppEntity("Entity_CZ28173282", "TITLE2", "DESCRIPTION2")
+        tppEntity2.followed = true
+        var tppEntity3 = TppEntity("Entity_CZ28173283", "TITLE3", "DESCRIPTION3")
+        tppEntity3.followed = true
+        repository.saveTppBlocking(Tpp(tppEntity1))
+        repository.saveTppBlocking(Tpp(tppEntity2))
+        repository.saveTppBlocking(Tpp(tppEntity3))
 
         launchActivity()
 

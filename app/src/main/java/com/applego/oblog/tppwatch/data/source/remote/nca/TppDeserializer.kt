@@ -1,6 +1,7 @@
 package com.applego.oblog.tppwatch.data.source.remote.nca
 
 import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.source.local.TppEntity
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
@@ -17,6 +18,6 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         val name: String  = jsonObject?.get("name")?.getAsString() ?: ""
         val description: String = jsonObject?.get("description")?.asString ?: ""
 
-        return Tpp(code, name, description)
+        return Tpp(TppEntity(code, name, description))
     }
 }

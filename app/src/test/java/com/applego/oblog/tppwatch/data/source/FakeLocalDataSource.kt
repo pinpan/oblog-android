@@ -33,7 +33,7 @@ class FakeLocalDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : Local
     }
 
     override suspend fun getTpp(tppId: String): Result<Tpp> {
-        tpps?.firstOrNull { it.id == tppId }?.let { return Success(it) }
+        tpps?.firstOrNull { it.getId() == tppId }?.let { return Success(it) }
         return Error(
             Exception("Tpp not found")
         )
@@ -44,22 +44,22 @@ class FakeLocalDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : Local
     }
 
     override suspend fun udateFollowing(tpp: Tpp, follow: Boolean) {
-        tpps?.firstOrNull { it.id == tpp.id }?.let { it.isFollowed = true }
+        tpps?.firstOrNull { it.getId() == tpp.getId() }?.let { it.setFollowed(true)}
     }
 
     override suspend fun setTppActivateFlag(tppId: String, active: Boolean) {
-        tpps?.firstOrNull { it.id == tppId }?.let { it.isActive = active}
+        tpps?.firstOrNull { it.getId() == tppId }?.let { it.setActive(active)}
     }
 
-    override suspend fun clearFollowedTpps() {
-        tpps?.removeIf { it.isFollowed }
-    }
+    /*override suspend fun clearFollowedTpps() {
+        tpps?.removeIf { it.tppEntity.isFollowed }
+    }*/
 
     override suspend fun deleteAllTpps() {
         tpps?.clear()
     }
 
     override suspend fun deleteTpp(tppId: String) {
-        tpps?.removeIf { it.id == tppId }
+        tpps?.removeIf { it.getId() == tppId }
     }
 }

@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.statistics
 
 import android.content.Context
@@ -32,6 +17,7 @@ import com.applego.oblog.tppwatch.ServiceLocator
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.FakeRepository
 import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.source.local.TppEntity
 import com.applego.oblog.tppwatch.util.DataBindingIdlingResource
 import com.applego.oblog.tppwatch.util.monitorFragment
 import com.applego.oblog.tppwatch.util.saveTppBlocking
@@ -86,13 +72,13 @@ class StatisticsFragmentTest {
     fun tpps_showsNonEmptyMessage() {
         // Given some tpps
         repository.apply {
-            var tpp1 = Tpp("Entity_CZ28173281", "Title1", "Description1")
-            tpp1.isActive = true
-            tpp1.isFollowed = false
-            saveTppBlocking(tpp1)
-            var tpp2 = Tpp("Entity_CZ28173282", "Title2", "Description2")
-            tpp2.isFollowed = false
-            saveTppBlocking(tpp2)
+            var tpp1 = TppEntity("Entity_CZ28173281", "Title1", "Description1")
+            tpp1.active = true
+            tpp1.followed = false
+            saveTppBlocking(Tpp(tpp1))
+            var tpp2 = TppEntity("Entity_CZ28173282", "Title2", "Description2")
+            tpp2.followed = false
+            saveTppBlocking(Tpp(tpp2))
         }
 
         val scenario = launchFragmentInContainer<StatisticsFragment>(Bundle(), R.style.AppTheme)

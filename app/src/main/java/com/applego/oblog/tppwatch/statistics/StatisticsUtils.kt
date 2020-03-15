@@ -26,9 +26,8 @@ internal fun getActiveAndFollowedStats(tpps: List<Tpp>?): StatsResult {
     return if (tpps == null || tpps.isEmpty()) {
         StatsResult(0f, 0f)
     } else {
-        val totalTpps = tpps.size
-        val numberOfActiveTpps = tpps.count { it.isActive }
-        val numberOfFollowedTpps = tpps.count { it.isFollowed}
+        val numberOfActiveTpps = tpps.count { it.isActive()}
+        val numberOfFollowedTpps = tpps.count { it.isFollowed()}
         StatsResult(
             activeTppsPercent = 100f * numberOfActiveTpps / tpps.size,
             followedTppsPercent = 100f * numberOfFollowedTpps / tpps.size

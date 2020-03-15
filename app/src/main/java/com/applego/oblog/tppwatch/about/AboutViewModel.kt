@@ -1,30 +1,11 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.applego.oblog.tppwatch.about
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.applego.oblog.tppwatch.Event
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.data.source.TppsRepository
-import kotlinx.coroutines.launch
 
 /**
  * ViewModel for the Add/Edit screen.
@@ -68,9 +49,9 @@ class AboutViewModel(
     }
 
     private fun onTppLoaded(tpp: Tpp) {
-        title.value = tpp.title
-        description.value = tpp.description
-        tppFollowed = tpp.isFollowed
+        title.value = tpp.getTitle()
+        description.value = tpp.getDescription()
+        tppFollowed = tpp.isFollowed()
         _dataLoading.value = false
         isDataLoaded = true
     }
@@ -85,10 +66,6 @@ class AboutViewModel(
         val currentDescription = description.value
 
         if (currentTitle == null || currentDescription == null) {
-            _snackbarText.value = Event(R.string.empty_tpp_message)
-            return
-        }
-        if (Tpp("Entity_CZ28173282", currentTitle, currentDescription).isEmpty) {
             _snackbarText.value = Event(R.string.empty_tpp_message)
             return
         }

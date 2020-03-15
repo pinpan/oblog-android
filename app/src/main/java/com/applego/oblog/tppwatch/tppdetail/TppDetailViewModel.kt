@@ -60,16 +60,16 @@ open class TppDetailViewModel(
     val snackbarText: LiveData<Event<Int>> = _snackbarText
 
     private val tppId: String?
-        get() = _tpp.value?.id
+        get() = _tpp.value?.getId()
 
     public val description: String?
         get() {
-            return tpp.value?.description ?: ""
+            return tpp.value?.getDescription() ?: ""
         }
 
     public var ebaPassport: EbaPassport?
         get() {
-            return tpp.value?.ebaPassport?: EbaPassport()
+            return tpp.value?.getEbaPassport()?: EbaPassport()
         }
         set(pass: EbaPassport?) {
             this.ebaPassport = pass
@@ -77,12 +77,12 @@ open class TppDetailViewModel(
 
     // This LiveData depends on another so we can use a transformation.
     val followed: LiveData<Boolean> = Transformations.map(_tpp) { input: Tpp? ->
-        input?.isFollowed ?: false
+        input?.isFollowed() ?: false
     }
 
     // This LiveData depends on another so we can use a transformation.
     val active: LiveData<Boolean> = Transformations.map(_tpp) { input: Tpp? ->
-        input?.isActive ?: false
+        input?.isActive() ?: false
     }
 
     /*fun deleteTpp() = viewModelScope.launch {
@@ -97,7 +97,7 @@ open class TppDetailViewModel(
     }
 
     fun setFollowed(follow: Boolean) = viewModelScope.launch {
-        _tpp.value?.isFollowed = follow
+        _tpp.value?.setFollowed(follow)
         val tpp = _tpp.value ?: return@launch
         tppsRepository.setTppFollowedFlag(tpp, follow)
 

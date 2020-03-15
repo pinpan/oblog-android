@@ -20,9 +20,10 @@ import com.applego.oblog.tppwatch.FakeFailingTppsLocalDataSource
 import com.applego.oblog.tppwatch.FakeFailingTppsRemoteDataSource
 import com.applego.oblog.tppwatch.LiveDataTestUtil
 import com.applego.oblog.tppwatch.MainCoroutineRule
-import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.DefaultTppsRepository
 import com.applego.oblog.tppwatch.data.source.FakeRepository
+import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.source.local.TppEntity
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -37,7 +38,7 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class StatisticsViewModelTest {
 
-    // Executes each tpp synchronously using Architecture Components.
+    // Executes each tppEntity synchronously using Architecture Components.
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
@@ -71,15 +72,15 @@ class StatisticsViewModelTest {
     @Test
     fun loadNonEmptyTppsFromRepository_NonEmptyResults() {
         // We initialise the tpps to 3, with one active and two followed
-        val tpp1 = Tpp("Entity_CZ28173281", "Title1", "Description1")
-        tpp1.isFollowed = true
-        val tpp2 = Tpp("Entity_CZ28173282", "Title2", "Description2")
-        tpp2.isFollowed = true
-        val tpp3 = Tpp("Entity_CZ28173283", "Title3", "Description3")
-        tpp3.isFollowed = true
-        val tpp4 = Tpp("Entity_CZ28173284", "Title4", "Description4")
-        tpp3.isActive = true
-        tppsRepository.addTpps(tpp1, tpp2, tpp3, tpp4)
+        val tppEntity1 = TppEntity("Entity_CZ28173281", "Title1", "Description1")
+        tppEntity1.followed = true
+        val tppEntity2 = TppEntity("Entity_CZ28173282", "Title2", "Description2")
+        tppEntity2.followed = true
+        val tppEntity3 = TppEntity("Entity_CZ28173283", "Title3", "Description3")
+        tppEntity3.followed = true
+        val tppEntity4 = TppEntity("Entity_CZ28173284", "Title4", "Description4")
+        tppEntity3.active = true
+        tppsRepository.addTpps(Tpp(tppEntity1), Tpp(tppEntity2), Tpp(tppEntity3), Tpp(tppEntity4))
 
         // When loading of Tpps is requested
         statisticsViewModel.start()
@@ -117,7 +118,7 @@ class StatisticsViewModelTest {
         // Pause dispatcher so we can verify initial values
         mainCoroutineRule.pauseDispatcher()
 
-        // Load the tpp in the viewmodel
+        // Load the tppEntity in the viewmodel
         statisticsViewModel.start()
 
         // Then progress indicator is shown

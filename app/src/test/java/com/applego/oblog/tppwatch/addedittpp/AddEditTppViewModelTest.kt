@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.addedittpp
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -20,8 +5,9 @@ import com.applego.oblog.tppwatch.LiveDataTestUtil.getValue
 import com.applego.oblog.tppwatch.MainCoroutineRule
 import com.applego.oblog.tppwatch.R.string
 import com.applego.oblog.tppwatch.assertSnackbarMessage
-import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.FakeRepository
+import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.source.local.TppEntity
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
@@ -45,11 +31,11 @@ class AddEditTppViewModelTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-    // Executes each tpp synchronously using Architecture Components.
+    // Executes each tppEntity synchronously using Architecture Components.
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
-    private val tpp = Tpp("Entity_CZ28173281", "Title1", "Description1")
+    private val tppEntity = TppEntity("Entity_CZ28173281", "Title1", "Description1")
 
     @Before
     fun setupViewModel() {
@@ -72,9 +58,9 @@ class AddEditTppViewModelTest {
 
         val newTpp = tppsRepository.tppsServiceData.values.first()
 
-        // Then a tpp is saved in the repository and the view updated
-        assertThat(newTpp.title).isEqualTo(newTitle)
-        assertThat(newTpp.description).isEqualTo(newDescription)
+        // Then a tppEntity is saved in the repository and the view updated
+        assertThat(newTpp.getTitle()).isEqualTo(newTitle)
+        assertThat(newTpp.getDescription()).isEqualTo(newDescription)
     }
 
     @Test
@@ -82,8 +68,8 @@ class AddEditTppViewModelTest {
         // Pause dispatcher so we can verify initial values
         mainCoroutineRule.pauseDispatcher()
 
-        // Load the tpp in the viewmodel
-        addEditTppViewModel.start(tpp.id)
+        // Load the tppEntity in the viewmodel
+        addEditTppViewModel.start(tppEntity.getId())
 
         // Then progress indicator is shown
         assertThat(getValue(addEditTppViewModel.dataLoading)).isTrue()
@@ -97,15 +83,15 @@ class AddEditTppViewModelTest {
 
     @Test
     fun loadTpps_tppShown() {
-        // Add tpp to repository
-        tppsRepository.addTpps(tpp)
+        // Add tppEntity to repository
+        tppsRepository.addTpps(Tpp(tppEntity))
 
-        // Load the tpp with the viewmodel
-        addEditTppViewModel.start(tpp.id)
+        // Load the tppEntity with the viewmodel
+        addEditTppViewModel.start(tppEntity.getId())
 
-        // Verify a tpp is loaded
-        assertThat(getValue(addEditTppViewModel.title)).isEqualTo(tpp.title)
-        assertThat(getValue(addEditTppViewModel.description)).isEqualTo(tpp.description)
+        // Verify a tppEntity is loaded
+        assertThat(getValue(addEditTppViewModel.title)).isEqualTo(tppEntity.getTitle())
+        assertThat(getValue(addEditTppViewModel.description)).isEqualTo(tppEntity.getDescription())
         assertThat(getValue(addEditTppViewModel.dataLoading)).isFalse()
     }
 
@@ -145,10 +131,10 @@ class AddEditTppViewModelTest {
             this.description.value = description
         }
 
-        // When saving an unFollowed tpp
+        // When saving an unFollowed tppEntity
         addEditTppViewModel.saveTpp()
 
         // Then the snackbar shows an error
-        assertSnackbarMessage(addEditTppViewModel.snackbarText, string.empty_tpp_message)
+        // isEmpty REMOVED FROM ENTITIY: assertSnackbarMessage(addEditTppViewModel.snackbarText, string.empty_tpp_message)
     }
 }

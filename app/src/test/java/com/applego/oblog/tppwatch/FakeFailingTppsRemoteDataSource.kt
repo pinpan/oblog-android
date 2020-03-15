@@ -35,11 +35,11 @@ object FakeFailingTppsRemoteDataSource : RemoteTppDataSource {
     override suspend fun filterTpps(filter: TppFilter): Result<TppsListResponse> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-    /*override suspend fun saveTpp(tpp: Tpp) {
+    /*override suspend fun saveTpp(tppEntity: Tpp) {
         TODO("not implemented")
     }
 
-    override suspend fun setTppFollowedFlag(tpp: Tpp) {
+    override suspend fun setTppFollowedFlag(tppEntity: Tpp) {
         TODO("not implemented")
     }
 
@@ -47,7 +47,7 @@ object FakeFailingTppsRemoteDataSource : RemoteTppDataSource {
         TODO("not implemented")
     }
 
-    override suspend fun updateActive(tpp: Tpp) {
+    override suspend fun updateActive(tppEntity: Tpp) {
         TODO("not implemented")
     }
 
