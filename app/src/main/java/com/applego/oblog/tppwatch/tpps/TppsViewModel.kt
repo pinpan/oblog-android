@@ -359,7 +359,7 @@ class TppsViewModel(
                 if (tpp.getEbaPassport() != null) {
                     tpp.getEbaPassport().countryMap.entries.forEach() {
                         if (it.value != null) {
-                            val services = it.value as List<Service>
+                            val services = it.value as List<Psd2Service>
                             services.forEach {serv ->
                                 if (serv.title.equals(psdService.code)) {
                                     filteredTpps.add(tpp)

@@ -1,14 +1,11 @@
-package com.applego.oblog.tppwatch.data.source.remote.eba
+package com.applego.oblog.tppwatch.data.source.remote.serializer
 
-import com.applego.oblog.tppwatch.data.source.local.EbaPassport
-import com.applego.oblog.tppwatch.data.source.local.OblogTypeConverters
-import com.applego.oblog.tppwatch.data.source.local.Service
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.source.local.Psd2Service
 import com.google.gson.*
 import java.lang.reflect.Type
 
-class TppServiceDeserializer : JsonDeserializer<Service> {
-    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Service {
+class TppServiceDeserializer : JsonDeserializer<Psd2Service> {
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Psd2Service {
 
         var jsonObject: JsonObject? = json?.asJsonObject
 
@@ -25,16 +22,16 @@ class TppServiceDeserializer : JsonDeserializer<Service> {
             }
     }
 
-    fun convertFrom(jsonObject: JsonObject?) : Service {
+    fun convertFrom(jsonObject: JsonObject?) : Psd2Service {
         if (jsonObject == null) {
-            return Service();
+            return Psd2Service();
         }
 
         val ebaEntityVersion: String = jsonObject?.get("ebaEntityVersion")?.asString ?: ""
         val description: String = jsonObject?.get("description")?.asString ?: ""
 
         val country = jsonObject.get("ENT_COU_RES").asString
-        var service = Service(country, description, jsonObject?.get("globalUrn")?.asString ?:"")
+        var service = Psd2Service(country, description, jsonObject?.get("globalUrn")?.asString ?:"")
 
         return service
     }

@@ -1,11 +1,10 @@
-package com.applego.oblog.tppwatch.data.source.remote.eba
+package com.applego.oblog.tppwatch.data.source.remote.serializer
 
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.google.gson.*
 import java.lang.reflect.Type
 import kotlin.collections.ArrayList
 import kotlin.collections.List
-import kotlin.math.log
 
 class TppListDeserializer : JsonDeserializer<List<Tpp>> {
 

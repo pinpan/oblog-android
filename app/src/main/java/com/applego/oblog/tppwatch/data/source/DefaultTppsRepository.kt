@@ -8,7 +8,8 @@ import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
-import com.applego.oblog.tppwatch.data.source.remote.eba.TppsListResponse
+import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
+import com.applego.oblog.tppwatch.data.source.remote.nca.TppsNcaDataSource
 import com.applego.oblog.tppwatch.util.EspressoIdlingResource
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
@@ -25,9 +26,10 @@ import java.util.concurrent.TimeUnit
  * data source fails. Remote is the source of truth.
  */
 class DefaultTppsRepository (
-        /*private */var tppsRemoteDataSource: RemoteTppDataSource,
-        private val tppsLocalDataSource: LocalTppDataSource,
-        private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+        /*private */var tppsEbaDataSource: RemoteTppDataSource,
+        /*private */var tppsNcaDataSource: RemoteTppDataSource,
+                    private val tppsLocalDataSource: LocalTppDataSource,
+                    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
     ) : TppsRepository {
 
     private var cachedTpps: ConcurrentMap<String, Tpp> = ConcurrentHashMap()
@@ -64,7 +66,7 @@ class DefaultTppsRepository (
      */
     private suspend fun fetchTppsFromRemoteDatasource() {
         // If forced to update -> Get remotes now, otherwise call
-        val tppsListResponse: Result<TppsListResponse> = tppsRemoteDataSource.getAllTpps()
+        val tppsListResponse: Result<TppsListResponse> = tppsEbaDataSource.getAllTpps()
         when (tppsListResponse) {
             is Success -> {
                 refreshLocalDataSource(tppsListResponse.data.tppsList)
@@ -113,7 +115,7 @@ class DefaultTppsRepository (
         forceUpdate: Boolean
     ): Result<Tpp> {
         // Remote first
-        val result = tppsRemoteDataSource.getTpp(tppId)
+        val result = tppsEbaDataSource.getTppById("EU", tppId)
         when (result) {
             is Error -> Timber.w("Remote data source fetch failed")
             is Result.Warn -> Timber.w("Remote data source fetch failed die to '" + result.message + "'")

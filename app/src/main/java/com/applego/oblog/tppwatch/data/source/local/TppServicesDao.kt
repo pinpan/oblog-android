@@ -9,7 +9,7 @@ import androidx.room.Query
 interface TppServicesDao {
 
     /**
-     *  Associate a Service with a Tpp
+     *  Associate a Psd2Service with a Tpp
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addTppService( tppService: TppService)
@@ -48,9 +48,9 @@ interface TppServicesDao {
     suspend fun getServiceById(serviceId: String): TppService?
 
     /**
-     * Insert a Service in the database. If the Service already exists, replace it.
+     * Insert a Psd2Service in the database. If the Psd2Service already exists, replace it.
      *
-     * @param Service the Service to be inserted.
+     * @param Psd2Service the Psd2Service to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertService(service: TppService)

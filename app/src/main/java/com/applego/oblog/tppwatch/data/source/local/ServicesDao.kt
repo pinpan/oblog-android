@@ -13,7 +13,7 @@ interface ServicesDao {
      * @return all services.
      */
     @Query("SELECT * FROM Services")
-    suspend fun getServices(): List<Service>
+    suspend fun getServices(): List<Psd2Service>
 
     /**
      * Select a service by id.
@@ -22,15 +22,15 @@ interface ServicesDao {
      * @return the service with serviceId.
      */
     @Query("SELECT * FROM Services WHERE id = :serviceId")
-    suspend fun getServiceById(serviceId: String): Service?
+    suspend fun getServiceById(serviceId: String): Psd2Service?
 
     /**
-     * Insert a Service in the database. If the Service already exists, replace it.
+     * Insert a Psd2Service in the database. If the Psd2Service already exists, replace it.
      *
-     * @param Service the Service to be inserted.
+     * @param Psd2Service the Psd2Service to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertService(service: Service)
+    suspend fun insertService(service: Psd2Service)
 
 
 }

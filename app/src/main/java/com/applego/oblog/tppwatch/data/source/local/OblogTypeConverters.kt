@@ -14,10 +14,10 @@ class OblogTypeConverters {
     val ebaPassportType = object : TypeToken<EbaPassport>() {
     }.getType()
 
-    val ebaPassportMapListType = object : TypeToken<List<Map<String, List<Service>>>>() {
+    val ebaPassportMapListType = object : TypeToken<List<Map<String, List<Psd2Service>>>>() {
     }.getType()
 
-    val ebaPassportCountryMapType = object : TypeToken<Map<String, MutableList<Service>>>() {
+    val ebaPassportCountryMapType = object : TypeToken<Map<String, MutableList<Psd2Service>>>() {
     }.getType()
 
     @TypeConverter
@@ -56,12 +56,12 @@ class OblogTypeConverters {
 
     @TypeConverter
     fun fromJsonElementToEbaPassport(json : JsonElement) : EbaPassport {
-        val aList: List<Map<String, List<Service>>> = gson.fromJson(json, ebaPassportMapListType)
+        val aList: List<Map<String, List<Psd2Service>>> = gson.fromJson(json, ebaPassportMapListType)
 
         val ebaPassport = EbaPassport()
         ebaPassport.serviceMaps = aList
 
-        val countryMap = HashMap<String, MutableList<Service>>()
+        val countryMap = HashMap<String, MutableList<Psd2Service>>()
         ebaPassport.countryMap = countryMap
 
         for (aMap in aList) {
@@ -69,16 +69,16 @@ class OblogTypeConverters {
             for (entry in entrySet) {
                 val countryCode = entry.key
 
-                val theServices = ArrayList<Service>()
+                val theServices = ArrayList<Psd2Service>()
                 countryMap.put(countryCode, theServices)
 
                 if (entry.value is String) {
                     val ebaService = EbaService.findService(entry.value as String)
-                    theServices.add(Service(ebaService.code, ebaService.psd2Code, ebaService.description))
+                    theServices.add(Psd2Service(ebaService.code, ebaService.psd2Code, ebaService.description))
                 } else {
                     for (aService in entry.value as List<String>) {
                         val ebaService = EbaService.findService(aService)
-                        theServices.add(Service(ebaService.code, ebaService.psd2Code, ebaService.description))
+                        theServices.add(Psd2Service(ebaService.code, ebaService.psd2Code, ebaService.description))
                     }
                 }
             }

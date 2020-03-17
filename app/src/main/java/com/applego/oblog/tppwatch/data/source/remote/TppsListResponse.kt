@@ -1,4 +1,4 @@
-package com.applego.oblog.tppwatch.data.source.remote.eba
+package com.applego.oblog.tppwatch.data.source.remote
 
 import com.applego.oblog.tppwatch.data.Paging
 import com.applego.oblog.tppwatch.data.source.local.Tpp

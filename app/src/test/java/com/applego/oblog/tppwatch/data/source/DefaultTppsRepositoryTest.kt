@@ -4,7 +4,7 @@ import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.TppEntity
-import com.applego.oblog.tppwatch.data.source.remote.eba.TppsListResponse
+import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,7 +26,8 @@ class DefaultTppsRepositoryTest {
     private val remoteTppEntities = listOf(tppEntity1, tppEntity2).sortedBy { it.getId() }
     private val localTppEntities = listOf(tppEntity3).sortedBy { it.getId() }
     private val newTppsResponse = TppsListResponse(listOf(tppEntity3).sortedBy { it.getId() })
-    private lateinit var tppsRemoteDataSource: FakeRemoteDataSource
+    private lateinit var tppsEbaDataSource: FakeRemoteDataSource
+    private lateinit var tppsNcaDataSource: FakeRemoteDataSource
     private lateinit var tppsLocalDataSource: FakeLocalDataSource
 
     // Class under test
@@ -35,11 +36,12 @@ class DefaultTppsRepositoryTest {
     @ExperimentalCoroutinesApi
     @Before
     fun createRepository() {
-        tppsRemoteDataSource = FakeRemoteDataSource(TppsListResponse(remoteTppEntities.toMutableList()))
+        tppsEbaDataSource = FakeRemoteDataSource(TppsListResponse(remoteTppEntities.toMutableList()))
+        tppsNcaDataSource = FakeRemoteDataSource(TppsListResponse(remoteTppEntities.toMutableList()))
         tppsLocalDataSource = FakeLocalDataSource(localTppEntities.toMutableList())
         // Get a reference to the class under test
         tppsRepository = DefaultTppsRepository(
-            tppsRemoteDataSource, tppsLocalDataSource, Dispatchers.Unconfined
+            tppsEbaDataSource, tppsNcaDataSource, tppsLocalDataSource, Dispatchers.Unconfined
         )
     }
 
@@ -49,7 +51,7 @@ class DefaultTppsRepositoryTest {
         val emptyRemoteSource = FakeRemoteDataSource()
         val emptyLocalSource = FakeLocalDataSource()
         val tppsRepository = DefaultTppsRepository(
-            emptyRemoteSource, emptyLocalSource, Dispatchers.Unconfined
+            emptyRemoteSource, emptyRemoteSource, emptyLocalSource, Dispatchers.Unconfined
         )
 
         assertThat(tppsRepository.getTpps(true) is Success).isTrue()
@@ -60,7 +62,7 @@ class DefaultTppsRepositoryTest {
         // Trigger the repository to load data, which loads from remote and caches
         val initial = tppsRepository.getTpps(true)
 
-        tppsRemoteDataSource.tppsListResponse = TppsListResponse(newTppsResponse.tppsList!!.toMutableList())
+        tppsEbaDataSource.tppsListResponse = TppsListResponse(newTppsResponse.tppsList!!.toMutableList())
 
         val second = tppsRepository.getTpps()
 
@@ -80,7 +82,7 @@ class DefaultTppsRepositoryTest {
     // TODO-PZA#FIX this test: @Test
     fun saveTpp_savesToCacheLocalAndRemote() = runBlockingTest {
         // Make sure newTppEntity is not in the remote or local datasources or cache
-        assertThat(tppsRemoteDataSource.tppsListResponse?.tppsList).doesNotContain(newTppEntity)
+        assertThat(tppsEbaDataSource.tppsListResponse?.tppsList).doesNotContain(newTppEntity)
         assertThat(tppsLocalDataSource.tpps).doesNotContain(newTppEntity)
         assertThat((tppsRepository.getTpps(true) as? Success)?.data).doesNotContain(newTppEntity)
 
@@ -88,7 +90,7 @@ class DefaultTppsRepositoryTest {
         tppsRepository.saveTpp(Tpp(newTppEntity))
 
         // Then the remote and local sources are called and the cache is updated
-        assertThat(tppsRemoteDataSource.tppsListResponse?.tppsList).contains(newTppEntity)
+        assertThat(tppsEbaDataSource.tppsListResponse?.tppsList).contains(newTppEntity)
         assertThat(tppsLocalDataSource.tpps).contains(newTppEntity)
 
         val result = tppsRepository.getTpps(true) as? Success
@@ -101,7 +103,7 @@ class DefaultTppsRepositoryTest {
         val tpps = tppsRepository.getTpps(true) as Success
 
         // Set a different list of tpps in REMOTE
-        tppsRemoteDataSource.tppsListResponse?.tppsList = remoteTppEntities.toMutableList()
+        tppsEbaDataSource.tppsListResponse?.tppsList = remoteTppEntities.toMutableList()
 
         // But if tpps are cached, subsequent calls load from cache
         val cachedTpps = tppsRepository.getTpps()
@@ -121,7 +123,7 @@ class DefaultTppsRepositoryTest {
     @Test
     fun getTpps_WithDirtyCache_remoteUnavailable_error() = runBlockingTest {
         // Make remote data source unavailable
-        tppsRemoteDataSource.tppsListResponse?.tppsList = null
+        tppsEbaDataSource.tppsListResponse?.tppsList = null
 
         // Load tpps forcing remote load
         val refreshedTpps = tppsRepository.getTpps(false)
@@ -133,7 +135,7 @@ class DefaultTppsRepositoryTest {
     @Test
     fun getTpps_WithRemoteDataSourceUnavailable_tppsAreRetrievedFromLocal() = runBlockingTest {
         // When the remote data source is unavailable
-        tppsRemoteDataSource.tppsListResponse?.tppsList = null
+        tppsEbaDataSource.tppsListResponse?.tppsList = null
 
         // The repository fetches from the local source
         assertThat((tppsRepository.getTpps(false) as Success).data).isEqualTo(localTppEntities)
@@ -142,7 +144,7 @@ class DefaultTppsRepositoryTest {
     @Test
     fun getTpps_WithBothDataSourcesUnavailable_returnsError() = runBlockingTest {
         // When both sources are unavailable
-        tppsRemoteDataSource.tppsListResponse?.tppsList = null
+        tppsEbaDataSource.tppsListResponse?.tppsList = null
         tppsLocalDataSource.tpps = null
 
         // The repository returns an error
@@ -168,11 +170,11 @@ class DefaultTppsRepositoryTest {
 
         // Verify it's in all the data sources
         assertThat(tppsLocalDataSource.tpps).contains(newTppEntity)
-        //assertThat(tppsRemoteDataSource.tpps).contains(newTppEntity)
+        //assertThat(tppsEbaDataSource.tpps).contains(newTppEntity)
 
         // Verify it's in the cache
         tppsLocalDataSource.deleteAllTpps() // Make sure they don't come from local
-        //tppsRemoteDataSource.deleteAllTpps() // Make sure they don't come from remote
+        //tppsEbaDataSource.deleteAllTpps() // Make sure they don't come from remote
         val result = tppsRepository.getTpps(true) as Success
         assertThat(result.data).contains(newTppEntity)
     }
@@ -212,11 +214,11 @@ class DefaultTppsRepositoryTest {
     @Test
     fun getTpp_repositoryCachesAfterFirstApiCall() = runBlockingTest {
         // Trigger the repository to load data, which loads from remote
-        tppsRemoteDataSource.tppsListResponse?.tppsList = mutableListOf(tppEntity1)
+        tppsEbaDataSource.tppsListResponse?.tppsList = mutableListOf(tppEntity1)
         tppsRepository.getTpp(tppEntity1.getId(), true)
 
         // Configure the remote data source to store a different tppEntity
-        tppsRemoteDataSource.tppsListResponse?.tppsList = mutableListOf(tppEntity2)
+        tppsEbaDataSource.tppsListResponse?.tppsList = mutableListOf(tppEntity2)
 
         val tpp1SecondTime = tppsRepository.getTpp(tppEntity1.getId()) as Success
         val tpp2SecondTime = tppsRepository.getTpp(tppEntity2.getId()) as Success
@@ -229,11 +231,11 @@ class DefaultTppsRepositoryTest {
     @Test
     fun getTpp_forceRefresh() = runBlockingTest {
         // Trigger the repository to load data, which loads from remote and caches
-        tppsRemoteDataSource.tppsListResponse?.tppsList = mutableListOf(tppEntity1)
+        tppsEbaDataSource.tppsListResponse?.tppsList = mutableListOf(tppEntity1)
         tppsRepository.getTpp(tppEntity1.getId())
 
         // Configure the remote data source to return a different tppEntity
-        tppsRemoteDataSource.tppsListResponse?.tppsList = mutableListOf(tppEntity2)
+        tppsEbaDataSource.tppsListResponse?.tppsList = mutableListOf(tppEntity2)
 
         // Force refresh
         val tpp1SecondTime = tppsRepository.getTpp(tppEntity1.getId(), true)
@@ -247,7 +249,7 @@ class DefaultTppsRepositoryTest {
     // TODO-PZA#FIX this test: @Test
     fun clearFollowedTpps() = runBlockingTest {
         val followedTpp = tppEntity1.tppEntity.copy().apply { followed = true }
-        tppsRemoteDataSource.tppsListResponse?.tppsList = mutableListOf(Tpp(followedTpp), tppEntity2)
+        tppsEbaDataSource.tppsListResponse?.tppsList = mutableListOf(Tpp(followedTpp), tppEntity2)
         //tppsRepository.clearFollowedTpps()
 
         val tpps = (tppsRepository.getTpps(false) as? Success)?.data

@@ -29,7 +29,7 @@ import com.applego.oblog.tppwatch.data.source.remote.eba.TppsEbaDataSource
 import kotlinx.coroutines.runBlocking
 
 /**
- * A Service Locator for the [TppsRepository]. This is the mock version, with a
+ * A Psd2Service Locator for the [TppsRepository]. This is the mock version, with a
  * [FakeTppsRemoteDataSource].
  */
 object ServiceLocator {

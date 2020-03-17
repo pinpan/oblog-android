@@ -9,7 +9,7 @@ import java.util.*
 @Entity(tableName = "services")
 // TODO: Rename to TppService
 @TypeConverters(OblogTypeConverters::class)
-data class Service @JvmOverloads constructor(
+data class Psd2Service @JvmOverloads constructor(
         @ColumnInfo(name = "title") var title: String = "",
         @ColumnInfo(name = "psd2Code") var psd2Code: String = "",
         @ColumnInfo(name = "description") var description: String = "",

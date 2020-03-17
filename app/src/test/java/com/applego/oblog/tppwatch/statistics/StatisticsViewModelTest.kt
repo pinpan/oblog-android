@@ -100,6 +100,7 @@ class StatisticsViewModelTest {
             val errorViewModel = StatisticsViewModel(
                 DefaultTppsRepository(
                     FakeFailingTppsRemoteDataSource,
+                    FakeFailingTppsRemoteDataSource,
                     FakeFailingTppsLocalDataSource,
                     Dispatchers.Main  // Main is set in MainCoroutineRule
                 )

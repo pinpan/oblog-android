@@ -27,7 +27,7 @@ import kotlin.reflect.KProperty
 
 
 /**
- * An application that lazily provides a repository. Note that this Service Locator pattern is
+ * An application that lazily provides a repository. Note that this Psd2Service Locator pattern is
  * used to simplify the sample. Consider a Dependency Injection framework.
  *
  * Also, sets up Timber in the DEBUG BuildConfig. Read Timber's documentation for production setups.

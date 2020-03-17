@@ -19,16 +19,19 @@ package com.applego.oblog.tppwatch
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.TppFilter
 import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
-import com.applego.oblog.tppwatch.data.source.remote.eba.TppsListResponse
+import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 
 object FakeFailingTppsRemoteDataSource : RemoteTppDataSource {
     override suspend fun getAllTpps(): Result<TppsListResponse/*List<Tpp>*/> {
         return Result.Error(Exception("Test"))
     }
 
-    override suspend fun getTpp(tppId: String): Result<Tpp> {
+    override suspend fun getTppById(country: String, tppId: String): Result<Tpp> {
+        return Result.Error(Exception("Test"))
+    }
+
+    override suspend fun getTppByName(country: String, tppName: String): Result<Tpp> {
         return Result.Error(Exception("Test"))
     }
 

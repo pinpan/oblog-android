@@ -9,7 +9,7 @@ import androidx.room.ForeignKey
     primaryKeys = ["service", "tpp"], tableName = "tpp_services",
     foreignKeys = [
         ForeignKey(
-                entity = Service::class,
+                entity = Psd2Service::class,
                 parentColumns = ["id"],
                 childColumns = ["service"],
                 onDelete = ForeignKey.CASCADE

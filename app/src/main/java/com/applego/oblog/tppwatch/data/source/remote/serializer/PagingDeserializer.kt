@@ -1,4 +1,4 @@
-package com.applego.oblog.tppwatch.data.source.remote.eba
+package com.applego.oblog.tppwatch.data.source.remote.serializer
 
 import com.applego.oblog.tppwatch.data.Paging
 import com.google.gson.*

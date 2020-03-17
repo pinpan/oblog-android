@@ -1,5 +1,6 @@
-package com.applego.oblog.tppwatch.data.source.remote.eba
+package com.applego.oblog.tppwatch.data.source.remote.serializer
 
+import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import com.google.gson.*
 import java.lang.reflect.Type
 
@@ -24,5 +25,4 @@ class TppsListResponseDeserializer : JsonDeserializer<TppsListResponse> {
                 return INSTANCE!!
             }
     }
-
 }

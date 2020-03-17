@@ -22,18 +22,25 @@ import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.TppFilter
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
-import com.applego.oblog.tppwatch.data.source.remote.eba.TppsListResponse
+import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 
-class FakeRemoteDataSource(var tppsListResponse: TppsListResponse?/*MutableList<Tpp>*/ = TppsListResponse(mutableListOf())) : RemoteTppDataSource {
-    override suspend fun getAllTpps(): Result<TppsListResponse/*List<Tpp>*/> {
+class FakeRemoteDataSource(var tppsListResponse: TppsListResponse? = TppsListResponse(mutableListOf())) : RemoteTppDataSource {
+    override suspend fun getAllTpps(): Result<TppsListResponse> {
         tppsListResponse?.let { return Success(it) }
         return Error(
             Exception("Tpps not found")
         )
     }
 
-    override suspend fun getTpp(tppId: String): Result<Tpp> {
+    override suspend fun getTppById(country: String, tppId: String): Result<Tpp> {
         tppsListResponse?.tppsList?.firstOrNull { it.getId() == tppId }?.let { return Success(it) }
+        return Error(
+            Exception("Tpp not found")
+        )
+    }
+
+    override suspend fun getTppByName(country: String, tppTitle: String): Result<Tpp> {
+        tppsListResponse?.tppsList?.firstOrNull { it.getTitle() == tppTitle}?.let { return Success(it) }
         return Error(
             Exception("Tpp not found")
         )

@@ -1,18 +1,4 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 package com.applego.oblog.tppwatch.data.source.remote.eba
 
 import com.applego.oblog.apikey.ApiKey
@@ -22,6 +8,7 @@ import com.applego.oblog.tppwatch.data.TppFilter
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.TppsDao
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
+import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import kotlinx.coroutines.*
 import okio.Timeout
 import retrofit2.Response
@@ -65,10 +52,12 @@ class TppEbaDataSource internal constructor (
         return@withContext Result.Loading(Timeout())
     }
 
+    override suspend fun getTppById(country: String, tppId: String): Result<Tpp> {
+        return Result.Loading(Timeout().timeout(100, TimeUnit.MILLISECONDS));
+    }
 
-
-    override suspend fun getTpp(tppId: String): Result<Tpp> {
-        if (tppId.isNullOrBlank()) {
+    override suspend fun getTppByName(country: String, tppName: String): Result<Tpp> {
+        if (tppName.isNullOrBlank()) {
             //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             Result.Warn("TPP Not Found", "Cannot find a TPP with empty ID")
         }
@@ -104,19 +93,11 @@ class TppEbaDataSource internal constructor (
                 }
                 return Result.Success(tppsListResponse.paging)
             } else {
-                //System.out.println(response.errorBody())
                 return Result.Warn(response.code().toString(),  response.errorBody().toString())
             }
         } catch (ioe: IOException) {
             Timber.e(ioe, "IOException caught: %s", ioe.message)
             return Result.Error(ioe)
         }
-        // }
-
-            //override fun onFailure(call: Call<TppsListResponse>, t: Throwable) {
-            //    t.printStackTrace()
-            //}
-        //})
     }
-    /**/
 }

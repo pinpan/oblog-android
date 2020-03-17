@@ -14,17 +14,17 @@ data class EbaPassport @JvmOverloads constructor(
      * Map of counties and list of services which are passported to the corresponding country
      */
     @Embedded
-    var countryMap = HashMap<String, MutableList<Service>>()
+    var countryMap = HashMap<String, MutableList<Psd2Service>>()
 
     @Embedded
-    var serviceMaps : List<Map<String, List<Service>>> = ArrayList<Map<String, MutableList<Service>>>()
+    var serviceMaps : List<Map<String, List<Psd2Service>>> = ArrayList<Map<String, MutableList<Psd2Service>>>()
 
     class CountryVisa {
 
         var country = String()
-        var services : List<Service> = ArrayList<Service>()
+        var services : List<Psd2Service> = ArrayList<Psd2Service>()
 
-        constructor(country: String, services: List<Service>) {
+        constructor(country: String, services: List<Psd2Service>) {
             this.country = country
             this.services = services
         }
