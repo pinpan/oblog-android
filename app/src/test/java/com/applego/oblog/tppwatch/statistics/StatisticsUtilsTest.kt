@@ -13,7 +13,7 @@ class StatisticsUtilsTest {
 
     @Test
     fun getActiveAndFollowedStats_noFollowed() {
-        val aTppEntity = TppEntity("Entity_CZ28173281", "title", "desc")
+        val aTppEntity = TppEntity("Entity_CZ28173281", "title", "desc", "", "", "cz")
         aTppEntity.active = true
         val tpps = listOf(
                 Tpp(aTppEntity)
@@ -28,7 +28,7 @@ class StatisticsUtilsTest {
 
     @Test
     fun getActiveAndFollowedStats_noActive() {
-        var tppEntity1 = TppEntity("Entity_CZ28173281", "title", "desc")
+        var tppEntity1 = TppEntity("Entity_CZ28173281", "title", "desc", "", "", "cz")
         tppEntity1.followed = true
         val tpps = listOf(
                 Tpp(tppEntity1)
@@ -44,16 +44,16 @@ class StatisticsUtilsTest {
     @Test
     fun getActiveAndFollowedStats_both() {
         // Given 3 followed tpps and 2 active tpps
-        var tpp1 = TppEntity("Entity_CZ28173281", "title", "desc")
+        var tpp1 = TppEntity("Entity_CZ28173281", "title", "desc", "", "", "cz")
             tpp1.followed = true
-        var tpp2 = TppEntity("Entity_CZ28173282", "title", "desc")
+        var tpp2 = TppEntity("Entity_CZ28173282", "title", "desc", "", "", "cz")
             tpp2.followed = true
-        var tpp3 = TppEntity("Entity_CZ28173283", "title", "desc")
+        var tpp3 = TppEntity("Entity_CZ28173283", "title", "desc", "", "", "cz")
             tpp3.followed = true
 
-        var tpp4 = TppEntity("Entity_CZ28173284", "title", "desc")
+        var tpp4 = TppEntity("Entity_CZ28173284", "title", "desc", "", "", "cz")
             tpp4.active = true
-        var tpp5 = TppEntity("Entity_CZ28173285", "title", "desc")
+        var tpp5 = TppEntity("Entity_CZ28173285", "title", "desc", "", "", "cz")
             tpp5.active = true
 
         val tpps = listOf(

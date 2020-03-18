@@ -72,11 +72,11 @@ class StatisticsFragmentTest {
     fun tpps_showsNonEmptyMessage() {
         // Given some tpps
         repository.apply {
-            var tpp1 = TppEntity("Entity_CZ28173281", "Title1", "Description1")
+            var tpp1 = TppEntity("Entity_CZ28173281", "Title1", "Description1", "", "", "cz")
             tpp1.active = true
             tpp1.followed = false
             saveTppBlocking(Tpp(tpp1))
-            var tpp2 = TppEntity("Entity_CZ28173282", "Title2", "Description2")
+            var tpp2 = TppEntity("Entity_CZ28173282", "Title2", "Description2", "", "", "cz")
             tpp2.followed = false
             saveTppBlocking(Tpp(tpp2))
         }

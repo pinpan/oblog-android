@@ -39,7 +39,7 @@ class Tpp : TppModel {
 
     override fun isFollowed(): Boolean = tppEntity.isFollowed()
 
-    /*override */fun setFollowed(f: Boolean) {
+    fun setFollowed(f: Boolean) {
         tppEntity.followed = f
     }
 

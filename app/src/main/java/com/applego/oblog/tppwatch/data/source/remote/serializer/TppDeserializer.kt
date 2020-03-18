@@ -45,7 +45,7 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         // val status: String = jsonObject?.get("status")?.asString ?: ""
         val description: String = jsonObject?.get("description")?.asString ?: ""
 
-        var tpp = Tpp(TppEntity(entityCode, entityName, description, jsonObject?.get("globalUrn")?.asString ?:"", ebaEntityVersion))
+        var tpp = Tpp(TppEntity(entityCode, entityName, description, jsonObject?.get("globalUrn")?.asString ?:"", ebaEntityVersion, "cz"))
         tpp.tppEntity._country = cou
 
         val services = jsonObject?.get("services").asJsonArray ?: JsonArray()

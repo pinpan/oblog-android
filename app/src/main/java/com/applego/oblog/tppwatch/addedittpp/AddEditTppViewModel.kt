@@ -79,10 +79,11 @@ class AddEditTppViewModel(
 
         viewModelScope.launch {
             tppsRepository.getTpp(tppId).let { result ->
-                if (result is Success) {
-                    onTppLoaded(result.data)
-                } else {
-                    onDataNotAvailable()
+                {
+                    _dataLoading.value = false
+                    if (result is Success) {
+                        onTppLoaded(result.data)
+                    }
                 }
             }
         }
@@ -92,12 +93,10 @@ class AddEditTppViewModel(
         title.value = tpp.getTitle()
         description.value = tpp.getDescription()
         tppFollowed = tpp.isFollowed()
-        _dataLoading.value = false
         isDataLoaded = true
     }
 
     private fun onDataNotAvailable() {
-        _dataLoading.value = false
     }
 
     // Called when clicking on fab.
@@ -112,9 +111,9 @@ class AddEditTppViewModel(
 
         val currentTppId = tppId
         if (isNewTpp || currentTppId == null) {
-            createTpp(Tpp(TppEntity("Entity_CZ28173282", currentTitle, currentDescription)))
+            createTpp(Tpp(TppEntity("Entity_CZ28173282", currentTitle, currentDescription, "", "", "cz")))
         } else {
-            val tpp = Tpp(TppEntity("Entity_CZ28173282", currentTitle, currentDescription, "", currentTppId))
+            val tpp = Tpp(TppEntity("Entity_CZ28173282", currentTitle, currentDescription, "", currentTppId, "cz"))
             updateTpp(tpp)
         }
     }

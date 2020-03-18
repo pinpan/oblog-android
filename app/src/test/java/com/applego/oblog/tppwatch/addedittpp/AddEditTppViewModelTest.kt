@@ -3,8 +3,6 @@ package com.applego.oblog.tppwatch.addedittpp
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.applego.oblog.tppwatch.LiveDataTestUtil.getValue
 import com.applego.oblog.tppwatch.MainCoroutineRule
-import com.applego.oblog.tppwatch.R.string
-import com.applego.oblog.tppwatch.assertSnackbarMessage
 import com.applego.oblog.tppwatch.data.source.FakeRepository
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.TppEntity
@@ -35,7 +33,7 @@ class AddEditTppViewModelTest {
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
-    private val tppEntity = TppEntity("Entity_CZ28173281", "Title1", "Description1")
+    private val tppEntity = TppEntity("Entity_CZ28173281", "Title1", "Description1", "", "", "cz")
 
     @Before
     fun setupViewModel() {

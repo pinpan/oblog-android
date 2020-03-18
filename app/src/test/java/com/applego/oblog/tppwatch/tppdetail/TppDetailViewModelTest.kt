@@ -38,7 +38,7 @@ class TppDetailViewModelTest {
 
 
     companion object {
-        val tppEntity = TppEntity("Entity_CZ28173281", "Title1", "Description1")
+        val tppEntity = TppEntity("Entity_CZ28173281", "Title1", "Description1", "", "", "cz")
         var tpp : Tpp? = null
 
         @BeforeClass

@@ -17,13 +17,17 @@ import java.util.*
 @TypeConverters(OblogTypeConverters::class)
 data class TppEntity @JvmOverloads constructor(
         @ColumnInfo(name = "entityCode") var _entityCode: String = "",  // Entity Code retruned by EBA or NCA
-        @ColumnInfo(name = "title") var _title: String = "",
+        @ColumnInfo(name = "title") var _title: String = "", // #TODO: rename to entityName
         @ColumnInfo(name = "description") var _description: String = "",
         @ColumnInfo(name = "globalUrn") var _globalUrn: String = "",    // A Global Unified identifier.
         @ColumnInfo(name = "ebaEntityVersion") var _ebaEntityVersion: String = "",
+        @ColumnInfo(name = "country") var _country: String = "",
 
         @PrimaryKey @ColumnInfo(name = "id") var _id: String = UUID.randomUUID().toString()
 ) : TppModel {
+
+    @Ignore
+    override fun getEntityId() = _entityId
 
     @Ignore
     override fun getEntityCode() = _entityCode
@@ -52,10 +56,6 @@ data class TppEntity @JvmOverloads constructor(
 
     @ColumnInfo(name = "status")
     var _status: RecordStatus = RecordStatus.NEW
-    //override fun getStatus() = _status
-
-    @ColumnInfo(name = "country")
-    var _country: String = ""
 
     @Ignore
     override fun getCountry() = _country

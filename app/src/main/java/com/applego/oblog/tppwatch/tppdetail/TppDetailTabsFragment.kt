@@ -21,6 +21,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -57,12 +58,22 @@ class TppDetailTabsFragment : Fragment() {
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
         setupFab()
+        setupRefresh()
         setupNavigation()
 
         view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
 
         //this.setupRefreshLayout(viewDataBinding.refreshLayout)
     }
+
+    private fun setupRefresh() {
+        activity?.findViewById<Button>(R.id.refresh_tpp)?.let {
+            it.setOnClickListener {
+                viewModel.refresh()
+            }
+        }
+    }
+
 
     private fun setupNavigation() {
         viewModel.tppUpdatedEvent.observe(this, EventObserver {

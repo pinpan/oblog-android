@@ -14,6 +14,8 @@ interface TppModel  {
     // var status: RecordStatus
 
 
+    fun getEntityId(): String
+
     fun getEntityCode(): String
 
     fun getTitle(): String

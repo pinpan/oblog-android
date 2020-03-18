@@ -9,7 +9,6 @@ import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
-import com.applego.oblog.tppwatch.data.source.remote.nca.TppsNcaDataSource
 import com.applego.oblog.tppwatch.util.EspressoIdlingResource
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
@@ -28,7 +27,7 @@ import java.util.concurrent.TimeUnit
 class DefaultTppsRepository (
         /*private */var tppsEbaDataSource: RemoteTppDataSource,
         /*private */var tppsNcaDataSource: RemoteTppDataSource,
-                    private val tppsLocalDataSource: LocalTppDataSource,
+                    var tppsLocalDataSource: LocalTppDataSource,
                     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
     ) : TppsRepository {
 
@@ -96,26 +95,79 @@ class DefaultTppsRepository (
 
             return withContext(ioDispatcher) {
                 // Respond immediately with cache if available
-                if (!forceUpdate) {
-                    getTppWithId(tppId)?.let {
-                        EspressoIdlingResource.decrement() // Set app as idle.
-                        return@withContext Success(it)
-                    }
+                getTppWithId(tppId)?.let {
+                    EspressoIdlingResource.decrement() // Set app as idle.
+                    return@withContext Success(it)
                 }
 
-                val newTpp = fetchTppFromRemoteOrLocal(tppId, forceUpdate)
-
-                return@withContext newTpp
+                return@withContext fetchTppFromLocalOrRemote(tppId, forceUpdate)
             }
         }
     }
 
-    private suspend fun fetchTppFromRemoteOrLocal (
+    private suspend fun fetchTppFromLocalOrRemote (
         tppId: String,
         forceUpdate: Boolean
     ): Result<Tpp> {
-        // Remote first
-        val result = tppsEbaDataSource.getTppById("EU", tppId)
+
+        var localTpp : Tpp ?= null
+
+        // Local DB first
+        val localTppResult : Result<Tpp> = tppsLocalDataSource.getTpp(tppId)
+        when (localTppResult) {
+            is Success -> {
+                localTpp = localTppResult.data
+            }
+            is Error -> {
+                Timber.w("Couldn't find TPP in local DB. a) TPP ID is invalid; b) TPP it doesn't exist; c) Local DB is not synchronized with EBA registry.")
+                return localTppResult
+            }
+        }
+
+/*
+        if (localTpp == null) {
+            // Try to fetch the Tpp from Eba. -> Should fail because if we don't have it in local DB,
+            // then we don't know the EBA ID, not NCA ID. Either this particular TPP was never
+            // provided by EBA, or we didn't actually loaded EBA repository yet.
+            return Result.Error("Tpp Not found in local DB", "Provided DB ID is invalid - TPP can not be found in the DB")
+        }
+*/
+
+        // Local if local fails
+        if (localTpp != null) {
+            if (forceUpdate) {
+                var ebaUpdate: Boolean = false
+                var ncaUpdate: Boolean = false
+
+                val resultEba = tppsEbaDataSource.getTppById(localTpp.getCountry(), localTpp.getId())
+                when (resultEba) {
+                    is Error -> {
+                        Timber.w("Eba remote data source fetch failed")
+                    }
+                    is Success -> {
+                        ebaUpdate = updateLocalTppFromRemote(localTpp, resultEba.data)
+                    }
+                }
+
+                val resultNca = tppsNcaDataSource.getTppById(localTpp.getCountry(), localTpp.getId())
+                when (resultNca) {
+                    is Error -> {
+                        Timber.w("Nca remote data source fetch failed")
+                    }
+                    is Success -> {
+                        ebaUpdate = updateLocalTppFromRemote(localTpp, resultNca.data)
+                    }
+                }
+
+                if (ebaUpdate || ncaUpdate) {
+                    refreshLocalDataSource(localTpp)
+                }
+            } else {
+                return localTppResult
+            }
+        }
+
+        /*val result = tppsEbaDataSource.getTppById("EU", tppId)
         when (result) {
             is Error -> Timber.w("Remote data source fetch failed")
             is Result.Warn -> Timber.w("Remote data source fetch failed die to '" + result.message + "'")
@@ -126,20 +178,29 @@ class DefaultTppsRepository (
             is Loading -> {
                 //return result
             }
-        }
+        }*/
 
         // Don't read from local if refresh is forced but remote returned error or warning
-        if (forceUpdate) {
+        /*if (forceUpdate) {
             return result //Error(Exception("Refresh failed"))
-        }
+        }*/
 
         // Local if remote fails with Warning
-        val localTpps : Result<Tpp> = tppsLocalDataSource.getTpp(tppId)
+        /*val localTpps : Result<Tpp> = tppsLocalDataSource.getTpp(tppId)
         when (localTpps) {
             is Success -> return localTpps
             is Error -> return localTpps
             else -> return Error(Exception("Error fetching from remote and local"))
-        }
+        }*/
+        return Error(Exception("Error fetching from remote and local"))
+    }
+
+    private fun updateLocalTppFromRemote(localTpp: Tpp, data: Tpp): Boolean {
+        // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+        localTpp.tppEntity._title = data.getTitle()
+        localTpp.tppEntity._description = data.getDescription()
+        return true
     }
 
     override suspend fun saveTpp(tpp: Tpp) {

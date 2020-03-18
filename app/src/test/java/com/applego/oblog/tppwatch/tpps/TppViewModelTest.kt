@@ -42,9 +42,9 @@ class TppsViewModelTest {
     fun setupViewModel() {
         // We initialise the tpps to 3, with one active and two followed
         tppsRepository = FakeRepository()
-        val tppEntity1 = TppEntity("Entity_CZ28173281", "Title1", "Description1")
-        val tppEntity2 = TppEntity("Entity_CZ28173282", "Title2", "Description2")
-        val tppEntity3 = TppEntity("Entity_CZ28173283", "Title3", "Description3")
+        val tppEntity1 = TppEntity("Entity_CZ28173281", "Title1", "Description1", "", "", "cz")
+        val tppEntity2 = TppEntity("Entity_CZ28173282", "Title2", "Description2", "", "", "cz")
+        val tppEntity3 = TppEntity("Entity_CZ28173283", "Title3", "Description3", "", "", "cz")
         tppsRepository.addTpps(Tpp(tppEntity1), Tpp(tppEntity2), Tpp(tppEntity3))
 
         tppsViewModel = TppsViewModel(tppsRepository)
@@ -203,7 +203,7 @@ class TppsViewModelTest {
     @Test
     fun followTpp_dataAndSnackbarUpdated() {
         // With a repository that has an active tppEntity
-        val tppEntity = TppEntity("Entity_CZ28173281", "Title", "Description")
+        val tppEntity = TppEntity("Entity_CZ28173281", "Title", "Description", "", "", "cz")
         tppsRepository.addTpps(Tpp(tppEntity))
 
         // Follow tppEntity
@@ -221,7 +221,7 @@ class TppsViewModelTest {
     @Test
     fun activateTpp_dataAndSnackbarUpdated() {
         // With a repository that has a followed tppEntity
-        val tppEntity = TppEntity("Entity_CZ28173281", "Title", "Description")
+        val tppEntity = TppEntity("Entity_CZ28173281", "Title", "Description", "", "", "cz")
         tppsRepository.addTpps(Tpp(tppEntity))
 
         // Activate tppEntity

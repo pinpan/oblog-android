@@ -158,7 +158,7 @@ class AppNavigationTest {
 
     @Test
     fun tppDetailScreen_doubleUIBackButton() {
-        val tppEntity = TppEntity("Entity_CZ28173281", "UI <- button", "Description")
+        val tppEntity = TppEntity("Entity_CZ28173281", "UI <- button", "Description", "", "", "cz")
         tppsRepository.saveTppBlocking(Tpp(tppEntity))
 
         // start up Tpps screen
@@ -191,7 +191,7 @@ class AppNavigationTest {
 
     @Test
     fun tppDetailScreen_doubleBackButton() {
-        val tppEntity = TppEntity("Entity_CZ28173281", "Back button", "Description")
+        val tppEntity = TppEntity("Entity_CZ28173281", "Back button", "Description", "", "", "cz")
         tppsRepository.saveTppBlocking(Tpp(tppEntity))
 
         // start up Tpps screen

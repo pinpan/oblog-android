@@ -33,7 +33,8 @@ class FakeRemoteDataSource(var tppsListResponse: TppsListResponse? = TppsListRes
     }
 
     override suspend fun getTppById(country: String, tppId: String): Result<Tpp> {
-        tppsListResponse?.tppsList?.firstOrNull { it.getId() == tppId }?.let { return Success(it) }
+        // #TODO: Get from a MAP the Country Specific EntityCodeSchema. For CZ it is stripping the parts of the EBA Entitiy Code which
+        tppsListResponse?.tppsList?.firstOrNull { it.getCountry().equals(country) && it.getEntityId().equals(tppId)}?.let { return Success(it) }
         return Error(
             Exception("Tpp not found")
         )
