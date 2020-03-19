@@ -80,7 +80,7 @@ class TppsActivityTest {
 
     @Test
     fun editTpp() {
-        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION", "", "", "cz")))
+        repository.saveTppBlocking(Tpp(TppEntity(_entityId = "", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -132,8 +132,8 @@ class TppsActivityTest {
 
     //@Test
     fun createTwoTpps_deleteOneTpp() {
-        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION", "", "", "cz")))
-        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173282", "TITLE2", "DESCRIPTION", "", "", "cz")))
+        repository.saveTppBlocking(Tpp(TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
+        repository.saveTppBlocking(Tpp(TppEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -155,7 +155,7 @@ class TppsActivityTest {
     fun markTppAsFollowedOnDetailScreen_tppIsFollowInList() {
         // Add 1 active tpp
         val tppTitle = "FOLLOWED"
-        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173281", tppTitle, "DESCRIPTION", "", "", "cz")))
+        repository.saveTppBlocking(Tpp(TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = tppTitle, _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -183,7 +183,7 @@ class TppsActivityTest {
     fun markTppAsActiveOnDetailScreen_tppIsActiveInList() {
         // Add 1 followed tpp
         val tppTitle = "ACTIVE"
-        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173281", tppTitle, "DESCRIPTION", "", "", "cz")))
+        repository.saveTppBlocking(Tpp(TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = tppTitle, _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -210,7 +210,7 @@ class TppsActivityTest {
     fun markTppAsFollowAndActiveOnDetailScreen_tppIsActiveInList() {
         // Add 1 active tpp
         val tppTitle = "ACT-COMP"
-        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173281", tppTitle, "DESCRIPTION", "", "", "cz")))
+        repository.saveTppBlocking(Tpp(TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = tppTitle, _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -239,7 +239,7 @@ class TppsActivityTest {
     fun markTppAsActiveAndFollowOnDetailScreen_tppIsFollowInList() {
         // Add 1 followed tpp
         val tppTitle = "COMP-ACT"
-        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173281", tppTitle, "DESCRIPTION", "", "", "cz")))
+        repository.saveTppBlocking(Tpp(TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = tppTitle, _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -273,11 +273,11 @@ class TppsActivityTest {
         // Click on the "+" button, add details, and save
         onView(withId(R.id.add_tpp_fab)).perform(click())
         onView(withId(R.id.add_tpp_title_edit_text))
-            .perform(typeText("title"), closeSoftKeyboard())
+            .perform(typeText("entityName"), closeSoftKeyboard())
         onView(withId(R.id.add_tpp_description_edit_text)).perform(typeText("description"))
         onView(withId(R.id.save_tpp_fab)).perform(click())
 
         // Then verify tpp is displayed on screen
-        onView(withText("title")).check(matches(isDisplayed()))
+        onView(withText("entityName")).check(matches(isDisplayed()))
     }
 }

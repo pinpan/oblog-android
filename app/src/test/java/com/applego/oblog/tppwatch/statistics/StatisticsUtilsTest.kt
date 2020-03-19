@@ -13,7 +13,7 @@ class StatisticsUtilsTest {
 
     @Test
     fun getActiveAndFollowedStats_noFollowed() {
-        val aTppEntity = TppEntity("Entity_CZ28173281", "title", "desc", "", "", "cz")
+        val aTppEntity = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         aTppEntity.active = true
         val tpps = listOf(
                 Tpp(aTppEntity)
@@ -28,7 +28,7 @@ class StatisticsUtilsTest {
 
     @Test
     fun getActiveAndFollowedStats_noActive() {
-        var tppEntity1 = TppEntity("Entity_CZ28173281", "title", "desc", "", "", "cz")
+        var tppEntity1 = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity1.followed = true
         val tpps = listOf(
                 Tpp(tppEntity1)
@@ -44,16 +44,16 @@ class StatisticsUtilsTest {
     @Test
     fun getActiveAndFollowedStats_both() {
         // Given 3 followed tpps and 2 active tpps
-        var tpp1 = TppEntity("Entity_CZ28173281", "title", "desc", "", "", "cz")
+        var tpp1 = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
             tpp1.followed = true
-        var tpp2 = TppEntity("Entity_CZ28173282", "title", "desc", "", "", "cz")
+        var tpp2 = TppEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
             tpp2.followed = true
-        var tpp3 = TppEntity("Entity_CZ28173283", "title", "desc", "", "", "cz")
+        var tpp3 = TppEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
             tpp3.followed = true
 
-        var tpp4 = TppEntity("Entity_CZ28173284", "title", "desc", "", "", "cz")
+        var tpp4 = TppEntity(_entityId = "28173284", _entityCode = "Entity_CZ28173284", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
             tpp4.active = true
-        var tpp5 = TppEntity("Entity_CZ28173285", "title", "desc", "", "", "cz")
+        var tpp5 = TppEntity(_entityId = "28173285", _entityCode = "Entity_CZ28173285", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
             tpp5.active = true
 
         val tpps = listOf(

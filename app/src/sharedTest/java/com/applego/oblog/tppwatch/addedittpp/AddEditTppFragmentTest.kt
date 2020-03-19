@@ -64,7 +64,7 @@ class AddEditTppFragmentTest {
         ).toBundle()
         launchFragmentInContainer<AddEditTppFragment>(bundle, R.style.AppTheme)
 
-        // WHEN - Enter invalid title and description combination and click save
+        // WHEN - Enter invalid entityName and description combination and click save
         onView(withId(R.id.add_tpp_title_edit_text)).perform(clearText())
         onView(withId(R.id.add_tpp_description_edit_text)).perform(clearText())
         onView(withId(R.id.save_tpp_fab)).perform(click())
@@ -79,8 +79,8 @@ class AddEditTppFragmentTest {
         val navController = mock(NavController::class.java)
         launchFragment(navController)
 
-        // WHEN - Valid title and description combination and click save
-        onView(withId(R.id.add_tpp_title_edit_text)).perform(replaceText("title"))
+        // WHEN - Valid entityName and description combination and click save
+        onView(withId(R.id.add_tpp_title_edit_text)).perform(replaceText("entityName"))
         onView(withId(R.id.add_tpp_description_edit_text)).perform(replaceText("description"))
         onView(withId(R.id.save_tpp_fab)).perform(click())
 
@@ -108,15 +108,15 @@ class AddEditTppFragmentTest {
         val navController = mock(NavController::class.java)
         launchFragment(navController)
 
-        // WHEN - Valid title and description combination and click save
-        onView(withId(R.id.add_tpp_title_edit_text)).perform(replaceText("title"))
+        // WHEN - Valid entityName and description combination and click save
+        onView(withId(R.id.add_tpp_title_edit_text)).perform(replaceText("entityName"))
         onView(withId(R.id.add_tpp_description_edit_text)).perform(replaceText("description"))
         onView(withId(R.id.save_tpp_fab)).perform(click())
 
         // THEN - Verify that the repository saved the tpp
         val tpps = (repository.getTppsBlocking(true) as Result.Success).data
         assertEquals(tpps.size, 1)
-        assertEquals(tpps[0].getTitle(), "title")
+        assertEquals(tpps[0].getEntityName(), "entityName")
         assertEquals(tpps[0].getDescription(), "description")
     }
 }

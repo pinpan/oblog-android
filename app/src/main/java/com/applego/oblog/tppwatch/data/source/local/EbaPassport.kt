@@ -29,10 +29,10 @@ data class EbaPassport @JvmOverloads constructor(
             this.services = services
         }
 
-        override fun equals(other: Any?): Boolean {
+        /*override fun equals(other: Any?): Boolean {
             return     (other == this)
                     || ((other as CountryVisa).hashCode() == hashCode())
-        }
+        }*/
 
         val servicesAsString : String
             get() {

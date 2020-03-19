@@ -33,7 +33,7 @@ class AddEditTppViewModelTest {
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
-    private val tppEntity = TppEntity("Entity_CZ28173281", "Title1", "Description1", "", "", "cz")
+    private val tppEntity = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
 
     @Before
     fun setupViewModel() {
@@ -49,7 +49,7 @@ class AddEditTppViewModelTest {
         val newTitle = "New Tpp Title"
         val newDescription = "Some Tpp Description"
         (addEditTppViewModel).apply {
-            title.value = newTitle
+            entityName.value = newTitle
             description.value = newDescription
         }
         addEditTppViewModel.saveTpp()
@@ -57,7 +57,7 @@ class AddEditTppViewModelTest {
         val newTpp = tppsRepository.tppsServiceData.values.first()
 
         // Then a tppEntity is saved in the repository and the view updated
-        assertThat(newTpp.getTitle()).isEqualTo(newTitle)
+        assertThat(newTpp.getEntityName()).isEqualTo(newTitle)
         assertThat(newTpp.getDescription()).isEqualTo(newDescription)
     }
 
@@ -85,10 +85,10 @@ class AddEditTppViewModelTest {
         tppsRepository.addTpps(Tpp(tppEntity))
 
         // Load the tppEntity with the viewmodel
-        addEditTppViewModel.start(tppEntity.getId())
+        addEditTppViewModel.start(tppEntity.getEntityId())
 
         // Verify a tppEntity is loaded
-        assertThat(getValue(addEditTppViewModel.title)).isEqualTo(tppEntity.getTitle())
+        assertThat(getValue(addEditTppViewModel.entityName)).isEqualTo(tppEntity.getEntityName())
         assertThat(getValue(addEditTppViewModel.description)).isEqualTo(tppEntity.getDescription())
         assertThat(getValue(addEditTppViewModel.dataLoading)).isFalse()
     }
@@ -125,7 +125,7 @@ class AddEditTppViewModelTest {
 
     private fun saveTppAndAssertSnackbarError(title: String?, description: String?) {
         (addEditTppViewModel).apply {
-            this.title.value = title
+            this.entityName.value = title
             this.description.value = description
         }
 

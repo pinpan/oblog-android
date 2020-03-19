@@ -35,11 +35,11 @@ class DefaultTppsRepository (
 
     val waitTwoSeconds : Timeout = Timeout()
 
-    override suspend fun getTpps(forceUpdate: Boolean): Result<List<Tpp>> {
-        return getTpps(forceUpdate, TppsFilter())
+    override suspend fun getAllTpps(forceUpdate: Boolean): Result<List<Tpp>> {
+        return filterTpps(TppsFilter(), forceUpdate)
     }
 
-    override suspend fun getTpps(forceUpdate: Boolean, filter: TppsFilter): Result<List<Tpp>> {
+    override suspend fun filterTpps(filter: TppsFilter, forceUpdate: Boolean): Result<List<Tpp>> {
 
         wrapEspressoIdlingResource {
 
@@ -87,7 +87,7 @@ class DefaultTppsRepository (
     }
 
     /**
-     * Relies on [getTpps] to fetch data and picks the tpp with the same ID.
+     * Relies on [filterTpps] to fetch data and picks the tpp with the same ID.
      */
     override suspend fun getTpp(tppId: String, forceUpdate: Boolean): Result<Tpp> {
 
@@ -139,7 +139,7 @@ class DefaultTppsRepository (
                 var ebaUpdate: Boolean = false
                 var ncaUpdate: Boolean = false
 
-                val resultEba = tppsEbaDataSource.getTppById(localTpp.getCountry(), localTpp.getId())
+                val resultEba = tppsEbaDataSource.getTppById(localTpp.getCountry(), localTpp.getEntityId())
                 when (resultEba) {
                     is Error -> {
                         Timber.w("Eba remote data source fetch failed")
@@ -149,7 +149,7 @@ class DefaultTppsRepository (
                     }
                 }
 
-                val resultNca = tppsNcaDataSource.getTppById(localTpp.getCountry(), localTpp.getId())
+                val resultNca = tppsNcaDataSource.getTppById(localTpp.getCountry(), localTpp.getEntityId())
                 when (resultNca) {
                     is Error -> {
                         Timber.w("Nca remote data source fetch failed")
@@ -162,9 +162,8 @@ class DefaultTppsRepository (
                 if (ebaUpdate || ncaUpdate) {
                     refreshLocalDataSource(localTpp)
                 }
-            } else {
-                return localTppResult
             }
+            return localTppResult
         }
 
         /*val result = tppsEbaDataSource.getTppById("EU", tppId)
@@ -198,7 +197,7 @@ class DefaultTppsRepository (
     private fun updateLocalTppFromRemote(localTpp: Tpp, data: Tpp): Boolean {
         // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 
-        localTpp.tppEntity._title = data.getTitle()
+        localTpp.tppEntity._entityName = data.getEntityName()
         localTpp.tppEntity._description = data.getDescription()
         return true
     }
@@ -212,11 +211,11 @@ class DefaultTppsRepository (
         }
     }
 
-    override suspend fun setTppFollowedFlag(tppId: String, followed: Boolean) {
+    /*UNUSED: override suspend fun setTppFollowedFlag(tppId: String, followed: Boolean) {
         (tppsLocalDataSource.getTpp(tppId) as? Success)?.let {
             setTppFollowedFlag(it.data, followed)
         }
-    }
+    }*/
 
     override suspend fun setTppFollowedFlag(tpp: Tpp, f: Boolean) {
         cacheAndPerform(tpp) {
@@ -239,13 +238,13 @@ class DefaultTppsRepository (
         }
     }
 
-    override suspend fun setTppActivateFlag(tppId: String, active: Boolean) {
+    /*UNUSED: override suspend fun setTppActivateFlag(tppId: String, active: Boolean) {
         withContext(ioDispatcher) {
             getTppWithId(tppId)?.let {
                 setTppActivateFlag(it, active)
             }
         }
-    }
+    }*/
 
     override suspend fun deleteAllTpps() {
         withContext(ioDispatcher) {

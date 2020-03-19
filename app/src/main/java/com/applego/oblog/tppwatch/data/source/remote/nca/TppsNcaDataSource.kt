@@ -5,7 +5,6 @@ import com.applego.oblog.tppwatch.data.Paging
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.TppFilter
 import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.data.source.local.TppEntity
 import com.applego.oblog.tppwatch.data.source.local.TppsDao
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
@@ -62,7 +61,7 @@ class TppsNcaDataSource internal constructor (
                     //var tppsList : List<Tpp>
                     tppsList = response.body()?.tppsList!!
                     tppsList.forEach { tpp ->
-                        System.out.println("Insert/Update tpp: " + tpp.getTitle() + " into database")
+                        System.out.println("Insert/Update tpp: " + tpp.getEntityName() + " into database")
 
                         runBlocking<Unit> {
                             if (tppsDao.getTppById(tpp.getId()) == null) {
@@ -102,7 +101,7 @@ class TppsNcaDataSource internal constructor (
                 val tppsListResponse = response.body()!!
                 Timber.d("tppsList=" + tppsListResponse.tppsList)
                 tppsListResponse.tppsList?.forEach { tpp ->
-                    System.out.println("Insert/Update tpp: " + tpp.tppEntity.getTitle() + " into database")
+                    System.out.println("Insert/Update tpp: " + tpp.tppEntity.getEntityName() + " into database")
 
                     runBlocking<Unit> {
                         if (tppsDao.getTppByEntityCode(tpp.tppEntity.getEntityCode()) == null) {

@@ -15,15 +15,17 @@ class Tpp : TppModel {
 
     override fun getId() = tppEntity.getId()
 
-    override fun getDescription() = tppEntity.getDescription()
-
-    override fun getTitle() = tppEntity.getTitle()
+    override fun getEntityId() = tppEntity.getEntityId()
 
     override fun getEntityCode() = tppEntity.getEntityCode()
 
     override fun getGlobalUrn() = tppEntity.getGlobalUrn()
 
+    override fun getEntityName() = tppEntity.getEntityName()
+
     override fun getEbaEntityVersion() = tppEntity.getEbaEntityVersion()
+
+    override fun getDescription() = tppEntity.getDescription()
 
     override fun getCountry() = tppEntity.getCountry()
 

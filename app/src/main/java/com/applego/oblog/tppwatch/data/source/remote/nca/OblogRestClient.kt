@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
 
 object OblogRestClient {
 
-    val okHttpClient = OkHttpClient()
+    private val okHttpClient by lazy { OkHttpClient() }
 
     fun getBaseUrl(currentEnv: String, envsBaseUrls: Array<String>) : String {
 

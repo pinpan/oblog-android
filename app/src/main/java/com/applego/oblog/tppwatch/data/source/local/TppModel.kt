@@ -13,20 +13,19 @@ interface TppModel  {
 
     // var status: RecordStatus
 
+    fun getId(): String
 
     fun getEntityId(): String
 
     fun getEntityCode(): String
 
-    fun getTitle(): String
-
-    fun getDescription(): String
+    fun getEntityName(): String
 
     fun getGlobalUrn(): String
 
     fun getEbaEntityVersion(): String
 
-    fun getId(): String
+    fun getDescription(): String
 
     fun isFis(): Boolean
 

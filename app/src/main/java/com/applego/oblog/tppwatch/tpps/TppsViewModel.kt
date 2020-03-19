@@ -212,7 +212,7 @@ class TppsViewModel(
         wrapEspressoIdlingResource {
 
             viewModelScope.launch {
-                val tppsResult = tppsRepository.getTpps(forceUpdate)
+                val tppsResult = tppsRepository.getAllTpps(forceUpdate)
 
                 if (tppsResult is Success) {
                     fetchedItems = tppsResult.data
@@ -281,7 +281,7 @@ class TppsViewModel(
             filteredTpps.addAll(inputTpps)
         } else {
             for (tpp in inputTpps) {
-                if (tpp.getTitle().contains(_searchFilter.title, true)) {
+                if (tpp.getEntityName().contains(_searchFilter.title, true)) {
                     (filteredTpps as ArrayList<Tpp>).add(tpp)
                 }
             }
@@ -406,7 +406,7 @@ class TppsViewModel(
     fun saveSearchFilter(outState: Bundle) {
         //outState.putBoolean("created", viewModel._searchFilter.created)
 
-        outState.putString("title", _searchFilter.title)
+        outState.putString("entityName", _searchFilter.title)
         outState.putBoolean("searchDescription", _searchFilter.searchDescription)
         outState.putString("countries", _searchFilter.countries)
         outState.putString("services", _searchFilter.services)

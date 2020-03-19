@@ -10,7 +10,7 @@ import java.util.*
 
 @Entity(tableName = "searchfilter")
 data class SearchFilter @JvmOverloads constructor(
-        @ColumnInfo(name = "title") var title: String = "",
+        @ColumnInfo(name = "entityName") var title: String = "",
         @ColumnInfo(name = "searchDescription") var searchDescription: Boolean = false,
         @ColumnInfo(name = "countries") var countries: String = "",
         @ColumnInfo(name = "services") var services: String = "",

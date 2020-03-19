@@ -32,7 +32,7 @@
 
     <!--<item
         android:id="@+id/about_frag"
-        android:title="@string/about_menu_item"
+        android:entityName="@string/about_menu_item"
         app:showAsAction="never" />
 -->
     <item

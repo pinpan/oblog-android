@@ -67,7 +67,7 @@ class StatisticsViewModel(
 
         wrapEspressoIdlingResource {
             viewModelScope.launch {
-                tppsRepository.getTpps().let { result ->
+                tppsRepository.getAllTpps().let { result ->
                     if (result is Success) {
                         _error.value = false
                         computeStats(result.data)

@@ -33,7 +33,7 @@ class FakeLocalDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : Local
     }
 
     override suspend fun getTpp(tppId: String): Result<Tpp> {
-        tpps?.firstOrNull { it.getId() == tppId }?.let { return Success(it) }
+        tpps?.firstOrNull { it.getEntityId() == tppId }?.let { return Success(it) }
         return Error(
             Exception("Tpp not found")
         )
@@ -44,7 +44,7 @@ class FakeLocalDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : Local
     }
 
     override suspend fun udateFollowing(tpp: Tpp, follow: Boolean) {
-        tpps?.firstOrNull { it.getId() == tpp.getId() }?.let { it.setFollowed(true)}
+        tpps?.firstOrNull { it.getEntityId() == tpp.getEntityId() }?.let { it.setFollowed(true)}
     }
 
     override suspend fun setTppActivateFlag(tppId: String, active: Boolean) {

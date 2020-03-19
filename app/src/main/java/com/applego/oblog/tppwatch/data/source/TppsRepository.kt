@@ -25,21 +25,21 @@ import com.applego.oblog.tppwatch.data.source.local.Tpp
  */
 interface TppsRepository {
 
-    suspend fun getTpps(forceUpdate: Boolean = false): Result<List<Tpp>>
+    suspend fun getAllTpps(forceUpdate: Boolean = false): Result<List<Tpp>>
 
-    suspend fun getTpps(forceUpdate: Boolean, filter: TppsFilter): Result<List<Tpp>>
+    suspend fun filterTpps(filter: TppsFilter, forceUpdate: Boolean = false): Result<List<Tpp>>
 
     suspend fun getTpp(tppId: String, forceUpdate: Boolean = false): Result<Tpp>
 
     suspend fun saveTpp(tpp: Tpp)
 
-    suspend fun setTppFollowedFlag(tppId: String, followed: Boolean)
+    //suspend fun setTppFollowedFlag(tppId: String, followed: Boolean)
 
     suspend fun setTppFollowedFlag(tpp: Tpp, followed: Boolean)
 
     //suspend fun unfollowTpp(tpp: Tpp)
 
-    suspend fun setTppActivateFlag(tppId: String, active: Boolean)
+    //suspend fun setTppActivateFlag(tppId: String, active: Boolean)
 
     suspend fun setTppActivateFlag(tpp: Tpp, active: Boolean)
 

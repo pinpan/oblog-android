@@ -8,7 +8,7 @@ import java.util.*
  * Immutable model class for a Tpp. In order to compile with Room, we can't use @JvmOverloads to
  * generate multiple constructors.
  *
- * @param title       title of the tpp
+ * @param entityName       entityName of the tpp
  * @param description description of the tpp
  * @param isFollowed whether or not this tpp is followed
  * @param id          id of the tpp
@@ -16,10 +16,11 @@ import java.util.*
 @Entity(tableName = "tpps")
 @TypeConverters(OblogTypeConverters::class)
 data class TppEntity @JvmOverloads constructor(
-        @ColumnInfo(name = "entityCode") var _entityCode: String = "",  // Entity Code retruned by EBA or NCA
-        @ColumnInfo(name = "title") var _title: String = "", // #TODO: rename to entityName
-        @ColumnInfo(name = "description") var _description: String = "",
-        @ColumnInfo(name = "globalUrn") var _globalUrn: String = "",    // A Global Unified identifier.
+        @ColumnInfo(name = "entityId") val _entityId: String,  // Entity Code retruned by EBA or NCA
+        @ColumnInfo(name = "entityCode") var _entityCode: String = "", // #TODO: rename to entityName
+        @ColumnInfo(name = "entityName") var _entityName: String = "",
+        @ColumnInfo(name = "description") var _description: String = "",    // A Global Unified identifier.
+        @ColumnInfo(name = "globalUrn") var _globalUrn: String = "",
         @ColumnInfo(name = "ebaEntityVersion") var _ebaEntityVersion: String = "",
         @ColumnInfo(name = "country") var _country: String = "",
 
@@ -31,16 +32,26 @@ data class TppEntity @JvmOverloads constructor(
 
     @Ignore
     override fun getEntityCode() = _entityCode
+
     @Ignore
-    override fun getTitle() = _title
+    override fun getEntityName() = _entityName
+
     @Ignore
     override fun getDescription() = _description
+
     @Ignore
     override fun getGlobalUrn() = _globalUrn
+
     @Ignore
     override fun getEbaEntityVersion() = _ebaEntityVersion
+
+    @Ignore
+    override fun getCountry() = _country
+
     @Ignore
     override fun getId() = _id
+
+
 
     @ColumnInfo(name = "fis")
     var fis: Boolean = false
@@ -57,8 +68,10 @@ data class TppEntity @JvmOverloads constructor(
     @ColumnInfo(name = "status")
     var _status: RecordStatus = RecordStatus.NEW
 
+
+    var _ebaPassport : EbaPassport = EbaPassport()
     @Ignore
-    override fun getCountry() = _country
+    override fun getEbaPassport() = _ebaPassport
 
     @Ignore
     override fun isFollowed() : Boolean = followed
@@ -73,16 +86,12 @@ data class TppEntity @JvmOverloads constructor(
     override fun isPsd2(): Boolean = psd2
 
     @Ignore
-    override fun getEbaPassport() = _ebaPassport
-
-    @Ignore
     override fun getStatus() = _status
 
     override fun getTitleForList(): String {
-        return (getTitle()) ?: getDescription()
+        return (getEntityName()) ?: getDescription()
     }
 
-    var _ebaPassport : EbaPassport = EbaPassport()
 
     // TODO#: Consider Following fields
     //  details aka properties from EBA

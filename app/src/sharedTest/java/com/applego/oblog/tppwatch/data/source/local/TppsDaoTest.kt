@@ -49,7 +49,7 @@ class TppsDaoTest {
     @Test
     fun insertTppAndGetById() = runBlockingTest {
         // GIVEN - insert a tpp
-        val tpp = TppEntity("Entity_CZ28173281", "title", "description", "", "", "cz")
+        val tpp = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         database.tppDao().insertTpp(tpp)
 
         // WHEN - Get the tpp by id from the database
@@ -57,8 +57,8 @@ class TppsDaoTest {
 
         // THEN - The loaded data contains the expected values
         assertThat<TppEntity>(loaded as TppEntity, notNullValue())
-        assertThat(loaded.getId(), `is`(tpp.getId()))
-        assertThat(loaded.getTitle(), `is`(tpp.getTitle()))
+        assertThat(loaded.getEntityId(), `is`(tpp.getEntityId()))
+        assertThat(loaded.getEntityName(), `is`(tpp.getEntityName()))
         assertThat(loaded.getDescription(), `is`(tpp.getDescription()))
         assertThat(loaded.isFollowed(), `is`(tpp.isFollowed()))
     }
@@ -66,17 +66,17 @@ class TppsDaoTest {
     @Test
     fun insertTppReplacesOnConflict() = runBlockingTest {
         // Given that a tpp is inserted
-        val tpp = TppEntity("Entity_CZ28173281", "title", "description", "", "", "cz")
+        val tpp = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         database.tppDao().insertTpp(tpp)
 
         // When a tpp with the same id is inserted
-        val newTpp = TppEntity("Entity_CZ28173282", "title2", "description2", "", "", "cz")
+        val newTpp = TppEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "title2", _description = "description2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         database.tppDao().insertTpp(newTpp)
 
         // THEN - The loaded data contains the expected values
         val loaded = database.tppDao().getTppById(tpp.getId())
-        assertThat(loaded?.getId(), `is`(tpp.getId()))
-        assertThat(loaded?.getTitle(), `is`("title"))
+        assertThat(loaded?.getEntityId(), `is`(tpp.getEntityId()))
+        assertThat(loaded?.getEntityName(), `is`("entityName"))
         assertThat(loaded?.getDescription(), `is`("description"))
         assertThat(loaded?.isFollowed(), `is`(false))
     }
@@ -84,7 +84,7 @@ class TppsDaoTest {
     @Test
     fun insertTppAndGetTpps() = runBlockingTest {
         // GIVEN - insert a tpp
-        val tpp = TppEntity("Entity_CZ28173281", "title", "description", "", "", "cz")
+        val tpp = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         database.tppDao().insertTpp(tpp)
 
         // WHEN - Get tpps from the database
@@ -92,8 +92,8 @@ class TppsDaoTest {
 
         // THEN - There is only 1 tpp in the database, and contains the expected values
         assertThat(tpps.size, `is`(1))
-        assertThat(tpps[0].getId(), `is`(tpp.getId()))
-        assertThat(tpps[0].getTitle(), `is`(tpp.getTitle()))
+        assertThat(tpps[0].getEntityId(), `is`(tpp.getEntityId()))
+        assertThat(tpps[0].getEntityName(), `is`(tpp.getEntityName()))
         assertThat(tpps[0].getDescription(), `is`(tpp.getDescription()))
         assertThat(tpps[0].isFollowed(), `is`(tpp.isFollowed()))
     }
@@ -101,18 +101,18 @@ class TppsDaoTest {
     @Test
     fun updateTppAndGetById() = runBlockingTest {
         // When inserting a tpp
-        val originalTpp = TppEntity("Entity_CZ28173281", "title", "description", "", "", "cz")
+        val originalTpp = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         database.tppDao().insertTpp(originalTpp)
 
         // When the tpp is updated
-        val updatedTpp = TppEntity("Entity_CZ28173282", "new title", "new description", originalTpp.getId(), originalTpp.getEbaEntityVersion(), "cz", originalTpp.getId())
+        val updatedTpp = TppEntity("28173282", "Entity_CZ28173282", "new entityName", "new description", originalTpp.getEntityId(), originalTpp.getEbaEntityVersion(), "cz", originalTpp.getId())
         updatedTpp.followed = true
         database.tppDao().updateTpp(updatedTpp)
 
         // THEN - The loaded data contains the expected values
         val loaded = database.tppDao().getTppById(originalTpp.getId())
-        assertThat(loaded?.getId(), `is`(originalTpp.getId()))
-        assertThat(loaded?.getTitle(), `is`("new title"))
+        assertThat(loaded?.getEntityId(), `is`(updatedTpp.getEntityId()))
+        assertThat(loaded?.getEntityName(), `is`("new entityName"))
         assertThat(loaded?.getDescription(), `is`("new description"))
         assertThat(loaded?.isFollowed(), `is`(true))
     }
@@ -120,7 +120,7 @@ class TppsDaoTest {
     @Test
     fun updateFollowedAndGetById() = runBlockingTest {
         // When inserting a tpp
-        val tpp = TppEntity("Entity_CZ28173281", "title", "description", "", "", "cz")
+        val tpp = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         database.tppDao().insertTpp(tpp)
 
         // When the tpp is updated
@@ -128,8 +128,8 @@ class TppsDaoTest {
 
         // THEN - The loaded data contains the expected values
         val loaded = database.tppDao().getTppById(tpp.getId())
-        assertThat(loaded?.getId(), `is`(tpp.getId()))
-        assertThat(loaded?.getTitle(), `is`(tpp.getTitle()))
+        assertThat(loaded?.getEntityId(), `is`(tpp.getEntityId()))
+        assertThat(loaded?.getEntityName(), `is`(tpp.getEntityName()))
         assertThat(loaded?._description, `is`(tpp.getDescription()))
         assertThat(loaded?.isFollowed(), `is`(false))
     }
@@ -137,7 +137,7 @@ class TppsDaoTest {
     @Test
     fun deleteTppByIdAndGettingTpps() = runBlockingTest {
         // Given a tpp inserted
-        val tpp = TppEntity("Entity_CZ28173281", "title", "description", "", "", "cz")
+        val tpp = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         database.tppDao().insertTpp(tpp)
 
         // When deleting a tpp by id
@@ -151,7 +151,7 @@ class TppsDaoTest {
     @Test
     fun deleteTppsAndGettingTpps() = runBlockingTest {
         // Given a tpp inserted
-        database.tppDao().insertTpp(TppEntity("Entity_CZ28173281", "title", "description", "", "", "cz"))
+        database.tppDao().insertTpp(TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"))
 
         // When deleting all tpps
         database.tppDao().deleteTpps()
@@ -164,7 +164,7 @@ class TppsDaoTest {
     @Test
     fun deleteUnfollowedTppsAndGettingTpps() = runBlockingTest {
         // Given a followed tpp inserted
-        var aTpp = TppEntity("Entity_CZ28173281", "followed", "tpp", "", "", "cz")
+        var aTpp = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "followed", _description = "tpp", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         aTpp.followed = true // Followed is not set in constructor
         database.tppDao().insertTpp(aTpp)
 

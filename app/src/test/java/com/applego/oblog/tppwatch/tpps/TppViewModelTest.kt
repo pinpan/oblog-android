@@ -29,6 +29,10 @@ class TppsViewModelTest {
     // Use a fake repository to be injected into the viewmodel
     private lateinit var tppsRepository: FakeRepository
 
+    val tppEntity1 = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+    val tppEntity2 = TppEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "Title2", _description = "Description2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+    val tppEntity3 = TppEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3", _description = "Description3", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+
     // Set the main coroutines dispatcher for unit testing.
     @ExperimentalCoroutinesApi
     @get:Rule
@@ -42,9 +46,6 @@ class TppsViewModelTest {
     fun setupViewModel() {
         // We initialise the tpps to 3, with one active and two followed
         tppsRepository = FakeRepository()
-        val tppEntity1 = TppEntity("Entity_CZ28173281", "Title1", "Description1", "", "", "cz")
-        val tppEntity2 = TppEntity("Entity_CZ28173282", "Title2", "Description2", "", "", "cz")
-        val tppEntity3 = TppEntity("Entity_CZ28173283", "Title3", "Description3", "", "", "cz")
         tppsRepository.addTpps(Tpp(tppEntity1), Tpp(tppEntity2), Tpp(tppEntity3))
 
         tppsViewModel = TppsViewModel(tppsRepository)
@@ -115,7 +116,7 @@ class TppsViewModelTest {
         // When loading of Tpps is requested
         tppsViewModel.setFiltering(TppsFilterType.FOLLOWED_TPPS)
 
-        //val sTpps = tppsViewModel.items.value?.filter { it.title == "Title1" }?.forEach { it.isFollowed = true }
+        //val sTpps = tppsViewModel.items.value?.filter { it.entityName == "Title1" }?.forEach { it.isFollowed = true }
 
         // Then progress indicator is hidden
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading)).isFalse()
@@ -203,25 +204,27 @@ class TppsViewModelTest {
     @Test
     fun followTpp_dataAndSnackbarUpdated() {
         // With a repository that has an active tppEntity
-        val tppEntity = TppEntity("Entity_CZ28173281", "Title", "Description", "", "", "cz")
+        val tppEntity = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title", _description = "Description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppsRepository.addTpps(Tpp(tppEntity))
 
         // Follow tppEntity
         tppsViewModel.followTpp(Tpp(tppEntity), true)
 
         // Verify the tppEntity is followed
-        assertThat(tppsRepository.tppsServiceData[tppEntity.getId()]?.isFollowed()).isTrue()
+        assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isFollowed()).isTrue()
 
         // The snackbar is updated
         assertSnackbarMessage(
             tppsViewModel.snackbarText, R.string.tpp_marked_followed
         )
+
+        tppsRepository.addTpps(Tpp(tppEntity1))
     }
 
     @Test
     fun activateTpp_dataAndSnackbarUpdated() {
         // With a repository that has a followed tppEntity
-        val tppEntity = TppEntity("Entity_CZ28173281", "Title", "Description", "", "", "cz")
+        val tppEntity = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title", _description = "Description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppsRepository.addTpps(Tpp(tppEntity))
 
         // Activate tppEntity
@@ -229,12 +232,14 @@ class TppsViewModelTest {
         tppsViewModel.followTpp(Tpp(tppEntity), true)
 
         // Verify the tppEntity is active
-        assertThat(tppsRepository.tppsServiceData[tppEntity.getId()]?.isActive()).isFalse()
+        assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isActive()).isFalse()
 
         // The snackbar is updated
         assertSnackbarMessage(
             tppsViewModel.snackbarText, R.string.tpp_marked_followed
         )
+
+        tppsRepository.addTpps(Tpp(tppEntity1))
     }
 
     @Test

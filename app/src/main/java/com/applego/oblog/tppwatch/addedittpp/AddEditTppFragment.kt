@@ -33,7 +33,7 @@ import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
 
 /**
- * Main UI for the add tpp screen. Users can enter a tpp title and description.
+ * Main UI for the add tpp screen. Users can enter a tpp entityName and description.
  */
 class AddEditTppFragment : Fragment() {
 

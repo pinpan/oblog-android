@@ -13,7 +13,7 @@ fun TppsRepository.saveTppBlocking(tpp: Tpp) = runBlocking {
 }
 
 fun TppsRepository.getTppsBlocking(forceUpdate: Boolean) = runBlocking {
-    this@getTppsBlocking.getTpps(forceUpdate)
+    this@getTppsBlocking.getAllTpps(forceUpdate)
 }
 
 fun TppsRepository.deleteAllTppsBlocking() = runBlocking {

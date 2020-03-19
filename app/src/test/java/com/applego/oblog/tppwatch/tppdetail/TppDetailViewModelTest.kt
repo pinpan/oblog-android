@@ -11,7 +11,6 @@ import com.applego.oblog.tppwatch.data.source.local.TppEntity
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.*
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
 
@@ -38,14 +37,14 @@ class TppDetailViewModelTest {
 
 
     companion object {
-        val tppEntity = TppEntity("Entity_CZ28173281", "Title1", "Description1", "", "", "cz")
-        var tpp : Tpp? = null
+        val tppEntity = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        var tpp : Tpp = Tpp(tppEntity)
 
-        @BeforeClass
+        /*@BeforeClass
         @JvmStatic
         fun setupTestClass() {
             tpp = Tpp(tppEntity)
-        }
+        }*/
     }
 
     @Before
@@ -61,11 +60,11 @@ class TppDetailViewModelTest {
     @Test
     fun getActiveTppFromRepositoryAndLoadIntoView() {
         CoroutineScope(Dispatchers.Main).launch {
-            tppDetailViewModel.start(tppEntity.getId())
+            tppDetailViewModel.start(tppEntity.getEntityId())
         }
 
         // Then verify that the view was notified
-        assertThat(getValue(tppDetailViewModel.tpp).getTitle()).isEqualTo(tppEntity.getTitle())
+        assertThat(getValue(tppDetailViewModel.tpp).getEntityName()).isEqualTo(tppEntity.getEntityName())
         assertThat(getValue(tppDetailViewModel.tpp).getDescription())
             .isEqualTo(tppEntity.getDescription())
     }
@@ -73,16 +72,16 @@ class TppDetailViewModelTest {
     @Test
     fun followTpp() {
         CoroutineScope(Dispatchers.Main).launch {
-            tppDetailViewModel.start(tppEntity.getId())
+            tppDetailViewModel.start(tppEntity.getEntityId())
         }
         // Verify that the tppEntity was active initially
-        assertThat(tppsRepository.tppsServiceData[tppEntity.getId()]?.isFollowed()).isFalse()
+        assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isFollowed()).isFalse()
 
         // When the ViewModel is asked to follow the tppEntity
         tppDetailViewModel.setFollowed(true)
 
         // Then the tppEntity is followed and the snackbar shows the correct message
-        assertThat(tppsRepository.tppsServiceData[tppEntity.getId()]?.isFollowed()).isTrue()
+        assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isFollowed()).isTrue()
         assertSnackbarMessage(tppDetailViewModel.snackbarText, R.string.tpp_marked_followed)
     }
 
@@ -91,16 +90,16 @@ class TppDetailViewModelTest {
         tppEntity.active = true
 
         CoroutineScope(Dispatchers.Main).launch {
-            tppDetailViewModel.start(tppEntity.getId())
+            tppDetailViewModel.start(tppEntity.getEntityId())
         }
         // Verify that the tppEntity was followed initially
-        assertThat(tppsRepository.tppsServiceData[tppEntity.getId()]?.isActive()).isTrue()
+        assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isActive()).isTrue()
 
         // When the ViewModel is asked to follow the tppEntity
         tppDetailViewModel.setActive(false)
 
         // Then the tppEntity is not followed and the snackbar shows the correct message
-        assertThat(tppsRepository.tppsServiceData[tppEntity.getId()]?.isActive()).isFalse()
+        assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isActive()).isFalse()
         assertSnackbarMessage(tppDetailViewModel.snackbarText, R.string.tpp_marked_inactive)
     }
 
@@ -111,7 +110,7 @@ class TppDetailViewModelTest {
 
         // Given an initialized ViewModel with an active tppEntity
         CoroutineScope(Dispatchers.Main).launch {
-            tppDetailViewModel.start(tppEntity.getId())
+            tppDetailViewModel.start(tppEntity.getEntityId())
         }
         // Then verify that data is not available
         assertThat(getValue(tppDetailViewModel.isDataAvailable)).isFalse()
@@ -140,7 +139,7 @@ class TppDetailViewModelTest {
     fun deleteTpp() {
         assertThat(tppsRepository.tppsServiceData.containsValue(tpp)).isTrue()
         CoroutineScope(Dispatchers.Main).launch {
-            tppDetailViewModel.start(tppEntity.getId())
+            tppDetailViewModel.start(tppEntity.getEntityId())
         }
         // When the deletion of a tppEntity is requested
         //tppDetailViewModel.deleteTpp()
@@ -157,7 +156,7 @@ class TppDetailViewModelTest {
         //runBlocking {
 
         //CoroutineScope(Dispatchers.Main).launch {
-            tppDetailViewModel.start(tppEntity.getId())
+            tppDetailViewModel.start(tppEntity.getEntityId())
         //}
 
         // Then progress indicator is shown

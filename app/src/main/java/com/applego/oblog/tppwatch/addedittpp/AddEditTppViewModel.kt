@@ -36,7 +36,7 @@ class AddEditTppViewModel(
 ) : ViewModel() {
 
     // Two-way databinding, exposing MutableLiveData
-    val title = MutableLiveData<String>()
+    val entityName = MutableLiveData<String>()
 
     // Two-way databinding, exposing MutableLiveData
     val description = MutableLiveData<String>()
@@ -69,6 +69,7 @@ class AddEditTppViewModel(
             isNewTpp = true
             return
         }
+
         if (isDataLoaded) {
             // No need to populate, already have data.
             return
@@ -79,18 +80,16 @@ class AddEditTppViewModel(
 
         viewModelScope.launch {
             tppsRepository.getTpp(tppId).let { result ->
-                {
-                    _dataLoading.value = false
-                    if (result is Success) {
-                        onTppLoaded(result.data)
-                    }
+                _dataLoading.value = false
+                if (result is Success) {
+                    onTppLoaded(result.data)
                 }
             }
         }
     }
 
     private fun onTppLoaded(tpp: Tpp) {
-        title.value = tpp.getTitle()
+        entityName.value = tpp.getEntityName()
         description.value = tpp.getDescription()
         tppFollowed = tpp.isFollowed()
         isDataLoaded = true
@@ -101,7 +100,7 @@ class AddEditTppViewModel(
 
     // Called when clicking on fab.
     fun saveTpp() {
-        val currentTitle = title.value
+        val currentTitle = entityName.value
         val currentDescription = description.value
 
         if (currentTitle == null || currentDescription == null) {
@@ -111,9 +110,9 @@ class AddEditTppViewModel(
 
         val currentTppId = tppId
         if (isNewTpp || currentTppId == null) {
-            createTpp(Tpp(TppEntity("Entity_CZ28173282", currentTitle, currentDescription, "", "", "cz")))
+            createTpp(Tpp(TppEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = currentTitle, _description = currentDescription, _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
         } else {
-            val tpp = Tpp(TppEntity("Entity_CZ28173282", currentTitle, currentDescription, "", currentTppId, "cz"))
+            val tpp = Tpp(TppEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = currentTitle, _description = currentDescription, _globalUrn = "", _ebaEntityVersion = currentTppId, _country = "cz"))
             updateTpp(tpp)
         }
     }

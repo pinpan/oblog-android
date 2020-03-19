@@ -31,36 +31,36 @@ class FakeRepository : TppsRepository {
         return Error(Exception("Could not find tpp"))
     }
 
-    override suspend fun getTpps(forceUpdate: Boolean): Result<List<Tpp>> {
+    override suspend fun getAllTpps(forceUpdate: Boolean): Result<List<Tpp>> {
         if (shouldReturnError) {
             return Error(Exception("Test exception"))
         }
         return Success(tppsServiceData.values.toList())
     }
 
-    override suspend fun getTpps(forceUpdate: Boolean, filter: TppsFilter): Result<List<Tpp>> {
+    override suspend fun filterTpps(filter: TppsFilter, forceUpdate: Boolean): Result<List<Tpp>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override suspend fun saveTpp(tpp: Tpp) {
-        tppsServiceData[tpp.tppEntity.getId()] = tpp
+        tppsServiceData[tpp.tppEntity.getEntityId()] = tpp
     }
 
-    override suspend fun setTppFollowedFlag(tppId: String, followed: Boolean) {
+    /*override suspend fun setTppFollowedFlag(tppId: String, followed: Boolean) {
         tppsServiceData[tppId]?.tppEntity?.followed = true
-    }
+    }*/
 
     override suspend fun setTppFollowedFlag(tpp: Tpp, followed: Boolean) {
-        tppsServiceData[tpp.tppEntity.getId()]?.tppEntity?.followed = true
+        tppsServiceData[tpp.tppEntity.getEntityId()]?.tppEntity?.followed = true
     }
 
     override suspend fun setTppActivateFlag(tpp: Tpp, active: Boolean) {
         tpp.tppEntity.active = active
     }
 
-    override suspend fun setTppActivateFlag(tppId: String, a: Boolean) {
+    /*override suspend fun setTppActivateFlag(tppId: String, a: Boolean) {
         tppsServiceData[tppId]?.tppEntity?.active = a
-    }
+    }*/
 
     suspend fun clearFollowedTpps() {
         tppsServiceData = tppsServiceData.filterValues {
@@ -79,7 +79,7 @@ class FakeRepository : TppsRepository {
     @VisibleForTesting
     fun addTpps(vararg tpps: Tpp) {
         for (tpp in tpps) {
-            tppsServiceData[tpp.tppEntity.getId()] = tpp
+            tppsServiceData[tpp.getEntityId()] = tpp
         }
     }
 }

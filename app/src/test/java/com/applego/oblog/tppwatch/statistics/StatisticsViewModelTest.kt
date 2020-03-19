@@ -72,13 +72,13 @@ class StatisticsViewModelTest {
     @Test
     fun loadNonEmptyTppsFromRepository_NonEmptyResults() {
         // We initialise the tpps to 3, with one active and two followed
-        val tppEntity1 = TppEntity("Entity_CZ28173281", "Title1", "Description1", "", "", "cz")
+        val tppEntity1 = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity1.followed = true
-        val tppEntity2 = TppEntity("Entity_CZ28173282", "Title2", "Description2", "", "", "cz")
+        val tppEntity2 = TppEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "Title2", _description = "Description2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity2.followed = true
-        val tppEntity3 = TppEntity("Entity_CZ28173283", "Title3", "Description3", "", "", "cz")
+        val tppEntity3 = TppEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3", _description = "Description3", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity3.followed = true
-        val tppEntity4 = TppEntity("Entity_CZ28173284", "Title4", "Description4", "", "", "cz")
+        val tppEntity4 = TppEntity(_entityId = "28173284", _entityCode = "Entity_CZ28173284", _entityName = "Title4", _description = "Description4", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity3.active = true
         tppsRepository.addTpps(Tpp(tppEntity1), Tpp(tppEntity2), Tpp(tppEntity3), Tpp(tppEntity4))
 

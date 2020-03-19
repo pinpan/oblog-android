@@ -18,12 +18,12 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class DefaultTppsRepositoryTest {
 
-    private val tpp1 = Tpp(TppEntity("Entity_CZ28173281", "Title1", "Description1", "", "", "cz"))
-    private val tpp2 = Tpp(TppEntity("Entity_CZ28173282", "Title2", "Description2", "", "", "cz"))
-    private val tpp3 = Tpp(TppEntity("Entity_CZ28173283", "Title3", "Description3", "", "", "cz"))
-    private val tpp31 = Tpp(TppEntity("Entity_CZ28173283", "Title3-EBA-CHANGED", "Description3-EBA-CHANGED", "", "", "cz"))
-    private val tpp32 = Tpp(TppEntity("Entity_CZ28173283", "Title3-NCA-CHANGED", "Description3-NCA-CHANGED", "", "", "cz"))
-    private val newTppEntity = TppEntity("Entity_CZ28173280", "Title new", "Description new", "", "", "cz")
+    private val tpp1 = Tpp(TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"))
+    private val tpp2 = Tpp(TppEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "Title2", _description = "Description2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"))
+    private val tpp3 = Tpp(TppEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3", _description = "Description3", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"))
+    private val tpp31 = Tpp(TppEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3-EBA-CHANGED", _description = "Description3-EBA-CHANGED", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"))
+    private val tpp32 = Tpp(TppEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3-NCA-CHANGED", _description = "Description3-NCA-CHANGED", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"))
+    private val newTppEntity = TppEntity(_entityId = "28173280", _entityCode = "Entity_CZ28173280", _entityName = "Title new", _description = "Description new", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
     private val allTpps = listOf(tpp1, tpp2, tpp3).sortedBy { it.getId() }
     private val remoteTpps = listOf(tpp1, tpp2).sortedBy { it.getId() }
     private val remoteEbaTpps = listOf(tpp31)
@@ -64,17 +64,17 @@ class DefaultTppsRepositoryTest {
             emptyRemoteSource, emptyRemoteSource, emptyLocalSource, Dispatchers.Unconfined
         )
 
-        assertThat(tppsRepository.getTpps(true) is Success).isTrue()
+        assertThat(tppsRepository.getAllTpps(true) is Success).isTrue()
     }
 
     @Test
     fun getTpps_repositoryCachesAfterFirstApiCall() = runBlockingTest {
         // Trigger the repository to load data, which loads from remote and caches
-        val initial = tppsRepository.getTpps(true)
+        val initial = tppsRepository.getAllTpps(true)
 
         tppsEbaDataSource.tppsListResponse = TppsListResponse(newTppsResponse.tppsList!!.toMutableList())
 
-        val second = tppsRepository.getTpps()
+        val second = tppsRepository.getAllTpps()
 
         // Initial and second should match because we didn't force a refresh
         assertThat(second).isEqualTo(initial)
@@ -83,7 +83,7 @@ class DefaultTppsRepositoryTest {
     @Test
     fun getTpps_requestsAllTppsFromRemoteDataSource() = runBlockingTest {
         // When tpps are requested from the tpps repository
-        val tpps = tppsRepository.getTpps(true) as Success
+        val tpps = tppsRepository.getAllTpps(true) as Success
 
         // Then tpps are loaded from the remote data source
         assertThat(tpps.data.sortedBy { it.getId() }).isEqualTo(allTpps)
@@ -94,7 +94,7 @@ class DefaultTppsRepositoryTest {
         // Make sure newTppEntity is not in the remote or local datasources or cache
         assertThat(tppsEbaDataSource.tppsListResponse?.tppsList).doesNotContain(newTppEntity)
         assertThat(tppsLocalDataSource.tpps).doesNotContain(newTppEntity)
-        assertThat((tppsRepository.getTpps(true) as? Success)?.data).doesNotContain(newTppEntity)
+        assertThat((tppsRepository.getAllTpps(true) as? Success)?.data).doesNotContain(newTppEntity)
 
         // When a tppEntity is saved to the tpps repository
         tppsRepository.saveTpp(Tpp(newTppEntity))
@@ -103,29 +103,29 @@ class DefaultTppsRepositoryTest {
         assertThat(tppsEbaDataSource.tppsListResponse?.tppsList).contains(newTppEntity)
         assertThat(tppsLocalDataSource.tpps).contains(newTppEntity)
 
-        val result = tppsRepository.getTpps(true) as? Success
+        val result = tppsRepository.getAllTpps(true) as? Success
         assertThat(result?.data).contains(newTppEntity)
     }
 
     @Test
     fun getTpps_WithDirtyCache_tppsAreRetrievedFromRemote() = runBlockingTest {
         // First call returns from REMOTE
-        val tpps = tppsRepository.getTpps(true) as Success
+        val tpps = tppsRepository.getAllTpps(true) as Success
 
         // Set a different list of tpps in REMOTE
         tppsEbaDataSource.tppsListResponse?.tppsList = remoteTpps.toMutableList()
 
         // But if tpps are cached, subsequent calls load from cache
-        val cachedTpps = tppsRepository.getTpps()
+        val cachedTpps = tppsRepository.getAllTpps()
         assertThat(cachedTpps).isEqualTo(tpps)
 
         // Now force remote loading
         tppsRepository.deleteAllTpps()
-        val noTpps = tppsRepository.getTpps(false) as Success
+        val noTpps = tppsRepository.getAllTpps(false) as Success
         assertThat(noTpps.data.size).isEqualTo(0)
 
         // TODO-FixTheTest: PZA:
-        //val refreshedTpps = tppsRepository.getTpps(true) as Success
+        //val refreshedTpps = tppsRepository.filterTpps(true) as Success
         // Tpps must be the recently updated in REMOTE
         //assertThat(refreshedTpps).isEqualTo(tpps)
     }
@@ -136,7 +136,7 @@ class DefaultTppsRepositoryTest {
         tppsEbaDataSource.tppsListResponse?.tppsList = null
 
         // Load tpps forcing remote load
-        val refreshedTpps = tppsRepository.getTpps(false)
+        val refreshedTpps = tppsRepository.getAllTpps(false)
 
         // Result should be an error
         assertThat(refreshedTpps).isInstanceOf(Result.Success::class.java)
@@ -148,7 +148,7 @@ class DefaultTppsRepositoryTest {
         tppsEbaDataSource.tppsListResponse?.tppsList = null
 
         // The repository fetches from the local source
-        assertThat((tppsRepository.getTpps(false) as Success).data).isEqualTo(localTpps)
+        assertThat((tppsRepository.getAllTpps(false) as Success).data).isEqualTo(localTpps)
     }
 
     @Test
@@ -158,7 +158,7 @@ class DefaultTppsRepositoryTest {
         tppsLocalDataSource.tpps = null
 
         // The repository returns an error
-        assertThat(tppsRepository.getTpps()).isInstanceOf(Result.Error::class.java)
+        assertThat(tppsRepository.getAllTpps()).isInstanceOf(Result.Error::class.java)
     }
 
     @Test
@@ -166,7 +166,7 @@ class DefaultTppsRepositoryTest {
         val initialLocal = tppsLocalDataSource.tpps!!.toList()
 
         // First load will fetch from remote
-        val newTpps = (tppsRepository.getTpps(true) as Success).data.sortedBy { it.getId() }
+        val newTpps = (tppsRepository.getAllTpps(true) as Success).data.sortedBy { it.getId() }
 
         assertThat(newTpps).isEqualTo(allTpps)
         assertThat(newTpps).isEqualTo(tppsLocalDataSource.tpps!!.sortedBy { it.getId() })
@@ -185,7 +185,7 @@ class DefaultTppsRepositoryTest {
         // Verify it's in the cache
         tppsLocalDataSource.deleteAllTpps() // Make sure they don't come from local
         //tppsEbaDataSource.deleteAllTpps() // Make sure they don't come from remote
-        val result = tppsRepository.getTpps(true) as Success
+        val result = tppsRepository.getAllTpps(true) as Success
         assertThat(result.data).contains(newTppEntity)
     }
 
@@ -195,13 +195,13 @@ class DefaultTppsRepositoryTest {
         tppsRepository.saveTpp(Tpp(newTppEntity))
 
         // Make sure it's active
-        assertThat((tppsRepository.getTpp(newTppEntity.getId(), true) as Success).data.isFollowed()).isFalse()
+        assertThat((tppsRepository.getTpp(newTppEntity.getEntityId(), true) as Success).data.isFollowed()).isFalse()
 
         // Mark is as Followed
         tppsRepository.setTppFollowedFlag(Tpp(newTppEntity), true)
 
         // Verify it's now followed
-        assertThat((tppsRepository.getTpp(newTppEntity.getId()) as Success).data.isFollowed())
+        assertThat((tppsRepository.getTpp(newTppEntity.getEntityId()) as Success).data.isFollowed())
     }
 
     // TODO-PZA#FIX this test: @Test
@@ -211,13 +211,13 @@ class DefaultTppsRepositoryTest {
         tppsRepository.setTppFollowedFlag(Tpp(newTppEntity), false)
 
         // Make sure it's followed
-        assertThat((tppsRepository.getTpp(newTppEntity.getId(), true) as Success).data.isActive()).isFalse()
+        assertThat((tppsRepository.getTpp(newTppEntity.getEntityId(), true) as Success).data.isActive()).isFalse()
 
         // Mark is as active
         tppsRepository.setTppActivateFlag(Tpp(newTppEntity), true)
 
         // Verify it's now activated
-        val result = tppsRepository.getTpp(newTppEntity.getId(), true) as Success
+        val result = tppsRepository.getTpp(newTppEntity.getEntityId(), true) as Success
         assertThat(result.data.isActive()).isTrue()
     }
 
@@ -242,23 +242,23 @@ class DefaultTppsRepositoryTest {
     fun getTpp_forceRefresh() = runBlockingTest {
         // Trigger the repository to load data, which loads from remote and caches
 
-        val tpp3FromLocal = tppsRepository.getTpp(tpp3.getId())
-        assertThat((tpp3FromLocal as? Success)?.data?.getId()).isEqualTo(tpp3.getId())
-        assertThat((tpp3FromLocal as? Success)?.data?.getTitle()).isEqualTo(tpp3.getTitle())
+        val tpp3FromLocal = tppsRepository.getTpp(tpp3.getEntityId())
+        assertThat((tpp3FromLocal as? Success)?.data?.getEntityId()).isEqualTo(tpp3.getEntityId())
+        assertThat((tpp3FromLocal as? Success)?.data?.getEntityName()).isEqualTo(tpp3.getEntityName())
 
         // Nca Changed
         tppsEbaDataSource = FakeRemoteDataSource(TppsListResponse(remoteEbaTpps.toMutableList()))
         tppsRepository.tppsEbaDataSource = tppsEbaDataSource
         tppsRepository.tppsLocalDataSource = tppsLocalDataSource31
-        val tpp31FromEba = tppsRepository.getTpp(tpp3.getId(), true)
-        assertThat((tpp31FromEba as? Success)?.data?.getTitle()).isEqualTo(tpp31.getTitle())
+        val tpp31FromEba = tppsRepository.getTpp(tpp3.getEntityId(), true)
+        assertThat((tpp31FromEba as? Success)?.data?.getEntityName()).isEqualTo(tpp31.getEntityName())
 
         // Eba Changed
         tppsNcaDataSource = FakeRemoteDataSource(TppsListResponse(remoteNcaTpps.toMutableList()))
         tppsRepository.tppsNcaDataSource = tppsNcaDataSource
         tppsRepository.tppsLocalDataSource = tppsLocalDataSource32
-        val tpp32FromNca = tppsRepository.getTpp(tpp3.getId(), true)
-        assertThat((tpp32FromNca as? Success)?.data?.getId()).isEqualTo(tpp32.getId())
+        val tpp32FromNca = tppsRepository.getTpp(tpp3.getEntityId(), true)
+        assertThat((tpp32FromNca as? Success)?.data?.getEntityId()).isEqualTo(tpp32.getEntityId())
 
         // Configure the remote data source to return a different tppEntity
         //tppsEbaDataSource.tppsListResponse?.tppsList = mutableListOf(tpp2)
@@ -278,7 +278,7 @@ class DefaultTppsRepositoryTest {
         tppsEbaDataSource.tppsListResponse?.tppsList = mutableListOf(Tpp(followedTpp), tpp2)
         //tppsRepository.clearFollowedTpps()
 
-        val tpps = (tppsRepository.getTpps(false) as? Success)?.data
+        val tpps = (tppsRepository.getAllTpps(false) as? Success)?.data
 
         // TODO: Fix the Code to not do anything remote for unfollowing then fix the test.
         assertThat(tpps).hasSize(1/*PZA:Changed-Faked-The-Test WAS: 1*/)
@@ -288,14 +288,14 @@ class DefaultTppsRepositoryTest {
 
     @Test
     fun deleteAllTpps() = runBlockingTest {
-        // getTpps(true) will first fetch feom remote DS, then return feom local DS
-        val initialTpps = (tppsRepository.getTpps(true) as? Success)?.data
+        // filterTpps(true) will first fetch feom remote DS, then return feom local DS
+        val initialTpps = (tppsRepository.getAllTpps(true) as? Success)?.data
 
         // Delete all tpps in local DS, those initialTpps.data will become empty
         tppsRepository.deleteAllTpps()
 
         // Fetch data again
-        val afterDeleteTpps = (tppsRepository.getTpps(false) as? Success)?.data
+        val afterDeleteTpps = (tppsRepository.getAllTpps(false) as? Success)?.data
 
         // Verify tpps are empty now
         assertThat(initialTpps).isNotEmpty()
@@ -304,13 +304,13 @@ class DefaultTppsRepositoryTest {
 
     // TODO-PZA#FIX this test: @Test
     fun deleteSingleTpp() = runBlockingTest {
-        val initialTpps = (tppsRepository.getTpps(true) as? Success)?.data
+        val initialTpps = (tppsRepository.getAllTpps(true) as? Success)?.data
 
         // Delete first tppEntity
         tppsRepository.deleteTpp(tpp1.getId())
 
         // Fetch data again
-        val afterDeleteTpps = (tppsRepository.getTpps(true) as? Success)?.data
+        val afterDeleteTpps = (tppsRepository.getAllTpps(true) as? Success)?.data
 
         // Verify only one tppEntity was deleted
         assertThat(afterDeleteTpps?.size).isEqualTo(initialTpps!!.size - 1)

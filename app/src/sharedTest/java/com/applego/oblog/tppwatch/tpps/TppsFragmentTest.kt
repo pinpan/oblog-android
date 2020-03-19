@@ -68,7 +68,7 @@ class TppsFragmentTest {
     @Test
     fun displayTpp_whenRepositoryHasData() {
         // GIVEN - One tpp already in the repository
-        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1", "", "", "cz")))
+        repository.saveTppBlocking(Tpp(TppEntity(_entityId = "", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
 
         // WHEN - On startup
         launchActivity()
@@ -79,7 +79,7 @@ class TppsFragmentTest {
 
     @Test
     fun displayActiveTpp() {
-        val tppEntity = TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1", "", "", "cz")
+        val tppEntity = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity.active = true
         tppEntity.followed = false
         repository.saveTppBlocking(Tpp(tppEntity))
@@ -104,7 +104,7 @@ class TppsFragmentTest {
 
     @Test
     fun displayFollowedTpp() {
-        var tppEntity1 = TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1", "", "", "cz")
+        var tppEntity1 = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity1.followed = true
         repository.saveTppBlocking(Tpp(tppEntity1))
 
@@ -123,7 +123,7 @@ class TppsFragmentTest {
 
     //@Test
     fun deleteOneTpp() {
-        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1", "", "", "cz")))
+        repository.saveTppBlocking(Tpp(TppEntity(_entityId = "", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
 
         launchActivity()
 
@@ -141,8 +141,8 @@ class TppsFragmentTest {
 
     //@Test
     fun deleteOneOfTwoTpps() {
-        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1", "", "", "cz")))
-        repository.saveTppBlocking(Tpp(TppEntity("Entity_CZ28173282", "TITLE2", "DESCRIPTION2", "", "", "cz")))
+        repository.saveTppBlocking(Tpp(TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
+        repository.saveTppBlocking(Tpp(TppEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
 
         launchActivity()
 
@@ -162,7 +162,7 @@ class TppsFragmentTest {
 
     @Test
     fun markTppAsFollowed() {
-        var tppEntity1 = TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1", "", "", "cz")
+        var tppEntity1 = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         repository.saveTppBlocking(Tpp(tppEntity1))
 
         launchActivity()
@@ -186,7 +186,7 @@ class TppsFragmentTest {
 
     @Test
     fun markTppAsActive() {
-        var aTpp = TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1", "", "", "cz")
+        var aTpp = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         repository.saveTppBlocking(Tpp(aTpp))
 
         launchActivity()
@@ -209,9 +209,9 @@ class TppsFragmentTest {
     @Test
     fun showAllTpps() {
         // Add one active tpp and one followed tpp
-        var tpp1 = TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1", "", "", "cz")
+        var tpp1 = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         repository.saveTppBlocking(Tpp(tpp1))
-        var tpp2 = TppEntity("Entity_CZ28173282", "TITLE2", "DESCRIPTION2", "", "", "cz")
+        var tpp2 = TppEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         repository.saveTppBlocking(Tpp(tpp2))
 
         launchActivity()
@@ -235,11 +235,11 @@ class TppsFragmentTest {
     @Test
     fun showActiveTpps() {
         // Add 2 active tpps and one followed tpp
-        var tppEntity1 = TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1", "", "", "cz")
+        var tppEntity1 = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity1.active = true
-        var tppEntity2 = TppEntity("Entity_CZ28173282", "TITLE2", "DESCRIPTION2", "", "", "cz")
+        var tppEntity2 = TppEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity2.active = true
-        var tppEntity3 = TppEntity("Entity_CZ28173283", "TITLE3", "DESCRIPTION3", "", "", "cz")
+        var tppEntity3 = TppEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "TITLE3", _description = "DESCRIPTION3", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity3.followed = true
 
         repository.saveTppBlocking(Tpp(tppEntity1))
@@ -270,11 +270,11 @@ class TppsFragmentTest {
     @Test
     fun showFollowedTpps() {
         // Add one active tpp and 2 followed tpps
-        var tppEntity1 = TppEntity("Entity_CZ28173281", "TITLE1", "DESCRIPTION1", "", "", "cz")
+        var tppEntity1 = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity1.active = true
-        var tppEntity2 = TppEntity("Entity_CZ28173282", "TITLE2", "DESCRIPTION2", "", "", "cz")
+        var tppEntity2 = TppEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity2.followed = true
-        var tppEntity3 = TppEntity("Entity_CZ28173283", "TITLE3", "DESCRIPTION3", "", "", "cz")
+        var tppEntity3 = TppEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "TITLE3", _description = "DESCRIPTION3", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity3.followed = true
         repository.saveTppBlocking(Tpp(tppEntity1))
         repository.saveTppBlocking(Tpp(tppEntity2))

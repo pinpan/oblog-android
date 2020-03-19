@@ -49,7 +49,7 @@ class AboutViewModel(
     }
 
     private fun onTppLoaded(tpp: Tpp) {
-        title.value = tpp.getTitle()
+        title.value = tpp.getEntityName()
         description.value = tpp.getDescription()
         tppFollowed = tpp.isFollowed()
         _dataLoading.value = false
