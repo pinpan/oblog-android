@@ -66,29 +66,12 @@ class TppDetailFragment : Fragment() {
         if (viewModel != null) {
             listAdapter = TppDetailAdapter(viewModel, context!!, R.layout.tpp_passport)
             viewDataBinding.passportsList.adapter = listAdapter
-
-            /* TODO:
-            expandableListAdapter = SimpleExpandableListAdapter(
-                    context!!
-                    , viewModel.tpp.value?.ebaPassport?.serviceMaps
-                    , R.layout.tpp_passport
-                    , R.layout.tpp_passport
-                    , R.layout.tpp_passport
-                    ,
-            )
-            viewDataBinding.passportsExpandableList.setAdapter(expandableListAdapter)
-            */
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
         }
     }
 
     private fun setupNavigation() {
-        /*viewModel.deleteTppEvent.observe(this, EventObserver {
-            val action = TppDetailFragmentDirections
-                .actionTppDetailFragmentToTppsFragment(DELETE_RESULT_OK)
-            findNavController().navigate(action)
-        })*/
         viewModel.editTppEvent.observe(this, EventObserver {
             val action = TppDetailFragmentDirections
                 .actionTppDetailFragmentToAddEditTppFragment(
@@ -126,16 +109,6 @@ class TppDetailFragment : Fragment() {
         setHasOptionsMenu(true)
         return view
     }
-
-    /*override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_delete -> {
-                viewModel.deleteTpp()
-                true
-            }
-            else -> false
-        }
-    }*/
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.tppdetail_fragment_menu, menu)

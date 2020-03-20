@@ -19,28 +19,8 @@ data class SearchFilter @JvmOverloads constructor(
         @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString()
 ) {
 
-    //@ColumnInfo(name = "psd2_only") var psd2Only: Boolean = true,
-    //@ColumnInfo(name = "revoked_only") var revokedOnly: Boolean = true,
-    //@ColumnInfo(name = "show_fis") var showFis: Boolean = true,
-    //@ColumnInfo(name = "followed") var followed: Boolean = true,
-    //@ColumnInfo(name = "active") var active: Boolean = true,
-    //@ColumnInfo(name = "installed") var installed: Boolean = true,
-
     @Embedded
     var userSelectedFilterTypes: MutableMap<TppsFilterType, Boolean> = HashMap<TppsFilterType, Boolean>()
-/*
-        get() {
-            if (userSelectedFilterTypes == null) {
-                userSelectedFilterTypes
-            }
-        }
-        set(m : MutableMap<TppsFilterType, Boolean>) {
-            if (userSelectedFilterTypes == null) {
-                userSelectedFilterTypes = m
-            }
-        }
-*/
-
 
     fun updateUserSelection(requestType: TppsFilterType) {
 

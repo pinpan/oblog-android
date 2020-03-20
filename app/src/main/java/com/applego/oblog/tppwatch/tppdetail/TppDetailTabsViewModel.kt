@@ -30,9 +30,6 @@ class TppDetailTabsViewModel (
     private val _editTppEvent = MutableLiveData<Event<Unit>>()
     val editTppEvent: LiveData<Event<Unit>> = _editTppEvent
 
-    //private val _deleteTppEvent = MutableLiveData<Event<Unit>>()
-    //val deleteTppEvent: LiveData<Event<Unit>> = _deleteTppEvent
-
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
 
@@ -61,13 +58,6 @@ class TppDetailTabsViewModel (
     val active: LiveData<Boolean> = Transformations.map(_tpp) { input: Tpp? ->
         input?.isActive() ?: false
     }
-
-    /*fun deleteTpp() = viewModelScope.launch {
-        tppId?.let {
-            tppsRepository.deleteTpp(it)
-            _deleteTppEvent.value = Event(Unit)
-        }
-    }*/
 
     fun editTpp() {
         _editTppEvent.value = Event(Unit)

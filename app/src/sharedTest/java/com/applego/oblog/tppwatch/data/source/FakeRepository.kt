@@ -46,10 +46,6 @@ class FakeRepository : TppsRepository {
         tppsServiceData[tpp.tppEntity.getEntityId()] = tpp
     }
 
-    /*override suspend fun setTppFollowedFlag(tppId: String, followed: Boolean) {
-        tppsServiceData[tppId]?.tppEntity?.followed = true
-    }*/
-
     override suspend fun setTppFollowedFlag(tpp: Tpp, followed: Boolean) {
         tppsServiceData[tpp.tppEntity.getEntityId()]?.tppEntity?.followed = true
     }
@@ -58,15 +54,13 @@ class FakeRepository : TppsRepository {
         tpp.tppEntity.active = active
     }
 
-    /*override suspend fun setTppActivateFlag(tppId: String, a: Boolean) {
-        tppsServiceData[tppId]?.tppEntity?.active = a
-    }*/
-
+/*
     suspend fun clearFollowedTpps() {
         tppsServiceData = tppsServiceData.filterValues {
             !it.tppEntity?.isFollowed()
         } as LinkedHashMap<String, Tpp>
     }
+*/
 
     override suspend fun deleteTpp(tppId: String) {
         tppsServiceData.remove(tppId)

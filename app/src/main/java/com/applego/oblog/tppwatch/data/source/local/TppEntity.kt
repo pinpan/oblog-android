@@ -8,18 +8,20 @@ import java.util.*
  * Immutable model class for a Tpp. In order to compile with Room, we can't use @JvmOverloads to
  * generate multiple constructors.
  *
- * @param entityName       entityName of the tpp
+ * @param entityId    TPP legal entity ID provided by home country
+ * @param entityCode  entityCode assigned by EBA. Inconsistently includes TPP home country, Tpp Home NCA ID and TPP's NCA given ID
+ * @param entityName  entityName of the tpp
  * @param description description of the tpp
- * @param isFollowed whether or not this tpp is followed
+ * @param isFollowed  whether or not this tpp is followed
  * @param id          id of the tpp
  */
 @Entity(tableName = "tpps")
 @TypeConverters(OblogTypeConverters::class)
 data class TppEntity @JvmOverloads constructor(
-        @ColumnInfo(name = "entityId") val _entityId: String,  // Entity Code retruned by EBA or NCA
-        @ColumnInfo(name = "entityCode") var _entityCode: String = "", // #TODO: rename to entityName
+        @ColumnInfo(name = "entityId") val _entityId: String = "",
+        @ColumnInfo(name = "entityCode") val _entityCode: String = "",
         @ColumnInfo(name = "entityName") var _entityName: String = "",
-        @ColumnInfo(name = "description") var _description: String = "",    // A Global Unified identifier.
+        @ColumnInfo(name = "description") var _description: String = "",
         @ColumnInfo(name = "globalUrn") var _globalUrn: String = "",
         @ColumnInfo(name = "ebaEntityVersion") var _ebaEntityVersion: String = "",
         @ColumnInfo(name = "country") var _country: String = "",
@@ -50,8 +52,6 @@ data class TppEntity @JvmOverloads constructor(
 
     @Ignore
     override fun getId() = _id
-
-
 
     @ColumnInfo(name = "fis")
     var fis: Boolean = false

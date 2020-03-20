@@ -3,7 +3,7 @@ package com.applego.oblog.tppwatch.data.source.local
 import androidx.room.*
 import java.util.*
 
-@Entity(tableName = "ebaPassport")
+@Entity(tableName = "ebaPassports")
 @TypeConverters(OblogTypeConverters::class)
 data class EbaPassport @JvmOverloads constructor(
         @ColumnInfo(name = "countryCode") var countryCode: String = "",
@@ -29,11 +29,6 @@ data class EbaPassport @JvmOverloads constructor(
             this.services = services
         }
 
-        /*override fun equals(other: Any?): Boolean {
-            return     (other == this)
-                    || ((other as CountryVisa).hashCode() == hashCode())
-        }*/
-
         val servicesAsString : String
             get() {
                 val sb = StringBuilder()
@@ -42,7 +37,7 @@ data class EbaPassport @JvmOverloads constructor(
                 return str.toString()
             }
 
-
+        // #TODO-PZA: Implement hash and equals
     }
 
     val services : List<CountryVisa>

@@ -26,8 +26,6 @@ class TppsNcaDataSource internal constructor (
 
     var theApiKey : ApiKey = ApiKey("GaW42ue9mRsgvlL0eIrrD6biU1tlpr8Y")
 
-    //var tppsList: List<Tpp> = emptyList()
-
     override suspend fun getAllTpps(): Result<TppsListResponse> = withContext(ioDispatcher) {
         var paging = Paging(10, 1, 10, true)
 
@@ -48,47 +46,6 @@ class TppsNcaDataSource internal constructor (
         }
 
         return@withContext Result.Loading(Timeout())
-/*
-        val call = tppsService.listTpps(theApiKey.apiKey,"EU", "", paging.page, paging.size, paging.sortBy)
-        //call.enqueue(object: Callback<TppsListResponse> {
-        var response: Response<TppsListResponse>?
-        try {
-
-            response = call.execute()
-
-            //override fun onResponse(call: Call<TppsListResponse/*List<Tpp>*/>, response: Response<TppsListResponse/*List<Tpp>*/>) {
-                if (response.isSuccessful()) {
-                    //var tppsList : List<Tpp>
-                    tppsList = response.body()?.tppsList!!
-                    tppsList.forEach { tpp ->
-                        System.out.println("Insert/Update tpp: " + tpp.getEntityName() + " into database")
-
-                        runBlocking<Unit> {
-                            if (tppsDao.getTppById(tpp.getId()) == null) {
-                                tppsDao.insertTpp(tpp.tppEntity)
-                            } else {
-                                tppsDao.updateTpp(tpp.tppEntity)
-                            }
-                        }
-                    }
-                } else {
-                    System.out.println(response.errorBody())
-                    //return@withContext  com.applego.oblog.tppwatch.data.Result.Error()
-                }
-        } catch (ioe: IOException) {
-            Timber.e(ioe, "IOException caught: %s", ioe.message)
-            return Result.Error(ioe)
-        }
-            //}
-
-            /*override fun onFailure(call: Call<TppsListResponse*//*List<Tpp>*//*>, t: Throwable) {
-                t.printStackTrace()
-            }*/
-        //})
-
-        return@withContext Result.Loading(Timeout())
-
- */
     }
 
     private fun loadTppsPage(country: String, tppName: String, paging: Paging): Result<Paging> {
@@ -125,19 +82,21 @@ class TppsNcaDataSource internal constructor (
         val paging =  Paging()
 
         val call = tppsService.findById(theApiKey.apiKey,country, tppId.toString(), paging.page, paging.size, paging.sortBy)
-        var response: Response<Tpp>?
+        var response: Response<List<Tpp>>?
         try {
             response = call.execute()
-
+            var theTpp: Tpp? = null
             if (response.isSuccessful()) {
-                val tpp = response.body()!!
-                Timber.d("tppsList=" + tpp.tppEntity)
-                if (tppsDao.getTppByEntityCode(tpp.tppEntity.getEntityCode()) == null) {
-                    tppsDao.insertTpp(tpp.tppEntity)
+                val tppList = response.body()!!
+                theTpp = tppList[0]
+                val tppEntity = theTpp.tppEntity
+                Timber.d("tppsList=" + tppEntity)
+                if (tppsDao.getTppByEntityCode(tppEntity.getEntityCode()) == null) {
+                    tppsDao.insertTpp(tppEntity)
                 } else {
-                    tppsDao.updateTpp(tpp.tppEntity)
+                    tppsDao.updateTpp(tppEntity)
                 }
-                return Result.Success(tpp)
+                return Result.Success(theTpp)
             } else {
                 return Result.Warn(response.code().toString(),  response.errorBody().toString())
             }
@@ -152,19 +111,22 @@ class TppsNcaDataSource internal constructor (
         val paging =  Paging()
 
         val call = tppsService.findByName(theApiKey.apiKey,country, tppName, paging.page, paging.size, paging.sortBy)
-        var response: Response<Tpp>?
+        var response: Response<List<Tpp>>?
         try {
             response = call.execute()
+            var theTpp: Tpp? = null
 
             if (response.isSuccessful()) {
-                val tpp = response.body()!!
-                Timber.d("tppsList=" + tpp.tppEntity)
-                if (tppsDao.getTppByEntityCode(tpp.tppEntity.getEntityCode()) == null) {
-                    tppsDao.insertTpp(tpp.tppEntity)
+                val tppList = response.body()!!
+                theTpp = tppList[0]
+                val tppEntity = theTpp.tppEntity
+                Timber.d("tppsList=" + tppEntity)
+                if (tppsDao.getTppByEntityCode(tppEntity.getEntityCode()) == null) {
+                    tppsDao.insertTpp(tppEntity)
                 } else {
-                    tppsDao.updateTpp(tpp.tppEntity)
+                    tppsDao.updateTpp(tppEntity)
                 }
-                return Result.Success(tpp)
+                return Result.Success(theTpp)
             } else {
                 return Result.Warn(response.code().toString(),  response.errorBody().toString())
             }

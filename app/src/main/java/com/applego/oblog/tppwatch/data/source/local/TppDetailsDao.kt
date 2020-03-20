@@ -1,10 +1,7 @@
 package com.applego.oblog.tppwatch.data.source.local
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
 
 /**
  * Data Access Object for the tpp details table.

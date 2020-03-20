@@ -41,6 +41,7 @@
                     android:text="@{viewmodel.tpp.tppEntity.entityName}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#006496"
+                    android:textIsSelectable="true"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -187,6 +188,7 @@
                     android:text="@{viewmodel.tpp.tppEntity.entityCode}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="#006496"
+                    android:textIsSelectable="true"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 

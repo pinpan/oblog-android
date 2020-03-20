@@ -3,16 +3,6 @@ package com.applego.oblog.tppwatch.data.source.local
 
 interface TppModel  {
 
-    //var isFis: Boolean
-
-    //var isPsd2: Boolean
-
-    //var isActive: Boolean
-
-    //var isFollowed: Boolean
-
-    // var status: RecordStatus
-
     fun getId(): String
 
     fun getEntityId(): String

@@ -34,6 +34,7 @@ import org.hamcrest.Matcher
 import org.hamcrest.core.IsNot.not
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
@@ -139,7 +140,8 @@ class TppsFragmentTest {
         onView(withText("TITLE1")).check(doesNotExist())
     }
 
-    //@Test
+    @Ignore
+    @Test
     fun deleteOneOfTwoTpps() {
         repository.saveTppBlocking(Tpp(TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
         repository.saveTppBlocking(Tpp(TppEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
@@ -372,12 +374,6 @@ class TppsFragmentTest {
         return fragmentScenario
     }
 
-/*
-
-    private fun checkboxWithText(text: String): Matcher<View> {
-        return allOf(withId(R.id.follow_checkbox), hasSibling(withText(text)))
-    }
-*/
 
     private fun checkboxFollowed(): Matcher<View> {
         return allOf(withId(R.id.follow_checkbox))

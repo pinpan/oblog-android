@@ -26,10 +26,6 @@ object FakeFailingTppsLocalDataSource : LocalTppDataSource {
         TODO("not implemented")
     }
 
-    /*override suspend fun clearFollowedTpps() {
-        TODO("not implemented")
-    }*/
-
     override suspend fun deleteAllTpps() {
         TODO("not implemented")
     }

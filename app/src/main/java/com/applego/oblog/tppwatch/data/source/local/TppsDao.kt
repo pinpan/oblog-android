@@ -1,4 +1,3 @@
-
 package com.applego.oblog.tppwatch.data.source.local
 
 import androidx.room.Dao
@@ -62,7 +61,7 @@ interface TppsDao {
      * @param tpp tpp to be updated
      * @return the number of tpps updated. This should always be 1.
      */
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateTpp(tpp: TppEntity): Int
 
     /**

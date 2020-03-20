@@ -124,15 +124,6 @@ class DefaultTppsRepository (
             }
         }
 
-/*
-        if (localTpp == null) {
-            // Try to fetch the Tpp from Eba. -> Should fail because if we don't have it in local DB,
-            // then we don't know the EBA ID, not NCA ID. Either this particular TPP was never
-            // provided by EBA, or we didn't actually loaded EBA repository yet.
-            return Result.Error("Tpp Not found in local DB", "Provided DB ID is invalid - TPP can not be found in the DB")
-        }
-*/
-
         // Local if local fails
         if (localTpp != null) {
             if (forceUpdate) {
@@ -166,31 +157,6 @@ class DefaultTppsRepository (
             return localTppResult
         }
 
-        /*val result = tppsEbaDataSource.getTppById("EU", tppId)
-        when (result) {
-            is Error -> Timber.w("Remote data source fetch failed")
-            is Result.Warn -> Timber.w("Remote data source fetch failed die to '" + result.message + "'")
-            is Success -> {
-                refreshLocalDataSource(result.data)
-                return result
-            }
-            is Loading -> {
-                //return result
-            }
-        }*/
-
-        // Don't read from local if refresh is forced but remote returned error or warning
-        /*if (forceUpdate) {
-            return result //Error(Exception("Refresh failed"))
-        }*/
-
-        // Local if remote fails with Warning
-        /*val localTpps : Result<Tpp> = tppsLocalDataSource.getTpp(tppId)
-        when (localTpps) {
-            is Success -> return localTpps
-            is Error -> return localTpps
-            else -> return Error(Exception("Error fetching from remote and local"))
-        }*/
         return Error(Exception("Error fetching from remote and local"))
     }
 
@@ -210,12 +176,6 @@ class DefaultTppsRepository (
             }
         }
     }
-
-    /*UNUSED: override suspend fun setTppFollowedFlag(tppId: String, followed: Boolean) {
-        (tppsLocalDataSource.getTpp(tppId) as? Success)?.let {
-            setTppFollowedFlag(it.data, followed)
-        }
-    }*/
 
     override suspend fun setTppFollowedFlag(tpp: Tpp, f: Boolean) {
         cacheAndPerform(tpp) {
@@ -237,14 +197,6 @@ class DefaultTppsRepository (
             }
         }
     }
-
-    /*UNUSED: override suspend fun setTppActivateFlag(tppId: String, active: Boolean) {
-        withContext(ioDispatcher) {
-            getTppWithId(tppId)?.let {
-                setTppActivateFlag(it, active)
-            }
-        }
-    }*/
 
     override suspend fun deleteAllTpps() {
         withContext(ioDispatcher) {

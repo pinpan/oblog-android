@@ -5,6 +5,7 @@ import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.local.TppEntity
 import com.google.gson.*
 import java.lang.reflect.Type
+import timber.log.Timber
 
 class TppDeserializer : JsonDeserializer<Tpp> {
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Tpp? {
@@ -32,21 +33,22 @@ class TppDeserializer : JsonDeserializer<Tpp> {
             return null //Tpp()
         }
 
-        val entityId: String = jsonObject.get("entityId")?.asString ?:""
-        val entityCode: String  = jsonObject?.get("entityCode")?.getAsString() ?: ""
+        val entityCode: String  = jsonObject?.get("entityCode")?.asString ?: ""
+        var entityId: String   =  jsonObject.get("entityId")?.asString ?: ""
+        if (entityId.isNullOrBlank()) {
+            entityId = getEntityId(entityCode)
+        }
 
         val nameJson = jsonObject?.get("entityName")
-        var entityName = if (nameJson is JsonArray) getStringFromJsonArray(nameJson.asJsonArray) else nameJson.asString
-
+        val entityName = if (nameJson is JsonArray) getStringFromJsonArray(nameJson.asJsonArray) else nameJson.asString
+        val globalUrn = jsonObject?.get("globalUrn")?.asString ?:""
         val ebaProperties = jsonObject.get("ebaProperties")?.asJsonObject
-        val cou = ebaProperties?.get("ENT_COU_RES")?.asString
-
+        val country: String = ebaProperties?.get("ENT_COU_RES")?.asString ?: ""
         val ebaEntityVersion: String = jsonObject?.get("ebaEntityVersion")?.asString ?: ""
         // val status: String = jsonObject?.get("status")?.asString ?: ""
         val description: String = jsonObject?.get("description")?.asString ?: ""
 
-        var tpp = Tpp(TppEntity(_entityId = "", _entityCode = entityCode, _entityName = entityName, _description = description, _globalUrn = jsonObject?.get("globalUrn")?.asString ?:"", _ebaEntityVersion = ebaEntityVersion, _country = "cz"))
-        tpp.tppEntity._country = cou ?: ""
+        var tpp = Tpp(TppEntity(_entityId = entityId, _entityCode = entityCode, _entityName = entityName, _description = description, _globalUrn = globalUrn, _ebaEntityVersion = ebaEntityVersion, _country = country))
 
         val services = jsonObject?.get("services").asJsonArray ?: JsonArray()
         if (services != null) {
@@ -55,6 +57,27 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         }
 
         return tpp
+    }
+
+    private fun getEntityId(entityCode: String): String {
+
+        // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        // "entityCode": "PSD_EMI!GB_FCA!900016",
+        // "entityId":   "PSD_EMI!GB_FCA!900016",
+        // "entityCode": "PSD_EMI!GB_FCA!900645"
+        // "entityId":   "PSD_EMI!GB_FCA!900645",
+        var entityId: String = entityCode
+        if (!entityCode.isNullOrBlank()) {
+            val codeParts: List<String>  = entityCode.split(",")
+            if (codeParts.size == 0) {
+                Timber.w("Tpp Entity code %s can't be split", entityCode)
+            } else {
+                entityId = codeParts.get(codeParts.size-1).trim()
+            }
+        }
+
+
+        return entityId
     }
 
     private fun getStringFromJsonArray(jsounArray: JsonArray): String {

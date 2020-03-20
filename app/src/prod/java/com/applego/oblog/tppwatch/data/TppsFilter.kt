@@ -1,7 +1,5 @@
 package com.applego.oblog.tppwatch.data
 
-import com.applego.oblog.tppwatch.data.source.local.EbaService
-
 class TppsFilter {
     var  tppName: String = ""
     var  services: List<String>? = null

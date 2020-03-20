@@ -22,12 +22,9 @@ interface  OblogApiKeyService {
     companion object {
 
         val apiKeyType: Type = object : TypeToken<ApiKey>() {}.type
-        //val tppListType: Type = object : TypeToken<MutableList<ApiKey>>() {}.type //@JvmSuppressWildcards
-        //val apiKeyResponseType: Type = object : TypeToken<ApiKeyResponse>() {}.type //@JvmSuppressWildcards
 
         var gson = GsonBuilder()
                 .registerTypeAdapter(apiKeyType, ApiKeyDeserializer())
-                //.registerTypeAdapter(apiKeyResponseType, ApiKeyResponseDeserializer())
                 .enableComplexMapKeySerialization()
                 .serializeNulls()
                 .setDateFormat(DateFormat.LONG)

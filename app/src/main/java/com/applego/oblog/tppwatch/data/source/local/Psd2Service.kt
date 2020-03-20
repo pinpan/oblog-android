@@ -7,7 +7,6 @@ import androidx.room.TypeConverters
 import java.util.*
 
 @Entity(tableName = "services")
-// TODO: Rename to TppService
 @TypeConverters(OblogTypeConverters::class)
 data class Psd2Service @JvmOverloads constructor(
         @ColumnInfo(name = "title") var title: String = "",

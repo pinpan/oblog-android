@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.tpps
 
 import android.os.Bundle
@@ -133,13 +118,6 @@ class TppsViewModel(
                             R.drawable.ic_verified_user_96dp, true
                     )
                 }
-                /* This is handled by the slider
-                TppsFilterType.ONLY_PSD2_TPPS -> {
-                    setFilterStatusViews(
-                            R.string.label_followed, R.string.no_tpps_followed,
-                            R.drawable.ic_verified_user_96dp, false
-                    )
-                }*/
                 TppsFilterType.REVOKED_TPPS -> {
                     setFilterStatusViews(
                             R.string.label_revoked, R.string.no_revoked_tpps,
@@ -329,17 +307,13 @@ class TppsViewModel(
         }
 
         var filteredTpps = ArrayList<Tpp>()
-        /*if (_searchFilter.countries.isNullOrBlank() || _searchFilter.countries.equals("<ALL>")) {
-                filteredTpps.addAll(inputTpps)
-        } else {*/
-            _searchFilter.countries.forEach {
-                inputTpps?.forEach {
-                    if (it.getCountry().equals(country)) {
-                        filteredTpps.add(it)
-                    }
+        _searchFilter.countries.forEach {
+            inputTpps?.forEach {
+                if (it.getCountry().equals(country)) {
+                    filteredTpps.add(it)
                 }
             }
-        //}
+        }
 
         return filteredTpps
     }
@@ -404,7 +378,6 @@ class TppsViewModel(
     }
 
     fun saveSearchFilter(outState: Bundle) {
-        //outState.putBoolean("created", viewModel._searchFilter.created)
 
         outState.putString("entityName", _searchFilter.title)
         outState.putBoolean("searchDescription", _searchFilter.searchDescription)

@@ -84,10 +84,14 @@ class TppEbaDataSource internal constructor (
                     System.out.println("Insert/Update tpp: " + tpp.tppEntity.getEntityName() + " into database")
 
                     runBlocking<Unit> {
-                        if (tppsDao.getTppByEntityCode(tpp.tppEntity.getEntityCode()) == null) {
+                        val foundEntity = tppsDao.getTppByEntityCode(tpp.tppEntity.getEntityCode())
+                        if (foundEntity == null) {
                             tppsDao.insertTpp(tpp.tppEntity)
                         } else {
-                            tppsDao.updateTpp(tpp.tppEntity)
+                            val updatedNumber = tppsDao.updateTpp(tpp.tppEntity)
+                            if (updatedNumber != 1) {
+                                Timber.w("Update of TPP with ID %s was not successfull.", tpp.getEntityId())
+                            }
                         }
                     }
                 }

@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 
 /**
@@ -89,7 +90,9 @@ class DefaultTppsRepositoryTest {
         assertThat(tpps.data.sortedBy { it.getId() }).isEqualTo(allTpps)
     }
 
-    // TODO-PZA#FIX this test: @Test
+    // TODO-PZA#FIX this test:
+    @Ignore
+    @Test
     fun saveTpp_savesToCacheLocalAndRemote() = runBlockingTest {
         // Make sure newTppEntity is not in the remote or local datasources or cache
         assertThat(tppsEbaDataSource.tppsListResponse?.tppsList).doesNotContain(newTppEntity)
@@ -173,7 +176,8 @@ class DefaultTppsRepositoryTest {
         assertThat(tppsLocalDataSource.tpps).isNotEqualTo(initialLocal)
     }
 
-    //@Test
+    @Ignore
+    @Test
     fun saveTpp_savesTppToRemoteAndUpdatesCache() = runBlockingTest {
         // Save a tppEntity
         tppsRepository.saveTpp(Tpp(newTppEntity))
@@ -189,7 +193,9 @@ class DefaultTppsRepositoryTest {
         assertThat(result.data).contains(newTppEntity)
     }
 
-    // TODO-PZA#FIX this test: @Test
+    // TODO-PZA#FIX this test:
+    @Ignore
+    @Test
     fun followTpp_followsTppToServiceAPIUpdatesCache() = runBlockingTest {
         // Save a tppEntity
         tppsRepository.saveTpp(Tpp(newTppEntity))
@@ -204,7 +210,9 @@ class DefaultTppsRepositoryTest {
         assertThat((tppsRepository.getTpp(newTppEntity.getEntityId()) as Success).data.isFollowed())
     }
 
-    // TODO-PZA#FIX this test: @Test
+    // TODO-PZA#FIX this test:
+    @Ignore
+    @Test
     fun unfollowTpp_activeTppToServiceAPIUpdatesCache() = runBlockingTest {
         // Save a tppEntity
         tppsRepository.saveTpp(Tpp(newTppEntity))
@@ -221,7 +229,9 @@ class DefaultTppsRepositoryTest {
         assertThat(result.data.isActive()).isTrue()
     }
 
-    /*@Test
+    // TODO-PZA#FIX this test:
+    @Ignore
+    @Test
     fun getTpp_repositoryCachesAfterFirstApiCall() = runBlockingTest {
         // Trigger the repository to load data, which loads from remote
         tppsEbaDataSource.tppsListResponse?.tppsList = mutableListOf(tpp1)
@@ -236,7 +246,7 @@ class DefaultTppsRepositoryTest {
         // Both work because one is in remote and the other in cache
         assertThat(tpp1SecondTime.data.getId()).isEqualTo(tpp1.getId())
         assertThat(tpp2SecondTime.data.getId()).isEqualTo(tpp2.getId())
-    }*/
+    }
 
     @Test
     fun getTpp_forceRefresh() = runBlockingTest {
@@ -260,6 +270,7 @@ class DefaultTppsRepositoryTest {
         val tpp32FromNca = tppsRepository.getTpp(tpp3.getEntityId(), true)
         assertThat((tpp32FromNca as? Success)?.data?.getEntityId()).isEqualTo(tpp32.getEntityId())
 
+        // TODO-PZA#FIX this tests:
         // Configure the remote data source to return a different tppEntity
         //tppsEbaDataSource.tppsListResponse?.tppsList = mutableListOf(tpp2)
 
@@ -302,7 +313,9 @@ class DefaultTppsRepositoryTest {
         assertThat(afterDeleteTpps).isEmpty()
     }
 
-    // TODO-PZA#FIX this test: @Test
+    // TODO-PZA#FIX this test:
+    @Ignore
+    @Test
     fun deleteSingleTpp() = runBlockingTest {
         val initialTpps = (tppsRepository.getAllTpps(true) as? Success)?.data
 

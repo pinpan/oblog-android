@@ -20,9 +20,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
-
-
-
 class TppsFragment : Fragment() {
 
     private val viewModel by viewModels<TppsViewModel> { getViewModelFactory() }

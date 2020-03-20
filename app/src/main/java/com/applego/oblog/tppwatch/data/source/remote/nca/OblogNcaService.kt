@@ -55,7 +55,7 @@ interface OblogNcaService {
                  @Path("entityId") entityId: String,
                  @Query("page") page: Int? = null,
                  @Query("size") pageSize: Int? = null,
-                 @Query("sort") order: String? = null): Call<Tpp>;
+                 @Query("sort") order: String? = null): Call<List<Tpp>>;
 
     @GET("{country}")
     fun findByName( @Header("X-Api-Key") apiKey: String,
@@ -63,7 +63,7 @@ interface OblogNcaService {
                     @Query("name") entityName: String,
                     @Query("page") page: Int? = null,
                     @Query("size") pageSize: Int? = null,
-                    @Query("sort") order: String? = null): Call<Tpp>;
+                    @Query("sort") order: String? = null): Call<List<Tpp>>;
 
     @GET("{country}")
     fun listTpps(
