@@ -85,7 +85,7 @@ class TppsFragment : Fragment() {
                     viewModel.loadTpps(false)
                     lastTppsSearchViewQuery = ""
                 }
-                return true
+                return false
             }
         })
 

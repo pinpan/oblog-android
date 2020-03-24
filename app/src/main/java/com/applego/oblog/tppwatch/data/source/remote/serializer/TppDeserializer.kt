@@ -34,9 +34,9 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         }
 
         val entityCode: String  = jsonObject?.get("entityCode")?.asString ?: ""
-        var entityId: String   =  jsonObject.get("entityId")?.asString ?: ""
-        if (entityId.isNullOrBlank()) {
-            entityId = getEntityId(entityCode)
+        var entityId: String   =  jsonObject.get("entityId")?.asString ?: entityCode
+        if (!entityId.isNullOrBlank()) {
+            entityId = getEntityId(entityId)
         }
 
         val nameJson = jsonObject?.get("entityName")
@@ -68,7 +68,7 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         // "entityId":   "PSD_EMI!GB_FCA!900645",
         var entityId: String = entityCode
         if (!entityCode.isNullOrBlank()) {
-            val codeParts: List<String>  = entityCode.split(",")
+            val codeParts: List<String>  = entityCode.split("!")
             if (codeParts.size == 0) {
                 Timber.w("Tpp Entity code %s can't be split", entityCode)
             } else {

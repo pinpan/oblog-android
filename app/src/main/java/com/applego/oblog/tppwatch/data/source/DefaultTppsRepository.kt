@@ -3,6 +3,7 @@ package com.applego.oblog.tppwatch.data.source
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Loading
 import com.applego.oblog.tppwatch.data.Result.Error
+import com.applego.oblog.tppwatch.data.Result.Warn
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.source.local.Tpp
@@ -110,61 +111,68 @@ class DefaultTppsRepository (
         forceUpdate: Boolean
     ): Result<Tpp> {
 
-        var localTpp : Tpp ?= null
+        var tpp : Tpp ?= null
 
         // Local DB first
-        val localTppResult : Result<Tpp> = tppsLocalDataSource.getTpp(tppId)
-        when (localTppResult) {
+        val tppResult : Result<Tpp> = tppsLocalDataSource.getTpp(tppId)
+        when (tppResult) {
             is Success -> {
-                localTpp = localTppResult.data
+                tpp = tppResult.data
             }
             is Error -> {
                 Timber.w("Couldn't find TPP in local DB. a) TPP ID is invalid; b) TPP it doesn't exist; c) Local DB is not synchronized with EBA registry.")
-                return localTppResult
+                return tppResult
             }
         }
 
         // Local if local fails
-        if (localTpp != null) {
+        if (tpp != null) {
             if (forceUpdate) {
                 var ebaUpdate: Boolean = false
                 var ncaUpdate: Boolean = false
 
-                val resultEba = tppsEbaDataSource.getTppById(localTpp.getCountry(), localTpp.getEntityId())
-                when (resultEba) {
+                val result = tppsEbaDataSource.getTppById(tpp.getCountry(), tpp.getEntityId())
+                when (result) {
                     is Error -> {
-                        Timber.w("Eba remote data source fetch failed")
+                        Timber.w("Eba remote data source fetch failed with error: %s.", result.exception)
+                    }
+                    is Warn -> {
+                        Timber.w("Eba remote data source fetch failed with warning: %s", result.warning)
                     }
                     is Success -> {
-                        ebaUpdate = updateLocalTppFromRemote(localTpp, resultEba.data)
+                        ebaUpdate = updateTppFromRemote(tpp, result.data)
                     }
                 }
 
-                val resultNca = tppsNcaDataSource.getTppById(localTpp.getCountry(), localTpp.getEntityId())
+                val resultNca = tppsNcaDataSource.getTppById(tpp.getCountry(), tpp.getEntityId())
                 when (resultNca) {
                     is Error -> {
-                        Timber.w("Nca remote data source fetch failed")
+                        Timber.w("Nca remote data source fetch failed with error: %s.", resultNca.exception)
+                    }
+                    is Warn -> {
+                        Timber.w("Nca remote data source fetch failed with warning: %s.", resultNca.warning)
                     }
                     is Success -> {
-                        ebaUpdate = updateLocalTppFromRemote(localTpp, resultNca.data)
+                        ebaUpdate = updateTppFromRemote(tpp, resultNca.data)
                     }
                 }
 
                 if (ebaUpdate || ncaUpdate) {
-                    refreshLocalDataSource(localTpp)
+                    refreshLocalDataSource(tpp)
                 }
             }
-            return localTppResult
+            return tppResult
         }
 
         return Error(Exception("Error fetching from remote and local"))
     }
 
-    private fun updateLocalTppFromRemote(localTpp: Tpp, data: Tpp): Boolean {
+    private fun updateTppFromRemote(tpp: Tpp, updateFrom: Tpp): Boolean {
         // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 
-        localTpp.tppEntity._entityName = data.getEntityName()
-        localTpp.tppEntity._description = data.getDescription()
+        tpp.tppEntity._entityName = updateFrom.getEntityName()
+        tpp.tppEntity._description = updateFrom.getDescription()
+        // TODO: Update what is relevant
         return true
     }
 

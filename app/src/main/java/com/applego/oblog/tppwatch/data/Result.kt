@@ -10,9 +10,6 @@ import java.util.*
  */
 sealed class Result<out T> {
 
-    init {
-
-    }
     data class Idle(val since: Date) : Result<Nothing>()
     data class Success<out T>(val data: T) : Result<T>()
     data class Error(val exception: Exception) : Result<Nothing>()

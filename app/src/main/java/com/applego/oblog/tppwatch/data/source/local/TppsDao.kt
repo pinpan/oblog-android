@@ -39,13 +39,22 @@ interface TppsDao {
     suspend fun getTppByGlobalUrn(globalUrn: String): TppEntity?
 
     /**
-     * Select a tpp by entityCode (provided by Backend).
+     * Select a tpp by EBA entityCode (provided by OBLOG backend).
      *
-     * @param tppId the tpp entityCode.
+     * @param entityCode the EBA  tpp entityCode.
      * @return the tpp with entityCode.
      */
     @Query("SELECT * FROM Tpps WHERE entityCode = :entityCode")
     suspend fun getTppByEntityCode(entityCode: String): TppEntity?
+
+    /**
+     * Select a tpp by NCA entityId (provided by OBLOG backend).
+     *
+     * @param entityId the NCA tpp entityId.
+     * @return the tpp with entityId.
+     */
+    @Query("SELECT * FROM Tpps WHERE entityId = :entityId")
+    suspend fun getTppByEntityId(entityId: String): TppEntity?
 
     /**
      * Insert a tpp in the database. If the tpp already exists, replace it.

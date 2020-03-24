@@ -49,8 +49,17 @@ interface  OblogEbaService {
     }
 
 
+/*
     @GET("tpps/local/")
     fun getTppById(@Query("id") id: Int?): Call<Tpp>
+*/
+    @GET("tpps/local/{entityId}")
+    fun findById(@Header("X-Api-Key") apiKey: String,
+                 @Path("entityId") entityId: String,
+                 @Query("page") page: Int? = null,
+                 @Query("size") pageSize: Int? = null,
+                 @Query("sort") order: String? = null): Call<List<Tpp>>;
+
 
     @GET("import/")
     fun listTppsByName(): Call<Unit>;

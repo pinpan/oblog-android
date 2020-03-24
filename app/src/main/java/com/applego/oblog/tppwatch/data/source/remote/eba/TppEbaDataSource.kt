@@ -52,8 +52,57 @@ class TppEbaDataSource internal constructor (
         return@withContext Result.Loading(Timeout())
     }
 
+    // TODO: Refactor to single implementation <- This implementatiomn is exactly the same as for NcaDataSource
     override suspend fun getTppById(country: String, tppId: String): Result<Tpp> {
+        val paging =  Paging()
+
+        val call = tppsService.findById(theApiKey.apiKey, tppId.toString(), paging.page, paging.size, paging.sortBy)
+        var response: Response<List<Tpp>>?
+        try {
+            response = call.execute()
+            var theTpp: Tpp? = null
+            if (response.isSuccessful()) {
+                if (response.body().isNullOrEmpty()) {
+                    return Result.Warn("HTTP response body is empty", "HTTP response code: $response.code(), response body: $response.body()")
+                } else {
+                    val tppList = response.body()
+                    Timber.d("tppsList=" + tppList)
+                    if (tppList?.size == 1) {
+                        theTpp = updateTppEntity(tppList[0])
+                    } else {
+                        // Multiple entities matched by EBA entityCode - mess to be solved
+                        return Result.Warn("HTTP response returned multiple entities", "HTTP response code: $response.code(), response body: $response.body()")
+                    }
+                    return Result.Success(theTpp)
+                }
+            } else {
+                return Result.Error(Exception("HTTP response with code: $response.code().toString() and error body: $response.errorBody().toString()"))
+            }
+        } catch (ioe: IOException) {
+            Timber.e(ioe, "IOException caught: %s", ioe.message)
+            return Result.Error(ioe)
+        }
+
+
         return Result.Loading(Timeout().timeout(100, TimeUnit.MILLISECONDS));
+    }
+
+
+    suspend fun updateTppEntity(ebaTpp: Tpp) : Tpp {
+        val ebaEntity = ebaTpp.tppEntity
+        val dbEntity = tppsDao.getTppByEntityCode(ebaEntity.getEntityCode())
+        if (dbEntity == null) {
+            tppsDao.insertTpp(ebaEntity)
+        } else {
+            dbEntity._description = ebaEntity._description
+            dbEntity._entityName = ebaEntity._entityName
+            dbEntity._ebaEntityVersion = ebaEntity._ebaEntityVersion
+            dbEntity._ebaPassport = ebaEntity._ebaPassport
+            dbEntity._status = ebaEntity._status
+            tppsDao.updateTpp(dbEntity)
+        }
+
+        return ebaTpp
     }
 
     override suspend fun getTppByName(country: String, tppName: String): Result<Tpp> {

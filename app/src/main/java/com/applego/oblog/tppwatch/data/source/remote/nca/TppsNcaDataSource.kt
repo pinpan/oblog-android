@@ -87,23 +87,43 @@ class TppsNcaDataSource internal constructor (
             response = call.execute()
             var theTpp: Tpp? = null
             if (response.isSuccessful()) {
-                val tppList = response.body()!!
-                theTpp = tppList[0]
-                val tppEntity = theTpp.tppEntity
-                Timber.d("tppsList=" + tppEntity)
-                if (tppsDao.getTppByEntityCode(tppEntity.getEntityCode()) == null) {
-                    tppsDao.insertTpp(tppEntity)
+                if (response.body().isNullOrEmpty()) {
+                    return Result.Warn("HTTP response body is empty", "HTTP response code: $response.code(), response body: $response.body()")
                 } else {
-                    tppsDao.updateTpp(tppEntity)
+                    val tppList = response.body()
+                    Timber.d("tppsList=" + tppList)
+                    if (tppList?.size == 1) {
+                        theTpp = updateTppEntity(tppList[0])
+                    } else {
+                        // Multiple entities matched by NCA entityID - mess to be solved
+                        return Result.Warn("HTTP response returned multiple entities", "HTTP response code: $response.code(), response body: $response.body()")
+                    }
+                    return Result.Success(theTpp)
                 }
-                return Result.Success(theTpp)
             } else {
-                return Result.Warn(response.code().toString(),  response.errorBody().toString())
+                return Result.Error(Exception("HTTP response with code: $response.code().toString() and error body: $response.errorBody().toString()"))
             }
         } catch (ioe: IOException) {
             Timber.e(ioe, "IOException caught: %s", ioe.message)
             return Result.Error(ioe)
         }
+    }
+
+    suspend fun updateTppEntity(ncaTpp: Tpp) : Tpp {
+        val ncaEntity = ncaTpp.tppEntity
+        val dbEntity = tppsDao.getTppByEntityCode(ncaEntity.getEntityCode())
+        if (dbEntity == null) {
+            tppsDao.insertTpp(ncaEntity)
+        } else {
+            dbEntity._description = ncaEntity._description
+            dbEntity._entityName = ncaEntity._entityName
+            dbEntity._ebaEntityVersion = ncaEntity._ebaEntityVersion
+            dbEntity._ebaPassport = ncaEntity._ebaPassport
+            dbEntity._status = ncaEntity._status
+            tppsDao.updateTpp(dbEntity)
+        }
+
+        return ncaTpp
     }
 
     override suspend fun getTppByName(country: String, tppName: String): Result<Tpp> {
