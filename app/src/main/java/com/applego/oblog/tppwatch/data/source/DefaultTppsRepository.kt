@@ -170,8 +170,8 @@ class DefaultTppsRepository (
     private fun updateTppFromRemote(tpp: Tpp, updateFrom: Tpp): Boolean {
         // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 
-        tpp.tppEntity._entityName = updateFrom.getEntityName()
-        tpp.tppEntity._description = updateFrom.getDescription()
+        tpp.ebaEntity._entityName = updateFrom.getEntityName()
+        tpp.ebaEntity._description = updateFrom.getDescription()
         // TODO: Update what is relevant
         return true
     }
@@ -188,9 +188,9 @@ class DefaultTppsRepository (
     override suspend fun setTppFollowedFlag(tpp: Tpp, f: Boolean) {
         cacheAndPerform(tpp) {
             tpp.let {
-                it.tppEntity.followed = f
+                it.ebaEntity.followed = f
                         coroutineScope {
-                    launch { tppsLocalDataSource.udateFollowing(it, it.tppEntity.isFollowed()) }
+                    launch { tppsLocalDataSource.udateFollowing(it, it.ebaEntity.isFollowed()) }
                 }
             }
         }
@@ -199,9 +199,9 @@ class DefaultTppsRepository (
     override suspend fun setTppActivateFlag(tpp: Tpp, a: Boolean) = withContext(ioDispatcher) {
         // Do in memory cache update to keep the app UI up to date
         cacheAndPerform(tpp) {
-            it.tppEntity.active = a
+            it.ebaEntity.active = a
             coroutineScope {
-                launch { tppsLocalDataSource.setTppActivateFlag(it.tppEntity.getId(), a) }
+                launch { tppsLocalDataSource.setTppActivateFlag(it.ebaEntity.getId(), a) }
             }
         }
     }
@@ -221,7 +221,7 @@ class DefaultTppsRepository (
     }
 
     private fun refreshCache(tpps: List<Tpp>) {
-        tpps.sortedBy { it.tppEntity.getId()}.forEach {
+        tpps.sortedBy { it.ebaEntity.getId()}.forEach {
             cacheAndPerform(it) {}
         }
     }

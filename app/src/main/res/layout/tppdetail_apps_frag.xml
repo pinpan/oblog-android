@@ -49,7 +49,7 @@
                 android:layout_alignBaseline="@id/label_home_country"
                 android:layout_toRightOf="@id/label_home_country"
                 android:gravity="left"
-                android:text="@{viewmodel.tpp.tppEntity.country}"
+                android:text="@{viewmodel.tpp.ebaEntity.country}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#006496"
                 android:textSize="12sp"
@@ -73,7 +73,7 @@
                 android:layout_below="@id/home_country"
                 android:layout_alignLeft="@id/home_country"
                 android:paddingTop="1dp"
-                android:text="@{viewmodel.tpp.tppEntity.entityCode}"
+                android:text="@{viewmodel.tpp.ebaEntity.entityCode}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#006496"
                 android:textSize="12sp"
@@ -154,7 +154,7 @@
                     android:layout_marginBottom="10dp"
                     android:fadeScrollbars="false"
                     android:scrollbars="horizontal|vertical"
-                    app:items="@{viewmodel.tpp.tppEntity.ebaPassport.services}"
+                    app:items="@{viewmodel.tpp.ebaEntity.ebaPassport.services}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
 

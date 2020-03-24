@@ -18,7 +18,7 @@ interface TppsDao {
      * @return all tpps.
      */
     @Query("SELECT * FROM Tpps")
-    suspend fun getTpps(): List<TppEntity>
+    suspend fun getTpps(): List<EbaEntity>
 
     /**
      * Select a tpp by id.
@@ -27,7 +27,7 @@ interface TppsDao {
      * @return the tpp with tppId.
      */
     @Query("SELECT * FROM Tpps WHERE id = :tppId")
-    suspend fun getTppById(tppId: String): TppEntity?
+    suspend fun getTppById(tppId: String): EbaEntity?
 
     /**
      * Select a tpp by id.
@@ -36,7 +36,7 @@ interface TppsDao {
      * @return the tpp with tppId.
      */
     @Query("SELECT * FROM Tpps WHERE globalUrn = :globalUrn")
-    suspend fun getTppByGlobalUrn(globalUrn: String): TppEntity?
+    suspend fun getTppByGlobalUrn(globalUrn: String): EbaEntity?
 
     /**
      * Select a tpp by EBA entityCode (provided by OBLOG backend).
@@ -45,7 +45,7 @@ interface TppsDao {
      * @return the tpp with entityCode.
      */
     @Query("SELECT * FROM Tpps WHERE entityCode = :entityCode")
-    suspend fun getTppByEntityCode(entityCode: String): TppEntity?
+    suspend fun getTppByEntityCode(entityCode: String): EbaEntity?
 
     /**
      * Select a tpp by NCA entityId (provided by OBLOG backend).
@@ -54,24 +54,24 @@ interface TppsDao {
      * @return the tpp with entityId.
      */
     @Query("SELECT * FROM Tpps WHERE entityId = :entityId")
-    suspend fun getTppByEntityId(entityId: String): TppEntity?
+    suspend fun getTppByEntityId(entityId: String): EbaEntity?
 
     /**
-     * Insert a tpp in the database. If the tpp already exists, replace it.
+     * Insert a ebaEntity in the database. If the ebaEntity already exists, replace it.
      *
-     * @param tpp the tpp to be inserted.
+     * @param ebaEntity the ebaEntity to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTpp(tpp: TppEntity)
+    suspend fun insertTpp(ebaEntity: EbaEntity)
 
     /**
-     * Update a tpp.
+     * Update a ebaEntity.
      *
-     * @param tpp tpp to be updated
+     * @param ebaEntity ebaEntity to be updated
      * @return the number of tpps updated. This should always be 1.
      */
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateTpp(tpp: TppEntity): Int
+    suspend fun updateTpp(ebaEntity: EbaEntity): Int
 
     /**
      * Update the followed status of a tpp
@@ -114,5 +114,5 @@ interface TppsDao {
     suspend fun deleteFollowedTpps(): Int
 
     @Query("SELECT * FROM Tpps WHERE country = :country")
-    fun getTppsByCountry(country: String): List<TppEntity>
+    fun getTppsByCountry(country: String): List<EbaEntity>
 }

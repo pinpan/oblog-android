@@ -23,7 +23,7 @@ import com.applego.oblog.tppwatch.R.string
 import com.applego.oblog.tppwatch.ServiceLocator
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.TppsRepository
-import com.applego.oblog.tppwatch.data.source.local.TppEntity
+import com.applego.oblog.tppwatch.data.source.local.EbaEntity
 import com.applego.oblog.tppwatch.util.DataBindingIdlingResource
 import com.applego.oblog.tppwatch.util.EspressoIdlingResource
 import com.applego.oblog.tppwatch.util.deleteAllTppsBlocking
@@ -80,7 +80,7 @@ class TppsActivityTest {
 
     @Test
     fun editTpp() {
-        repository.saveTppBlocking(Tpp(TppEntity(_entityId = "", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
+        repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -132,8 +132,8 @@ class TppsActivityTest {
 
     //@Test
     fun createTwoTpps_deleteOneTpp() {
-        repository.saveTppBlocking(Tpp(TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
-        repository.saveTppBlocking(Tpp(TppEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
+        repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
+        repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -155,7 +155,7 @@ class TppsActivityTest {
     fun markTppAsFollowedOnDetailScreen_tppIsFollowInList() {
         // Add 1 active tpp
         val tppTitle = "FOLLOWED"
-        repository.saveTppBlocking(Tpp(TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = tppTitle, _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
+        repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = tppTitle, _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -183,7 +183,7 @@ class TppsActivityTest {
     fun markTppAsActiveOnDetailScreen_tppIsActiveInList() {
         // Add 1 followed tpp
         val tppTitle = "ACTIVE"
-        repository.saveTppBlocking(Tpp(TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = tppTitle, _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
+        repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = tppTitle, _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -210,7 +210,7 @@ class TppsActivityTest {
     fun markTppAsFollowAndActiveOnDetailScreen_tppIsActiveInList() {
         // Add 1 active tpp
         val tppTitle = "ACT-COMP"
-        repository.saveTppBlocking(Tpp(TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = tppTitle, _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
+        repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = tppTitle, _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
@@ -239,7 +239,7 @@ class TppsActivityTest {
     fun markTppAsActiveAndFollowOnDetailScreen_tppIsFollowInList() {
         // Add 1 followed tpp
         val tppTitle = "COMP-ACT"
-        repository.saveTppBlocking(Tpp(TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = tppTitle, _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
+        repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = tppTitle, _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
 
         // start up Tpps screen
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)

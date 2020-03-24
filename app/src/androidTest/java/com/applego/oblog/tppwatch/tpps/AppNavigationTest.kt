@@ -24,7 +24,7 @@ import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.ServiceLocator
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.TppsRepository
-import com.applego.oblog.tppwatch.data.source.local.TppEntity
+import com.applego.oblog.tppwatch.data.source.local.EbaEntity
 import com.applego.oblog.tppwatch.util.DataBindingIdlingResource
 import com.applego.oblog.tppwatch.util.EspressoIdlingResource
 import com.applego.oblog.tppwatch.util.monitorActivity
@@ -158,7 +158,7 @@ class AppNavigationTest {
 
     @Test
     fun tppDetailScreen_doubleUIBackButton() {
-        val tppEntity = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "UI <- button", _description = "Description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        val tppEntity = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "UI <- button", _description = "Description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppsRepository.saveTppBlocking(Tpp(tppEntity))
 
         // start up Tpps screen
@@ -191,7 +191,7 @@ class AppNavigationTest {
 
     @Test
     fun tppDetailScreen_doubleBackButton() {
-        val tppEntity = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Back button", _description = "Description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        val tppEntity = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Back button", _description = "Description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppsRepository.saveTppBlocking(Tpp(tppEntity))
 
         // start up Tpps screen

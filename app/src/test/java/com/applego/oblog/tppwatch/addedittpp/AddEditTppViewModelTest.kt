@@ -5,7 +5,7 @@ import com.applego.oblog.tppwatch.LiveDataTestUtil.getValue
 import com.applego.oblog.tppwatch.MainCoroutineRule
 import com.applego.oblog.tppwatch.data.source.FakeRepository
 import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.data.source.local.TppEntity
+import com.applego.oblog.tppwatch.data.source.local.EbaEntity
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
@@ -29,11 +29,11 @@ class AddEditTppViewModelTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-    // Executes each tppEntity synchronously using Architecture Components.
+    // Executes each ebaEntity synchronously using Architecture Components.
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
-    private val tppEntity = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+    private val tppEntity = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
 
     @Before
     fun setupViewModel() {
@@ -56,7 +56,7 @@ class AddEditTppViewModelTest {
 
         val newTpp = tppsRepository.tppsServiceData.values.first()
 
-        // Then a tppEntity is saved in the repository and the view updated
+        // Then a ebaEntity is saved in the repository and the view updated
         assertThat(newTpp.getEntityName()).isEqualTo(newTitle)
         assertThat(newTpp.getDescription()).isEqualTo(newDescription)
     }
@@ -66,7 +66,7 @@ class AddEditTppViewModelTest {
         // Pause dispatcher so we can verify initial values
         mainCoroutineRule.pauseDispatcher()
 
-        // Load the tppEntity in the viewmodel
+        // Load the ebaEntity in the viewmodel
         addEditTppViewModel.start(tppEntity.getId())
 
         // Then progress indicator is shown
@@ -81,13 +81,13 @@ class AddEditTppViewModelTest {
 
     @Test
     fun loadTpps_tppShown() {
-        // Add tppEntity to repository
+        // Add ebaEntity to repository
         tppsRepository.addTpps(Tpp(tppEntity))
 
-        // Load the tppEntity with the viewmodel
+        // Load the ebaEntity with the viewmodel
         addEditTppViewModel.start(tppEntity.getEntityId())
 
-        // Verify a tppEntity is loaded
+        // Verify a ebaEntity is loaded
         assertThat(getValue(addEditTppViewModel.entityName)).isEqualTo(tppEntity.getEntityName())
         assertThat(getValue(addEditTppViewModel.description)).isEqualTo(tppEntity.getDescription())
         assertThat(getValue(addEditTppViewModel.dataLoading)).isFalse()
@@ -129,7 +129,7 @@ class AddEditTppViewModelTest {
             this.description.value = description
         }
 
-        // When saving an unFollowed tppEntity
+        // When saving an unFollowed ebaEntity
         addEditTppViewModel.saveTpp()
 
         // Then the snackbar shows an error

@@ -89,7 +89,7 @@ class TppEbaDataSource internal constructor (
 
 
     suspend fun updateTppEntity(ebaTpp: Tpp) : Tpp {
-        val ebaEntity = ebaTpp.tppEntity
+        val ebaEntity = ebaTpp.ebaEntity
         val dbEntity = tppsDao.getTppByEntityCode(ebaEntity.getEntityCode())
         if (dbEntity == null) {
             tppsDao.insertTpp(ebaEntity)
@@ -130,14 +130,14 @@ class TppEbaDataSource internal constructor (
                 val tppsListResponse = response.body()!!
                 Timber.d("tppsList=" + tppsListResponse.tppsList)
                 tppsListResponse.tppsList?.forEach { tpp ->
-                    System.out.println("Insert/Update tpp: " + tpp.tppEntity.getEntityName() + " into database")
+                    System.out.println("Insert/Update tpp: " + tpp.ebaEntity.getEntityName() + " into database")
 
                     runBlocking<Unit> {
-                        val foundEntity = tppsDao.getTppByEntityCode(tpp.tppEntity.getEntityCode())
+                        val foundEntity = tppsDao.getTppByEntityCode(tpp.ebaEntity.getEntityCode())
                         if (foundEntity == null) {
-                            tppsDao.insertTpp(tpp.tppEntity)
+                            tppsDao.insertTpp(tpp.ebaEntity)
                         } else {
-                            val updatedNumber = tppsDao.updateTpp(tpp.tppEntity)
+                            val updatedNumber = tppsDao.updateTpp(tpp.ebaEntity)
                             if (updatedNumber != 1) {
                                 Timber.w("Update of TPP with ID %s was not successfull.", tpp.getEntityId())
                             }

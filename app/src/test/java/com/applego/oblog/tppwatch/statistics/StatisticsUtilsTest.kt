@@ -1,7 +1,7 @@
 package com.applego.oblog.tppwatch.statistics
 
 import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.data.source.local.TppEntity
+import com.applego.oblog.tppwatch.data.source.local.EbaEntity
 import org.hamcrest.core.Is.`is`
 import org.junit.Assert.assertThat
 import org.junit.Test
@@ -13,12 +13,12 @@ class StatisticsUtilsTest {
 
     @Test
     fun getActiveAndFollowedStats_noFollowed() {
-        val aTppEntity = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        val aTppEntity = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         aTppEntity.active = true
         val tpps = listOf(
                 Tpp(aTppEntity)
         )
-        // When the list of tpps is computed with an active tppEntity
+        // When the list of tpps is computed with an active ebaEntity
         val result = getActiveAndFollowedStats(tpps)
 
         // Then the percentages are 100 and 0
@@ -28,12 +28,12 @@ class StatisticsUtilsTest {
 
     @Test
     fun getActiveAndFollowedStats_noActive() {
-        var tppEntity1 = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        var tppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity1.followed = true
         val tpps = listOf(
                 Tpp(tppEntity1)
         )
-        // When the list of tpps is computed with a followed tppEntity
+        // When the list of tpps is computed with a followed ebaEntity
         val result = getActiveAndFollowedStats(tpps)
 
         // Then the percentages are 0 and 100
@@ -44,16 +44,16 @@ class StatisticsUtilsTest {
     @Test
     fun getActiveAndFollowedStats_both() {
         // Given 3 followed tpps and 2 active tpps
-        var tpp1 = TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        var tpp1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
             tpp1.followed = true
-        var tpp2 = TppEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        var tpp2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
             tpp2.followed = true
-        var tpp3 = TppEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        var tpp3 = EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
             tpp3.followed = true
 
-        var tpp4 = TppEntity(_entityId = "28173284", _entityCode = "Entity_CZ28173284", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        var tpp4 = EbaEntity(_entityId = "28173284", _entityCode = "Entity_CZ28173284", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
             tpp4.active = true
-        var tpp5 = TppEntity(_entityId = "28173285", _entityCode = "Entity_CZ28173285", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        var tpp5 = EbaEntity(_entityId = "28173285", _entityCode = "Entity_CZ28173285", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
             tpp5.active = true
 
         val tpps = listOf(

@@ -2,7 +2,7 @@ package com.applego.oblog.tppwatch.data.source.remote.serializer
 
 import com.applego.oblog.tppwatch.data.source.local.OblogTypeConverters
 import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.data.source.local.TppEntity
+import com.applego.oblog.tppwatch.data.source.local.EbaEntity
 import com.google.gson.*
 import java.lang.reflect.Type
 import timber.log.Timber
@@ -48,12 +48,12 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         // val status: String = jsonObject?.get("status")?.asString ?: ""
         val description: String = jsonObject?.get("description")?.asString ?: ""
 
-        var tpp = Tpp(TppEntity(_entityId = entityId, _entityCode = entityCode, _entityName = entityName, _description = description, _globalUrn = globalUrn, _ebaEntityVersion = ebaEntityVersion, _country = country))
+        var tpp = Tpp(EbaEntity(_entityId = entityId, _entityCode = entityCode, _entityName = entityName, _description = description, _globalUrn = globalUrn, _ebaEntityVersion = ebaEntityVersion, _country = country))
 
         val services = jsonObject?.get("services").asJsonArray ?: JsonArray()
         if (services != null) {
             val passportedServices = __oblogTypeConverters.fromJsonElementToEbaPassport(services)
-            tpp.tppEntity._ebaPassport = passportedServices
+            tpp.ebaEntity._ebaPassport = passportedServices
         }
 
         return tpp

@@ -29,7 +29,7 @@ object TppsRemoteDataSource : RemoteTppDataSource {
         return Success(tpps)
     }
 
-    override suspend fun getTppEntity(tppId: String): Result<Tpp> {
+    override suspend fun getEbaEntity(tppId: String): Result<Tpp> {
         // Simulate network by delaying the execution.
         delay(SERVICE_LATENCY_IN_MILLIS)
         TPPS_SERVICE_DATA[tppId]?.let {
@@ -43,22 +43,22 @@ object TppsRemoteDataSource : RemoteTppDataSource {
         TPPS_SERVICE_DATA[newTpp.id] = newTpp
     }
 
-    /*override suspend fun saveTpp(tpp: Tpp) {
-        TPPS_SERVICE_DATA[tpp.id] = tpp
+    /*override suspend fun saveTpp(ebaEntity: Tpp) {
+        TPPS_SERVICE_DATA[ebaEntity.id] = ebaEntity
     }
 
-    override suspend fun unfollowTpp(tpp: Tpp) {
-        val followedTpp = Tpp(tpp.title, tpp.description, true, tpp.id)
-        TPPS_SERVICE_DATA[tpp.id] = followedTpp
+    override suspend fun unfollowTpp(ebaEntity: Tpp) {
+        val followedTpp = Tpp(ebaEntity.title, ebaEntity.description, true, ebaEntity.id)
+        TPPS_SERVICE_DATA[ebaEntity.id] = followedTpp
     }
 
     override suspend fun unfollowTpp(tppId: String) {
         // Not required for the remote data source
     }
 
-    override suspend fun activateTpp(tpp: Tpp) {
-        val activeTpp = Tpp(tpp.title, tpp.description, false, tpp.id)
-        TPPS_SERVICE_DATA[tpp.id] = activeTpp
+    override suspend fun activateTpp(ebaEntity: Tpp) {
+        val activeTpp = Tpp(ebaEntity.title, ebaEntity.description, false, ebaEntity.id)
+        TPPS_SERVICE_DATA[ebaEntity.id] = activeTpp
     }
 
     override suspend fun activateTpp(tppId: String) {

@@ -17,7 +17,7 @@ import java.util.*
  */
 @Entity(tableName = "tpps")
 @TypeConverters(OblogTypeConverters::class)
-data class TppEntity @JvmOverloads constructor(
+data class EbaEntity @JvmOverloads constructor(
         @ColumnInfo(name = "entityId") val _entityId: String = "",
         @ColumnInfo(name = "entityCode") val _entityCode: String = "",
         @ColumnInfo(name = "entityName") var _entityName: String = "",
@@ -67,7 +67,6 @@ data class TppEntity @JvmOverloads constructor(
 
     @ColumnInfo(name = "status")
     var _status: RecordStatus = RecordStatus.NEW
-
 
     var _ebaPassport : EbaPassport = EbaPassport()
     @Ignore

@@ -58,13 +58,13 @@ class TppsNcaDataSource internal constructor (
                 val tppsListResponse = response.body()!!
                 Timber.d("tppsList=" + tppsListResponse.tppsList)
                 tppsListResponse.tppsList?.forEach { tpp ->
-                    System.out.println("Insert/Update tpp: " + tpp.tppEntity.getEntityName() + " into database")
+                    System.out.println("Insert/Update tpp: " + tpp.ebaEntity.getEntityName() + " into database")
 
                     runBlocking<Unit> {
-                        if (tppsDao.getTppByEntityCode(tpp.tppEntity.getEntityCode()) == null) {
-                            tppsDao.insertTpp(tpp.tppEntity)
+                        if (tppsDao.getTppByEntityCode(tpp.ebaEntity.getEntityCode()) == null) {
+                            tppsDao.insertTpp(tpp.ebaEntity)
                         } else {
-                            tppsDao.updateTpp(tpp.tppEntity)
+                            tppsDao.updateTpp(tpp.ebaEntity)
                         }
                     }
                 }
@@ -110,7 +110,7 @@ class TppsNcaDataSource internal constructor (
     }
 
     suspend fun updateTppEntity(ncaTpp: Tpp) : Tpp {
-        val ncaEntity = ncaTpp.tppEntity
+        val ncaEntity = ncaTpp.ebaEntity
         val dbEntity = tppsDao.getTppByEntityCode(ncaEntity.getEntityCode())
         if (dbEntity == null) {
             tppsDao.insertTpp(ncaEntity)
@@ -139,7 +139,7 @@ class TppsNcaDataSource internal constructor (
             if (response.isSuccessful()) {
                 val tppList = response.body()!!
                 theTpp = tppList[0]
-                val tppEntity = theTpp.tppEntity
+                val tppEntity = theTpp.ebaEntity
                 Timber.d("tppsList=" + tppEntity)
                 if (tppsDao.getTppByEntityCode(tppEntity.getEntityCode()) == null) {
                     tppsDao.insertTpp(tppEntity)

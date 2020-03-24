@@ -9,7 +9,7 @@ fun assertLiveDataEventTriggered(
     tpp: Tpp
 ) {
     val value = LiveDataTestUtil.getValue(liveData)
-    assertEquals(value.getContentIfNotHandled(), tpp.tppEntity.getId())
+    assertEquals(value.getContentIfNotHandled(), tpp.ebaEntity.getId())
 }
 
 fun assertLiveDataEventTriggered(

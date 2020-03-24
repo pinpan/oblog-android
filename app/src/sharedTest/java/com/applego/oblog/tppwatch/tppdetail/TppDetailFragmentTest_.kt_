@@ -48,11 +48,11 @@ class TppDetailFragmentTest_ {
 
     //@Test
     fun activeTppDetails_DisplayedInUi() {
-        // GIVEN - Add active (unfollow) tpp to the DB
+        // GIVEN - Add active (unfollow) ebaEntity to the DB
         val activeTpp = Tpp("Entity_CZ28173281", "Active Tpp", "AndroidX Rocks")
         repository.saveTppBlocking(activeTpp)
 
-        // WHEN - Details fragment launched to display tpp
+        // WHEN - Details fragment launched to display ebaEntity
         val bundle = TppDetailFragmentArgs(activeTpp.id).toBundle()
         launchFragmentInContainer<TppDetailFragment>(bundle, R.style.AppTheme)
 
@@ -70,13 +70,13 @@ class TppDetailFragmentTest_ {
     //@Test
     //@Ignore
     fun followedTppDetails_DisplayedInUi() {
-        // GIVEN - Add followed tpp to the DB
+        // GIVEN - Add followed ebaEntity to the DB
         var followedTpp = Tpp("Entity_CZ28173281", "Followed Tpp", "AndroidX Rocks")
         followedTpp.isFollowed = true
         followedTpp.isActive = true
         repository.saveTppBlocking(followedTpp)
 
-        // WHEN - Details fragment launched to display tpp
+        // WHEN - Details fragment launched to display ebaEntity
         val bundle = TppDetailFragmentArgs(followedTpp.id).toBundle()
         launchFragmentInContainer<TppDetailFragment>(bundle, R.style.AppTheme)
 

@@ -9,7 +9,7 @@ import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.TppsRepository
-import com.applego.oblog.tppwatch.data.source.local.TppEntity
+import com.applego.oblog.tppwatch.data.source.local.EbaEntity
 import kotlinx.coroutines.launch
 
 /**
@@ -94,9 +94,9 @@ class AddEditTppViewModel(
 
         val currentTppId = tppId
         if (isNewTpp || currentTppId == null) {
-            createTpp(Tpp(TppEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = currentTitle, _description = currentDescription, _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
+            createTpp(Tpp(EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = currentTitle, _description = currentDescription, _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
         } else {
-            val tpp = Tpp(TppEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = currentTitle, _description = currentDescription, _globalUrn = "", _ebaEntityVersion = currentTppId, _country = "cz"))
+            val tpp = Tpp(EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = currentTitle, _description = currentDescription, _globalUrn = "", _ebaEntityVersion = currentTppId, _country = "cz"))
             updateTpp(tpp)
         }
     }

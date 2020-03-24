@@ -19,13 +19,13 @@ class TppsDaoDataSource internal constructor(
     override suspend fun getTpps(filter: TppsFilter): Result<List<Tpp>> = withContext(ioDispatcher) {
         var tpps = ArrayList<Tpp>()
         try {
-            var tppEntities : List<TppEntity>
+            var ebaEntities : List<EbaEntity>
             if (isOnlyCountry(filter)) {
-                tppEntities = tppsDao.getTppsByCountry(filter.country)
+                ebaEntities = tppsDao.getTppsByCountry(filter.country)
             } else {
-                tppEntities = tppsDao.getTpps()
+                ebaEntities = tppsDao.getTpps()
             }
-            tppEntities.forEach {tppEntity ->
+            ebaEntities.forEach { tppEntity ->
                 tpps.add(Tpp(tppEntity))}
         } catch (e: Exception) {
             Error(e)
@@ -43,7 +43,7 @@ class TppsDaoDataSource internal constructor(
             if (tppEntity != null) {
                 return@withContext Success(Tpp(tppEntity))
             } else {
-                return@withContext Error(Exception("TppEntity not found!"))
+                return@withContext Error(Exception("EbaEntity not found!"))
             }
         } catch (e: Exception) {
             return@withContext Error(e)
@@ -51,11 +51,11 @@ class TppsDaoDataSource internal constructor(
     }
 
     override suspend fun saveTpp(tpp: Tpp) = withContext(ioDispatcher) {
-        tppsDao.insertTpp(tpp.tppEntity)
+        tppsDao.insertTpp(tpp.ebaEntity)
     }
 
     override suspend fun udateFollowing(tpp: Tpp, follow: Boolean) = withContext(ioDispatcher) {
-        tppsDao.updateFollowed(tpp.tppEntity.getId(), follow)
+        tppsDao.updateFollowed(tpp.ebaEntity.getId(), follow)
     }
 
     override suspend fun setTppActivateFlag(tppId: String, active: Boolean)  = withContext(ioDispatcher) {

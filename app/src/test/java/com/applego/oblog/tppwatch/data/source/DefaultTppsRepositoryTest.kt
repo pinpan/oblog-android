@@ -3,7 +3,7 @@ package com.applego.oblog.tppwatch.data.source
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.data.source.local.TppEntity
+import com.applego.oblog.tppwatch.data.source.local.EbaEntity
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.Dispatchers
@@ -19,12 +19,12 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class DefaultTppsRepositoryTest {
 
-    private val tpp1 = Tpp(TppEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"))
-    private val tpp2 = Tpp(TppEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "Title2", _description = "Description2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"))
-    private val tpp3 = Tpp(TppEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3", _description = "Description3", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"))
-    private val tpp31 = Tpp(TppEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3-EBA-CHANGED", _description = "Description3-EBA-CHANGED", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"))
-    private val tpp32 = Tpp(TppEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3-NCA-CHANGED", _description = "Description3-NCA-CHANGED", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"))
-    private val newTppEntity = TppEntity(_entityId = "28173280", _entityCode = "Entity_CZ28173280", _entityName = "Title new", _description = "Description new", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+    private val tpp1 = Tpp(EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"))
+    private val tpp2 = Tpp(EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "Title2", _description = "Description2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"))
+    private val tpp3 = Tpp(EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3", _description = "Description3", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"))
+    private val tpp31 = Tpp(EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3-EBA-CHANGED", _description = "Description3-EBA-CHANGED", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"))
+    private val tpp32 = Tpp(EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3-NCA-CHANGED", _description = "Description3-NCA-CHANGED", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"))
+    private val newTppEntity = EbaEntity(_entityId = "28173280", _entityCode = "Entity_CZ28173280", _entityName = "Title new", _description = "Description new", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
     private val allTpps = listOf(tpp1, tpp2, tpp3).sortedBy { it.getId() }
     private val remoteTpps = listOf(tpp1, tpp2).sortedBy { it.getId() }
     private val remoteEbaTpps = listOf(tpp31)
@@ -99,7 +99,7 @@ class DefaultTppsRepositoryTest {
         assertThat(tppsLocalDataSource.tpps).doesNotContain(newTppEntity)
         assertThat((tppsRepository.getAllTpps(true) as? Success)?.data).doesNotContain(newTppEntity)
 
-        // When a tppEntity is saved to the tpps repository
+        // When a ebaEntity is saved to the tpps repository
         tppsRepository.saveTpp(Tpp(newTppEntity))
 
         // Then the remote and local sources are called and the cache is updated
@@ -179,7 +179,7 @@ class DefaultTppsRepositoryTest {
     @Ignore
     @Test
     fun saveTpp_savesTppToRemoteAndUpdatesCache() = runBlockingTest {
-        // Save a tppEntity
+        // Save a ebaEntity
         tppsRepository.saveTpp(Tpp(newTppEntity))
 
         // Verify it's in all the data sources
@@ -197,7 +197,7 @@ class DefaultTppsRepositoryTest {
     @Ignore
     @Test
     fun followTpp_followsTppToServiceAPIUpdatesCache() = runBlockingTest {
-        // Save a tppEntity
+        // Save a ebaEntity
         tppsRepository.saveTpp(Tpp(newTppEntity))
 
         // Make sure it's active
@@ -214,7 +214,7 @@ class DefaultTppsRepositoryTest {
     @Ignore
     @Test
     fun unfollowTpp_activeTppToServiceAPIUpdatesCache() = runBlockingTest {
-        // Save a tppEntity
+        // Save a ebaEntity
         tppsRepository.saveTpp(Tpp(newTppEntity))
         tppsRepository.setTppFollowedFlag(Tpp(newTppEntity), false)
 
@@ -237,7 +237,7 @@ class DefaultTppsRepositoryTest {
         tppsEbaDataSource.tppsListResponse?.tppsList = mutableListOf(tpp1)
         tppsRepository.getTpp(tpp1.getId(), true)
 
-        // Configure the remote data source to store a different tppEntity
+        // Configure the remote data source to store a different ebaEntity
         tppsEbaDataSource.tppsListResponse?.tppsList = mutableListOf(tpp2)
 
         val tpp1SecondTime = tppsRepository.getTpp(tpp1.getId()) as Success
@@ -271,7 +271,7 @@ class DefaultTppsRepositoryTest {
         assertThat((tpp32FromNca as? Success)?.data?.getEntityId()).isEqualTo(tpp32.getEntityId())
 
         // TODO-PZA#FIX this tests:
-        // Configure the remote data source to return a different tppEntity
+        // Configure the remote data source to return a different ebaEntity
         //tppsEbaDataSource.tppsListResponse?.tppsList = mutableListOf(tpp2)
 
         /*// Force refresh
@@ -285,7 +285,7 @@ class DefaultTppsRepositoryTest {
 
     // TODO-PZA#FIX this test: @Test
     fun clearFollowedTpps() = runBlockingTest {
-        val followedTpp = tpp1.tppEntity.copy().apply { followed = true }
+        val followedTpp = tpp1.ebaEntity.copy().apply { followed = true }
         tppsEbaDataSource.tppsListResponse?.tppsList = mutableListOf(Tpp(followedTpp), tpp2)
         //tppsRepository.clearFollowedTpps()
 
@@ -319,13 +319,13 @@ class DefaultTppsRepositoryTest {
     fun deleteSingleTpp() = runBlockingTest {
         val initialTpps = (tppsRepository.getAllTpps(true) as? Success)?.data
 
-        // Delete first tppEntity
+        // Delete first ebaEntity
         tppsRepository.deleteTpp(tpp1.getId())
 
         // Fetch data again
         val afterDeleteTpps = (tppsRepository.getAllTpps(true) as? Success)?.data
 
-        // Verify only one tppEntity was deleted
+        // Verify only one ebaEntity was deleted
         assertThat(afterDeleteTpps?.size).isEqualTo(initialTpps!!.size - 1)
         assertThat(afterDeleteTpps).doesNotContain(tpp1)
     }

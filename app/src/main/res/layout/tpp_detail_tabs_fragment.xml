@@ -42,7 +42,7 @@
                     android:layout_marginBottom="15dp"
                     android:layout_weight="6"
                     android:paddingTop="1dp"
-                    android:text="@{viewmodel.tpp.tppEntity.entityName}"
+                    android:text="@{viewmodel.tpp.ebaEntity.entityName}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#006496"
                     android:textSize="16sp"
