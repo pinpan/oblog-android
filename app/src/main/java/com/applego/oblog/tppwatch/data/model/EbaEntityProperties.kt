@@ -1,6 +1,7 @@
-package com.applego.oblog.tppwatch.data.source.local
+package com.applego.oblog.tppwatch.data.model
 
 import androidx.room.*
+import com.applego.oblog.tppwatch.data.convertor.OblogTypeConverters
 import java.util.*
 
 /**

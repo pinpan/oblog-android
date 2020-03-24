@@ -5,10 +5,10 @@ import com.applego.oblog.tppwatch.FakeFailingTppsLocalDataSource
 import com.applego.oblog.tppwatch.FakeFailingTppsRemoteDataSource
 import com.applego.oblog.tppwatch.LiveDataTestUtil
 import com.applego.oblog.tppwatch.MainCoroutineRule
-import com.applego.oblog.tppwatch.data.source.DefaultTppsRepository
+import com.applego.oblog.tppwatch.data.repository.DefaultTppsRepository
 import com.applego.oblog.tppwatch.data.source.FakeRepository
-import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.data.source.local.EbaEntity
+import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.model.EbaEntity
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -83,12 +83,12 @@ class StatisticsViewModelTest {
     fun loadStatisticsWhenTppsAreUnavailable_CallErrorToDisplay() =
         mainCoroutineRule.runBlockingTest {
             val errorViewModel = StatisticsViewModel(
-                DefaultTppsRepository(
-                    FakeFailingTppsRemoteDataSource,
-                    FakeFailingTppsRemoteDataSource,
-                    FakeFailingTppsLocalDataSource,
-                    Dispatchers.Main  // Main is set in MainCoroutineRule
-                )
+                    DefaultTppsRepository(
+                            FakeFailingTppsRemoteDataSource,
+                            FakeFailingTppsRemoteDataSource,
+                            FakeFailingTppsLocalDataSource,
+                            Dispatchers.Main  // Main is set in MainCoroutineRule
+                    )
             )
 
             // When statistics are loaded

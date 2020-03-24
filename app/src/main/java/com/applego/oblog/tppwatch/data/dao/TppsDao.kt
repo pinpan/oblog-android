@@ -1,10 +1,11 @@
-package com.applego.oblog.tppwatch.data.source.local
+package com.applego.oblog.tppwatch.data.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.applego.oblog.tppwatch.data.model.EbaEntity
 
 /**
  * Data Access Object for the tpps table.

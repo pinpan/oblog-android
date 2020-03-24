@@ -5,7 +5,8 @@ import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.TppsFilter
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import java.util.LinkedHashMap
 
 /**

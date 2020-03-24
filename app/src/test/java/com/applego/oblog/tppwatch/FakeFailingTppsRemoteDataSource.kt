@@ -2,7 +2,7 @@ package com.applego.oblog.tppwatch
 
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.TppFilter
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 

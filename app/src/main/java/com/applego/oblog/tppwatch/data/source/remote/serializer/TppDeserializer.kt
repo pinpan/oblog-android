@@ -1,8 +1,8 @@
 package com.applego.oblog.tppwatch.data.source.remote.serializer
 
-import com.applego.oblog.tppwatch.data.source.local.OblogTypeConverters
-import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.data.source.local.EbaEntity
+import com.applego.oblog.tppwatch.data.convertor.OblogTypeConverters
+import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.model.EbaEntity
 import com.google.gson.*
 import java.lang.reflect.Type
 import timber.log.Timber

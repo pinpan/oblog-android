@@ -5,9 +5,9 @@ import androidx.lifecycle.*
 import com.applego.oblog.tppwatch.Event
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.Result
-import com.applego.oblog.tppwatch.data.source.TppsRepository
-import com.applego.oblog.tppwatch.data.source.local.EbaPassport
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.repository.TppsRepository
+import com.applego.oblog.tppwatch.data.model.EbaPassport
+import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

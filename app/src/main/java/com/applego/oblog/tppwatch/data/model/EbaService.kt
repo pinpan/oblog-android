@@ -1,4 +1,4 @@
-package com.applego.oblog.tppwatch.data.source.local
+package com.applego.oblog.tppwatch.data.model
 
 import java.util.*
 
@@ -66,7 +66,7 @@ enum class EbaService (val code: String, val psd2Code: String, val shortDescript
                     }
                 }
             }
-            return EbaService.NONE
+            return NONE
         }
 
     }

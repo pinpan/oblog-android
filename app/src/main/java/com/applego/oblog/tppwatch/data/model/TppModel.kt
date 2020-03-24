@@ -1,4 +1,6 @@
-package com.applego.oblog.tppwatch.data.source.local
+package com.applego.oblog.tppwatch.data.model
+
+import com.applego.oblog.tppwatch.data.source.local.RecordStatus
 
 
 interface TppModel  {

@@ -2,6 +2,7 @@ package com.applego.oblog.tppwatch.data.source.local
 
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.TppsFilter
+import com.applego.oblog.tppwatch.data.model.Tpp
 
 /**
  * Main entry point for accessing tpps data.

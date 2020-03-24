@@ -1,6 +1,6 @@
 package com.applego.oblog.tppwatch.data.source.remote.serializer
 
-import com.applego.oblog.tppwatch.data.Paging
+import com.applego.oblog.tppwatch.data.source.remote.Paging
 import com.google.gson.*
 import java.lang.reflect.Type
 

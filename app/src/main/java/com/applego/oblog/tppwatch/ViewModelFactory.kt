@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.applego.oblog.tppwatch.about.AboutViewModel
 import com.applego.oblog.tppwatch.addedittpp.AddEditTppViewModel
-import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.statistics.StatisticsViewModel
 import com.applego.oblog.tppwatch.tppdetail.*
 import com.applego.oblog.tppwatch.tpps.TppsViewModel

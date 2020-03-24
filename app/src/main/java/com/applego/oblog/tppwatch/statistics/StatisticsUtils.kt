@@ -1,6 +1,6 @@
 package com.applego.oblog.tppwatch.statistics
 
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.model.Tpp
 
 /**
  * Function that does some trivial computation. Used to showcase unit tests.

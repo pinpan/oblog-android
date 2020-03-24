@@ -1,6 +1,10 @@
-package com.applego.oblog.tppwatch.data.source.local
+package com.applego.oblog.tppwatch.data.convertor
 
 import androidx.room.TypeConverter
+import com.applego.oblog.tppwatch.data.model.EbaPassport
+import com.applego.oblog.tppwatch.data.model.EbaService
+import com.applego.oblog.tppwatch.data.model.Psd2Service
+import com.applego.oblog.tppwatch.data.source.local.RecordStatus
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken

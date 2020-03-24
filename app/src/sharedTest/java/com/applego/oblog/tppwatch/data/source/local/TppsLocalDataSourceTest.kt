@@ -8,6 +8,8 @@ import androidx.test.filters.MediumTest
 import com.applego.oblog.tppwatch.MainCoroutineRule
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.TppsFilter
+import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.succeeded
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.Dispatchers

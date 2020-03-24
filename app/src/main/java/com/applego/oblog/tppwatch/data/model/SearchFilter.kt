@@ -1,4 +1,4 @@
-package com.applego.oblog.tppwatch.data.source.local
+package com.applego.oblog.tppwatch.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded

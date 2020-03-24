@@ -9,7 +9,7 @@
 
         <variable
             name="ebaEntity"
-            type="com.applego.oblog.tppwatch.data.source.local.Tpp" />
+            type="com.applego.oblog.tppwatch.data.model.Tpp" />
 
         <variable
             name="viewmodel"

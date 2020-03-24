@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.applego.oblog.tppwatch.Event
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.model.Tpp
 
 /**
  * ViewModel for the Add/Edit screen.

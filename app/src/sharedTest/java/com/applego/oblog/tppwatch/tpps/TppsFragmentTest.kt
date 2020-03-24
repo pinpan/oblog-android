@@ -22,10 +22,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.ServiceLocator
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.FakeRepository
-import com.applego.oblog.tppwatch.data.source.TppsRepository
-import com.applego.oblog.tppwatch.data.source.local.EbaEntity
+import com.applego.oblog.tppwatch.data.repository.TppsRepository
+import com.applego.oblog.tppwatch.data.model.EbaEntity
 import com.applego.oblog.tppwatch.util.saveTppBlocking
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest

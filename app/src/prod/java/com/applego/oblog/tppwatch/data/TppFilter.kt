@@ -1,6 +1,6 @@
 package com.applego.oblog.tppwatch.data
 
-import com.applego.oblog.tppwatch.data.source.local.Psd2Service
+import com.applego.oblog.tppwatch.data.model.Psd2Service
 
 class TppFilter (
     val name: String,

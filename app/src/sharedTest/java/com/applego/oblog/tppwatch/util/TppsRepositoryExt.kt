@@ -1,7 +1,7 @@
 package com.applego.oblog.tppwatch.util
 
-import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import kotlinx.coroutines.runBlocking
 
 /**

@@ -3,10 +3,10 @@ package com.applego.oblog.tppwatch
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.room.Room
-import com.applego.oblog.tppwatch.data.source.DefaultTppsRepository
+import com.applego.oblog.tppwatch.data.repository.DefaultTppsRepository
 import com.applego.oblog.tppwatch.data.source.local.TppsDaoDataSource
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
-import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.local.TppDatabase
 import com.applego.oblog.tppwatch.data.source.remote.eba.OblogEbaService

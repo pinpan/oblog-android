@@ -1,6 +1,6 @@
 package com.applego.oblog.tppwatch.data.source.remote.serializer
 
-import com.applego.oblog.tppwatch.data.source.local.Psd2Service
+import com.applego.oblog.tppwatch.data.model.Psd2Service
 import com.google.gson.*
 import java.lang.reflect.Type
 
@@ -31,7 +31,8 @@ class TppServiceDeserializer : JsonDeserializer<Psd2Service> {
         val description: String = jsonObject?.get("description")?.asString ?: ""
 
         val country = jsonObject.get("ENT_COU_RES").asString
-        var service = Psd2Service(country, description, jsonObject?.get("globalUrn")?.asString ?:"")
+        var service = Psd2Service(country, description, jsonObject?.get("globalUrn")?.asString
+                ?: "")
 
         return service
     }

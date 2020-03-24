@@ -1,6 +1,7 @@
-package com.applego.oblog.tppwatch.data.source.local
+package com.applego.oblog.tppwatch.data.model
 
 import androidx.room.*
+import com.applego.oblog.tppwatch.data.convertor.OblogTypeConverters
 import java.util.*
 
 @Entity(tableName = "ebaPassports")
@@ -18,6 +19,13 @@ data class EbaPassport @JvmOverloads constructor(
 
     @Embedded
     var serviceMaps : List<Map<String, List<Psd2Service>>> = ArrayList<Map<String, MutableList<Psd2Service>>>()
+
+    val services : List<CountryVisa>
+        get() {
+            val myPasportedServices = ArrayList<CountryVisa>()
+            countryMap.entries.forEach({myPasportedServices.add(CountryVisa(it.key, it.value))})
+            return myPasportedServices
+        }
 
     class CountryVisa {
 
@@ -39,11 +47,4 @@ data class EbaPassport @JvmOverloads constructor(
 
         // #TODO-PZA: Implement hash and equals
     }
-
-    val services : List<CountryVisa>
-        get() {
-            val myPasportedServices = ArrayList<CountryVisa>()
-            countryMap.entries.forEach({myPasportedServices.add(CountryVisa(it.key, it.value))})
-            return myPasportedServices
-        }
 }

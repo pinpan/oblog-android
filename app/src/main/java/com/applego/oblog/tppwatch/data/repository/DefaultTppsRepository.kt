@@ -1,4 +1,4 @@
-package com.applego.oblog.tppwatch.data.source
+package com.applego.oblog.tppwatch.data.repository
 
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Loading
@@ -6,7 +6,7 @@ import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Warn
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.TppsFilter
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
@@ -111,7 +111,7 @@ class DefaultTppsRepository (
         forceUpdate: Boolean
     ): Result<Tpp> {
 
-        var tpp : Tpp ?= null
+        var tpp : Tpp?= null
 
         // Local DB first
         val tppResult : Result<Tpp> = tppsLocalDataSource.getTpp(tppId)

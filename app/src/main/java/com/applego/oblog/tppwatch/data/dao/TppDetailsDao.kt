@@ -1,7 +1,8 @@
-package com.applego.oblog.tppwatch.data.source.local
+package com.applego.oblog.tppwatch.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import com.applego.oblog.tppwatch.data.model.TppDetail
 
 /**
  * Data Access Object for the tpp details table.

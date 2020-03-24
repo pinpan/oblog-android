@@ -1,8 +1,8 @@
-package com.applego.oblog.tppwatch.data.source
+package com.applego.oblog.tppwatch.data.repository
 
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.TppsFilter
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.model.Tpp
 
 /**
  * Interface to the data layer.

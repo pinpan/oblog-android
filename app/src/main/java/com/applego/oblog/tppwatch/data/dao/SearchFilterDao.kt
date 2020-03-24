@@ -1,6 +1,7 @@
-package com.applego.oblog.tppwatch.data.source.local
+package com.applego.oblog.tppwatch.data.dao
 
 import androidx.room.*
+import com.applego.oblog.tppwatch.data.model.SearchFilter
 
 @Dao
 interface SearchFilterDao {

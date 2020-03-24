@@ -1,4 +1,4 @@
-package com.applego.oblog.tppwatch.data
+package com.applego.oblog.tppwatch.data.source.remote
 
 class Paging (
     //{"sort":{"sorted":false,"unsorted":true,"empty":true},"pageSize":25,"pageNumber":1,"offset":25,"paged":true,"unpaged":false}

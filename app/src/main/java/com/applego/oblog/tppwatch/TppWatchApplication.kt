@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 import kotlin.reflect.KProperty

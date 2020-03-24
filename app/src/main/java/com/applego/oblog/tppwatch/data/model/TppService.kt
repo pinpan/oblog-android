@@ -1,7 +1,9 @@
-package com.applego.oblog.tppwatch.data.source.local
+package com.applego.oblog.tppwatch.data.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import com.applego.oblog.tppwatch.data.model.Psd2Service
+import com.applego.oblog.tppwatch.data.model.Tpp
 
 
 @Entity(

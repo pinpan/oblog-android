@@ -18,7 +18,7 @@ import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.ServiceLocator
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.source.FakeRepository
-import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.tpps.ADD_EDIT_RESULT_OK
 import com.applego.oblog.tppwatch.util.getTppsBlocking
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -2,8 +2,9 @@ package com.applego.oblog.tppwatch.data.source
 
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.data.source.local.EbaEntity
+import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.repository.DefaultTppsRepository
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +53,7 @@ class DefaultTppsRepositoryTest {
         tppsLocalDataSource32 = FakeLocalDataSource(localTpps32.toMutableList())
         // Get a reference to the class under test
         tppsRepository = DefaultTppsRepository(
-            tppsEbaDataSource, tppsNcaDataSource, tppsLocalDataSource, Dispatchers.Unconfined
+                tppsEbaDataSource, tppsNcaDataSource, tppsLocalDataSource, Dispatchers.Unconfined
         )
     }
 
@@ -62,7 +63,7 @@ class DefaultTppsRepositoryTest {
         val emptyRemoteSource = FakeRemoteDataSource()
         val emptyLocalSource = FakeLocalDataSource()
         val tppsRepository = DefaultTppsRepository(
-            emptyRemoteSource, emptyRemoteSource, emptyLocalSource, Dispatchers.Unconfined
+                emptyRemoteSource, emptyRemoteSource, emptyLocalSource, Dispatchers.Unconfined
         )
 
         assertThat(tppsRepository.getAllTpps(true) is Success).isTrue()

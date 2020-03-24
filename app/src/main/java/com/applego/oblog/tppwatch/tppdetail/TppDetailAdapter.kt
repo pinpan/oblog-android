@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.applego.oblog.tppwatch.data.source.local.EbaPassport
+import com.applego.oblog.tppwatch.data.model.EbaPassport
 import com.applego.oblog.tppwatch.databinding.TppPassportBinding
 import kotlinx.android.synthetic.main.tppdetail_frag.view.*
 

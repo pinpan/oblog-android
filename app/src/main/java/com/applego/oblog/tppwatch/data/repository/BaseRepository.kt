@@ -1,7 +1,6 @@
-package com.applego.oblog.tppwatch.data
+package com.applego.oblog.tppwatch.data.repository
 
 import androidx.lifecycle.MutableLiveData
-import com.applego.oblog.tppwatch.util.ErrorUtils
 import com.applego.oblog.tppwatch.util.State
 import retrofit2.Call
 import retrofit2.Callback

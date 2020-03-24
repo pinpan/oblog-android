@@ -1,7 +1,7 @@
 package com.applego.oblog.tppwatch.util
 
-import com.applego.oblog.tppwatch.data.source.local.Psd2Service
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.model.Psd2Service
+import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type

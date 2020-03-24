@@ -1,7 +1,7 @@
 package com.applego.oblog.tppwatch.statistics
 
-import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.data.source.local.EbaEntity
+import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.model.EbaEntity
 import org.hamcrest.core.Is.`is`
 import org.junit.Assert.assertThat
 import org.junit.Test

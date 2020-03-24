@@ -1,11 +1,11 @@
 package com.applego.oblog.tppwatch.data.source.remote.nca
 
 import com.applego.oblog.apikey.ApiKey
-import com.applego.oblog.tppwatch.data.Paging
+import com.applego.oblog.tppwatch.data.source.remote.Paging
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.TppFilter
-import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.data.source.local.TppsDao
+import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.dao.TppsDao
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import kotlinx.coroutines.*
@@ -79,7 +79,7 @@ class TppsNcaDataSource internal constructor (
     }
 
     override suspend fun getTppById(country: String, tppId: String): Result<Tpp> {
-        val paging =  Paging()
+        val paging = Paging()
 
         val call = tppsService.findById(theApiKey.apiKey,country, tppId.toString(), paging.page, paging.size, paging.sortBy)
         var response: Response<List<Tpp>>?
@@ -128,7 +128,7 @@ class TppsNcaDataSource internal constructor (
 
     override suspend fun getTppByName(country: String, tppName: String): Result<Tpp> {
 
-        val paging =  Paging()
+        val paging = Paging()
 
         val call = tppsService.findByName(theApiKey.apiKey,country, tppName, paging.page, paging.size, paging.sortBy)
         var response: Response<List<Tpp>>?

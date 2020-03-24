@@ -3,7 +3,8 @@ package com.applego.oblog.tppwatch.data.source.remote.eba;
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import com.applego.oblog.tppwatch.data.source.local.*
+import com.applego.oblog.tppwatch.data.model.App
+import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import com.applego.oblog.tppwatch.data.source.remote.nca.OblogRestClient
 

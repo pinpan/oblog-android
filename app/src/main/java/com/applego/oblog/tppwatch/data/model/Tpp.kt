@@ -1,4 +1,4 @@
-package com.applego.oblog.tppwatch.data.source.local
+package com.applego.oblog.tppwatch.data.model
 
 /**
  * Immutable model class for a Tpp. In order to compile with Room, we can't use @JvmOverloads to

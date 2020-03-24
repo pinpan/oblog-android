@@ -11,7 +11,11 @@ import androidx.lifecycle.viewModelScope
 import com.applego.oblog.tppwatch.Event
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.model.EbaService
+import com.applego.oblog.tppwatch.data.model.Psd2Service
+import com.applego.oblog.tppwatch.data.model.SearchFilter
+import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.data.source.local.*
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.launch

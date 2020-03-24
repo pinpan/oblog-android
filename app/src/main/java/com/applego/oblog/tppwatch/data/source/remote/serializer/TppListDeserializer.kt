@@ -1,6 +1,6 @@
 package com.applego.oblog.tppwatch.data.source.remote.serializer
 
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.model.Tpp
 import com.google.gson.*
 import java.lang.reflect.Type
 import kotlin.collections.ArrayList
