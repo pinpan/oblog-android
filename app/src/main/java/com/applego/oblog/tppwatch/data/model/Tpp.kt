@@ -33,7 +33,7 @@ class Tpp : TppModel {
 
     override fun getStatus() = ebaEntity.getStatus()
 
-    override fun isActive() = ebaEntity.isActive()
+    override fun isUsed() = ebaEntity.isUsed()
 
     override fun isFis(): Boolean = ebaEntity.isFis()
 
@@ -45,8 +45,8 @@ class Tpp : TppModel {
         ebaEntity.followed = f
     }
 
-    fun setActive(a: Boolean) {
-        ebaEntity.active = a
+    fun setUsed(a: Boolean) {
+        ebaEntity.used = a
     }
 
     override fun getTitleForList(): String = ebaEntity.getTitleForList()

@@ -27,7 +27,7 @@ interface TppsDao {
      * @param tppId the tpp id.
      * @return the tpp with tppId.
      */
-    @Query("SELECT * FROM Tpps WHERE id = :tppId")
+    @Query("SELECT * FROM Tpps WHERE db_id = :tppId")
     suspend fun getTppById(tppId: String): EbaEntity?
 
     /**
@@ -45,8 +45,8 @@ interface TppsDao {
      * @param entityCode the EBA  tpp entityCode.
      * @return the tpp with entityCode.
      */
-    @Query("SELECT * FROM Tpps WHERE entityCode = :entityCode")
-    suspend fun getTppByEntityCode(entityCode: String): EbaEntity?
+    @Query("SELECT * FROM Tpps WHERE entityCode = :entityCode and codeType = :entityCodeType")
+    suspend fun getTppByEntityCode(entityCode: String, entityCodeType: String): EbaEntity?
 
     /**
      * Select a tpp by NCA entityId (provided by OBLOG backend).
@@ -80,24 +80,24 @@ interface TppsDao {
      * @param tppId    id of the tpp
      * @param followed status to be updated
      */
-    @Query("UPDATE tpps SET followed = :followed WHERE id = :tppId")
+    @Query("UPDATE tpps SET followed = :followed WHERE db_id = :tppId")
     suspend fun updateFollowed(tppId: String, followed: Boolean)
 
     /**
-     * Update the active status of a tpp
+     * Update the used status of a tpp
      *
      * @param tppId  id of the tpp
-     * @param active status to be updated
+     * @param used status to be updated
      */
-    @Query("UPDATE tpps SET active = :active WHERE id = :tppId")
-    suspend fun updateActive(tppId: String, active: Boolean)
+    @Query("UPDATE tpps SET used = :used WHERE db_id = :tppId")
+    suspend fun updateUsed(tppId: String, used: Boolean)
 
     /**
      * Delete a tpp by id.
      *
      * @return the number of tpps deleted. This should always be 1.
      */
-    @Query("DELETE FROM Tpps WHERE id = :tppId")
+    @Query("DELETE FROM Tpps WHERE db_id = :tppId")
     suspend fun deleteTppById(tppId: String): Int
 
     /**
@@ -116,4 +116,12 @@ interface TppsDao {
 
     @Query("SELECT * FROM Tpps WHERE country = :country")
     fun getTppsByCountry(country: String): List<EbaEntity>
+/*
+    @Dao
+    internal interface OrderDao {
+
+        @get:Query("SELECT t_order.* name FROM t_order LEFT JOIN t_customer ON t_order.customer_id = t_customer.id")
+        val orderWithCustomer: List<OrderWithCustomer>
+
+    }*/
 }

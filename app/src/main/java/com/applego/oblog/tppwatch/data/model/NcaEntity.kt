@@ -1,9 +1,7 @@
-
 package com.applego.oblog.tppwatch.data.model
 
 import androidx.room.*
 import com.applego.oblog.tppwatch.data.convertor.OblogTypeConverters
-import com.applego.oblog.tppwatch.data.source.local.RecordStatus
 import java.util.*
 
 /**
@@ -17,9 +15,9 @@ import java.util.*
  * @param isFollowed  whether or not this tpp is followed
  * @param id          id of the tpp
  */
-@Entity(tableName = "tpps")
+@Entity(tableName = "nca_entity")
 @TypeConverters(OblogTypeConverters::class)
-data class EbaEntity @JvmOverloads constructor(
+data class NcaEntity @JvmOverloads constructor(
         @ColumnInfo(name = "entityId") val _entityId: String = "",
         @ColumnInfo(name = "entityCode") val _entityCode: String = "",
         @ColumnInfo(name = "entityName") var _entityName: String = "",
@@ -28,71 +26,34 @@ data class EbaEntity @JvmOverloads constructor(
         @ColumnInfo(name = "ebaEntityVersion") var _ebaEntityVersion: String = "",
         @ColumnInfo(name = "country") var _country: String = "",
 
-        @PrimaryKey @ColumnInfo(name = "db_id") var _db_id: String = UUID.randomUUID().toString()
-) /*: TppModel*/ {
+        @PrimaryKey @ColumnInfo(name = "id") var _id: String = UUID.randomUUID().toString()
+) {
 
     @Ignore
-    /*override */fun getEntityId() = _entityId
+    fun getEntityId() = _entityId
 
     @Ignore
-    /*override */fun getEntityCode() = _entityCode
+    fun getEntityCode() = _entityCode
 
     @Ignore
-    /*override */fun getEntityName() = _entityName
+    fun getEntityName() = _entityName
 
     @Ignore
-    /*override */fun getDescription() = _description
+    fun getDescription() = _description
 
     @Ignore
-    /*override */fun getGlobalUrn() = _globalUrn
+    fun getGlobalUrn() = _globalUrn
 
     @Ignore
-    /*override */fun getEbaEntityVersion() = _ebaEntityVersion
+    fun getEbaEntityVersion() = _ebaEntityVersion
 
     @Ignore
-    /*override */fun getCountry() = _country
+    fun getCountry() = _country
 
     @Ignore
-    /*override */fun getId() = _db_id
+    fun getId() = _id
 
-    @Embedded
-    var ebaProperties = EbaEntityProperties()
-
-    @ColumnInfo(name = "fis")
-    var fis: Boolean = false
-
-    @ColumnInfo(name = "psd2")
-    var psd2: Boolean = false
-
-    @ColumnInfo(name = "followed")
-    var followed: Boolean = false
-
-    @ColumnInfo(name = "used")
-    var used: Boolean = false
-
-    @ColumnInfo(name = "status")
-    var _status: RecordStatus = RecordStatus.NEW
-
-    var _ebaPassport : EbaPassport = EbaPassport()
-    @Ignore
-    /*override */fun getEbaPassport() = _ebaPassport
-
-    @Ignore
-    /*override */fun isFollowed() : Boolean = followed
-
-    @Ignore
-    /*override */fun isUsed() : Boolean = used
-
-    @Ignore
-    /*override */fun isFis(): Boolean = fis
-
-    @Ignore
-    /*override */fun isPsd2(): Boolean = psd2
-
-    @Ignore
-    /*override */fun getStatus() = _status
-
-    /*override */fun getTitleForList(): String {
+    fun getTitleForList(): String {
         return (getEntityName()) ?: getDescription()
     }
 

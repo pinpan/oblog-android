@@ -57,8 +57,8 @@ object TppsRemoteDataSource : RemoteTppDataSource {
     }
 
     override suspend fun activateTpp(ebaEntity: Tpp) {
-        val activeTpp = Tpp(ebaEntity.title, ebaEntity.description, false, ebaEntity.id)
-        TPPS_SERVICE_DATA[ebaEntity.id] = activeTpp
+        val usedTpp = Tpp(ebaEntity.title, ebaEntity.description, false, ebaEntity.id)
+        TPPS_SERVICE_DATA[ebaEntity.id] = usedTpp
     }
 
     override suspend fun activateTpp(tppId: String) {

@@ -23,7 +23,7 @@ interface TppModel  {
 
     fun isPsd2(): Boolean
 
-    fun isActive(): Boolean
+    fun isUsed(): Boolean
 
     fun isFollowed(): Boolean
 

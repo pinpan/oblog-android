@@ -3,6 +3,7 @@ package com.applego.oblog.tppwatch.data.source.remote.serializer
 import com.applego.oblog.tppwatch.data.convertor.OblogTypeConverters
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.EbaEntityProperties
 import com.google.gson.*
 import java.lang.reflect.Type
 import timber.log.Timber
@@ -39,16 +40,55 @@ class TppDeserializer : JsonDeserializer<Tpp> {
             entityId = getEntityId(entityId)
         }
 
+        val ebaPropertiesJson = jsonObject.get("ebaProperties")?.asJsonObject
+
+        val ent_add = ebaPropertiesJson?.get("ENT_ADD")
+        val enityAddress = if (ent_add is JsonArray) getStringFromJsonArray(ent_add.asJsonArray) else (ent_add?.asString ?: "")
+
+        /*when (ent_add) {
+            is JsonArray -> {
+                ent_add.asJsonArray.forEach() { addrPart ->
+                    enityAddress += addrPart.asString + ", "
+                }
+                enityAddress = enityAddress.trim(',', ' ')
+            }
+            is JsonElement -> {
+                enityAddress = ent_add.asString
+            }
+        }*/
+        val entAuthStart_End = ebaPropertiesJson?.get("ENT_AUT")?.asJsonArray
+        val entAuthStart = entAuthStart_End?.get(0)?.asString ?: ""
+        var entAuthEnd = ""
+        if (entAuthStart_End?.size()!! > 1) {
+            entAuthEnd = entAuthStart_End?.get(1)?.asString ?: ""
+        }
+
         val nameJson = jsonObject?.get("entityName")
         val entityName = if (nameJson is JsonArray) getStringFromJsonArray(nameJson.asJsonArray) else nameJson.asString
+
+        val ebaProperties = EbaEntityProperties(
+                  ebaPropertiesJson?.get("ENT_COD_TYP")?.asString ?: ""
+                , ebaPropertiesJson?.get("ENT_NAT_REF_COD")?.asString ?: ""
+                , entityName //ebaPropertiesJson?.get("ENT_NAM")?.asString ?: ""
+
+                , enityAddress
+
+                , ebaPropertiesJson?.get("ENT_TOW_CIT_RES")?.asString ?: ""
+                , ebaPropertiesJson?.get("ENT_POS_COD")?.asString ?: ""
+                , ebaPropertiesJson?.get("ENT_COU_RES")?.asString ?: ""
+                , entAuthStart
+                , entAuthEnd
+        )
+
         val globalUrn = jsonObject?.get("globalUrn")?.asString ?:""
-        val ebaProperties = jsonObject.get("ebaProperties")?.asJsonObject
-        val country: String = ebaProperties?.get("ENT_COU_RES")?.asString ?: ""
+        val country: String = ebaProperties.countryOfResidence
         val ebaEntityVersion: String = jsonObject?.get("ebaEntityVersion")?.asString ?: ""
         // val status: String = jsonObject?.get("status")?.asString ?: ""
         val description: String = jsonObject?.get("description")?.asString ?: ""
 
-        var tpp = Tpp(EbaEntity(_entityId = entityId, _entityCode = entityCode, _entityName = entityName, _description = description, _globalUrn = globalUrn, _ebaEntityVersion = ebaEntityVersion, _country = country))
+        val ebaEntity = EbaEntity(_entityId = entityId, _entityCode = entityCode, _entityName = entityName, _description = description, _globalUrn = globalUrn, _ebaEntityVersion = ebaEntityVersion, _country = country)
+        ebaEntity.ebaProperties = ebaProperties
+        var tpp = Tpp(ebaEntity)
 
         val services = jsonObject?.get("services").asJsonArray ?: JsonArray()
         if (services != null) {

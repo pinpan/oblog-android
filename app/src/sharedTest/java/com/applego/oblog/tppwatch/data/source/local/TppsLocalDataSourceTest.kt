@@ -100,26 +100,26 @@ class TppsLocalDataSourceTest {
     }
 
     @Test
-    fun activateTpp_retrievedTppIsActive() = runBlockingTest {
+    fun activateTpp_retrievedTppIsUsed() = runBlockingTest {
         // Given a new followed tpp in the persistent repository
         val newTpp = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Some entityName", _description = "Some description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         localDataSource.saveTpp(Tpp(newTpp))
 
         localDataSource.setTppActivateFlag(newTpp.getId(), true)
 
-        // Then the tppk can be retrieved from the persistent repository and is active
+        // Then the tppk can be retrieved from the persistent repository and is used
         val result = localDataSource.getTpp(newTpp.getId())
 
         assertThat(result.succeeded, `is`(true))
         result as Success
 
         assertThat(result.data.getEntityName(), `is`("Some entityName"))
-        assertThat(result.data.isActive(), `is`(true))
+        assertThat(result.data.isUsed(), `is`(true))
     }
 
     @Test
     fun clearUnfollowedTpp_tppNotRetrievable() = runBlockingTest {
-        // Given 2 new followed tpps and 1 active tpp in the persistent repository
+        // Given 2 new followed tpps and 1 used tpp in the persistent repository
         val newTppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "", _globalUrn = "", _ebaEntityVersion = "cz")
         val newTppEntity2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "title2", _description = "", _globalUrn = "", _ebaEntityVersion = "cz")
         val newTppEntity3 = EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "title3", _description = "", _globalUrn = "", _ebaEntityVersion = "cz")
@@ -136,7 +136,7 @@ class TppsLocalDataSourceTest {
         // When followed tpps are cleared in the repository
         localDataSource.clearFollowedTpps()
 
-        // Then the followed tpps cannot be retrieved and the active one can
+        // Then the followed tpps cannot be retrieved and the used one can
         assertThat(localDataSource.getTpp(newTpp1.getId()).succeeded, `is`(false))
         assertThat(localDataSource.getTpp(newTpp2.getId()).succeeded, `is`(false))
 

@@ -63,8 +63,8 @@ open class TppDetailViewModel(
     }
 
     // This LiveData depends on another so we can use a transformation.
-    val active: LiveData<Boolean> = Transformations.map(_tpp) { input: Tpp? ->
-        input?.isActive() ?: false
+    val used: LiveData<Boolean> = Transformations.map(_tpp) { input: Tpp? ->
+        input?.isUsed() ?: false
     }
 
     fun editTpp() {
@@ -79,11 +79,11 @@ open class TppDetailViewModel(
         showSnackbarMessage(if (follow) R.string.tpp_marked_followed else R.string.tpp_marked_followed)
     }
 
-    fun setActive(activate: Boolean) = viewModelScope.launch {
+    fun setUsed(activate: Boolean) = viewModelScope.launch {
         val tpp = _tpp.value ?: return@launch
         tppsRepository.setTppActivateFlag(tpp, activate)
 
-        showSnackbarMessage(if (activate) R.string.tpp_marked_active else R.string.tpp_marked_inactive)
+        showSnackbarMessage(if (activate) R.string.tpp_marked_used else R.string.tpp_marked_inused)
     }
 
     fun start(tppId: String?, forceRefresh: Boolean = false) {

@@ -19,7 +19,7 @@ interface TppsRepository {
 
     suspend fun setTppFollowedFlag(tpp: Tpp, followed: Boolean)
 
-    suspend fun setTppActivateFlag(tpp: Tpp, active: Boolean)
+    suspend fun setTppActivateFlag(tpp: Tpp, used: Boolean)
 
     suspend fun deleteAllTpps()
 

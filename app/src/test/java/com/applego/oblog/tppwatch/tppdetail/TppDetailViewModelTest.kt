@@ -58,7 +58,7 @@ class TppDetailViewModelTest {
     }
 
     @Test
-    fun getActiveTppFromRepositoryAndLoadIntoView() {
+    fun getUsedTppFromRepositoryAndLoadIntoView() {
         CoroutineScope(Dispatchers.Main).launch {
             tppDetailViewModel.start(tppEntity.getEntityId())
         }
@@ -74,7 +74,7 @@ class TppDetailViewModelTest {
         CoroutineScope(Dispatchers.Main).launch {
             tppDetailViewModel.start(tppEntity.getEntityId())
         }
-        // Verify that the ebaEntity was active initially
+        // Verify that the ebaEntity was used initially
         assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isFollowed()).isFalse()
 
         // When the ViewModel is asked to follow the ebaEntity
@@ -87,20 +87,20 @@ class TppDetailViewModelTest {
 
     @Test
     fun activateTpp() {
-        tppEntity.active = true
+        tppEntity.used = true
 
         CoroutineScope(Dispatchers.Main).launch {
             tppDetailViewModel.start(tppEntity.getEntityId())
         }
         // Verify that the ebaEntity was followed initially
-        assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isActive()).isTrue()
+        assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isUsed()).isTrue()
 
         // When the ViewModel is asked to follow the ebaEntity
-        tppDetailViewModel.setActive(false)
+        tppDetailViewModel.setUsed(false)
 
         // Then the ebaEntity is not followed and the snackbar shows the correct message
-        assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isActive()).isFalse()
-        assertSnackbarMessage(tppDetailViewModel.snackbarText, R.string.tpp_marked_inactive)
+        assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isUsed()).isFalse()
+        assertSnackbarMessage(tppDetailViewModel.snackbarText, R.string.tpp_marked_inused)
     }
 
     @Test
@@ -108,7 +108,7 @@ class TppDetailViewModelTest {
         // Given a repository that returns errors
         tppsRepository.setReturnError(true)
 
-        // Given an initialized ViewModel with an active ebaEntity
+        // Given an initialized ViewModel with an used ebaEntity
         CoroutineScope(Dispatchers.Main).launch {
             tppDetailViewModel.start(tppEntity.getEntityId())
         }

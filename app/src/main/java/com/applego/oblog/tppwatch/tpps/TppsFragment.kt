@@ -238,7 +238,7 @@ class TppsFragment : Fragment() {
                         when (ft) {
                             //TppsFilterType.ALL_TPPS -> R.id.all
                             TppsFilterType.FOLLOWED_TPPS -> R.id.followed
-                            TppsFilterType.USED_TPPS -> R.id.active
+                            TppsFilterType.USED_TPPS -> R.id.used
                             TppsFilterType.FIS_AS_TPPS -> R.id.fis
                             TppsFilterType.PSD2_TPPS -> R.id.psd2Only
                             TppsFilterType.REVOKED_TPPS -> R.id.revoked
@@ -253,7 +253,7 @@ class TppsFragment : Fragment() {
                     viewModel.setFiltering(
                             when (it.itemId) {
                                 R.id.all -> TppsFilterType.ALL_TPPS
-                                R.id.active -> TppsFilterType.USED_TPPS
+                                R.id.used -> TppsFilterType.USED_TPPS
                                 R.id.followed -> TppsFilterType.FOLLOWED_TPPS
                                 R.id.fis -> TppsFilterType.FIS_AS_TPPS
                                 R.id.psd2Only-> TppsFilterType.PSD2_TPPS

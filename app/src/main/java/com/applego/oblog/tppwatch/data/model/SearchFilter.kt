@@ -67,7 +67,7 @@ data class SearchFilter @JvmOverloads constructor(
             return userSelectedFilterTypes.get(TppsFilterType.PSD2_TPPS) ?: false
         }
 
-    val active: Boolean
+    val used: Boolean
         get() {
             return userSelectedFilterTypes.get(TppsFilterType.USED_TPPS) ?: false
         }

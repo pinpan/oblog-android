@@ -73,7 +73,7 @@ class StatisticsFragmentTest {
         // Given some tpps
         repository.apply {
             var tpp1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
-            tpp1.active = true
+            tpp1.used = true
             tpp1.followed = false
             saveTppBlocking(Tpp(tpp1))
             var tpp2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "Title2", _description = "Description2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
@@ -84,13 +84,13 @@ class StatisticsFragmentTest {
         val scenario = launchFragmentInContainer<StatisticsFragment>(Bundle(), R.style.AppTheme)
         dataBindingIdlingResource.monitorFragment(scenario)
 
-        val expectedActiveTppText = getApplicationContext<Context>()
-            .getString(R.string.statistics_active_tpps, 50.0f)
+        val expectedUsedTppText = getApplicationContext<Context>()
+            .getString(R.string.statistics_used_tpps, 50.0f)
         val expectedFollowedTppText = getApplicationContext<Context>()
             .getString(R.string.statistics_followed_tpps, 0.0f)
         // check that both info boxes are displayed and contain the correct info
-        onView(withId(R.id.stats_active_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.stats_active_text)).check(matches(withText(expectedActiveTppText)))
+        onView(withId(R.id.stats_used_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.stats_used_text)).check(matches(withText(expectedUsedTppText)))
         onView(withId(R.id.stats_followed_text)).check(matches(isDisplayed()))
         onView(withId(R.id.stats_followed_text)).check(matches(withText(expectedFollowedTppText)))
     }

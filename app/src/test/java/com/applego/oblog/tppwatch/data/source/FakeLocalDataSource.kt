@@ -32,8 +32,8 @@ class FakeLocalDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : Local
         tpps?.firstOrNull { it.getEntityId() == tpp.getEntityId() }?.let { it.setFollowed(true)}
     }
 
-    override suspend fun setTppActivateFlag(tppId: String, active: Boolean) {
-        tpps?.firstOrNull { it.getId() == tppId }?.let { it.setActive(active)}
+    override suspend fun setTppActivateFlag(tppId: String, used: Boolean) {
+        tpps?.firstOrNull { it.getId() == tppId }?.let { it.setUsed(used)}
     }
 
     override suspend fun deleteAllTpps() {

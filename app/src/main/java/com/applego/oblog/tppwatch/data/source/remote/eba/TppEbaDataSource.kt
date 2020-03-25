@@ -90,7 +90,7 @@ class TppEbaDataSource internal constructor (
 
     suspend fun updateTppEntity(ebaTpp: Tpp) : Tpp {
         val ebaEntity = ebaTpp.ebaEntity
-        val dbEntity = tppsDao.getTppByEntityCode(ebaEntity.getEntityCode())
+        val dbEntity = tppsDao.getTppByEntityCode(ebaEntity.getEntityCode(), ebaEntity.ebaProperties.codeType)
         if (dbEntity == null) {
             tppsDao.insertTpp(ebaEntity)
         } else {
@@ -133,7 +133,7 @@ class TppEbaDataSource internal constructor (
                     System.out.println("Insert/Update tpp: " + tpp.ebaEntity.getEntityName() + " into database")
 
                     runBlocking<Unit> {
-                        val foundEntity = tppsDao.getTppByEntityCode(tpp.ebaEntity.getEntityCode())
+                        val foundEntity = tppsDao.getTppByEntityCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType)
                         if (foundEntity == null) {
                             tppsDao.insertTpp(tpp.ebaEntity)
                         } else {

@@ -79,9 +79,9 @@ class TppsFragmentTest {
     }
 
     @Test
-    fun displayActiveTpp() {
+    fun displayUsedTpp() {
         val tppEntity = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
-        tppEntity.active = true
+        tppEntity.used = true
         tppEntity.followed = false
         repository.saveTppBlocking(Tpp(tppEntity))
 
@@ -91,10 +91,10 @@ class TppsFragmentTest {
 
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_active)).perform(click()) // Goes to FALSE
+        onView(withText(R.string.nav_used)).perform(click()) // Goes to FALSE
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
 
-        tppEntity.active = false
+        tppEntity.used = false
         tppEntity.followed = true
         repository.saveTppBlocking(Tpp(tppEntity))
 
@@ -114,7 +114,7 @@ class TppsFragmentTest {
         onView(withText("TITLE1")).check(matches(isDisplayed()))
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_active)).perform(click())
+        onView(withText(R.string.nav_used)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
 
         onView(withId(R.id.menu_filter)).perform(click())
@@ -187,30 +187,30 @@ class TppsFragmentTest {
     }
 
     @Test
-    fun markTppAsActive() {
+    fun markTppAsUsed() {
         var aTpp = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         repository.saveTppBlocking(Tpp(aTpp))
 
         launchActivity()
 
-        // Mark the tpp as active
-        onView(checkboxActive()).perform(click())
+        // Mark the tpp as used
+        onView(checkboxUsed()).perform(click())
 
-        // Verify tpp is shown as active
+        // Verify tpp is shown as used
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_all)).perform(click())
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_active)).perform(click())
+        onView(withText(R.string.nav_used)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_active)).perform(click())
+        onView(withText(R.string.nav_used)).perform(click())
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
     }
 
     @Test
     fun showAllTpps() {
-        // Add one active tpp and one followed tpp
+        // Add one used tpp and one followed tpp
         var tpp1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         repository.saveTppBlocking(Tpp(tpp1))
         var tpp2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
@@ -235,12 +235,12 @@ class TppsFragmentTest {
     }
 
     @Test
-    fun showActiveTpps() {
-        // Add 2 active tpps and one followed tpp
+    fun showUsedTpps() {
+        // Add 2 used tpps and one followed tpp
         var tppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
-        tppEntity1.active = true
+        tppEntity1.used = true
         var tppEntity2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
-        tppEntity2.active = true
+        tppEntity2.used = true
         var tppEntity3 = EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "TITLE3", _description = "DESCRIPTION3", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity3.followed = true
 
@@ -254,16 +254,16 @@ class TppsFragmentTest {
         onView(withText("TITLE2")).check(matches(isDisplayed()))
         onView(withText("TITLE3")).check(matches(isDisplayed()))
 
-        // Verify that the active tpps are not shown, but others (e.g. followed) are shown
+        // Verify that the used tpps are not shown, but others (e.g. followed) are shown
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_active)).perform(click())
+        onView(withText(R.string.nav_used)).perform(click())
         onView(withText("TITLE1")).check(doesNotExist())
         onView(withText("TITLE2")).check(doesNotExist())
         onView(withText("TITLE3")).check(matches(isDisplayed()))
 
-        // Verify that the active tpps are not shown, but others (e.g. followed) are shown
+        // Verify that the used tpps are not shown, but others (e.g. followed) are shown
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_active)).perform(click())
+        onView(withText(R.string.nav_used)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withText("TITLE2")).check(matches(isDisplayed()))
         onView(withText("TITLE3")).check(matches(isDisplayed()))
@@ -271,9 +271,9 @@ class TppsFragmentTest {
 
     @Test
     fun showFollowedTpps() {
-        // Add one active tpp and 2 followed tpps
+        // Add one used tpp and 2 followed tpps
         var tppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
-        tppEntity1.active = true
+        tppEntity1.used = true
         var tppEntity2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity2.followed = true
         var tppEntity3 = EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "TITLE3", _description = "DESCRIPTION3", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
@@ -288,7 +288,7 @@ class TppsFragmentTest {
         onView(withText("TITLE2")).check(matches(isDisplayed()))
         onView(withText("TITLE3")).check(matches(isDisplayed()))
 
-        // Verify that the followed tpps (but not the active tpp) are shown
+        // Verify that the followed tpps (but not the used tpp) are shown
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_followed)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
@@ -325,14 +325,14 @@ class TppsFragmentTest {
     }
 
     @Test
-    fun noTpps_ActiveTppsFilter_AddTppViewNotVisible() {
+    fun noTpps_UsedTppsFilter_AddTppViewNotVisible() {
         launchActivity()
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_active)).perform(click())
+        onView(withText(R.string.nav_used)).perform(click())
 
-        // Verify the "You have no active tpps!" text is shown
-        onView(withText("No active TPPs selected!")).check(matches((isDisplayed())))
+        // Verify the "You have no used tpps!" text is shown
+        onView(withText("No used TPPs selected!")).check(matches((isDisplayed())))
     }
 
     @Test
@@ -379,7 +379,7 @@ class TppsFragmentTest {
         return allOf(withId(R.id.follow_checkbox))
     }
 
-    private fun checkboxActive(): Matcher<View> {
-        return allOf(withId(R.id.active_checkbox))
+    private fun checkboxUsed(): Matcher<View> {
+        return allOf(withId(R.id.used_checkbox))
     }
 }

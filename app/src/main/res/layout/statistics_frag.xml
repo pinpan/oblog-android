@@ -42,11 +42,11 @@
                     android:visibility="@{viewmodel.empty ? View.VISIBLE : View.GONE}" />
 
                 <TextView
-                    android:id="@+id/stats_active_text"
+                    android:id="@+id/stats_used_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="1dp"
-                    android:text="@{@string/statistics_active_tpps(viewmodel.activeTppsPercent)}"
+                    android:text="@{@string/statistics_used_tpps(viewmodel.usedTppsPercent)}"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:visibility="@{viewmodel.empty ? View.GONE : View.VISIBLE}" />
 

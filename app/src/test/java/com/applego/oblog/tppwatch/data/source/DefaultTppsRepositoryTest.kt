@@ -201,7 +201,7 @@ class DefaultTppsRepositoryTest {
         // Save a ebaEntity
         tppsRepository.saveTpp(Tpp(newTppEntity))
 
-        // Make sure it's active
+        // Make sure it's used
         assertThat((tppsRepository.getTpp(newTppEntity.getEntityId(), true) as Success).data.isFollowed()).isFalse()
 
         // Mark is as Followed
@@ -214,20 +214,20 @@ class DefaultTppsRepositoryTest {
     // TODO-PZA#FIX this test:
     @Ignore
     @Test
-    fun unfollowTpp_activeTppToServiceAPIUpdatesCache() = runBlockingTest {
+    fun unfollowTpp_usedTppToServiceAPIUpdatesCache() = runBlockingTest {
         // Save a ebaEntity
         tppsRepository.saveTpp(Tpp(newTppEntity))
         tppsRepository.setTppFollowedFlag(Tpp(newTppEntity), false)
 
         // Make sure it's followed
-        assertThat((tppsRepository.getTpp(newTppEntity.getEntityId(), true) as Success).data.isActive()).isFalse()
+        assertThat((tppsRepository.getTpp(newTppEntity.getEntityId(), true) as Success).data.isUsed()).isFalse()
 
-        // Mark is as active
+        // Mark is as used
         tppsRepository.setTppActivateFlag(Tpp(newTppEntity), true)
 
         // Verify it's now activated
         val result = tppsRepository.getTpp(newTppEntity.getEntityId(), true) as Success
-        assertThat(result.data.isActive()).isTrue()
+        assertThat(result.data.isUsed()).isTrue()
     }
 
     // TODO-PZA#FIX this test:

@@ -18,8 +18,8 @@
     <string name="label_revoked">Revoked</string>
     <string name="label_passports">Passports</string>
     <string name="tpp_applications">Applications</string>
-    <string name="tpp_marked_active">TPP marked active</string>
-    <string name="tpp_marked_inactive">TPP marked inactive</string>
+    <string name="tpp_marked_used">TPP marked used</string>
+    <string name="tpp_marked_inused">TPP marked inused</string>
     <string name="loading_tpps_error">Error while loading TPPs</string>
     <string name="followed_tpps_cleared">Followed TPPs cleared</string>
     <string name="menu_filter">Filter</string>
@@ -34,27 +34,27 @@
     <string name="tpp_directory_title">TPPs Directory</string>
     <string name="statistics_title">Statistics</string>
     <string name="statistics_no_tpps">You have no TPPs.</string>
-    <string name="statistics_active_tpps">Active TPPs: %.1f%%</string>
+    <string name="statistics_used_tpps">Used TPPs: %.1f%%</string>
     <string name="statistics_followed_tpps">Followed TPPs: %.1f%%</string>
     <string name="statistics_error">Error loading statistics.</string>
     <string name="no_data">No data</string>
     <string name="loading">LOADING</string>
 
     <string name="nav_all">All</string>
-    <string name="nav_active">Active</string>
+    <string name="nav_used">Used</string>
     <string name="nav_followed">Followed</string>
     <string name="label_all">All TPPs</string>
-    <string name="label_active">Active TPPs</string>
+    <string name="label_used">Used TPPs</string>
     <string name="label_followed">Followed TPPs</string>
     <string name="label_following">Following</string>
-    <string name="label_activated">Active</string>
+    <string name="label_activated">Used</string>
     <string name="tpp_name_label">Tpp name</string>
     <string name="tpp_home_country_label">Home country</string>
     <string name="tpp_description_label">Description</string>
     <string name="tpp_services_label">Services</string>
 
     <string name="no_tpps_all">No TPPs available!</string>
-    <string name="no_tpps_active">No active TPPs selected!</string>
+    <string name="no_tpps_used">No used TPPs selected!</string>
     <string name="no_tpps_followed">You have no followed TPPs!</string>
     <string name="refresh">Refresh</string>
     <string name="successfully_deleted_tpp_message">TPP was deleted</string>
@@ -93,7 +93,7 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="settings_no_tpps">No TPPs found</string>
     <string name="settings_followed_tpps">Followed TPPs</string>
-    <string name="settings_active_tpps">Active TPPs</string>
+    <string name="settings_used_tpps">Used TPPs</string>
     <string name="environments">Environments</string>
     <string name="label_fis">Financial institutions</string>
     <string name="no_fis_tpps">No financial institutions</string>

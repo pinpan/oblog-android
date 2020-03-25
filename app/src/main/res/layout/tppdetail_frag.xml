@@ -46,7 +46,7 @@
                     android:textStyle="bold" />
 
                 <LinearLayout
-                    android:id="@+id/follow_active"
+                    android:id="@+id/follow_used"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/title"
@@ -66,13 +66,13 @@
                         android:textColor="#006496" />
 
                     <CheckBox
-                        android:id="@+id/checkbox_active"
+                        android:id="@+id/checkbox_used"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:checked="@{viewmodel.active}"
+                        android:checked="@{viewmodel.used}"
                         android:gravity="left|center_vertical"
-                        android:onClick="@{(view) -> viewmodel.setActive(((CompoundButton)view).isChecked())}"
+                        android:onClick="@{(view) -> viewmodel.setUsed(((CompoundButton)view).isChecked())}"
                         android:paddingTop="1dp"
                         android:text="@string/label_activated"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -86,8 +86,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_below="@id/title"
-                    android:layout_alignRight="@id/follow_active"
-                    android:layout_alignBottom="@id/follow_active"
+                    android:layout_alignRight="@id/follow_used"
+                    android:layout_alignBottom="@id/follow_used"
                     android:layout_marginEnd="5dp"
                     android:text="refresh"
                     android:textSize="10sp"
@@ -247,7 +247,7 @@
                             android:id="@+id/label_visa_psd2_roles"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/checkbox_active"
+                            android:layout_below="@id/checkbox_used"
                             android:layout_toRightOf="@id/label_visa_country"
                             android:layout_weight="3"
                             android:clickable="false"

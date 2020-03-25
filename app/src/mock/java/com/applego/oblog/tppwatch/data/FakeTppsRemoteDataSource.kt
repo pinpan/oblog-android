@@ -38,8 +38,8 @@ object FakeTppsRemoteDataSource : LocalTppDataSource {
     }
 
     override suspend fun activateTpp(tpp: Tpp) {
-        val activeTpp = Tpp(tpp.entityCode, tpp.title, tpp.description, false, tpp.id)
-        TPPS_SERVICE_DATA[tpp.id] = activeTpp
+        val usedTpp = Tpp(tpp.entityCode, tpp.title, tpp.description, false, tpp.id)
+        TPPS_SERVICE_DATA[tpp.id] = usedTpp
     }
 
     override suspend fun activateTpp(tppId: String) {

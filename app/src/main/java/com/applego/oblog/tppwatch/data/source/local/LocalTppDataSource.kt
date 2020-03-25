@@ -17,7 +17,7 @@ interface LocalTppDataSource {
 
     suspend fun udateFollowing(tpp: Tpp, follow: Boolean)
 
-    suspend fun setTppActivateFlag(tppId: String, active: Boolean)
+    suspend fun setTppActivateFlag(tppId: String, used: Boolean)
 
     suspend fun deleteAllTpps()
 

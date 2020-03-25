@@ -56,7 +56,7 @@ class StatisticsViewModelTest {
 
     @Test
     fun loadNonEmptyTppsFromRepository_NonEmptyResults() {
-        // We initialise the tpps to 3, with one active and two followed
+        // We initialise the tpps to 3, with one used and two followed
         val tppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity1.followed = true
         val tppEntity2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "Title2", _description = "Description2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
@@ -64,7 +64,7 @@ class StatisticsViewModelTest {
         val tppEntity3 = EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3", _description = "Description3", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity3.followed = true
         val tppEntity4 = EbaEntity(_entityId = "28173284", _entityCode = "Entity_CZ28173284", _entityName = "Title4", _description = "Description4", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
-        tppEntity3.active = true
+        tppEntity3.used = true
         tppsRepository.addTpps(Tpp(tppEntity1), Tpp(tppEntity2), Tpp(tppEntity3), Tpp(tppEntity4))
 
         // When loading of Tpps is requested
@@ -73,7 +73,7 @@ class StatisticsViewModelTest {
         // Then the results are not empty
         assertThat(LiveDataTestUtil.getValue(statisticsViewModel.empty))
             .isFalse()
-        assertThat(LiveDataTestUtil.getValue(statisticsViewModel.activeTppsPercent))
+        assertThat(LiveDataTestUtil.getValue(statisticsViewModel.usedTppsPercent))
             .isEqualTo(25f)
         assertThat(LiveDataTestUtil.getValue(statisticsViewModel.followedTppsPercent))
             .isEqualTo(75f)

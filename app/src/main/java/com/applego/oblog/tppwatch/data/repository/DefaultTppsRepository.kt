@@ -199,7 +199,7 @@ class DefaultTppsRepository (
     override suspend fun setTppActivateFlag(tpp: Tpp, a: Boolean) = withContext(ioDispatcher) {
         // Do in memory cache update to keep the app UI up to date
         cacheAndPerform(tpp) {
-            it.ebaEntity.active = a
+            it.ebaEntity.used = a
             coroutineScope {
                 launch { tppsLocalDataSource.setTppActivateFlag(it.ebaEntity.getId(), a) }
             }

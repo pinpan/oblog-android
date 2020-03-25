@@ -134,7 +134,7 @@
                         android:id="@+id/label_visa_psd2_roles"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/checkbox_active"
+                        android:layout_below="@id/checkbox_used"
                         android:layout_toRightOf="@id/label_visa_country"
                         android:layout_weight="3"
                         android:clickable="false"

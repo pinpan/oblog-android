@@ -61,8 +61,8 @@ class TppsDaoDataSource internal constructor(
         tppsDao.updateFollowed(tpp.ebaEntity.getId(), follow)
     }
 
-    override suspend fun setTppActivateFlag(tppId: String, active: Boolean)  = withContext(ioDispatcher) {
-        tppsDao.updateActive(tppId, active)
+    override suspend fun setTppActivateFlag(tppId: String, used: Boolean)  = withContext(ioDispatcher) {
+        tppsDao.updateUsed(tppId, used)
     }
 
     suspend fun clearFollowedTpps() = withContext<Unit>(ioDispatcher) {

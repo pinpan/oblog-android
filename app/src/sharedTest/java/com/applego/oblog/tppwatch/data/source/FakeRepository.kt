@@ -51,8 +51,8 @@ class FakeRepository : TppsRepository {
         tppsServiceData[tpp.ebaEntity.getEntityId()]?.ebaEntity?.followed = true
     }
 
-    override suspend fun setTppActivateFlag(tpp: Tpp, active: Boolean) {
-        tpp.ebaEntity.active = active
+    override suspend fun setTppActivateFlag(tpp: Tpp, used: Boolean) {
+        tpp.ebaEntity.used = used
     }
 
 /*

@@ -8,8 +8,8 @@ import java.util.*
  * Immutable model class for Eba Tpp properties.
  *
  */
-@Entity(tableName = "tpps")
-@TypeConverters(OblogTypeConverters::class)
+//@Entity(tableName = "tpps")
+//@TypeConverters(OblogTypeConverters::class)
 data class EbaEntityProperties @JvmOverloads constructor(
         /*
         {ENT_COD_TYP: "NON_LEI"}
@@ -21,16 +21,17 @@ data class EbaEntityProperties @JvmOverloads constructor(
         {ENT_COU_RES: "CZ"}
         {ENT_AUT: ["2015-03-27", "2019-04-12"]}
         */
-      @ColumnInfo(name = "ENT_COD_TYP") val entCodTyp: String = ""
-     ,@ColumnInfo(name = "ENT_NAT_REF_COD") val entNatRefCod: String = ""
-     ,@ColumnInfo(name = "ENT_NAM") val entNam: String = ""
-     ,@ColumnInfo(name = "ENT_ADD") val entAdd: String = ""
-     ,@ColumnInfo(name = "ENT_TOW_CIT_RES") val entTowCitRes: String = ""
-     ,@ColumnInfo(name = "ENT_POS_COD") val entPosCod: String = ""
-     ,@ColumnInfo(name = "ENT_COU_RES") val entCowRes: String = ""
-     ,@ColumnInfo(name = "ENT_AUT") val entAut: String = ""
+      @ColumnInfo(name = "codeType") val codeType: String = ""
+     ,@ColumnInfo(name = "nationalReferenceCode") val nationalReferenceCode: String = ""
+     ,@ColumnInfo(name = "entityNames") val entityNames: String = ""
+     ,@ColumnInfo(name = "address") val address: String = ""
+     ,@ColumnInfo(name = "cityOfResidence") val cityOfResidence: String = ""
+     ,@ColumnInfo(name = "postalCode") val postalCode: String = ""
+     ,@ColumnInfo(name = "entCouRes") val countryOfResidence: String = ""
+     ,@ColumnInfo(name = "authorizationStart") val authorizationStart: String = ""
+     ,@ColumnInfo(name = "autorizationEnd") val autorizationEnd: String = ""
 
-    , @PrimaryKey @ColumnInfo(name = "id") var _id: String = UUID.randomUUID().toString()
+    //, @PrimaryKey @ColumnInfo(name = "properties_db_id") var _db_id: String = UUID.randomUUID().toString()
 ) {
 
 }

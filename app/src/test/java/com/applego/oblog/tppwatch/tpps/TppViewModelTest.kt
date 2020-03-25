@@ -44,7 +44,7 @@ class TppsViewModelTest {
 
     @Before
     fun setupViewModel() {
-        // We initialise the tpps to 3, with one active and two followed
+        // We initialise the tpps to 3, with one used and two followed
         tppsRepository = FakeRepository()
         tppsRepository.addTpps(Tpp(tppEntity1), Tpp(tppEntity2), Tpp(tppEntity3))
 
@@ -91,7 +91,7 @@ class TppsViewModelTest {
 
     @Ignore
     @Test
-    fun loadActiveTppsFromRepositoryAndLoadIntoView() {
+    fun loadUsedTppsFromRepositoryAndLoadIntoView() {
         // Given an initialized TppsViewModel with initialized tpps
         // When loading of Tpps is requested
         tppsViewModel.setFiltering(TppsFilterType.USED_TPPS)
@@ -203,7 +203,7 @@ class TppsViewModelTest {
 
     @Test
     fun followTpp_dataAndSnackbarUpdated() {
-        // With a repository that has an active ebaEntity
+        // With a repository that has an used ebaEntity
         val tppEntity = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title", _description = "Description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppsRepository.addTpps(Tpp(tppEntity))
 
@@ -231,8 +231,8 @@ class TppsViewModelTest {
         tppsViewModel.followTpp(Tpp(tppEntity), true)
         tppsViewModel.followTpp(Tpp(tppEntity), true)
 
-        // Verify the ebaEntity is active
-        assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isActive()).isFalse()
+        // Verify the ebaEntity is used
+        assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isUsed()).isFalse()
 
         // The snackbar is updated
         assertSnackbarMessage(

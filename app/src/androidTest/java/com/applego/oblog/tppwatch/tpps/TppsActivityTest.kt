@@ -112,7 +112,7 @@ class TppsActivityTest {
         val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
-        // Add active tpp
+        // Add used tpp
         onView(withId(R.id.add_tpp_fab)).perform(click())
         onView(withId(R.id.add_tpp_title_edit_text))
             .perform(typeText("TITLE1"), closeSoftKeyboard())
@@ -153,7 +153,7 @@ class TppsActivityTest {
 
     @Test
     fun markTppAsFollowedOnDetailScreen_tppIsFollowInList() {
-        // Add 1 active tpp
+        // Add 1 used tpp
         val tppTitle = "FOLLOWED"
         repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = tppTitle, _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
 
@@ -180,9 +180,9 @@ class TppsActivityTest {
     }
 
     @Test
-    fun markTppAsActiveOnDetailScreen_tppIsActiveInList() {
+    fun markTppAsUsedOnDetailScreen_tppIsUsedInList() {
         // Add 1 followed tpp
-        val tppTitle = "ACTIVE"
+        val tppTitle = "USED"
         repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = tppTitle, _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
 
         // start up Tpps screen
@@ -201,14 +201,14 @@ class TppsActivityTest {
             )
         ).perform(click())
 
-        // Check that the tpp is marked as active
+        // Check that the tpp is marked as used
         onView(allOf(withId(R.id.follow_checkbox), hasSibling(withText(tppTitle))))
             .check(matches(not(isChecked())))
     }
 
     @Test
-    fun markTppAsFollowAndActiveOnDetailScreen_tppIsActiveInList() {
-        // Add 1 active tpp
+    fun markTppAsFollowAndUsedOnDetailScreen_tppIsUsedInList() {
+        // Add 1 used tpp
         val tppTitle = "ACT-COMP"
         repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = tppTitle, _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
 
@@ -230,13 +230,13 @@ class TppsActivityTest {
             )
         ).perform(click())
 
-        // Check that the tpp is marked as active
+        // Check that the tpp is marked as used
         onView(allOf(withId(R.id.follow_checkbox), hasSibling(withText(tppTitle))))
             .check(matches(not(isChecked())))
     }
 
     @Test
-    fun markTppAsActiveAndFollowOnDetailScreen_tppIsFollowInList() {
+    fun markTppAsUsedAndFollowOnDetailScreen_tppIsFollowInList() {
         // Add 1 followed tpp
         val tppTitle = "COMP-ACT"
         repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = tppTitle, _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
@@ -259,7 +259,7 @@ class TppsActivityTest {
             )
         ).perform(click())
 
-        // Check that the tpp is marked as active
+        // Check that the tpp is marked as used
         onView(allOf(withId(R.id.follow_checkbox), hasSibling(withText(tppTitle))))
             .check(matches(isChecked()))
     }

@@ -29,13 +29,13 @@ class StatisticsViewModel(
     private val _empty = MutableLiveData<Boolean>()
     val empty: LiveData<Boolean> = _empty
 
-    private val _activeTppsPercent = MutableLiveData<Float>()
-    val activeTppsPercent: LiveData<Float> = _activeTppsPercent
+    private val _usedTppsPercent = MutableLiveData<Float>()
+    val usedTppsPercent: LiveData<Float> = _usedTppsPercent
 
     private val _followedTppsPercent = MutableLiveData<Float>()
     val followedTppsPercent: LiveData<Float> = _followedTppsPercent
 
-    private var activeTpps = 0
+    private var usedTpps = 0
 
     private var followedTpps = 0
 
@@ -57,7 +57,7 @@ class StatisticsViewModel(
                         computeStats(result.data)
                     } else {
                         _error.value = true
-                        activeTpps = 0
+                        usedTpps = 0
                         followedTpps = 0
                         computeStats(null)
                     }
@@ -74,8 +74,8 @@ class StatisticsViewModel(
      * Called when new data is ready.
      */
     private fun computeStats(tpps: List<Tpp>?) {
-        getActiveAndFollowedStats(tpps).let {
-            _activeTppsPercent.value = it.activeTppsPercent
+        getUsedAndFollowedStats(tpps).let {
+            _usedTppsPercent.value = it.usedTppsPercent
             _followedTppsPercent.value = it.followedTppsPercent
         }
         _empty.value = tpps.isNullOrEmpty()

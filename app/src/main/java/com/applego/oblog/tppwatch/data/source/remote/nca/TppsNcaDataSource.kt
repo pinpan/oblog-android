@@ -61,7 +61,7 @@ class TppsNcaDataSource internal constructor (
                     System.out.println("Insert/Update tpp: " + tpp.ebaEntity.getEntityName() + " into database")
 
                     runBlocking<Unit> {
-                        if (tppsDao.getTppByEntityCode(tpp.ebaEntity.getEntityCode()) == null) {
+                        if (tppsDao.getTppByEntityCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType) == null) {
                             tppsDao.insertTpp(tpp.ebaEntity)
                         } else {
                             tppsDao.updateTpp(tpp.ebaEntity)
@@ -111,7 +111,7 @@ class TppsNcaDataSource internal constructor (
 
     suspend fun updateTppEntity(ncaTpp: Tpp) : Tpp {
         val ncaEntity = ncaTpp.ebaEntity
-        val dbEntity = tppsDao.getTppByEntityCode(ncaEntity.getEntityCode())
+        val dbEntity = tppsDao.getTppByEntityCode(ncaEntity.getEntityCode(), ncaEntity.ebaProperties.codeType)
         if (dbEntity == null) {
             tppsDao.insertTpp(ncaEntity)
         } else {
@@ -141,7 +141,7 @@ class TppsNcaDataSource internal constructor (
                 theTpp = tppList[0]
                 val tppEntity = theTpp.ebaEntity
                 Timber.d("tppsList=" + tppEntity)
-                if (tppsDao.getTppByEntityCode(tppEntity.getEntityCode()) == null) {
+                if (tppsDao.getTppByEntityCode(tppEntity.getEntityCode(), tppEntity.ebaProperties.codeType) == null) {
                     tppsDao.insertTpp(tppEntity)
                 } else {
                     tppsDao.updateTpp(tppEntity)

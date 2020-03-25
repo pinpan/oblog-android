@@ -100,7 +100,7 @@ class TppsViewModel(
             when (requestType) {
                 TppsFilterType.USED_TPPS -> {
                     setFilterStatusViews(
-                            R.string.label_active, R.string.no_tpps_active,
+                            R.string.label_used, R.string.no_tpps_used,
                             R.drawable.ic_check_circle_96dp, true
                     )
                 }
@@ -161,10 +161,10 @@ class TppsViewModel(
         //loadTpps(false)
     }
 
-    fun activateTpp(tpp: Tpp, active: Boolean) = viewModelScope.launch {
+    fun activateTpp(tpp: Tpp, used: Boolean) = viewModelScope.launch {
         viewModelScope.launch {
-            tppsRepository.setTppActivateFlag(tpp, active)
-            showSnackbarMessage(R.string.tpp_marked_active)
+            tppsRepository.setTppActivateFlag(tpp, used)
+            showSnackbarMessage(R.string.tpp_marked_used)
 
         }
             // Refresh single Tpp
@@ -284,7 +284,7 @@ class TppsViewModel(
                 userInterests.forEach {
                     when (it.key) {
                         //TppsFilterType.ALL_TPPS -> filteredTpps.add(tpp)
-                        TppsFilterType.USED_TPPS -> if (it.value && tpp.isActive()) {
+                        TppsFilterType.USED_TPPS -> if (it.value && tpp.isUsed()) {
                             filteredTpps.add(tpp)
                         }
                         TppsFilterType.FOLLOWED_TPPS -> if (it.value && tpp.isFollowed()) {
@@ -393,7 +393,7 @@ class TppsViewModel(
         outState.putBoolean("revokedOnly", _searchFilter.revokedOnly)
         outState.putBoolean("showFis", _searchFilter.showFis)
         outState.putBoolean("followed", _searchFilter.followed)
-        outState.putBoolean("active", _searchFilter.active)
+        outState.putBoolean("used", _searchFilter.used)
     }
 
     fun setupSearchFilter(savedInstanceState: Bundle?) {
@@ -409,8 +409,8 @@ class TppsViewModel(
             }
 
             // TODO: Duplicates installed or has semantic of: INSTALLED AND USED?
-            if (savedInstanceState.getBoolean("active", true)) {
-                _searchFilter.userSelectedFilterTypes.put(TppsFilterType.USED_TPPS, true) //_searchFilter.active
+            if (savedInstanceState.getBoolean("used", true)) {
+                _searchFilter.userSelectedFilterTypes.put(TppsFilterType.USED_TPPS, true) //_searchFilter.used
             }
 
             if (savedInstanceState.getBoolean("followed", true)) {

@@ -32,9 +32,9 @@ class TppDetailTabsAdapter(private val viewModel: TppDetailViewModel, @NonNull f
         if (position == 0) {
             title = "EBA"
         } else if (position == 1) {
-            title = "NCA()"
+            title = "NCA (" + (viewModel.tpp.value?.getCountry() ?: "N/A") + ")"
         } else if (position == 2) {
-            title = "TPP's apps"
+            title = "APPs"
         }
         return title
     }
