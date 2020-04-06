@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.EbaEntity
 
 /**
@@ -19,7 +20,7 @@ interface TppsDao {
      * @return all tpps.
      */
     @Query("SELECT * FROM Tpps")
-    suspend fun getTpps(): List<EbaEntity>
+    suspend fun getAllTppEntities(): List<EbaEntity>
 
     /**
      * Select a tpp by id.
@@ -28,7 +29,7 @@ interface TppsDao {
      * @return the tpp with tppId.
      */
     @Query("SELECT * FROM Tpps WHERE db_id = :tppId")
-    suspend fun getTppById(tppId: String): EbaEntity?
+    suspend fun getTppEntityByDbId(tppId: String): EbaEntity?
 
     /**
      * Select a tpp by id.
@@ -37,7 +38,7 @@ interface TppsDao {
      * @return the tpp with tppId.
      */
     @Query("SELECT * FROM Tpps WHERE globalUrn = :globalUrn")
-    suspend fun getTppByGlobalUrn(globalUrn: String): EbaEntity?
+    suspend fun getTppEntityByGlobalUrn(globalUrn: String): EbaEntity?
 
     /**
      * Select a tpp by EBA entityCode (provided by OBLOG backend).
@@ -46,7 +47,7 @@ interface TppsDao {
      * @return the tpp with entityCode.
      */
     @Query("SELECT * FROM Tpps WHERE entityCode = :entityCode and codeType = :entityCodeType")
-    suspend fun getTppByEntityCode(entityCode: String, entityCodeType: String): EbaEntity?
+    suspend fun getTppEntityByCode(entityCode: String, entityCodeType: String): EbaEntity?
 
     /**
      * Select a tpp by NCA entityId (provided by OBLOG backend).
@@ -55,7 +56,7 @@ interface TppsDao {
      * @return the tpp with entityId.
      */
     @Query("SELECT * FROM Tpps WHERE entityId = :entityId")
-    suspend fun getTppByEntityId(entityId: String): EbaEntity?
+    suspend fun getTppEntityByEntityId(entityId: String): EbaEntity?
 
     /**
      * Insert a ebaEntity in the database. If the ebaEntity already exists, replace it.
@@ -63,7 +64,7 @@ interface TppsDao {
      * @param ebaEntity the ebaEntity to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTpp(ebaEntity: EbaEntity)
+    suspend fun insertTppEntity(ebaEntity: EbaEntity)
 
     /**
      * Update a ebaEntity.
@@ -72,7 +73,7 @@ interface TppsDao {
      * @return the number of tpps updated. This should always be 1.
      */
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateTpp(ebaEntity: EbaEntity): Int
+    suspend fun updateTppEntity(ebaEntity: EbaEntity): Int
 
     /**
      * Update the followed status of a tpp
@@ -98,7 +99,7 @@ interface TppsDao {
      * @return the number of tpps deleted. This should always be 1.
      */
     @Query("DELETE FROM Tpps WHERE db_id = :tppId")
-    suspend fun deleteTppById(tppId: String): Int
+    suspend fun deleteTppEntityByDbId(tppId: String): Int
 
     /**
      * Delete all tpps.
@@ -112,16 +113,21 @@ interface TppsDao {
      * @return the number of tpps deleted.
      */
     @Query("DELETE FROM Tpps WHERE followed = 1")
-    suspend fun deleteFollowedTpps(): Int
+    suspend fun deleteFollowedTppsEntities(): Int
 
     @Query("SELECT * FROM Tpps WHERE country = :country")
-    fun getTppsByCountry(country: String): List<EbaEntity>
-/*
-    @Dao
-    internal interface OrderDao {
+    fun getTppEntitiesByCountry(country: String): List<EbaEntity>
 
-        @get:Query("SELECT t_order.* name FROM t_order LEFT JOIN t_customer ON t_order.customer_id = t_customer.id")
-        val orderWithCustomer: List<OrderWithCustomer>
 
-    }*/
+
+    /**
+     * Select a tpp by id.
+     *
+     * @param tppId the tpp id.
+     * @return the tpp with tppId.
+     */
+    @Query("SELECT * FROM apps WHERE tppId = :tppId")
+    suspend fun getTppEntityAppsByDbId(tppId: String): List<App>
+
+
 }

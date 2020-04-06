@@ -10,7 +10,7 @@
 
         <variable
             name="viewmodel"
-            type="com.applego.oblog.tppwatch.tppdetail.TppDetailViewModel" />
+            type="com.applego.oblog.tppwatch.tppdetail.AppsViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -26,8 +26,9 @@
             android:paddingTop="@dimen/activity_vertical_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="@dimen/activity_vertical_margin"
-            android:visibility="@{viewmodel.isDataAvailable ? View.VISIBLE : View.GONE}">
-
+            >
+            <!--android:visibility="@{viewmodel.isDataAvailable ? View.VISIBLE : View.GONE}"-->
+<!--
             <TextView
                 android:id="@+id/label_home_country"
                 android:layout_width="wrap_content"
@@ -102,15 +103,19 @@
                 android:textSize="12sp"
                 tools:text="@string/label_passports" />
 
+
+android:layout_below="@id/label_passports"
+-->
+
             <LinearLayout
                 android:id="@+id/visas_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/label_passports"
+
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/visas_labels"
+                    android:id="@+id/apps_labels"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -124,7 +129,6 @@
                         android:layout_marginTop="0dp"
                         android:layout_weight="1"
                         android:clickable="false"
-                        android:editable="false"
                         android:enabled="false"
                         android:inputType="none|textPersonName"
                         android:text="@string/label_country"
@@ -138,23 +142,21 @@
                         android:layout_toRightOf="@id/label_visa_country"
                         android:layout_weight="3"
                         android:clickable="false"
-                        android:editable="false"
                         android:enabled="false"
                         android:inputType="textPersonName"
                         android:text="@string/label_roles"
                         android:textSize="12sp" />
-
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/passports_list"
+                    android:id="@+id/apps_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/visas_labels"
+                    android:layout_below="@id/apps_labels"
                     android:layout_marginBottom="10dp"
                     android:fadeScrollbars="false"
                     android:scrollbars="horizontal|vertical"
-                    app:items="@{viewmodel.tpp.ebaEntity.ebaPassport.services}"
+                    app:items="@{viewmodel.items}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
 

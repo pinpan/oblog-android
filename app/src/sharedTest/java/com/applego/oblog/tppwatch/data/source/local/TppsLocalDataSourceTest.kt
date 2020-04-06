@@ -9,6 +9,7 @@ import com.applego.oblog.tppwatch.MainCoroutineRule
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.NcaEntity
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.succeeded
 import junit.framework.Assert.assertEquals
@@ -67,7 +68,7 @@ class TppsLocalDataSourceTest {
         // GIVEN - a new tpp saved in the database
         val newTpp = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         newTpp.followed = true
-        localDataSource.saveTpp(Tpp(newTpp))
+        localDataSource.saveTpp(Tpp(newTpp, NcaEntity()))
 
         // WHEN  - Tpp retrieved by ID
         val result = localDataSource.getTpp(newTpp.getId())
@@ -84,7 +85,7 @@ class TppsLocalDataSourceTest {
     fun followedTpp_retrievedTppIsFollow() = runBlockingTest {
         // Given a new tpp in the persistent repository
         val newTpp = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "", _globalUrn = "", _ebaEntityVersion = "cz")
-        val tpp = Tpp(newTpp)
+        val tpp = Tpp(newTpp, NcaEntity())
         localDataSource.saveTpp(tpp)
 
 
@@ -103,7 +104,7 @@ class TppsLocalDataSourceTest {
     fun activateTpp_retrievedTppIsUsed() = runBlockingTest {
         // Given a new followed tpp in the persistent repository
         val newTpp = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Some entityName", _description = "Some description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
-        localDataSource.saveTpp(Tpp(newTpp))
+        localDataSource.saveTpp(Tpp(newTpp, NcaEntity()))
 
         localDataSource.setTppActivateFlag(newTpp.getId(), true)
 
@@ -123,9 +124,9 @@ class TppsLocalDataSourceTest {
         val newTppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "", _globalUrn = "", _ebaEntityVersion = "cz")
         val newTppEntity2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "title2", _description = "", _globalUrn = "", _ebaEntityVersion = "cz")
         val newTppEntity3 = EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "title3", _description = "", _globalUrn = "", _ebaEntityVersion = "cz")
-        val newTpp1 = Tpp(newTppEntity1)
-        val newTpp2 = Tpp(newTppEntity2)
-        val newTpp3 = Tpp(newTppEntity3)
+        val newTpp1 = Tpp(newTppEntity1, NcaEntity())
+        val newTpp2 = Tpp(newTppEntity2, NcaEntity())
+        val newTpp3 = Tpp(newTppEntity3, NcaEntity())
         localDataSource.saveTpp(newTpp1)
         localDataSource.udateFollowing(newTpp1, true)
 
@@ -153,7 +154,7 @@ class TppsLocalDataSourceTest {
         // Given a new tpp in the persistent repository and a mocked callback
         val newTppEntity = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "", _globalUrn = "", _ebaEntityVersion = "cz")
 
-        localDataSource.saveTpp(Tpp(newTppEntity))
+        localDataSource.saveTpp(Tpp(newTppEntity, NcaEntity()))
 
         // When all tpps are deleted
         localDataSource.deleteAllTpps()
@@ -170,8 +171,8 @@ class TppsLocalDataSourceTest {
         val newTppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "", _globalUrn = "", _ebaEntityVersion = "cz")
         val newTppEntity2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "title2", _description = "", _globalUrn = "", _ebaEntityVersion = "cz")
 
-        localDataSource.saveTpp(Tpp(newTppEntity1))
-        localDataSource.saveTpp(Tpp(newTppEntity2))
+        localDataSource.saveTpp(Tpp(newTppEntity1, NcaEntity()))
+        localDataSource.saveTpp(Tpp(newTppEntity2, NcaEntity()))
         // Then the tpps can be retrieved from the persistent repository
         val results = localDataSource.getTpps(TppsFilter()) as Success<List<Tpp>>
         val tpps = results.data

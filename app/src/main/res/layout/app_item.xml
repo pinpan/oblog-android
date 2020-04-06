@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.widget.CompoundButton" />
+
+        <variable
+            name="app"
+            type="com.applego.oblog.tppwatch.data.model.App" />
+
+        <variable
+            name="viewmodel"
+            type="com.applego.oblog.tppwatch.tppdetail.AppsViewModel" />
+    </data>
+
+    <!--android:onClick="@{() -> viewmodel.openTpp(ebaEntity.ebaEntity.id)}"-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/list_item_padding"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/list_item_padding">
+
+        <CheckBox
+            android:id="@+id/follow_checkbox"
+            android:width="32dp"
+            android:height="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:checked="@{app.followed}"
+            android:textSize="10sp"
+            />
+        <!--android:onClick="@{(view) -> viewmodel.followTpp(ebaEntity, ((CompoundButton)view).isChecked())}"-->
+        <CheckBox
+            android:id="@+id/used_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:checked="@{app.used}"
+            android:textSize="10sp"
+            />
+        <!--android:onClick="@{(view) -> viewmodel.activateTpp(ebaEntity, ((CompoundButton)view).isChecked())}"-->
+
+        <TextView
+            android:id="@+id/app_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textSize="11sp"
+            android:text="@{app.name}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+    </LinearLayout>
+</layout>

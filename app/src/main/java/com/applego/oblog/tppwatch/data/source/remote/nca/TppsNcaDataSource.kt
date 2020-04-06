@@ -61,10 +61,10 @@ class TppsNcaDataSource internal constructor (
                     System.out.println("Insert/Update tpp: " + tpp.ebaEntity.getEntityName() + " into database")
 
                     runBlocking<Unit> {
-                        if (tppsDao.getTppByEntityCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType) == null) {
-                            tppsDao.insertTpp(tpp.ebaEntity)
+                        if (tppsDao.getTppEntityByCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType) == null) {
+                            tppsDao.insertTppEntity(tpp.ebaEntity)
                         } else {
-                            tppsDao.updateTpp(tpp.ebaEntity)
+                            tppsDao.updateTppEntity(tpp.ebaEntity)
                         }
                     }
                 }
@@ -111,16 +111,16 @@ class TppsNcaDataSource internal constructor (
 
     suspend fun updateTppEntity(ncaTpp: Tpp) : Tpp {
         val ncaEntity = ncaTpp.ebaEntity
-        val dbEntity = tppsDao.getTppByEntityCode(ncaEntity.getEntityCode(), ncaEntity.ebaProperties.codeType)
+        val dbEntity = tppsDao.getTppEntityByCode(ncaEntity.getEntityCode(), ncaEntity.ebaProperties.codeType)
         if (dbEntity == null) {
-            tppsDao.insertTpp(ncaEntity)
+            tppsDao.insertTppEntity(ncaEntity)
         } else {
             dbEntity._description = ncaEntity._description
             dbEntity._entityName = ncaEntity._entityName
             dbEntity._ebaEntityVersion = ncaEntity._ebaEntityVersion
             dbEntity._ebaPassport = ncaEntity._ebaPassport
             dbEntity._status = ncaEntity._status
-            tppsDao.updateTpp(dbEntity)
+            tppsDao.updateTppEntity(dbEntity)
         }
 
         return ncaTpp
@@ -141,10 +141,10 @@ class TppsNcaDataSource internal constructor (
                 theTpp = tppList[0]
                 val tppEntity = theTpp.ebaEntity
                 Timber.d("tppsList=" + tppEntity)
-                if (tppsDao.getTppByEntityCode(tppEntity.getEntityCode(), tppEntity.ebaProperties.codeType) == null) {
-                    tppsDao.insertTpp(tppEntity)
+                if (tppsDao.getTppEntityByCode(tppEntity.getEntityCode(), tppEntity.ebaProperties.codeType) == null) {
+                    tppsDao.insertTppEntity(tppEntity)
                 } else {
-                    tppsDao.updateTpp(tppEntity)
+                    tppsDao.updateTppEntity(tppEntity)
                 }
                 return Result.Success(theTpp)
             } else {

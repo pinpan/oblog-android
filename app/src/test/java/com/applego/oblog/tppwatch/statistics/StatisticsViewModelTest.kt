@@ -9,6 +9,7 @@ import com.applego.oblog.tppwatch.data.repository.DefaultTppsRepository
 import com.applego.oblog.tppwatch.data.source.FakeRepository
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.NcaEntity
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -65,7 +66,7 @@ class StatisticsViewModelTest {
         tppEntity3.followed = true
         val tppEntity4 = EbaEntity(_entityId = "28173284", _entityCode = "Entity_CZ28173284", _entityName = "Title4", _description = "Description4", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity3.used = true
-        tppsRepository.addTpps(Tpp(tppEntity1), Tpp(tppEntity2), Tpp(tppEntity3), Tpp(tppEntity4))
+        tppsRepository.addTpps(Tpp(tppEntity1, NcaEntity()), Tpp(tppEntity2, NcaEntity()), Tpp(tppEntity3, NcaEntity()), Tpp(tppEntity4, NcaEntity()))
 
         // When loading of Tpps is requested
         statisticsViewModel.start()

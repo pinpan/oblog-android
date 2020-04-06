@@ -401,8 +401,8 @@ class TppsViewModel(
             _searchFilter.title = savedInstanceState?.getString("", "") ?: ""
             _searchFilter.searchDescription = savedInstanceState?.getBoolean("searchDescription", false)
                     ?: false
-            _searchFilter.countries = savedInstanceState?.getString("countries", "") ?: ""
-            _searchFilter.services = savedInstanceState?.getString("services", "") ?: ""
+            _searchFilter.countries = savedInstanceState.getString("countries", "") ?: ""
+            _searchFilter.services = savedInstanceState.getString("services", "") ?: ""
 
             if (savedInstanceState.getBoolean("installed", true)) {
                 _searchFilter.userSelectedFilterTypes.put(TppsFilterType.USED_TPPS, true)
@@ -417,21 +417,21 @@ class TppsViewModel(
                 _searchFilter.userSelectedFilterTypes.put(TppsFilterType.FOLLOWED_TPPS, true) //_searchFilter.followed
             }
 
-            if (savedInstanceState?.getBoolean("psd2Only", false)) {
+            if (savedInstanceState.getBoolean("psd2Only", false)) {
                 _searchFilter.userSelectedFilterTypes.put(TppsFilterType.PSD2_TPPS, true) //_searchFilter.psd2Only
             }
 
-            if (savedInstanceState?.getBoolean("onlyPsd2", false)) {
+            if (savedInstanceState.getBoolean("onlyPsd2", false)) {
                 _searchFilter.userSelectedFilterTypes.put(TppsFilterType.ONLY_PSD2_TPPS, true) //_searchFilter.psd2Only
             }
 
-            if (savedInstanceState?.getBoolean("showFis", false)) {
+            if (savedInstanceState.getBoolean("showFis", false)) {
                 _searchFilter.userSelectedFilterTypes.put(TppsFilterType.FIS_AS_TPPS, true) //_searchFilter.showFis
             }
 
             // THIS is excluding all other filteres - means:
             //    Get all whos PSD2 license was revoked regardless if are used, followed, fis ...
-            if (savedInstanceState?.getBoolean("revokedOnly", false)) {
+            if (savedInstanceState.getBoolean("revokedOnly", false)) {
                 _searchFilter.userSelectedFilterTypes.put(TppsFilterType.REVOKED_TPPS, true) //_searchFilter.revokedOnly
             }
         }

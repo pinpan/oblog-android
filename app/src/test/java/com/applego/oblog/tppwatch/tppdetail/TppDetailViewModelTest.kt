@@ -8,6 +8,7 @@ import com.applego.oblog.tppwatch.assertSnackbarMessage
 import com.applego.oblog.tppwatch.data.source.FakeRepository
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.NcaEntity
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.*
 import org.junit.Before
@@ -38,7 +39,7 @@ class TppDetailViewModelTest {
 
     companion object {
         val tppEntity = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
-        var tpp : Tpp = Tpp(tppEntity)
+        var tpp : Tpp = Tpp(tppEntity, NcaEntity())
 
         /*@BeforeClass
         @JvmStatic

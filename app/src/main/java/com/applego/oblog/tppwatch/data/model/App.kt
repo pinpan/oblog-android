@@ -12,4 +12,14 @@ data class App @JvmOverloads constructor(
         @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString()
 )
 {
+    @ColumnInfo
+    var tppId: String = ""
+
+    fun getId2() :  String {
+      return this.id;
+    }
+
+    var followed: Boolean = true
+    var used: Boolean = true
+
 }

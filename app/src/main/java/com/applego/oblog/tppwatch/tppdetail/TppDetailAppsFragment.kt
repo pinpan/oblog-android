@@ -18,12 +18,12 @@ import timber.log.Timber
 /**
  * Main UI for the tpp detail screen.
  */
-class TppDetailAppsFragment(private val viewModel: TppDetailViewModel, @Nullable private val tppId : String) : Fragment() {
+class TppDetailAppsFragment(private val viewModel: AppsViewModel, @Nullable private val tppId : String) : Fragment() {
     private lateinit var viewDataBinding: TppdetailAppsFragBinding
 
     private val args: TppDetailFragmentArgs by navArgs()
 
-    private lateinit var listAdapter: TppDetailAdapter
+    private lateinit var listAdapter: AppsAdapter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -39,15 +39,15 @@ class TppDetailAppsFragment(private val viewModel: TppDetailViewModel, @Nullable
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.viewmodel
         if (viewModel != null) {
-            listAdapter = TppDetailAdapter(viewModel, context!!, R.layout.tpp_passport)
-            viewDataBinding.passportsList.adapter = listAdapter
+            listAdapter = AppsAdapter(viewModel, context!!, R.layout.app_item)
+            viewDataBinding.appsList.adapter = listAdapter
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
         }
     }
 
     private fun setupNavigation() {
-        viewModel.editTppEvent.observe(this, EventObserver {
+        viewModel.editAppEvent.observe(this, EventObserver {
             val action = TppDetailFragmentDirections
                 .actionTppDetailFragmentToAddEditTppFragment(
                     args.tppId,
@@ -59,7 +59,7 @@ class TppDetailAppsFragment(private val viewModel: TppDetailViewModel, @Nullable
 
     private fun setupFab() {
         activity?.findViewById<View>(R.id.edit_tpp_fab)?.setOnClickListener {
-            viewModel.editTpp()
+            viewModel.editApp()
         }
     }
 

@@ -6,7 +6,7 @@ import androidx.preference.PreferenceManager
 import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
-import com.applego.oblog.tppwatch.data.source.remote.nca.OblogRestClient
+import com.applego.oblog.tppwatch.data.source.remote.OblogRestClient
 
 import retrofit2.Call;
 import retrofit2.http.*
@@ -52,7 +52,7 @@ interface  OblogEbaService {
 
 /*
     @GET("tpps/local/")
-    fun getTppById(@Query("id") id: Int?): Call<Tpp>
+    fun getTppEntityByDbId(@Query("id") id: Int?): Call<Tpp>
 */
     @GET("tpps/local/{entityId}")
     fun findById(@Header("X-Api-Key") apiKey: String,

@@ -6,6 +6,7 @@ import com.applego.oblog.tppwatch.MainCoroutineRule
 import com.applego.oblog.tppwatch.data.source.FakeRepository
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.NcaEntity
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
@@ -82,7 +83,7 @@ class AddEditTppViewModelTest {
     @Test
     fun loadTpps_tppShown() {
         // Add ebaEntity to repository
-        tppsRepository.addTpps(Tpp(tppEntity))
+        tppsRepository.addTpps(Tpp(tppEntity, NcaEntity()))
 
         // Load the ebaEntity with the viewmodel
         addEditTppViewModel.start(tppEntity.getEntityId())

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.source.remote.OblogRestClient
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 
 import retrofit2.Call;

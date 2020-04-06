@@ -2,6 +2,7 @@ package com.applego.oblog.tppwatch.statistics
 
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.NcaEntity
 import org.hamcrest.core.Is.`is`
 import org.junit.Assert.assertThat
 import org.junit.Test
@@ -16,7 +17,7 @@ class StatisticsUtilsTest {
         val aTppEntity = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         aTppEntity.used = true
         val tpps = listOf(
-                Tpp(aTppEntity)
+                Tpp(aTppEntity, NcaEntity())
         )
         // When the list of tpps is computed with an used ebaEntity
         val result = getUsedAndFollowedStats(tpps)
@@ -31,7 +32,7 @@ class StatisticsUtilsTest {
         var tppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity1.followed = true
         val tpps = listOf(
-                Tpp(tppEntity1)
+                Tpp(tppEntity1, NcaEntity())
         )
         // When the list of tpps is computed with a followed ebaEntity
         val result = getUsedAndFollowedStats(tpps)
@@ -57,11 +58,11 @@ class StatisticsUtilsTest {
             tpp5.used = true
 
         val tpps = listOf(
-                Tpp(tpp1),
-                Tpp(tpp2),
-                Tpp(tpp3),
-                Tpp(tpp4),
-                Tpp(tpp5)
+                Tpp(tpp1, NcaEntity()),
+                Tpp(tpp2, NcaEntity()),
+                Tpp(tpp3, NcaEntity()),
+                Tpp(tpp4, NcaEntity()),
+                Tpp(tpp5, NcaEntity())
         )
         // When the list of tpps is computed
         val result = getUsedAndFollowedStats(tpps)

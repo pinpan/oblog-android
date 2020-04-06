@@ -1,4 +1,4 @@
-package com.applego.oblog.tppwatch.data.source.remote.nca
+package com.applego.oblog.tppwatch.data.source.remote
 
 import com.applego.oblog.tppwatch.data.source.remote.serializer.TppDeserializer
 import com.applego.oblog.tppwatch.data.source.remote.serializer.TppListDeserializer
@@ -12,8 +12,13 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.security.KeyStore
+import java.security.cert.CertificateException
+import java.security.cert.X509Certificate
 import java.text.DateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.*
 
 object OblogRestClient {
 
@@ -65,13 +70,78 @@ object OblogRestClient {
                 .create()
     }
 
+    private fun getUnsafeOkHttpClient(): OkHttpClient {
+        try {
+            // Create a trust manager that does not validate certificate chains
+            val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
+
+                override fun getAcceptedIssuers(): Array<X509Certificate> {
+                    val certs: Array<X509Certificate> = emptyArray()
+                    return certs
+                }
+
+                //val acceptedIssuers: Array<java.security.cert.X509Certificate>
+                    //get() = arrayOfNulls<X509Certificate>(0)
+
+                @Throws(CertificateException::class)
+                override fun checkClientTrusted(chain: Array<java.security.cert.X509Certificate>,
+                                       authType: String) {
+                }
+
+                @Throws(CertificateException::class)
+                override fun checkServerTrusted(chain: Array<java.security.cert.X509Certificate>,
+                                       authType: String) {
+                }
+            })
+
+            // Install the all-trusting trust manager
+            val sslContext = SSLContext.getInstance("SSL")
+            sslContext.init(null, trustAllCerts, java.security.SecureRandom())
+            // Create an ssl socket factory with our all-trusting manager
+            val sslSocketFactory = sslContext.socketFactory
+
+            return OkHttpClient.Builder()
+                    .sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
+                    .hostnameVerifier(object : HostnameVerifier {
+                        override fun verify(hostname: String, session: SSLSession): Boolean {
+                            return true
+                        }
+                    }).build()
+
+        } catch (e: Exception) {
+            throw RuntimeException(e)
+        }
+
+    }
+
     fun createRetrofit(baseUrl: String, restContext : String) : Retrofit {
 
-        val okHttpClient = OblogRestClient.okHttpClient.newBuilder()
+        /*val trustManagerFactory = TrustManagerFactory.getInstance(
+                TrustManagerFactory.getDefaultAlgorithm())
+        trustManagerFactory.init(ManagerFactoryParameters)
+
+        val trustManagers = trustManagerFactory.getTrustManagers();
+
+        if (trustManagers.size != 1 || !(trustManagers[0] is X509TrustManager)) {
+            throw IllegalStateException("Unexpected default trust managers:"
+                    + Arrays.toString(trustManagers));
+        }
+        val trustManager = trustManagers[0] as X509TrustManager
+
+
+        val sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null,  trustManagers, null);
+        val sslSocketFactory = sslContext.getSocketFactory();
+        */
+
+        val okHttpClient = getUnsafeOkHttpClient()
+
+                /*okHttpClient.newBuilder()
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
-                .build()
+                //.sslSocketFactory(sslSocketFactory, trustManager)
+                .build()*/
 
         return Retrofit.Builder()
                 .addCallAdapterFactory(

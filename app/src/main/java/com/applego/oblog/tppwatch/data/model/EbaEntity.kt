@@ -74,6 +74,7 @@ data class EbaEntity @JvmOverloads constructor(
     var _status: RecordStatus = RecordStatus.NEW
 
     var _ebaPassport : EbaPassport = EbaPassport()
+
     @Ignore
     /*override */fun getEbaPassport() = _ebaPassport
 

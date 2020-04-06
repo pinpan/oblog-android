@@ -7,11 +7,19 @@ package com.applego.oblog.tppwatch.data.model
  */
 class Tpp : TppModel {
 
-    constructor(entity : EbaEntity) {
-        ebaEntity = entity
+    constructor(ebaEntity: EbaEntity, ncaEntity: NcaEntity) {
+        this.ebaEntity = ebaEntity
+        this.ncaEntity = ncaEntity
     }
 
     var ebaEntity : EbaEntity
+
+    var ncaEntity : NcaEntity
+
+    /**
+     * One and only apps portfolio instance
+     */
+    val appsPortfolio : AppsPortfolio = AppsPortfolio()
 
     override fun getId() = ebaEntity.getId()
 

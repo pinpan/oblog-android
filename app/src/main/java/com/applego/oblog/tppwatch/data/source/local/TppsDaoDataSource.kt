@@ -5,8 +5,7 @@ import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.dao.TppsDao
-import com.applego.oblog.tppwatch.data.model.EbaEntity
-import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.model.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -24,12 +23,12 @@ class TppsDaoDataSource internal constructor(
         try {
             var ebaEntities : List<EbaEntity>
             if (isOnlyCountry(filter)) {
-                ebaEntities = tppsDao.getTppsByCountry(filter.country)
+                ebaEntities = tppsDao.getTppEntitiesByCountry(filter.country)
             } else {
-                ebaEntities = tppsDao.getTpps()
+                ebaEntities = tppsDao.getAllTppEntities()
             }
             ebaEntities.forEach { tppEntity ->
-                tpps.add(Tpp(tppEntity))}
+                tpps.add(Tpp(tppEntity, NcaEntity()))}
         } catch (e: Exception) {
             Error(e)
         }
@@ -42,9 +41,15 @@ class TppsDaoDataSource internal constructor(
 
     override suspend fun getTpp(tppId: String): Result<Tpp> = withContext(ioDispatcher) {
         try {
-            val tppEntity = tppsDao.getTppById(tppId)
+            val tppEntity = tppsDao.getTppEntityByDbId(tppId)
             if (tppEntity != null) {
-                return@withContext Success(Tpp(tppEntity))
+                val tpp = Tpp(tppEntity, NcaEntity())
+
+                val apps = tppsDao.getTppEntityAppsByDbId(tppId)
+                if (apps != null) {
+                    tpp.appsPortfolio.appsList = apps
+                }
+                return@withContext Success(tpp)
             } else {
                 return@withContext Error(Exception("EbaEntity not found!"))
             }
@@ -54,7 +59,7 @@ class TppsDaoDataSource internal constructor(
     }
 
     override suspend fun saveTpp(tpp: Tpp) = withContext(ioDispatcher) {
-        tppsDao.insertTpp(tpp.ebaEntity)
+        tppsDao.insertTppEntity(tpp.ebaEntity)
     }
 
     override suspend fun udateFollowing(tpp: Tpp, follow: Boolean) = withContext(ioDispatcher) {
@@ -66,7 +71,7 @@ class TppsDaoDataSource internal constructor(
     }
 
     suspend fun clearFollowedTpps() = withContext<Unit>(ioDispatcher) {
-        tppsDao.deleteFollowedTpps()
+        tppsDao.deleteFollowedTppsEntities()
     }
 
     override suspend fun deleteAllTpps() = withContext(ioDispatcher) {
@@ -74,6 +79,6 @@ class TppsDaoDataSource internal constructor(
     }
 
     override suspend fun deleteTpp(tppId: String) = withContext<Unit>(ioDispatcher) {
-        tppsDao.deleteTppById(tppId)
+        tppsDao.deleteTppEntityByDbId(tppId)
     }
 }

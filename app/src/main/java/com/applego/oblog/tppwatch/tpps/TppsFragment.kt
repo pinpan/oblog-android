@@ -103,7 +103,7 @@ class TppsFragment : Fragment() {
                     })
         }
 
-        val item = menu!!.findItem(R.id.revokedSwitchForActionBar)
+        val item = menu.findItem(R.id.revokedSwitchForActionBar)
         item.setActionView(R.layout.switch_item)
 
         val mySwitch = item.actionView.findViewById(R.id.mySwitch) as Switch

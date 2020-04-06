@@ -49,6 +49,7 @@ open class TppDetailViewModel(
             return tpp.value?.getDescription() ?: ""
         }
 
+/*
     public var ebaPassport: EbaPassport?
         get() {
             return tpp.value?.getEbaPassport()?: EbaPassport()
@@ -56,6 +57,7 @@ open class TppDetailViewModel(
         set(pass: EbaPassport?) {
             this.ebaPassport = pass
         }
+*/
 
     // This LiveData depends on another so we can use a transformation.
     val followed: LiveData<Boolean> = Transformations.map(_tpp) { input: Tpp? ->

@@ -10,6 +10,7 @@ import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.NcaEntity
 import kotlinx.coroutines.launch
 
 /**
@@ -94,9 +95,9 @@ class AddEditTppViewModel(
 
         val currentTppId = tppId
         if (isNewTpp || currentTppId == null) {
-            createTpp(Tpp(EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = currentTitle, _description = currentDescription, _globalUrn = "", _ebaEntityVersion = "", _country = "cz")))
+            createTpp(Tpp(EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = currentTitle, _description = currentDescription, _globalUrn = "", _ebaEntityVersion = "", _country = "cz"), NcaEntity()))
         } else {
-            val tpp = Tpp(EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = currentTitle, _description = currentDescription, _globalUrn = "", _ebaEntityVersion = currentTppId, _country = "cz"))
+            val tpp = Tpp(EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = currentTitle, _description = currentDescription, _globalUrn = "", _ebaEntityVersion = currentTppId, _country = "cz"), NcaEntity())
             updateTpp(tpp)
         }
     }
@@ -108,7 +109,7 @@ class AddEditTppViewModel(
 
     private fun updateTpp(tpp: Tpp) {
         if (isNewTpp) {
-            throw RuntimeException("updateTpp() was called but tpp is new.")
+            throw RuntimeException("updateTppEntity() was called but tpp is new.")
         }
         viewModelScope.launch {
             tppsRepository.saveTpp(tpp)

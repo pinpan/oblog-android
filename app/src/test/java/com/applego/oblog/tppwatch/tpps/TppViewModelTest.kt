@@ -9,6 +9,7 @@ import com.applego.oblog.tppwatch.assertSnackbarMessage
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.FakeRepository
 import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.NcaEntity
 import com.applego.oblog.tppwatch.util.saveTppBlocking
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -46,7 +47,7 @@ class TppsViewModelTest {
     fun setupViewModel() {
         // We initialise the tpps to 3, with one used and two followed
         tppsRepository = FakeRepository()
-        tppsRepository.addTpps(Tpp(tppEntity1), Tpp(tppEntity2), Tpp(tppEntity3))
+        tppsRepository.addTpps(Tpp(tppEntity1, NcaEntity()), Tpp(tppEntity2, NcaEntity()), Tpp(tppEntity3, NcaEntity()))
 
         tppsViewModel = TppsViewModel(tppsRepository)
     }
@@ -205,10 +206,10 @@ class TppsViewModelTest {
     fun followTpp_dataAndSnackbarUpdated() {
         // With a repository that has an used ebaEntity
         val tppEntity = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title", _description = "Description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
-        tppsRepository.addTpps(Tpp(tppEntity))
+        tppsRepository.addTpps(Tpp(tppEntity, NcaEntity()))
 
         // Follow ebaEntity
-        tppsViewModel.followTpp(Tpp(tppEntity), true)
+        tppsViewModel.followTpp(Tpp(tppEntity, NcaEntity()), true)
 
         // Verify the ebaEntity is followed
         assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isFollowed()).isTrue()
@@ -218,18 +219,18 @@ class TppsViewModelTest {
             tppsViewModel.snackbarText, R.string.tpp_marked_followed
         )
 
-        tppsRepository.addTpps(Tpp(tppEntity1))
+        tppsRepository.addTpps(Tpp(tppEntity1, NcaEntity()))
     }
 
     @Test
     fun activateTpp_dataAndSnackbarUpdated() {
         // With a repository that has a followed ebaEntity
         val tppEntity = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title", _description = "Description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
-        tppsRepository.addTpps(Tpp(tppEntity))
+        tppsRepository.addTpps(Tpp(tppEntity, NcaEntity()))
 
         // Activate ebaEntity
-        tppsViewModel.followTpp(Tpp(tppEntity), true)
-        tppsViewModel.followTpp(Tpp(tppEntity), true)
+        tppsViewModel.followTpp(Tpp(tppEntity, NcaEntity()), true)
+        tppsViewModel.followTpp(Tpp(tppEntity, NcaEntity()), true)
 
         // Verify the ebaEntity is used
         assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isUsed()).isFalse()
@@ -239,7 +240,7 @@ class TppsViewModelTest {
             tppsViewModel.snackbarText, R.string.tpp_marked_followed
         )
 
-        tppsRepository.addTpps(Tpp(tppEntity1))
+        tppsRepository.addTpps(Tpp(tppEntity1, NcaEntity()))
     }
 
     @Test

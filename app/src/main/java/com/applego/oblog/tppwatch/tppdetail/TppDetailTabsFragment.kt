@@ -37,6 +37,8 @@ class TppDetailTabsFragment : Fragment() {
 
     private val viewModel by viewModels<TppDetailViewModel> { getViewModelFactory() }
 
+    private val appsViewModel by viewModels<AppsViewModel> { getViewModelFactory() }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -93,9 +95,13 @@ class TppDetailTabsFragment : Fragment() {
             viewModel.start(args.tppId)
         }
 
+        /*CoroutineScope(Dispatchers.Main).launch {
+            appsViewModel.start(args.tppId)
+        }*/
+
         val view = inflater.inflate(R.layout.tpp_detail_tabs_fragment, container, false)
 
-        tppDetailTabsAdapter = TppDetailTabsAdapter(viewModel, childFragmentManager)
+        tppDetailTabsAdapter = TppDetailTabsAdapter(viewModel, appsViewModel, childFragmentManager)
         viewPager = view.findViewById(R.id.detail_tabs_pager)
         viewPager.adapter = tppDetailTabsAdapter
 
