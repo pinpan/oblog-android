@@ -75,7 +75,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="24sp"
                     android:layout_weight="8"
-                    android:text="@string/tpp_name_label"
+                    android:text="@string/label_name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textSize="11sp"
                     android:textStyle="bold" />

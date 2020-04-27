@@ -27,7 +27,7 @@ object OblogRestClient {
     fun getBaseUrl(currentEnv: String, envsBaseUrls: Array<String>) : String {
 
         // HACK-HACK-HACK - because the statement above returns the preference ID instead if the value ... some times
-        var theEnv: String = if (currentEnv.startsWith("@")) currentEnv else "TEST"
+        var theEnv: String = if (!currentEnv.startsWith("@")) currentEnv else "TEST"
 
 
         /* This requires API level 21, while we go with 14
@@ -114,6 +114,27 @@ object OblogRestClient {
 
     }
 
+
+    fun createRetrofitChecking(baseUrl: String, restContext : String) : Retrofit {
+
+        val okHttpClient = OblogRestClient.okHttpClient.newBuilder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .build()
+
+        return Retrofit.Builder()
+                .addCallAdapterFactory(
+                        RxJava2CallAdapterFactory.create())
+                .addConverterFactory(
+                        GsonConverterFactory.create(createRetrofit()))
+                .baseUrl(baseUrl + restContext)
+                .client(okHttpClient)
+                .build()
+
+    }
+
+
     fun createRetrofit(baseUrl: String, restContext : String) : Retrofit {
 
         /*val trustManagerFactory = TrustManagerFactory.getInstance(
@@ -132,16 +153,38 @@ object OblogRestClient {
         val sslContext = SSLContext.getInstance("TLS");
         sslContext.init(null,  trustManagers, null);
         val sslSocketFactory = sslContext.getSocketFactory();
+
+
+
+
+        TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
+        TrustManagerFactory.getDefaultAlgorithm());
+        trustManagerFactory.init((KeyStore) null);
+        TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+        if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
+         throw new IllegalStateException("Unexpected default trust managers:"
+             + Arrays.toString(trustManagers));
+        }
+        X509TrustManager trustManager = (X509TrustManager) trustManagers[0];
+
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, new TrustManager[] { trustManager }, null);
+        SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+
+        OkHttpClient client = new OkHttpClient.Builder()
+           .sslSocketFactory(sslSocketFactory, trustManager);
+           .build();
+
         */
 
         val okHttpClient = getUnsafeOkHttpClient()
 
-                /*okHttpClient.newBuilder()
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
-                .writeTimeout(60, TimeUnit.SECONDS)
-                //.sslSocketFactory(sslSocketFactory, trustManager)
-                .build()*/
+        /*okHttpClient.newBuilder()
+        .connectTimeout(60, TimeUnit.SECONDS)
+        .readTimeout(60, TimeUnit.SECONDS)
+        .writeTimeout(60, TimeUnit.SECONDS)
+        //.sslSocketFactory(sslSocketFactory, trustManager)
+        .build()*/
 
         return Retrofit.Builder()
                 .addCallAdapterFactory(

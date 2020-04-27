@@ -7,7 +7,7 @@ import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 
 object FakeFailingTppsRemoteDataSource : RemoteTppDataSource {
-    override suspend fun getAllTpps(): Result<TppsListResponse/*List<Tpp>*/> {
+    override suspend fun getAllTpps(): Result<TppsListResponse> {
         return Result.Error(Exception("Test"))
     }
 

@@ -9,6 +9,7 @@ import java.util.*
 data class App @JvmOverloads constructor(
         @ColumnInfo(name = "name") var name: String = "",
         @ColumnInfo(name = "description") var description: String = "",
+        @ColumnInfo(name = "web_link") var webLink: String = "",
         @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString()
 )
 {

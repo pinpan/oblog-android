@@ -26,6 +26,37 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingBottom="@dimen/list_item_padding">
 
+        <TextView
+            android:id="@+id/app_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textSize="11sp"
+            android:text="@{app.name}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+        <TextView
+            android:id="@+id/app_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textSize="11sp"
+            android:text="@{app.description}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+        <TextView
+            android:id="@+id/app_weblink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textSize="11sp"
+            android:text="@{app.webLink}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
         <CheckBox
             android:id="@+id/follow_checkbox"
             android:width="32dp"
@@ -46,16 +77,5 @@
             android:textSize="10sp"
             />
         <!--android:onClick="@{(view) -> viewmodel.activateTpp(ebaEntity, ((CompoundButton)view).isChecked())}"-->
-
-        <TextView
-            android:id="@+id/app_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:textSize="11sp"
-            android:text="@{app.name}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
     </LinearLayout>
 </layout>

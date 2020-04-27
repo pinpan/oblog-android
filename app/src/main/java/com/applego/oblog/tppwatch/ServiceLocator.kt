@@ -39,7 +39,8 @@ object ServiceLocator {
     }
 
     private fun createTppsRepository(context: Context): TppsRepository {
-        return DefaultTppsRepository(createTppsEbaDataSource(context), createTppsNcaDataSource(context), createTppLocalDataSource(context))
+        tppsRepository = DefaultTppsRepository(createTppsEbaDataSource(context), createTppsNcaDataSource(context), createTppLocalDataSource(context))
+        return tppsRepository as DefaultTppsRepository
     }
 
     private fun createTppLocalDataSource(context: Context): LocalTppDataSource {

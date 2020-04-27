@@ -4,7 +4,7 @@
     <PreferenceCategory app:title="@string/environments">
 
         <ListPreference
-            app:defaultValue="@array/env_Dev"
+            app:defaultValue="env_TEST"
             app:entries="@array/env_names"
             app:entryValues="@array/env_names"
             app:key="environment"

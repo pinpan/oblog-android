@@ -108,10 +108,9 @@ android:layout_below="@id/label_passports"
 -->
 
             <LinearLayout
-                android:id="@+id/visas_layout"
+                android:id="@+id/apps_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -120,32 +119,57 @@ android:layout_below="@id/label_passports"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="4">
+                    <!--android:layout_below="@id/checkbox_follow"-->
 
                     <EditText
-                        android:id="@+id/label_visa_country"
+                        android:id="@+id/label_app_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/checkbox_follow"
                         android:layout_marginTop="0dp"
                         android:layout_weight="1"
                         android:clickable="false"
                         android:enabled="false"
                         android:inputType="none|textPersonName"
-                        android:text="@string/label_country"
+                        android:text="@string/label_app_name"
                         android:textSize="12sp" />
 
                     <EditText
-                        android:id="@+id/label_visa_psd2_roles"
+                        android:id="@+id/label_app_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/checkbox_used"
-                        android:layout_toRightOf="@id/label_visa_country"
+                        android:layout_toRightOf="@id/label_app_name"
                         android:layout_weight="3"
                         android:clickable="false"
                         android:enabled="false"
                         android:inputType="textPersonName"
-                        android:text="@string/label_roles"
+                        android:text="@string/label_app_description"
                         android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/label_app_link"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/label_app_description"
+                        android:layout_weight="3"
+                        android:clickable="false"
+                        android:enabled="false"
+                        android:inputType="textPersonName"
+                        android:text="@string/label_app_description"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/label_flags"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/label_app_link"
+                        android:layout_marginTop="0dp"
+                        android:layout_weight="1"
+                        android:clickable="false"
+                        android:enabled="false"
+                        android:inputType="none|textPersonName"
+                        android:text="@string/label_app_flags"
+                        android:textSize="12sp" />
+
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -158,6 +182,17 @@ android:layout_below="@id/label_passports"
                     android:scrollbars="horizontal|vertical"
                     app:items="@{viewmodel.items}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/add_tpp_fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/fab_margin"
+                    android:src="@drawable/ic_add"
+                    app:fabSize="normal"
+                    app:layout_anchor="@id/refresh_layout"
+                    app:layout_anchorGravity="bottom|right|end" />
+
             </LinearLayout>
 
         </RelativeLayout>

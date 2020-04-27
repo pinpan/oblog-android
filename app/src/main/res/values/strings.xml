@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
+    <string name="env_DEV">Dev</string>
+    <string name="env_TEST">Test</string>
+    <string name="env_STAGING">Staging</string>
+    <string name="env_PRODUCTION">Production</string>
+
     <string name="app_name">OBLOG</string>
     <string name="add_tpp">New TPP</string>
     <string name="edit_tpp">Edit TPP</string>
     <string name="tpp_marked_followed">TPP marked Followed</string>
-    <string name="tpp_home_country">Home country</string>
+
     <string name="label_country">Country</string>
-    <string name="label_home_country">Home country</string>
     <string name="label_pass_countries">Home country</string>
     <string name="label_entity_code">Entity code</string>
     <string name="label_tpp_services">Servicess</string>
@@ -17,6 +21,19 @@
     <string name="label_license_revoked">Revoked</string>
     <string name="label_revoked">Revoked</string>
     <string name="label_passports">Passports</string>
+    <string name="label_all">All TPPs</string>
+    <string name="label_used">Used TPPs</string>
+    <string name="label_followed">Followed TPPs</string>
+    <string name="label_following">Following</string>
+    <string name="label_name">Tpp name</string>
+    <string name="label_home_country">Home country</string>
+    <string name="label_description">Description</string>
+    <string name="label_services">Services</string>
+    <string name="label_app_name">Application</string>
+    <string name="label_app_description">Description</string>
+    <string name="label_app_flags">Flags</string>
+    <string name="label_app_psd2">PSD2</string>
+
     <string name="tpp_applications">Applications</string>
     <string name="tpp_marked_used">TPP marked used</string>
     <string name="tpp_marked_inused">TPP marked inused</string>
@@ -43,15 +60,6 @@
     <string name="nav_all">All</string>
     <string name="nav_used">Used</string>
     <string name="nav_followed">Followed</string>
-    <string name="label_all">All TPPs</string>
-    <string name="label_used">Used TPPs</string>
-    <string name="label_followed">Followed TPPs</string>
-    <string name="label_following">Following</string>
-    <string name="label_activated">Used</string>
-    <string name="tpp_name_label">Tpp name</string>
-    <string name="tpp_home_country_label">Home country</string>
-    <string name="tpp_description_label">Description</string>
-    <string name="tpp_services_label">Services</string>
 
     <string name="no_tpps_all">No TPPs available!</string>
     <string name="no_tpps_used">No used TPPs selected!</string>

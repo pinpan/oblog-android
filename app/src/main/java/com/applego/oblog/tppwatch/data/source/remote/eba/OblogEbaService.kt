@@ -34,13 +34,17 @@ interface  OblogEbaService {
         val HTTTP_CONTEXT = "/api/eba-registry/"
 
         fun create(context: Context): OblogEbaService {
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context) //Environment.getDataDirectory()
+            val sharedPreferences2 = context.getSharedPreferences("root_preferences", Context.MODE_PRIVATE) //PreferenceManager.getDefaultSharedPreferences(context)
 
             val currentEnv = sharedPreferences.getString("environment", "TEST")
+            val testEnvDefaults =  context.applicationContext.resources.getStringArray(com.applego.oblog.tppwatch.R.array.env_TEST);
+            val currentEnv2 = sharedPreferences.all //StringSet("environment", testEnvDefaults.toMutableSet())
+
             val envsBaseUrls : Array<String> = context.applicationContext.resources.getStringArray(com.applego.oblog.tppwatch.R.array.env_base_url);
             var baseUrl = OblogRestClient.getBaseUrl(currentEnv, envsBaseUrls)
 
-            val retrofit = OblogRestClient.createRetrofit(baseUrl, HTTTP_CONTEXT)
+            val retrofit = OblogRestClient.createRetrofitChecking(baseUrl, HTTTP_CONTEXT)
             val oblogEbaService = retrofit.create(OblogEbaService::class.java)
 
             sharedPreferences.registerOnSharedPreferenceChangeListener(this)

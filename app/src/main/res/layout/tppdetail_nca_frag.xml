@@ -36,11 +36,11 @@
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:clickable="false"
                 android:focusable="false"
-                android:hint="@string/tpp_home_country_label"
+                android:hint="@string/label_home_country"
                 android:inputType="none"
                 android:textStyle="bold"
                 android:visibility="visible"
-                tools:text="@string/tpp_home_country_label" />
+                tools:text="@string/label_home_country" />
 
             <TextView
                 android:id="@+id/home_country"

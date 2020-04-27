@@ -28,7 +28,7 @@ class TppEbaDataSource internal constructor (
 
     // TODO: Get the String from config per Base URL
     // Old key MyhCyIKQ0IlIG5dFVk6sjXcG2aHhFbj0
-    var theApiKey : ApiKey = ApiKey("GaW42ue9mRsgvlL0eIrrD6biU1tlpr8Y")
+    var theApiKey : ApiKey = ApiKey("2Dvgcj0W7sinv0mqtwm2CSQuYYsW79xb")
 
     override suspend fun getAllTpps(): Result<TppsListResponse> = withContext(ioDispatcher) {
         var paging = Paging(10, 1, 10, true)
@@ -127,9 +127,9 @@ class TppEbaDataSource internal constructor (
 
              //   override fun onResponse(call: Call<TppsListResponse>, response: Response<TppsListResponse>) {
             if (response.isSuccessful()) {
-                val tppsListResponse = response.body()!!
-                Timber.d("tppsList=" + tppsListResponse.tppsList)
-                tppsListResponse.tppsList?.forEach { tpp ->
+                val tppsListResponse = response.body()
+                Timber.d("tppsList=" + tppsListResponse?.tppsList ?: "EMPTY")
+                tppsListResponse?.tppsList?.forEach { tpp ->
                     System.out.println("Insert/Update tpp: " + tpp.ebaEntity.getEntityName() + " into database")
 
                     runBlocking<Unit> {
@@ -144,13 +144,34 @@ class TppEbaDataSource internal constructor (
                         }
                     }
                 }
-                return Result.Success(tppsListResponse.paging)
+                if (tppsListResponse?.paging != null) {
+                    return Result.Success(tppsListResponse?.paging)
+                } else  {
+                    return Result.Error(Exception("Rest call returned no data"))
+                }
             } else {
-                return Result.Warn(response.code().toString(),  response.errorBody().toString())
+                when (getErrorCodeCategory(response.code())) {
+                    400 -> {
+                        Timber.w("Update of TPPs directory was not successfull. Client error: code = %s, body = %s", response.code().toString(), response.body())
+                        return Result.Error(Exception(response.errorBody().toString()))
+                    }
+                    500 -> {
+                        Timber.w("Update of TPPs directory was not successfull. Server error: code = %s, body = %s", response.code().toString(), response.body())
+                        return Result.Error(Exception(response.errorBody().toString()))
+                    }
+                    else -> {
+                        Timber.w("Update of TPPs directory was not successfull. Server error: code = %s, body = %s", response.code().toString(), response.body())
+                        return Result.Warn(response.code().toString(), response.body().toString())
+                    }
+                }
             }
         } catch (ioe: IOException) {
             Timber.e(ioe, "IOException caught: %s", ioe.message)
             return Result.Error(ioe)
         }
+    }
+
+    private fun getErrorCodeCategory(code: Int): Any {
+        return (code/100)*100;
     }
 }
