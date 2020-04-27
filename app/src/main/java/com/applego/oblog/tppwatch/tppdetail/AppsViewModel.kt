@@ -8,6 +8,10 @@ import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
 
 class AppsViewModel (private val tppsRepository: TppsRepository) : ViewModel() {
+    fun addApp() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     fun editApp() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

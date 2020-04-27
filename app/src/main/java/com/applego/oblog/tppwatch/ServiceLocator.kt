@@ -72,16 +72,12 @@ object ServiceLocator {
     @VisibleForTesting
     fun resetRestDataSource() {
         synchronized(lock) {
-            /*runBlocking {
-                TppsRemoteDataSource.deleteAllTpps()
-            }*/
             // Clear all data to avoid test pollution.
             database?.apply {
                 clearAllTables()
                 close()
             }
             database = null
-            // tppsRepository = null
         }
     }
 }

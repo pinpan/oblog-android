@@ -107,7 +107,6 @@ class TppEbaDataSource internal constructor (
 
     override suspend fun getTppByName(country: String, tppName: String): Result<Tpp> {
         if (tppName.isNullOrBlank()) {
-            //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             Result.Warn("TPP Not Found", "Cannot find a TPP with empty ID")
         }
         return Result.Loading(Timeout().timeout(100, TimeUnit.MILLISECONDS));

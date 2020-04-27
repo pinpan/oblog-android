@@ -29,7 +29,8 @@ class TppDetailAppsFragment(private val viewModel: AppsViewModel, @Nullable priv
         super.onActivityCreated(savedInstanceState)
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
         setupListAdapter()
-        setupFab()
+        setupAddFab()
+        setupEditFab()
         view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
         setupNavigation()
 
@@ -57,9 +58,15 @@ class TppDetailAppsFragment(private val viewModel: AppsViewModel, @Nullable priv
         })
     }
 
-    private fun setupFab() {
-        activity?.findViewById<View>(R.id.edit_tpp_fab)?.setOnClickListener {
+    private fun setupEditFab() {
+        activity?.findViewById<View>(R.id.edit_app_fab)?.setOnClickListener {
             viewModel.editApp()
+        }
+    }
+
+    private fun setupAddFab() {
+        activity?.findViewById<View>(R.id.add_app_fab)?.setOnClickListener {
+            viewModel.addApp()
         }
     }
 

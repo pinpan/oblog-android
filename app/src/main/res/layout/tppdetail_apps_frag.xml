@@ -108,6 +108,39 @@ android:layout_below="@id/label_passports"
 -->
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/add_app_fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/fab_margin"
+                    android:layout_marginTop="@dimen/fab_margin"
+                    android:layout_marginEnd="@dimen/fab_margin"
+                    android:layout_marginBottom="@dimen/fab_margin"
+                    android:src="@drawable/ic_add"
+                    app:fabSize="normal"
+                    app:layout_anchor="@id/refresh_layout"
+                    app:layout_anchorGravity="bottom|right|end" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/edit_app_fab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/fab_margin"
+                    android:layout_marginTop="@dimen/fab_margin"
+                    android:layout_marginEnd="@dimen/fab_margin"
+                    android:layout_marginBottom="@dimen/fab_margin"
+                    android:src="@drawable/ic_edit"
+                    app:fabSize="normal"
+                    app:layout_anchor="@id/refresh_layout"
+                    app:layout_anchorGravity="bottom|right|end" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/apps_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -182,16 +215,6 @@ android:layout_below="@id/label_passports"
                     android:scrollbars="horizontal|vertical"
                     app:items="@{viewmodel.items}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/add_tpp_fab"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/fab_margin"
-                    android:src="@drawable/ic_add"
-                    app:fabSize="normal"
-                    app:layout_anchor="@id/refresh_layout"
-                    app:layout_anchorGravity="bottom|right|end" />
 
             </LinearLayout>
 

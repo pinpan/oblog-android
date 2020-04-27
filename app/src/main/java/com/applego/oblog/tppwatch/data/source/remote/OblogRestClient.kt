@@ -29,7 +29,6 @@ object OblogRestClient {
         // HACK-HACK-HACK - because the statement above returns the preference ID instead if the value ... some times
         var theEnv: String = if (!currentEnv.startsWith("@")) currentEnv else "TEST"
 
-
         /* This requires API level 21, while we go with 14
 
             val envsTypedArray = context.applicationContext.resources.obtainTypedArray(com.applego.oblog.tppwatch.R.array.environments)
