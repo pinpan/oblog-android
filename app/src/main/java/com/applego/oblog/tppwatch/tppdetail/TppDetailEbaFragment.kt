@@ -48,8 +48,8 @@ class TppDetailEbaFragment (private val viewModel: TppDetailViewModel, @Nullable
 
     private fun setupNavigation() {
         viewModel.editTppEvent.observe(this, EventObserver {
-            val action = TppDetailFragmentDirections
-                .actionTppDetailFragmentToAddEditTppFragment(
+            val action = TppDetailTabsFragmentDirections
+                .actionTppDetailTabsFragmentToAddEditTppFragment(
                     args.tppId,
                     resources.getString(R.string.edit_tpp)
                 )

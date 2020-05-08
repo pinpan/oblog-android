@@ -29,7 +29,7 @@ import timber.log.Timber
 class TppDetailFragment : Fragment() {
     private lateinit var viewDataBinding: TppdetailFragBinding
 
-    private val args: TppDetailFragmentArgs by navArgs()
+    private val args: TppDetailTabsFragmentArgs by navArgs()
 
     private lateinit var listAdapter: TppDetailAdapter
 
@@ -73,8 +73,8 @@ class TppDetailFragment : Fragment() {
 
     private fun setupNavigation() {
         viewModel.editTppEvent.observe(this, EventObserver {
-            val action = TppDetailFragmentDirections
-                .actionTppDetailFragmentToAddEditTppFragment(
+            val action = TppDetailTabsFragmentDirections
+                .actionTppDetailTabsFragmentToAddEditTppFragment(
                     args.tppId,
                     resources.getString(R.string.edit_tpp)
                 )

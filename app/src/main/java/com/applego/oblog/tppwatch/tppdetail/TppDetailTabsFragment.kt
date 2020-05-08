@@ -64,16 +64,24 @@ class TppDetailTabsFragment : Fragment() {
 
     private fun setupNavigation() {
         viewModel.tppUpdatedEvent.observe(this, EventObserver {
-            val action = TppDetailFragmentDirections
-                .actionTppDetailFragmentToTppsFragment()
+            val action = TppDetailTabsFragmentDirections
+                .actionTppDetailTabsFragmentToTppsFragment()
             findNavController().navigate(action)
         })
 
         viewModel.editTppEvent.observe(this, EventObserver {
-            val action = TppDetailFragmentDirections
-                .actionTppDetailFragmentToAddEditTppFragment(
+            val action = TppDetailTabsFragmentDirections
+                .actionTppDetailTabsFragmentToAddEditTppFragment(
                     args.tppId,
                     resources.getString(R.string.edit_tpp)
+                )
+            findNavController().navigate(action)
+        })
+
+        viewModel.showTppAppsEvent.observe(this, EventObserver {
+            val action = TppDetailTabsFragmentDirections
+                .actionTppDetailTabsFragmentToAddTppAppFragment(
+                    args.tppId
                 )
             findNavController().navigate(action)
         })
@@ -95,9 +103,9 @@ class TppDetailTabsFragment : Fragment() {
             viewModel.start(args.tppId)
         }
 
-        /*CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             appsViewModel.start(args.tppId)
-        }*/
+        }
 
         val view = inflater.inflate(R.layout.tpp_detail_tabs_fragment, container, false)
 

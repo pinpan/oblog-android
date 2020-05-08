@@ -34,7 +34,7 @@ object ServiceLocator {
 
     fun resetTppsRepository(context: Context) {
         synchronized(this) {
-            tppsRepository = createTppsRepository(context)
+            createTppsRepository(context)
         }
     }
 

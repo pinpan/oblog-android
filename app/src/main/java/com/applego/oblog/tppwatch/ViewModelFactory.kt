@@ -3,6 +3,7 @@ package com.applego.oblog.tppwatch
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.applego.oblog.tppwatch.about.AboutViewModel
+import com.applego.oblog.tppwatch.addedittpp.AddEditTppAppViewModel
 import com.applego.oblog.tppwatch.addedittpp.AddEditTppViewModel
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.statistics.StatisticsViewModel
@@ -34,6 +35,8 @@ class ViewModelFactory constructor(
                     AppsViewModel(tppsRepository)*/
                 isAssignableFrom(AddEditTppViewModel::class.java) ->
                     AddEditTppViewModel(tppsRepository)
+                isAssignableFrom(AddEditTppAppViewModel::class.java) ->
+                    AddEditTppAppViewModel(tppsRepository)
                 isAssignableFrom(TppsViewModel::class.java) ->
                     TppsViewModel(tppsRepository)
                 isAssignableFrom(AboutViewModel::class.java) ->

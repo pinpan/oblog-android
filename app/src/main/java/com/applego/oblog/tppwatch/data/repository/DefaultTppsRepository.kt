@@ -168,11 +168,10 @@ class DefaultTppsRepository (
     }
 
     private fun updateTppFromRemote(tpp: Tpp, updateFrom: Tpp): Boolean {
-        // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-
         tpp.ebaEntity._entityName = updateFrom.getEntityName()
         tpp.ebaEntity._description = updateFrom.getDescription()
         // TODO: Update what is relevant
+
         return true
     }
 

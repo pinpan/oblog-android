@@ -38,6 +38,9 @@ open class TppDetailViewModel(
     private val _tppUpdatedEvent = MutableLiveData<Event<Unit>>()
     val tppUpdatedEvent: LiveData<Event<Unit>> = _tppUpdatedEvent
 
+    private val _showTppAppsEvent = MutableLiveData<Event<Unit>>()
+    val showTppAppsEvent: LiveData<Event<Unit>> = _showTppAppsEvent
+
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
 
@@ -48,16 +51,6 @@ open class TppDetailViewModel(
         get() {
             return tpp.value?.getDescription() ?: ""
         }
-
-/*
-    public var ebaPassport: EbaPassport?
-        get() {
-            return tpp.value?.getEbaPassport()?: EbaPassport()
-        }
-        set(pass: EbaPassport?) {
-            this.ebaPassport = pass
-        }
-*/
 
     // This LiveData depends on another so we can use a transformation.
     val followed: LiveData<Boolean> = Transformations.map(_tpp) { input: Tpp? ->

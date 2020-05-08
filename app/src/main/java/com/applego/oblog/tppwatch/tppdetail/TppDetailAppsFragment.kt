@@ -10,9 +10,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.applego.oblog.tppwatch.EventObserver
 import com.applego.oblog.tppwatch.R
+import com.applego.oblog.tppwatch.addedittpp.AddEditTppAppFragmentArgs
+import com.applego.oblog.tppwatch.addedittpp.AddEditTppAppFragmentDirections
+import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.databinding.TppdetailAppsFragBinding
 import com.applego.oblog.tppwatch.util.setupSnackbar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -21,7 +28,7 @@ import timber.log.Timber
 class TppDetailAppsFragment(private val viewModel: AppsViewModel, @Nullable private val tppId : String) : Fragment() {
     private lateinit var viewDataBinding: TppdetailAppsFragBinding
 
-    private val args: TppDetailFragmentArgs by navArgs()
+    private val args: AddEditTppAppFragmentArgs by navArgs()
 
     private lateinit var listAdapter: AppsAdapter
 
@@ -49,24 +56,54 @@ class TppDetailAppsFragment(private val viewModel: AppsViewModel, @Nullable priv
 
     private fun setupNavigation() {
         viewModel.editAppEvent.observe(this, EventObserver {
-            val action = TppDetailFragmentDirections
-                .actionTppDetailFragmentToAddEditTppFragment(
-                    args.tppId,
-                    resources.getString(R.string.edit_tpp)
+            val action = AddEditTppAppFragmentDirections
+                .actionAddEditTppAppFragmentToTppDetailTabsFragment(
+                    args.tppId
                 )
             findNavController().navigate(action)
         })
     }
 
     private fun setupEditFab() {
-        activity?.findViewById<View>(R.id.edit_app_fab)?.setOnClickListener {
-            viewModel.editApp()
+        activity?.findViewById<FloatingActionButton>(R.id.edit_app_fab)?.let {
+            it.setOnClickListener {
+                //viewModel.editApp()
+                navigateToEditApp()
+            }
         }
     }
 
     private fun setupAddFab() {
-        activity?.findViewById<View>(R.id.add_app_fab)?.setOnClickListener {
-            viewModel.addApp()
+        activity?.findViewById<FloatingActionButton>(R.id.add_app_fab)?.let {
+            it.setOnClickListener {
+                //viewModel.addApp()
+                navigateToAddNewApp()
+            }
+        }
+    }
+
+    private fun navigateToAddNewApp() {
+        val action = TppDetailTabsFragmentDirections
+                .actionTppDetailTabsFragmentToAddEditTppFragment(
+                        null,
+                        resources.getString(R.string.add_tpp)
+                )
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToEditApp() {
+        val theApp : App
+
+        if ((viewModel.items != null) && (viewModel.items.value != null) && !(viewModel.items.value as List<App>).isEmpty()) {
+            theApp = (viewModel.items.value as List<App>).get(0); /// TODO-FixIt: Edits alwasy the first app. Place edit control next to app and seti the app as its context
+            val action = TppDetailTabsFragmentDirections
+                .actionTppDetailTabsFragmentToAddEditTppFragment(
+                        theApp.id,
+                        resources.getString(R.string.add_tpp)
+                )
+            findNavController().navigate(action)
+        } else {
+            // TODO: Alert uset that no App was selected
         }
     }
 
@@ -83,6 +120,11 @@ class TppDetailAppsFragment(private val viewModel: AppsViewModel, @Nullable priv
         }
 
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
+
+        /*CoroutineScope(Dispatchers.Main).launch {
+            //tpp
+            viewModel.start(args.tppId)
+        }*/
 
         setHasOptionsMenu(true)
         return view

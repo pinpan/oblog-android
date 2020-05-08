@@ -6,16 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.TppdetailNcaFragBinding
-import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -24,7 +19,7 @@ import timber.log.Timber
 class TppDetailNcaFragment(private val viewModel: TppDetailViewModel, @Nullable private val tppId : String) : Fragment() {
     private lateinit var viewDataBinding: TppdetailNcaFragBinding
 
-    private val args: TppDetailFragmentArgs by navArgs()
+    private val args: TppDetailTabsFragmentArgs by navArgs()
 
     private lateinit var listAdapter: TppDetailAdapter
 

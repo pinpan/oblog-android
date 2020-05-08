@@ -6,6 +6,9 @@
     <string name="env_STAGING">Staging</string>
     <string name="env_PRODUCTION">Production</string>
 
+    <string name="add_app">New APP</string>
+    <string name="edit_app">Edit APP</string>
+
     <string name="app_name">OBLOG</string>
     <string name="add_tpp">New TPP</string>
     <string name="edit_tpp">Edit TPP</string>

@@ -14,13 +14,13 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Unit tests for the implementation of [AddEditTppViewModel].
+ * Unit tests for the implementation of [AddEditTppAppViewModel].
  */
 @ExperimentalCoroutinesApi
 class AddEditTppViewModelTest {
 
     // Subject under test
-    private lateinit var addEditTppViewModel: AddEditTppViewModel
+    private lateinit var addEditTppViewModel: AddEditTppAppViewModel
 
     // Use a fake repository to be injected into the viewmodel
     private lateinit var tppsRepository: FakeRepository
@@ -42,7 +42,7 @@ class AddEditTppViewModelTest {
         tppsRepository = FakeRepository()
 
         // Create class under test
-        addEditTppViewModel = AddEditTppViewModel(tppsRepository)
+        addEditTppViewModel = AddEditTppAppViewModel(tppsRepository)
     }
 
     @Test

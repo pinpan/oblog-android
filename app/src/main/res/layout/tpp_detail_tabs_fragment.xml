@@ -147,8 +147,9 @@
                         android:id="@+id/apps_details_tab"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="APPs" />
 
+                        android:text="APPs" />
+                    <!--android:onClick="@{() -> viewmodel.showTppAppsEvent(ebaEntity.ebaEntity.id)}"-->
                 </com.google.android.material.tabs.TabLayout>
             </androidx.viewpager.widget.ViewPager>
 
