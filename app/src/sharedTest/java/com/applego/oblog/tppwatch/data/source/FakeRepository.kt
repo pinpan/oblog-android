@@ -5,6 +5,7 @@ import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.TppsFilter
+import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import java.util.LinkedHashMap
@@ -13,6 +14,17 @@ import java.util.LinkedHashMap
  * Implementation of a remote data source with static access to the data for easy testing.
  */
 class FakeRepository : TppsRepository {
+    override suspend fun saveApp(tpp: Tpp, app: App) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun deleteApp(tpp: Tpp, app: App) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun updateApp(tpp: Tpp, app: App) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     var tppsServiceData: LinkedHashMap<String, Tpp> = LinkedHashMap()
 

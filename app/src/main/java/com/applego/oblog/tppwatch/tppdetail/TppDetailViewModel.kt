@@ -12,7 +12,6 @@ import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
-import com.applego.oblog.tppwatch.data.model.EbaPassport
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 
@@ -38,8 +37,12 @@ open class TppDetailViewModel(
     private val _tppUpdatedEvent = MutableLiveData<Event<Unit>>()
     val tppUpdatedEvent: LiveData<Event<Unit>> = _tppUpdatedEvent
 
-    private val _showTppAppsEvent = MutableLiveData<Event<Unit>>()
-    val showTppAppsEvent: LiveData<Event<Unit>> = _showTppAppsEvent
+    private val _addTppAppEvent = MutableLiveData<Event<Unit>>()
+    val addTppAppEvent: LiveData<Event<Unit>> = _addTppAppEvent
+
+
+    private val _editTppAppEvent = MutableLiveData<Event<String>>()
+    val editTppAppEvent: LiveData<Event<String>> = _editTppAppEvent
 
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText

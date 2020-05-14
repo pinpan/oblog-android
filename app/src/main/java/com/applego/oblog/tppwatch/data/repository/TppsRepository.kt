@@ -2,6 +2,7 @@ package com.applego.oblog.tppwatch.data.repository
 
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.TppsFilter
+import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.Tpp
 
 /**
@@ -24,4 +25,11 @@ interface TppsRepository {
     suspend fun deleteAllTpps()
 
     suspend fun deleteTpp(tppId: String)
+
+    suspend fun saveApp(tpp: Tpp, app: App)
+
+    suspend fun deleteApp(tpp: Tpp, app: App)
+
+    suspend fun updateApp(tpp: Tpp, app: App)
+
 }

@@ -10,149 +10,71 @@
 
         <variable
             name="viewmodel"
-            type="com.applego.oblog.tppwatch.tppdetail.AppsViewModel" />
+            type="com.applego.oblog.tppwatch.addedittppapp.AddEditTppAppViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <RelativeLayout
-            android:id="@+id/detail_relative_layout"
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            >
-            <!--android:visibility="@{viewmodel.isDataAvailable ? View.VISIBLE : View.GONE}"-->
-<!--
-            <TextView
-                android:id="@+id/label_home_country"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:clickable="false"
-                android:focusable="false"
-                android:hint="@string/tpp_home_country_label"
-                android:inputType="none"
-                android:textStyle="bold"
-                android:visibility="visible"
-                tools:text="@string/tpp_home_country_label" />
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/home_country"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/label_home_country"
-                android:layout_toRightOf="@id/label_home_country"
-                android:gravity="left"
-                android:text="@{viewmodel.tpp.ebaEntity.country}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#006496"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/label_entity_code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/label_home_country"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:clickable="false"
-                android:focusable="false"
-                android:inputType="none"
-                android:text="@string/label_entity_code" />
-
-            <TextView
-                android:id="@+id/entity_code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/home_country"
-                android:layout_alignLeft="@id/home_country"
-                android:paddingTop="1dp"
-                android:text="@{viewmodel.tpp.ebaEntity.entityCode}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#006496"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/entity_code"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
-                android:background="?android:attr/listDivider" />
-
-            <TextView
-                android:id="@+id/label_passports"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/divider2"
-                android:clickable="false"
-                android:ems="10"
-                android:enabled="false"
-                android:focusable="false"
-                android:inputType="none"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textSize="12sp"
-                tools:text="@string/label_passports" />
-
-
-android:layout_below="@id/label_passports"
--->
-
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/detail_relative_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/add_app_fab"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/fab_margin"
-                    android:layout_marginTop="@dimen/fab_margin"
-                    android:layout_marginEnd="@dimen/fab_margin"
-                    android:layout_marginBottom="@dimen/fab_margin"
-                    android:src="@drawable/ic_add"
-                    app:fabSize="normal"
-                    app:layout_anchor="@id/refresh_layout"
-                    app:layout_anchorGravity="bottom|right|end" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/edit_app_fab"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/fab_margin"
-                    android:layout_marginTop="@dimen/fab_margin"
-                    android:layout_marginEnd="@dimen/fab_margin"
-                    android:layout_marginBottom="@dimen/fab_margin"
-                    android:src="@drawable/ic_edit"
-                    app:fabSize="normal"
-                    app:layout_anchor="@id/refresh_layout"
-                    app:layout_anchorGravity="bottom|right|end" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/apps_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                >
 
                 <LinearLayout
-                    android:id="@+id/apps_labels"
+                    android:id="@+id/action_buttons_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="4">
-                    <!--android:layout_below="@id/checkbox_follow"-->
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/cancell_app_fab"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/fab_margin"
+                        android:layout_marginTop="@dimen/fab_margin"
+                        android:layout_marginEnd="@dimen/fab_margin"
+                        android:layout_marginBottom="@dimen/fab_margin"
+                        android:src="@android:drawable/ic_input_delete"
+                        android:onClick="@{() -> viewmodel.cancelAddApp()}"
+                        app:fabSize="mini"
+                        app:layout_anchor="@id/refresh_layout"
+                        app:layout_anchorGravity="bottom|right|end" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/save_app_fab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/fab_margin"
+                        android:layout_marginTop="@dimen/fab_margin"
+                        android:layout_marginEnd="@dimen/fab_margin"
+                        android:layout_marginBottom="@dimen/fab_margin"
+                        android:onClick="@{() -> viewmodel.createApp()}"
+                        android:src="@android:drawable/ic_input_add"
+                        app:fabSize="mini"
+                        app:layout_anchor="@id/refresh_layout"
+                        app:layout_anchorGravity="bottom|right|end" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/app_name_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/action_buttons_layout"
+                    android:orientation="vertical">
+
 
                     <EditText
                         android:id="@+id/label_app_name"
@@ -164,61 +86,154 @@ android:layout_below="@id/label_passports"
                         android:enabled="false"
                         android:inputType="none|textPersonName"
                         android:text="@string/label_app_name"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        />
 
                     <EditText
-                        android:id="@+id/label_app_description"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/app_name"
+                        style="@android:style/Widget.EditText"
+                        android:layout_width="369dp"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/label_app_name"
                         android:layout_weight="3"
-                        android:clickable="false"
-                        android:enabled="false"
+                        android:clickable="true"
+                        android:elevation="2dp"
+                        android:enabled="true"
                         android:inputType="textPersonName"
-                        android:text="@string/label_app_description"
-                        android:textSize="12sp" />
-
-                    <EditText
-                        android:id="@+id/label_app_link"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/label_app_description"
-                        android:layout_weight="3"
-                        android:clickable="false"
-                        android:enabled="false"
-                        android:inputType="textPersonName"
-                        android:text="@string/label_app_description"
-                        android:textSize="12sp" />
-
-                    <EditText
-                        android:id="@+id/label_flags"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/label_app_link"
-                        android:layout_marginTop="0dp"
-                        android:layout_weight="1"
-                        android:clickable="false"
-                        android:enabled="false"
-                        android:inputType="none|textPersonName"
-                        android:text="@string/label_app_flags"
-                        android:textSize="12sp" />
+                        android:longClickable="true"
+                        android:textSize="12sp"
+                        android:text="@={viewmodel.appName}"
+                        android:hint="@string/label_app_name"
+                        />
 
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/apps_list"
+                <LinearLayout
+                    android:id="@+id/app_detail_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/apps_labels"
-                    android:layout_marginBottom="10dp"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="horizontal|vertical"
-                    app:items="@{viewmodel.items}"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    android:layout_below="@id/app_name_layout"
+                    android:orientation="vertical"
+                    android:weightSum="4">
 
-            </LinearLayout>
+                    <EditText
+                        android:id="@+id/label_app_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:clickable="false"
+                        android:enabled="false"
+                        android:inputType="textPersonName"
+                        android:text="@string/label_app_description"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/app_desc"
+                        android:layout_width="369dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:clickable="true"
+                        android:enabled="true"
+                        android:inputType="textPersonName"
+                        android:longClickable="true"
+                        android:textSize="12sp"
+                        android:text="@={viewmodel.description}"
+                        android:hint="@string/label_app_description"
+                        />
+
+                    <View
+                        android:id="@+id/divider5"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_weight="3"
+                        android:background="?android:attr/listDivider" />
+
+                    <EditText
+                        android:id="@+id/label_web_addr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:clickable="false"
+                        android:enabled="false"
+                        android:inputType="textPersonName"
+                        android:text="@string/label_app_home"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/web_addr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:editable="true"
+                        android:ellipsize="marquee"
+                        android:enabled="true"
+                        android:focusable="auto"
+                        android:hint="Official application name"
+                        android:inputType="textUri"
+                        android:text="@={viewmodel.description}"
+                        />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/app_moredetail_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/app_detail_layout"
+                    android:orientation="vertical"
+                    android:weightSum="4">
+
+                    <EditText
+                        android:id="@+id/label_app_stats"
+                        android:layout_width="272dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:clickable="false"
+                        android:enabled="false"
+                        android:inputType="textPersonName"
+                        android:text="@string/label_app_flags"
+                        android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/app_stats"
+                    android:layout_width="366dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:clickable="true"
+                    android:enabled="true"
+                    android:inputType="textPersonName"
+                    android:longClickable="true"
+                    android:textSize="12sp" />
+
+                    <View
+                        android:id="@+id/divider6"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_weight="3"
+                        android:background="?android:attr/listDivider" />
+
+                    <EditText
+                        android:id="@+id/label_app_stats2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:clickable="false"
+                        android:enabled="false"
+                        android:inputType="textPersonName"
+                        android:text="@string/label_app_flags"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="TextView" />
+
+                </LinearLayout>
 
         </RelativeLayout>
-
+        </ScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

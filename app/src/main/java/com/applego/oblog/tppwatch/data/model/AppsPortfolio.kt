@@ -14,10 +14,14 @@ data class AppsPortfolio @JvmOverloads constructor(
     /**
      * Map of TPP's apps
      */
-    @Embedded
-    var appsMap = HashMap<String, List<App>>()
+    //@Embedded
+    //private var appsMap = HashMap<String, List<App>>()
 
     @Embedded
-    var appsList: List<App> = ArrayList<App>()
+    var appsList/*: List<App>*/ = ArrayList<App>()
 
+    public fun addApp(app: App) {
+        //appsMap.put(app.name, app);
+        appsList.add(app);
+    }
 }

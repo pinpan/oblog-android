@@ -108,9 +108,28 @@ android:layout_below="@id/label_passports"
 -->
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:id="@+id/actions_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="right"
                 android:orientation="horizontal">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/edit_app_fab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/fab_margin"
+                    android:layout_marginTop="@dimen/fab_margin"
+                    android:layout_marginEnd="@dimen/fab_margin"
+                    android:layout_marginBottom="@dimen/fab_margin"
+                    android:clickable="true"
+                    android:focusable="auto"
+                    android:focusableInTouchMode="true"
+                    android:src="@drawable/ic_edit"
+                    app:fabSize="mini"
+                    app:layout_anchor="@id/refresh_layout"
+                    app:layout_anchorGravity="bottom|right|end" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/add_app_fab"
@@ -121,33 +140,21 @@ android:layout_below="@id/label_passports"
                     android:layout_marginEnd="@dimen/fab_margin"
                     android:layout_marginBottom="@dimen/fab_margin"
                     android:src="@drawable/ic_add"
-                    app:fabSize="normal"
-                    app:layout_anchor="@id/refresh_layout"
-                    app:layout_anchorGravity="bottom|right|end" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/edit_app_fab"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/fab_margin"
-                    android:layout_marginTop="@dimen/fab_margin"
-                    android:layout_marginEnd="@dimen/fab_margin"
-                    android:layout_marginBottom="@dimen/fab_margin"
-                    android:src="@drawable/ic_edit"
-                    app:fabSize="normal"
+                    app:fabSize="mini"
                     app:layout_anchor="@id/refresh_layout"
                     app:layout_anchorGravity="bottom|right|end" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/apps_layout"
+                android:id="@+id/apps_labels"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@id/actions_layout"
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/apps_labels"
+                    android:id="@+id/app_detail_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -179,7 +186,7 @@ android:layout_below="@id/label_passports"
                         android:textSize="12sp" />
 
                     <EditText
-                        android:id="@+id/label_app_link"
+                        android:id="@+id/label_web_addr"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/label_app_description"
@@ -187,15 +194,15 @@ android:layout_below="@id/label_passports"
                         android:clickable="false"
                         android:enabled="false"
                         android:inputType="textPersonName"
-                        android:text="@string/label_app_description"
+                        android:text="@string/label_app_home"
                         android:textSize="12sp" />
 
                     <EditText
                         android:id="@+id/label_flags"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/label_app_link"
                         android:layout_marginTop="0dp"
+                        android:layout_toRightOf="@id/label_web_addr"
                         android:layout_weight="1"
                         android:clickable="false"
                         android:enabled="false"

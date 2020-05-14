@@ -1,16 +1,17 @@
-package com.applego.oblog.tppwatch.addedittpp
+package com.applego.oblog.tppwatch.addedittppapp
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.applego.oblog.tppwatch.EventObserver
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.databinding.AddtppFragBinding
+import com.applego.oblog.tppwatch.databinding.AddTtpappFragBinding
 import com.applego.oblog.tppwatch.tpps.ADD_EDIT_RESULT_OK
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
@@ -21,18 +22,18 @@ import com.google.android.material.snackbar.Snackbar
  */
 class AddEditTppAppFragment : Fragment() {
 
-    private lateinit var viewDataBinding: AddtppFragBinding
+    private lateinit var viewDataBinding: AddTtpappFragBinding
 
-    private val args: AddEditTppFragmentArgs by navArgs()
+    private val args: AddEditTppAppFragmentArgs by navArgs()
 
-    private val viewModel by viewModels<AddEditTppViewModel> { getViewModelFactory() }
+    private val viewModel by viewModels<AddEditTppAppViewModel> { getViewModelFactory() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.addtpp_frag, container, false)
-        viewDataBinding = AddtppFragBinding.bind(root).apply {
+        val root = inflater.inflate(R.layout.add_ttpapp_frag, container, false)
+        viewDataBinding = AddTtpappFragBinding.bind(root).apply {
             this.viewmodel = viewModel
         }
         // Set the lifecycle owner to the lifecycle of the view
@@ -53,10 +54,17 @@ class AddEditTppAppFragment : Fragment() {
     }
 
     private fun setupNavigation() {
-        viewModel.tppUpdatedEvent.observe(this, EventObserver {
-            val action = AddEditTppFragmentDirections
-                .actionAddEditTppFragmentToTppsFragment(ADD_EDIT_RESULT_OK)
+        viewModel.appUpdatedEvent.observe(this, EventObserver {
+            val action = AddEditTppAppFragmentDirections
+                .actionAddEditTppAppFragmentToTppDetailTabsFragment(args.tppId)
+
+            /*TODO#Replace this::class with something Kotlion understands well:
+               getFragmentManager()?.popBackStack(
+                    this.::class.simpleName,
+                    FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            */
             findNavController().navigate(action)
+
         })
     }
 }

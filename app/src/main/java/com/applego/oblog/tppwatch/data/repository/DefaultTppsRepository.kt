@@ -6,6 +6,7 @@ import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Warn
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.TppsFilter
+import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
@@ -243,5 +244,29 @@ class DefaultTppsRepository (
 
     private inline fun cacheAndPerform(tpp: Tpp, perform: (Tpp) -> Unit) {
         perform(tpp)
+    }
+
+
+    override suspend fun saveApp(tpp: Tpp, app: App) {
+        // Do in memory cache update to keep the app UI up to date
+        //cacheAndPerform(аpp) {
+            coroutineScope {
+                launch { tppsLocalDataSource.saveАpp(app) }
+            }
+        //}
+        cacheAndPerform(tpp) {
+            coroutineScope {
+                tpp.appsPortfolio.addApp(app)
+                launch { tppsLocalDataSource.saveTpp(it) }
+            }
+        }
+    }
+
+    override suspend fun deleteApp(tpp: Tpp, app: App) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun updateApp(tpp: Tpp, app: App) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

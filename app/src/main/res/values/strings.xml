@@ -32,10 +32,11 @@
     <string name="label_home_country">Home country</string>
     <string name="label_description">Description</string>
     <string name="label_services">Services</string>
-    <string name="label_app_name">Application</string>
+    <string name="label_app_name">Application name</string>
     <string name="label_app_description">Description</string>
     <string name="label_app_flags">Flags</string>
     <string name="label_app_psd2">PSD2</string>
+    <string name="label_app_home">Web home</string>
 
     <string name="tpp_applications">Applications</string>
     <string name="tpp_marked_used">TPP marked used</string>
@@ -50,6 +51,7 @@
     <string name="title_hint">Title</string>
     <string name="description_hint">Enter TPP name here.</string>
     <string name="empty_tpp_message">TPPs cannot be empty</string>
+    <string name="empty_app_message">Apps name cannot be empty</string>
     <string name="successfully_saved_tpp_message">TPP saved</string>
     <string name="tpp_directory_title">TPPs Directory</string>
     <string name="statistics_title">Statistics</string>

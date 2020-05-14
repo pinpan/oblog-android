@@ -41,12 +41,12 @@ class TppDetailTabsViewModel (
             return tpp.value?.getDescription() ?: ""
         }
 
-    public var ebaPassport: EbaPassport?
+    public var ebaPassport: EbaPassport
         get() {
             return tpp.value?.getEbaPassport()?: EbaPassport()
         }
-        set(pass: EbaPassport?) {
-            this.ebaPassport = pass
+        set(pass: EbaPassport) {
+            tpp.value?.ebaEntity?._ebaPassport = pass
         }
 
     // This LiveData depends on another so we can use a transformation.

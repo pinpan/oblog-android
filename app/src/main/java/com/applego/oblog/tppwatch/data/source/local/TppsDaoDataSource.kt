@@ -47,7 +47,7 @@ class TppsDaoDataSource internal constructor(
 
                 val apps = tppsDao.getTppEntityAppsByDbId(tppId)
                 if (apps != null) {
-                    tpp.appsPortfolio.appsList = apps
+                    tpp.appsPortfolio.appsList = apps as ArrayList
                 }
                 return@withContext Success(tpp)
             } else {
@@ -60,6 +60,10 @@ class TppsDaoDataSource internal constructor(
 
     override suspend fun saveTpp(tpp: Tpp) = withContext(ioDispatcher) {
         tppsDao.insertTppEntity(tpp.ebaEntity)
+    }
+
+    override suspend fun saveАpp(аpp: App) = withContext(ioDispatcher) {
+        tppsDao.insertApp(аpp)
     }
 
     override suspend fun udateFollowing(tpp: Tpp, follow: Boolean) = withContext(ioDispatcher) {

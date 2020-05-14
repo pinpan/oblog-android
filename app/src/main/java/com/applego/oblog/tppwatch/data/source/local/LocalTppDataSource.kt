@@ -3,6 +3,7 @@ package com.applego.oblog.tppwatch.data.source.local
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.model.App
 
 /**
  * Main entry point for accessing tpps data.
@@ -22,4 +23,7 @@ interface LocalTppDataSource {
     suspend fun deleteAllTpps()
 
     suspend fun deleteTpp(tppId: String)
+
+    suspend fun saveАpp(аpp: App)
+
 }

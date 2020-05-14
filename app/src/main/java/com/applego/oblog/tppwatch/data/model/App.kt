@@ -8,17 +8,17 @@ import java.util.*
 @Entity(tableName = "apps")
 data class App @JvmOverloads constructor(
         @ColumnInfo(name = "name") var name: String = "",
-        @ColumnInfo(name = "description") var description: String = "",
-        @ColumnInfo(name = "web_link") var webLink: String = "",
+        @ColumnInfo(name = "description") var description: String? = "",
+        @ColumnInfo(name = "web_link") var webLink: String? = "",
         @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString()
 )
 {
     @ColumnInfo
     var tppId: String = ""
 
-    fun getId2() :  String {
+    /*fun getId2() :  String {
       return this.id;
-    }
+    }*/
 
     var followed: Boolean = true
     var used: Boolean = true

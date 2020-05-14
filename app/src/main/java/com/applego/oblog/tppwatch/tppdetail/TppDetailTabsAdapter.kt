@@ -19,7 +19,7 @@ class TppDetailTabsAdapter(private val viewModel: TppDetailViewModel, private va
             fragment = TppDetailNcaFragment(viewModel, (viewModel.tpp.value?.getId()) ?: "")
         } else { //if (position == 2) {
             //val appsViewModel = create(modelClass: Class<T>)
-            fragment = TppDetailAppsFragment(appsViewModel, (viewModel.tpp.value?.getId()) ?: "")
+            fragment = TppDetailAppsFragment(appsViewModel/*, (viewModel.tpp.value?.getId()) ?: ""*/)
         }
         return fragment
     }

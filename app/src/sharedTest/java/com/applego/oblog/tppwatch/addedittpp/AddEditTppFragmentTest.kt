@@ -96,7 +96,7 @@ class AddEditTppFragmentTest {
             null,
             getApplicationContext<Context>().getString(R.string.add_tpp)
         ).toBundle()
-        val scenario = launchFragmentInContainer<AddEditTppAppFragment>(bundle, R.style.AppTheme)
+        val scenario = launchFragmentInContainer<AddEditTppFragment>(bundle, R.style.AppTheme)
         scenario.onFragment {
             Navigation.setViewNavController(it.view!!, navController)
         }

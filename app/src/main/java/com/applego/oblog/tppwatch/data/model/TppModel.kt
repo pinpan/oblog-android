@@ -33,6 +33,8 @@ interface TppModel  {
 
     fun getEbaPassport() : EbaPassport
 
+    fun getApps() : List<App>
+
 
     fun getTitleForList(): String
     // TODO#: Consider Following fields

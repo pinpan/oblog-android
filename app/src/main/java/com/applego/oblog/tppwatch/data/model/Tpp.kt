@@ -1,5 +1,7 @@
 package com.applego.oblog.tppwatch.data.model
 
+import androidx.room.Ignore
+
 /**
  * Immutable model class for a Tpp. In order to compile with Room, we can't use @JvmOverloads to
  * generate multiple constructors.
@@ -11,6 +13,12 @@ class Tpp : TppModel {
         this.ebaEntity = ebaEntity
         this.ncaEntity = ncaEntity
     }
+/*
+    constructor(ebaEntity: EbaEntity, ncaEntity: NcaEntity, appsPortfolio: AppsPortfolio ) {
+        this.ebaEntity = ebaEntity
+        this.ncaEntity = ncaEntity
+        this.appsPortfolio = appsPortfolio
+    }*/
 
     var ebaEntity : EbaEntity
 
@@ -19,7 +27,9 @@ class Tpp : TppModel {
     /**
      * One and only apps portfolio instance
      */
-    val appsPortfolio : AppsPortfolio = AppsPortfolio()
+    var appsPortfolio = AppsPortfolio()
+    override fun getApps() = appsPortfolio.appsList
+
 
     override fun getId() = ebaEntity.getId()
 

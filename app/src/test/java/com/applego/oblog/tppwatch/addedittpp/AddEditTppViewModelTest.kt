@@ -20,7 +20,7 @@ import org.junit.Test
 class AddEditTppViewModelTest {
 
     // Subject under test
-    private lateinit var addEditTppViewModel: AddEditTppAppViewModel
+    private lateinit var addEditTppViewModel: AddEditTppViewModel
 
     // Use a fake repository to be injected into the viewmodel
     private lateinit var tppsRepository: FakeRepository
@@ -42,7 +42,7 @@ class AddEditTppViewModelTest {
         tppsRepository = FakeRepository()
 
         // Create class under test
-        addEditTppViewModel = AddEditTppAppViewModel(tppsRepository)
+        addEditTppViewModel = AddEditTppViewModel(tppsRepository)
     }
 
     @Test

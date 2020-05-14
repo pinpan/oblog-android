@@ -149,7 +149,7 @@
                         android:layout_height="wrap_content"
 
                         android:text="APPs" />
-                    <!--android:onClick="@{() -> viewmodel.showTppAppsEvent(ebaEntity.ebaEntity.id)}"-->
+                    <!--android:onClick="@{() -> viewmodel.addTppAppEvent(ebaEntity.ebaEntity.id)}"-->
                 </com.google.android.material.tabs.TabLayout>
             </androidx.viewpager.widget.ViewPager>
 

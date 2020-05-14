@@ -15,14 +15,18 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.PreferencesActivity
 import com.google.android.material.navigation.NavigationView
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.WindowManager
+import androidx.navigation.NavArgument
+import androidx.navigation.Navigation
 import com.applego.oblog.tppwatch.BuildConfig
+import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.about.AboutFragment
+import timber.log.Timber
 
 
 /**
@@ -55,12 +59,17 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
         // We need to pass data in a different way - inject or pass on creation.
         /*navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when(destination.id) {
-                R.id.homeFragment -> {
+                R.id.addedit_tppapp_fragment_dest -> {
                     val argument = NavArgument.Builder().setDefaultValue(6).build()
                     destination.addArgument("Argument", argument)
                 }
             }
         }*/
+        navController.addOnDestinationChangedListener { navController, destination, arguments ->
+            Timber.e("onDestinationChanged: "+ destination.label);
+
+        }
+
 
         setupSharedPreferences();
 
@@ -172,6 +181,38 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
     override fun onSaveInstanceState(outState: Bundle) {
         /* do nothing */
         super.onSaveInstanceState(outState);
+    }
+
+    //var navController :NavController= Navigation.findNavController(this, R.id.nav_host_fragment)
+
+    override  fun onBackPressed() {
+        val lastStack = supportFragmentManager.backStackEntryCount
+
+        if (supportFragmentManager.getBackStackEntryCount() > 1) {
+            supportFragmentManager.popBackStack();
+            // super.onBackPressed();
+            // return;
+        }
+        //If the last fragment was named/tagged "three"
+        val tag = supportFragmentManager.fragments[lastStack].tag
+        if (tag != null) {
+            if (tag.equals("THIRD", ignoreCase = true)) {
+
+                supportFragmentManager.popBackStackImmediate()
+                supportFragmentManager.popBackStackImmediate()
+
+                //Get your first fragment that you loaded in the beginning.
+                val first = supportFragmentManager.findFragmentByTag("FirstFragment")
+                if (first != null) {
+                    val transaction = supportFragmentManager.beginTransaction()
+                    transaction.replace(com.applego.oblog.tppwatch.R.id.drawer_layout, first)
+                    transaction.commit()
+                }
+                return
+            }
+        }
+
+        super.onBackPressed()
     }
 }
 
