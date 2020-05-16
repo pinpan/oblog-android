@@ -125,6 +125,7 @@ class AddEditTppAppViewModel(
     private fun saveApp(app: App) = viewModelScope.launch {
 
         if (app != null) {
+            app.tppId = tpp?.getId() ?: "-1"
             tppsRepository.saveApp(tpp!!, app)
         }
         _appUpdatedEvent.value = Event(Unit)

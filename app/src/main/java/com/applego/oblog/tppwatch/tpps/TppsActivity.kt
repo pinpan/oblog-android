@@ -66,7 +66,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
             }
         }*/
         navController.addOnDestinationChangedListener { navController, destination, arguments ->
-            Timber.e("onDestinationChanged: "+ destination.label);
+            Timber.i("onDestinationChanged: "+ destination.label);
 
         }
 

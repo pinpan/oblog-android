@@ -47,6 +47,7 @@ class TppsDaoDataSource internal constructor(
 
                 val apps = tppsDao.getTppEntityAppsByDbId(tppId)
                 if (apps != null) {
+                    tpp.appsPortfolio.tppId = tppId
                     tpp.appsPortfolio.appsList = apps as ArrayList
                 }
                 return@withContext Success(tpp)

@@ -22,6 +22,7 @@ class AppsViewModel (private val tppsRepository: TppsRepository) : ViewModel() {
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
 
+    //private val _items = MutableLiveData<List<App>>().apply { value = emptyList() }
 
     fun addApp() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -65,6 +66,9 @@ class AppsViewModel (private val tppsRepository: TppsRepository) : ViewModel() {
         _isDataAvailable.value = false
     }
 
+    //private val _items = MutableLiveData<List<App>>().apply { value = emptyList() }
+    val items: List<App> // = _items
+        get() = tpp.value?.appsPortfolio?.appsList ?: emptyList()
 
 
     private val _editAppEvent = MutableLiveData<Event<Unit>>()
@@ -72,7 +76,4 @@ class AppsViewModel (private val tppsRepository: TppsRepository) : ViewModel() {
 
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
-
-    private val _items = MutableLiveData<List<App>>().apply { value = emptyList() }
-    val items: MutableLiveData<List<App>> = _items
 }

@@ -87,8 +87,8 @@ class TppDetailAppsFragment(private val viewModel: AppsViewModel) : Fragment() {
     private fun navigateToEditApp() {
         val theApp : App
 
-        if ((viewModel.items != null) && (viewModel.items.value != null) && !(viewModel.items.value as List<App>).isEmpty()) {
-            theApp = (viewModel.items.value as List<App>).get(0); /// TODO-FixIt: Edits alwasy the first app. Place edit control next to app and seti the app as its context
+        if ((viewModel.items != null) && (viewModel.items != null) && !viewModel.items.isEmpty()) {
+            theApp = viewModel.items.get(0); /// TODO-FixIt: Edits always the first app. Place edit control next to app and seti the app as its context
             val action = TppDetailTabsFragmentDirections
                     .actionTppDetailAppsFragmentToAddEditTppAppFragment(
                 //.actionTppDetailAppsFragmentToAddEditTppAppFragment(
