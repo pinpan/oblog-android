@@ -47,11 +47,15 @@ class TppDetailAppsFragment(private val viewModel: AppsViewModel) : Fragment() {
     }
 
     private fun setupNavigation() {
-        viewModel.editAppEvent.observe(this, EventObserver {
-            val action = AddEditTppAppFragmentDirections
-                .actionAddEditTppAppFragmentToTppDetailTabsFragment(
-                    viewModel.tpp.value!!.getId()
-                )
+        viewModel.editAppEvent.observe(this.parentFragment!!, EventObserver {
+            val action = TppDetailTabsFragmentDirections
+                .actionTppDetailAppsFragmentToAddEditTppAppFragment(
+                        viewModel.tpp.value!!.getId(),
+                        it,
+                        "Edit Tpp application#" + viewModel.getApp(it) ?: "N/A"
+                    )
+            // TODO#FIX: Throws Action not found, because the current context is the Tabs fragment,
+            //  We didn't move to the Apps using action and changing the destination"
             findNavController().navigate(action)
         })
     }
@@ -91,7 +95,6 @@ class TppDetailAppsFragment(private val viewModel: AppsViewModel) : Fragment() {
             theApp = viewModel.items.get(0); /// TODO-FixIt: Edits always the first app. Place edit control next to app and seti the app as its context
             val action = TppDetailTabsFragmentDirections
                     .actionTppDetailAppsFragmentToAddEditTppAppFragment(
-                //.actionTppDetailAppsFragmentToAddEditTppAppFragment(
                         viewModel.tpp.value!!.getId(),
                         theApp.id,
                         resources.getString(R.string.add_app)
@@ -111,7 +114,7 @@ class TppDetailAppsFragment(private val viewModel: AppsViewModel) : Fragment() {
         val view = inflater.inflate(R.layout.tppdetail_apps_frag, container, false)
 
         viewDataBinding = TppdetailAppsFragBinding.bind(view).apply {
-            viewmodel = viewModel
+            this.viewmodel = viewModel
         }
 
         // Also set in onAActivityCreated: viewDataBinding.lifecycleOwner = this.viewLifecycleOwner

@@ -27,8 +27,8 @@ class TppsDaoDataSource internal constructor(
             } else {
                 ebaEntities = tppsDao.getAllTppEntities()
             }
-            ebaEntities.forEach { tppEntity ->
-                tpps.add(Tpp(tppEntity, NcaEntity()))}
+            ebaEntities.forEach { ebaEntity ->
+                tpps.add(Tpp(ebaEntity, NcaEntity()))}
         } catch (e: Exception) {
             Error(e)
         }
@@ -46,7 +46,7 @@ class TppsDaoDataSource internal constructor(
                 val tpp = Tpp(tppEntity, NcaEntity())
 
                 val apps = tppsDao.getTppEntityAppsByDbId(tppId)
-                if (apps != null) {
+                if ((apps != null) && !apps.isEmpty()) {
                     tpp.appsPortfolio.tppId = tppId
                     tpp.appsPortfolio.appsList = apps as ArrayList
                 }
@@ -64,7 +64,11 @@ class TppsDaoDataSource internal constructor(
     }
 
     override suspend fun saveАpp(аpp: App) = withContext(ioDispatcher) {
-        tppsDao.insertApp(аpp)
+        if (аpp.id != null) {
+            tppsDao.updateApp(аpp)
+        } else {
+            tppsDao.insertApp(аpp)
+        }
     }
 
     override suspend fun udateFollowing(tpp: Tpp, follow: Boolean) = withContext(ioDispatcher) {

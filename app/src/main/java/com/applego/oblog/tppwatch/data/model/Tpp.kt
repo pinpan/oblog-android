@@ -13,12 +13,6 @@ class Tpp : TppModel {
         this.ebaEntity = ebaEntity
         this.ncaEntity = ncaEntity
     }
-/*
-    constructor(ebaEntity: EbaEntity, ncaEntity: NcaEntity, appsPortfolio: AppsPortfolio ) {
-        this.ebaEntity = ebaEntity
-        this.ncaEntity = ncaEntity
-        this.appsPortfolio = appsPortfolio
-    }*/
 
     var ebaEntity : EbaEntity
 
@@ -28,8 +22,8 @@ class Tpp : TppModel {
      * One and only apps portfolio instance
      */
     var appsPortfolio = AppsPortfolio()
-    override fun getApps() = appsPortfolio.appsList
 
+    override fun getApps() = appsPortfolio.appsList
 
     override fun getId() = ebaEntity.getId()
 

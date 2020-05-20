@@ -19,7 +19,7 @@ interface TppsDao {
      *
      * @return all tpps.
      */
-    @Query("SELECT * FROM Tpps")
+    @Query("SELECT * FROM Tpps order by followed DESC")
     suspend fun getAllTppEntities(): List<EbaEntity>
 
     /**
@@ -28,7 +28,7 @@ interface TppsDao {
      * @param tppId the tpp id.
      * @return the tpp with tppId.
      */
-    @Query("SELECT * FROM Tpps WHERE db_id = :tppId")
+    @Query("SELECT * FROM Tpps WHERE db_id = :tppId order by followed DESC")
     suspend fun getTppEntityByDbId(tppId: String): EbaEntity?
 
     /**
@@ -155,4 +155,11 @@ interface TppsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertApp(app: App)
 
+    /**
+     * Update an app
+     *
+     * @param app App to be updated
+     */
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateApp(аpp: App)
 }

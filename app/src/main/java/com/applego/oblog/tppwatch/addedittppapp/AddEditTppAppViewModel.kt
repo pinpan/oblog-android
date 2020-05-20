@@ -39,18 +39,25 @@ class AddEditTppAppViewModel(
 
     var tppId: String = ""
         set(anId) {field = anId}
-
     private var tpp: Tpp? = null
 
-    private var isNewApp: Boolean = true
+    var appId: String? = ""
+        set(anId) {field = anId}
 
+    private val _app = MutableLiveData<App>()
+    val app: MutableLiveData<App> = _app
 
-    fun start(tppId: String) {
+    //private var app: App? = null
+
+    //private var isNewApp: Boolean = true
+
+    fun start(tppId: String, appId: String?) {
         if (_dataLoading.value == true) {
             return
         }
 
         this.tppId = tppId
+        this.appId = appId
 
         if (isDataLoaded) {
             // No need to populate, already have data.
@@ -71,58 +78,57 @@ class AddEditTppAppViewModel(
     }
 
     private fun onTppLoaded(aTpp: Tpp) {
-        tpp =  aTpp
-        appName.value = tpp?.getEntityName() ?: "N/A"
-        description.value = tpp?.getDescription() ?: "N/A"
-        isDataLoaded = true
-    }
+         tpp =  aTpp
+        aTpp.appsPortfolio.appsList?.forEach({
+            if (appId == it.id ) {
+                _app.value = it
+            }
+        })
 
-    /*
-    private fun onDataNotAvailable() {
-    }
-
-    // Called when clicking on fab.
-    fun saveTpp() {
-        val currentTitle = entityName.value
-        val currentDescription = description.value
-
-        if (currentTitle == null || currentDescription == null) {
-            _snackbarText.value = Event(R.string.empty_tpp_message)
-            return
+        if (app != null) {
+            appName.value = app?.value?.name ?: "app name"
+            description.value = app?.value?.description ?: "description"
+            webAddr.value = app?.value?.webAddr ?: "web address"
+            isDataLoaded = true
         }
-
-        val currentTppId = tppId
     }
 
-
-*/
     fun cancelAddApp() {
         _appUpdatedEvent.value = Event(Unit)
     }
 
-    fun createApp() {
+    fun saveApp() {
         //tppsRepository.saveApp(newApp)
         val currentAppName = appName.value
         val currentDescription = description.value
         val currentWebAddr = webAddr.value
 
-        if (currentAppName == null || currentDescription == null) {
+        if ((currentAppName == null) || currentAppName.isNullOrBlank()) {
             _snackbarText.value = Event(R.string.empty_app_message)
             return
         }
 
-        if (currentAppName.isNullOrBlank() || currentDescription.isNullOrBlank()) {
-            _snackbarText.value = Event(R.string.empty_app_message)
+        if ((currentDescription == null) || currentDescription.isNullOrBlank()) {
+            _snackbarText.value = Event(R.string.empty_app_desc_message)
             return
         }
 
-        var newApp = App(currentAppName, currentDescription, currentWebAddr)
+        if (app.value != null) {
+            app.value?.update(currentAppName, currentDescription, currentWebAddr)
+            updateApp(app.value!!)
+        } else {
+            var newApp = App(currentAppName, currentDescription, currentWebAddr)
+            createApp(newApp)
+        }
         //newApp.tppId = tppId
-        saveApp(newApp)
     }
 
 
-    private fun saveApp(app: App) = viewModelScope.launch {
+    private fun createApp(app: App) = viewModelScope.launch {
+
+    }
+
+    private fun updateApp(app: App) = viewModelScope.launch {
 
         if (app != null) {
             app.tppId = tpp?.getId() ?: "-1"

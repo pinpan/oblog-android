@@ -8,7 +8,7 @@
         <import type="android.widget.CompoundButton" />
 
         <variable
-            name="ebaEntity"
+            name="tpp"
             type="com.applego.oblog.tppwatch.data.model.Tpp" />
 
         <variable
@@ -19,7 +19,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> viewmodel.openTpp(ebaEntity.ebaEntity.id)}"
+        android:onClick="@{() -> viewmodel.openTpp(tpp.ebaEntity.id)}"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/list_item_padding"
@@ -33,17 +33,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:checked="@{ebaEntity.ebaEntity.followed}"
+            android:checked="@{tpp.ebaEntity.followed}"
             android:textSize="10sp"
-            android:onClick="@{(view) -> viewmodel.followTpp(ebaEntity, ((CompoundButton)view).isChecked())}" />
+            android:onClick="@{(view) -> viewmodel.followTpp(tpp, ((CompoundButton)view).isChecked())}" />
         <CheckBox
             android:id="@+id/used_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:checked="@{ebaEntity.ebaEntity.used}"
+            android:checked="@{tpp.ebaEntity.used}"
             android:textSize="10sp"
-            android:onClick="@{(view) -> viewmodel.activateTpp(ebaEntity, ((CompoundButton)view).isChecked())}" />
+            android:onClick="@{(view) -> viewmodel.activateTpp(tpp, ((CompoundButton)view).isChecked())}" />
 
         <TextView
             android:id="@+id/tpp_name"
@@ -53,7 +53,7 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:textSize="11sp"
-            android:text="@{ebaEntity.titleForList}"
+            android:text="@{tpp.titleForList}"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
     </LinearLayout>
 </layout>

@@ -39,7 +39,7 @@ class TppsAdapter(private val viewModel: TppsViewModel, ctx: Context, layoutId: 
         fun bind(viewModel: TppsViewModel, item: Tpp) {
 
             binding.viewmodel = viewModel
-            binding.ebaEntity = item
+            binding.tpp = item
             binding.executePendingBindings()
         }
 

@@ -51,7 +51,8 @@
     <string name="title_hint">Title</string>
     <string name="description_hint">Enter TPP name here.</string>
     <string name="empty_tpp_message">TPPs cannot be empty</string>
-    <string name="empty_app_message">Apps name cannot be empty</string>
+    <string name="empty_app_message">Application name cannot be empty</string>
+    <string name="empty_app_desc_message">Application description cannot be empty</string>
     <string name="successfully_saved_tpp_message">TPP saved</string>
     <string name="tpp_directory_title">TPPs Directory</string>
     <string name="statistics_title">Statistics</string>

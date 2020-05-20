@@ -23,17 +23,10 @@ class AppsViewModel (private val tppsRepository: TppsRepository) : ViewModel() {
     val dataLoading: LiveData<Boolean> = _dataLoading
 
     //private val _items = MutableLiveData<List<App>>().apply { value = emptyList() }
-
-    fun addApp() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    fun editApp() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    private val _openAppEvent = MutableLiveData<Event<String>>()
+    val openAppEvent: LiveData<Event<String>> = _openAppEvent
 
     fun start(tppId : String?) {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         _dataLoading.value = true
 
         wrapEspressoIdlingResource {
@@ -66,13 +59,20 @@ class AppsViewModel (private val tppsRepository: TppsRepository) : ViewModel() {
         _isDataAvailable.value = false
     }
 
-    //private val _items = MutableLiveData<List<App>>().apply { value = emptyList() }
+    fun openApp(appId: String) {
+        _editAppEvent.value = Event(appId)
+    }
+
+    fun getApp(appId: String) : App? {
+        return tpp.value?.appsPortfolio?.getApp(appId)
+    }
+
     val items: List<App> // = _items
         get() = tpp.value?.appsPortfolio?.appsList ?: emptyList()
 
 
-    private val _editAppEvent = MutableLiveData<Event<Unit>>()
-    val editAppEvent: LiveData<Event<Unit>> = _editAppEvent
+    private val _editAppEvent = MutableLiveData<Event<String>>()
+    val editAppEvent: LiveData<Event<String>> = _editAppEvent
 
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText

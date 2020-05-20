@@ -9,18 +9,24 @@ import java.util.*
 data class App @JvmOverloads constructor(
         @ColumnInfo(name = "name") var name: String = "",
         @ColumnInfo(name = "description") var description: String? = "",
-        @ColumnInfo(name = "web_link") var webLink: String? = "",
+        @ColumnInfo(name = "web_link") var webAddr: String? = "",
         @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString()
 )
 {
+    fun update(anAppName: String, aDescription: String, aWebAddr: String?) {
+        if (anAppName != null) {
+            name = anAppName
+        }
+        if (aDescription != null) {
+            description = aDescription
+        }
+        if (aWebAddr != null) {
+            webAddr = aWebAddr
+        }
+    }
+
     @ColumnInfo
     var tppId: String = ""
-
-    /*fun getId2() :  String {
-      return this.id;
-    }*/
-
-    var followed: Boolean = true
-    var used: Boolean = true
-
+//    var followed: Boolean = true
+//    var used: Boolean = true
 }

@@ -46,7 +46,7 @@ class AddEditTppAppFragment : Fragment() {
         setupSnackbar()
         setupNavigation()
         //this.setupRefreshLayout(viewDataBinding.refreshLayout)
-        viewModel.start(args.tppId)
+        viewModel.start(args.tppId, args.appId)
     }
 
     private fun setupSnackbar() {
@@ -58,7 +58,7 @@ class AddEditTppAppFragment : Fragment() {
             val action = AddEditTppAppFragmentDirections
                 .actionAddEditTppAppFragmentToTppDetailTabsFragment(args.tppId)
 
-            /*TODO#Replace this::class with something Kotlion understands well:
+            /*TODO#Replace this::class with something Kotlin understands well:
                getFragmentManager()?.popBackStack(
                     this.::class.simpleName,
                     FragmentManager.POP_BACK_STACK_INCLUSIVE)

@@ -24,4 +24,15 @@ data class AppsPortfolio @JvmOverloads constructor(
         //appsMap.put(app.name, app);
         appsList.add(app);
     }
+
+
+    fun getApp(appId: String) : App? {
+        appsList.forEach({
+          if (it.id.equals(appId)) {
+              return it
+          }
+        })
+        return null
+    }
+
 }

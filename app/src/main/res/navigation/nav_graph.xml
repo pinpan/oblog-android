@@ -17,6 +17,7 @@
         <!--<action
             android:id="@+id/action_tppDetailAppsFragment_to_addEditTppAppFragment"
             app:destination="@id/addedit_tppapp_fragment_dest" />-->
+
     </fragment>
 
     <fragment
@@ -27,18 +28,22 @@
             android:name="tppId"
             app:argType="string" />
         <action
+            android:id="@+id/action_tppDetailTabsFragment_to_tppsFragment"
+            app:destination="@id/tpps_fragment_dest" />
+        <action
             android:id="@+id/action_tppDetailTabsFragment_to_addEditTppFragment"
             app:destination="@id/addedit_tpp_fragment_dest" />
-<!--        <action
+        <action
             android:id="@+id/action_tppDetailTabsFragment_to_AddTppAppFragment"
-            app:destination="@id/addedit_tppapp_fragment_dest" />-->
+            app:destination="@id/addedit_tppapp_fragment_dest" />
+        <action
+            android:id="@+id/action_tppDetailTabsFragment_to_tppDetailAppsFragment"
+            app:destination="@id/tpp_detail_apps_fragment_dest"
+            />
         <action
             android:id="@+id/action_tppDetailAppsFragment_to_addEditTppAppFragment"
             app:destination="@id/addedit_tppapp_fragment_dest"
             />
-        <action
-            android:id="@+id/action_tppDetailTabsFragment_to_tppsFragment"
-            app:destination="@id/tpps_fragment_dest" />
     </fragment>
 
     <fragment
@@ -110,7 +115,8 @@
         <action
             android:id="@+id/action_AddEditTppAppFragment_to_TppDetailTabsFragment"
             app:destination="@id/tpp_detail_tabs_fragment_dest"
-
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true"
             />
 
         <argument
