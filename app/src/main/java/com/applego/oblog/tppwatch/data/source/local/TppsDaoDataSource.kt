@@ -1,24 +1,11 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.data.source.local
 
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.TppsFilter
+import com.applego.oblog.tppwatch.data.dao.TppsDao
+import com.applego.oblog.tppwatch.data.model.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -32,48 +19,68 @@ class TppsDaoDataSource internal constructor(
 ) : LocalTppDataSource {
 
     override suspend fun getTpps(filter: TppsFilter): Result<List<Tpp>> = withContext(ioDispatcher) {
-        return@withContext try {
-            var tpps: List<Tpp>
+        var tpps = ArrayList<Tpp>()
+        try {
+            var ebaEntities : List<EbaEntity>
             if (isOnlyCountry(filter)) {
-                tpps = tppsDao.getTppsByCountry(filter.country)
+                ebaEntities = tppsDao.getTppEntitiesByCountry(filter.country)
+            } else {
+                ebaEntities = tppsDao.getAllTppEntities()
             }
-            Success(tppsDao.getTpps())
+            ebaEntities.forEach { ebaEntity ->
+                tpps.add(Tpp(ebaEntity, NcaEntity()))}
         } catch (e: Exception) {
             Error(e)
         }
+        return@withContext Success(tpps)
     }
 
     private fun isOnlyCountry(filter: TppsFilter): Boolean {
         return (!filter.country.isNullOrBlank() && filter.pasportedTo.isNullOrEmpty() && filter.services.isNullOrEmpty() && filter.tppName.isNullOrBlank());
     }
 
-    override suspend fun getTpp(tppId: String): Result<Tpp> = withContext(ioDispatcher) {
+    override /*suspend */fun getTpp(tppId: String): Result<Tpp> /*= withContext(ioDispatcher)*/ {
         try {
-            val tpp = tppsDao.getTppById(tppId)
-            if (tpp != null) {
-                return@withContext Success(tpp)
+            val tppEntity = tppsDao.getTppEntityByDbId(tppId)
+            if (tppEntity != null) {
+                val tpp = Tpp(tppEntity, NcaEntity())
+
+                val apps = tppsDao.getTppEntityAppsByDbId(tppId)
+                if ((apps != null) && !apps.isEmpty()) {
+                    tpp.appsPortfolio.tppId = tppId
+                    tpp.appsPortfolio.appsList = apps as ArrayList
+                }
+                return/*@withContext */Success(tpp)
             } else {
-                return@withContext Error(Exception("Tpp not found!"))
+                return/*@withContext*/ Error(Exception("EbaEntity not found!"))
             }
         } catch (e: Exception) {
-            return@withContext Error(e)
+            return/*@withContext*/ Error(e)
         }
     }
 
-    override suspend fun saveTpp(tpp: Tpp) = withContext(ioDispatcher) {
-        tppsDao.insertTpp(tpp)
+    override /*suspend */fun saveTpp(tpp: Tpp) /*= withContext(ioDispatcher)*/ {
+        tppsDao.insertTppEntity(tpp.ebaEntity)
     }
 
-    override suspend fun udateFollowing(tpp: Tpp, follow: Boolean) = withContext(ioDispatcher) {
-        tppsDao.updateFollowed(tpp.id, follow)
+    override suspend fun saveАpp(аpp: App) = withContext(ioDispatcher) {
+        if (аpp.id != null) {
+            tppsDao.updateApp(аpp)
+        } else {
+            tppsDao.insertApp(аpp)
+        }
     }
 
-    override suspend fun setTppActivateFlag(tppId: String, active: Boolean)  = withContext(ioDispatcher) {
-        tppsDao.updateActive(tppId, active)
+    override suspend fun updateFollowing(tpp: Tpp, follow: Boolean) = withContext(ioDispatcher) {
+        tppsDao.updateFollowed(tpp.ebaEntity.getId(), follow)
     }
 
-    override suspend fun clearFollowedTpps() = withContext<Unit>(ioDispatcher) {
-        tppsDao.deleteFollowedTpps()
+    override suspend fun setTppActivateFlag(tppId: String, used: Boolean)  = withContext(ioDispatcher) {
+        tppsDao.updateUsed(tppId, used)
+    }
+
+    suspend fun clearFollowedTpps() = withContext<Unit>(ioDispatcher) {
+        tppsDao.deleteFollowedTppsEntities()
     }
 
     override suspend fun deleteAllTpps() = withContext(ioDispatcher) {
@@ -81,6 +88,6 @@ class TppsDaoDataSource internal constructor(
     }
 
     override suspend fun deleteTpp(tppId: String) = withContext<Unit>(ioDispatcher) {
-        tppsDao.deleteTppById(tppId)
+        tppsDao.deleteTppEntityByDbId(tppId)
     }
 }

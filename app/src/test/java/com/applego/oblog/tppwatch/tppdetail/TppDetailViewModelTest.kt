@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.tppdetail
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -20,8 +5,10 @@ import com.applego.oblog.tppwatch.LiveDataTestUtil.getValue
 import com.applego.oblog.tppwatch.MainCoroutineRule
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.assertSnackbarMessage
-import com.applego.oblog.tppwatch.data.source.local.Tpp
 import com.applego.oblog.tppwatch.data.source.FakeRepository
+import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.NcaEntity
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.*
 import org.junit.Before
@@ -45,64 +32,76 @@ class TppDetailViewModelTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-    // Executes each tpp synchronously using Architecture Components.
+    // Executes each ebaEntity synchronously using Architecture Components.
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
-    val tpp = Tpp("Entity_CZ28173281", "Title1", "Description1")
+
+    companion object {
+        val tppEntity = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        var tpp : Tpp = Tpp(tppEntity, NcaEntity())
+
+        /*@BeforeClass
+        @JvmStatic
+        fun setupTestClass() {
+            tpp = Tpp(ebaEntity)
+        }*/
+    }
 
     @Before
     fun setupViewModel() {
         tppsRepository = FakeRepository()
-        tppsRepository.addTpps(tpp)
+        if (tpp != null) {
+            tppsRepository.addTpps(tpp!!)
+        }
 
         tppDetailViewModel = TppDetailViewModel(tppsRepository)
     }
 
     @Test
-    fun getActiveTppFromRepositoryAndLoadIntoView() {
+    fun getUsedTppFromRepositoryAndLoadIntoView() {
         CoroutineScope(Dispatchers.Main).launch {
-            tppDetailViewModel.start(tpp.id)
+            tppDetailViewModel.start(tppEntity.getEntityId())
         }
 
         // Then verify that the view was notified
-        assertThat(getValue(tppDetailViewModel.tpp).title).isEqualTo(tpp.title)
-        assertThat(getValue(tppDetailViewModel.tpp).description)
-            .isEqualTo(tpp.description)
+        assertThat(getValue(tppDetailViewModel.tpp).getEntityName()).isEqualTo(tppEntity.getEntityName())
+        assertThat(getValue(tppDetailViewModel.tpp).getDescription())
+            .isEqualTo(tppEntity.getDescription())
     }
 
     @Test
     fun followTpp() {
         CoroutineScope(Dispatchers.Main).launch {
-            tppDetailViewModel.start(tpp.id)
+            tppDetailViewModel.start(tppEntity.getEntityId())
         }
-        // Verify that the tpp was active initially
-        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isFollowed).isFalse()
+        // Verify that the ebaEntity was used initially
+        assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isFollowed()).isFalse()
 
-        // When the ViewModel is asked to follow the tpp
+        // When the ViewModel is asked to follow the ebaEntity
         tppDetailViewModel.setFollowed(true)
 
-        // Then the tpp is followed and the snackbar shows the correct message
-        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isFollowed).isTrue()
+        // Then the ebaEntity is followed and the snackbar shows the correct message
+        assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isFollowed()).isTrue()
         assertSnackbarMessage(tppDetailViewModel.snackbarText, R.string.tpp_marked_followed)
     }
 
     @Test
     fun activateTpp() {
-        tpp.isActive = true
+        tppEntity.used = true
 
         CoroutineScope(Dispatchers.Main).launch {
-            tppDetailViewModel.start(tpp.id)
+            tppDetailViewModel.start(tppEntity.getEntityId())
         }
-        // Verify that the tpp was followed initially
-        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isActive).isTrue()
+        // Verify that the ebaEntity was followed initially
+        assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isUsed()).isTrue()
 
-        // When the ViewModel is asked to follow the tpp
-        tppDetailViewModel.setActive(false)
+        // When the ViewModel is asked to follow the ebaEntity
+        tppDetailViewModel.setUsed(false)
 
-        // Then the tpp is not followed and the snackbar shows the correct message
-        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isActive).isFalse()
-        assertSnackbarMessage(tppDetailViewModel.snackbarText, R.string.tpp_marked_inactive)
+        // Then the ebaEntity is not followed and the snackbar shows the correct message
+        assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isUsed()).isFalse()
+        assertSnackbarMessage(tppDetailViewModel.snackbarText, R.string.tpp_marked_inused)
     }
 
     @Test
@@ -110,9 +109,9 @@ class TppDetailViewModelTest {
         // Given a repository that returns errors
         tppsRepository.setReturnError(true)
 
-        // Given an initialized ViewModel with an active tpp
+        // Given an initialized ViewModel with an used ebaEntity
         CoroutineScope(Dispatchers.Main).launch {
-            tppDetailViewModel.start(tpp.id)
+            tppDetailViewModel.start(tppEntity.getEntityId())
         }
         // Then verify that data is not available
         assertThat(getValue(tppDetailViewModel.isDataAvailable)).isFalse()
@@ -129,7 +128,7 @@ class TppDetailViewModelTest {
 
     @Test
     fun clickOnEditTpp_SetsEvent() {
-        // When opening a new tpp
+        // When opening a new ebaEntity
         tppDetailViewModel.editTpp()
 
         // Then the event is triggered
@@ -141,9 +140,9 @@ class TppDetailViewModelTest {
     fun deleteTpp() {
         assertThat(tppsRepository.tppsServiceData.containsValue(tpp)).isTrue()
         CoroutineScope(Dispatchers.Main).launch {
-            tppDetailViewModel.start(tpp.id)
+            tppDetailViewModel.start(tppEntity.getEntityId())
         }
-        // When the deletion of a tpp is requested
+        // When the deletion of a ebaEntity is requested
         //tppDetailViewModel.deleteTpp()
 
         assertThat(tppsRepository.tppsServiceData.containsValue(tpp)).isTrue()
@@ -154,11 +153,11 @@ class TppDetailViewModelTest {
         // Pause dispatcher so we can verify initial values
         mainCoroutineRule.pauseDispatcher()
 
-        // Load the tpp in the viewmodel
+        // Load the ebaEntity in the viewmodel
         //runBlocking {
 
         //CoroutineScope(Dispatchers.Main).launch {
-            tppDetailViewModel.start(tpp.id)
+            tppDetailViewModel.start(tppEntity.getEntityId())
         //}
 
         // Then progress indicator is shown

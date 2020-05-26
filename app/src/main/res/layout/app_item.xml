@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.widget.CompoundButton" />
+
+        <variable
+            name="app"
+            type="com.applego.oblog.tppwatch.data.model.App" />
+
+        <variable
+            name="viewmodel"
+            type="com.applego.oblog.tppwatch.tppdetail.AppsViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> viewmodel.openApp(app.id)}"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/list_item_padding"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/list_item_padding"
+        android:weightSum="8">
+        >
+        <TextView
+            android:id="@+id/app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top|left"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="@{app.name}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textSize="11sp"
+            android:layout_weight="2"
+            />
+
+        <TextView
+            android:id="@+id/app_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top|left|center_vertical"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="@{app.description}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textSize="11sp"
+            android:layout_weight="3"
+            />
+
+        <TextView
+            android:id="@+id/app_weblink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top|left|center_vertical"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="@{app.webAddr}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textSize="11sp"
+            android:layout_weight="3"
+            />
+        <!--android:onClick="@{(view) -> viewmodel.activateTpp(ebaEntity, ((CompoundButton)view).isChecked())}"-->
+    </LinearLayout>
+</layout>

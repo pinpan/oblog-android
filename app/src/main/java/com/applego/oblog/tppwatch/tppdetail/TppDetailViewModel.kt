@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.tppdetail
 
 import androidx.annotation.StringRes
@@ -25,9 +10,8 @@ import com.applego.oblog.tppwatch.Event
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.data.source.TppsRepository
-import com.applego.oblog.tppwatch.data.source.local.EbaPassport
+import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 
@@ -53,62 +37,54 @@ open class TppDetailViewModel(
     private val _tppUpdatedEvent = MutableLiveData<Event<Unit>>()
     val tppUpdatedEvent: LiveData<Event<Unit>> = _tppUpdatedEvent
 
-    //private val _deleteTppEvent = MutableLiveData<Event<Unit>>()
-    //val deleteTppEvent: LiveData<Event<Unit>> = _deleteTppEvent
+    private val _addTppAppEvent = MutableLiveData<Event<Unit>>()
+    val addTppAppEvent: LiveData<Event<Unit>> = _addTppAppEvent
+
+
+    private val _editTppAppEvent = MutableLiveData<Event<String>>()
+    val editTppAppEvent: LiveData<Event<String>> = _editTppAppEvent
+
+    private val _backToTppsListEvent = MutableLiveData<Event<String>>()
+    val backToTppsListEvent: LiveData<Event<String>> = _backToTppsListEvent
 
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
 
     private val tppId: String?
-        get() = _tpp.value?.id
+        get() = _tpp.value?.getId()
 
     public val description: String?
         get() {
-            return tpp.value?.description ?: ""
-        }
-
-    public var ebaPassport: EbaPassport?
-        get() {
-            return tpp.value?.ebaPassport?: EbaPassport()
-        }
-        set(pass: EbaPassport?) {
-            this.ebaPassport = pass
+            return tpp.value?.getDescription() ?: ""
         }
 
     // This LiveData depends on another so we can use a transformation.
     val followed: LiveData<Boolean> = Transformations.map(_tpp) { input: Tpp? ->
-        input?.isFollowed ?: false
+        input?.isFollowed() ?: false
     }
 
     // This LiveData depends on another so we can use a transformation.
-    val active: LiveData<Boolean> = Transformations.map(_tpp) { input: Tpp? ->
-        input?.isActive ?: false
+    val used: LiveData<Boolean> = Transformations.map(_tpp) { input: Tpp? ->
+        input?.isUsed() ?: false
     }
-
-    /*fun deleteTpp() = viewModelScope.launch {
-        tppId?.let {
-            tppsRepository.deleteTpp(it)
-            _deleteTppEvent.value = Event(Unit)
-        }
-    }*/
 
     fun editTpp() {
         _editTppEvent.value = Event(Unit)
     }
 
     fun setFollowed(follow: Boolean) = viewModelScope.launch {
-        _tpp.value?.isFollowed = follow
+        _tpp.value?.setFollowed(follow)
         val tpp = _tpp.value ?: return@launch
         tppsRepository.setTppFollowedFlag(tpp, follow)
 
         showSnackbarMessage(if (follow) R.string.tpp_marked_followed else R.string.tpp_marked_followed)
     }
 
-    fun setActive(activate: Boolean) = viewModelScope.launch {
+    fun setUsed(activate: Boolean) = viewModelScope.launch {
         val tpp = _tpp.value ?: return@launch
         tppsRepository.setTppActivateFlag(tpp, activate)
 
-        showSnackbarMessage(if (activate) R.string.tpp_marked_active else R.string.tpp_marked_inactive)
+        showSnackbarMessage(if (activate) R.string.tpp_marked_used else R.string.tpp_marked_inused)
     }
 
     fun start(tppId: String?, forceRefresh: Boolean = false) {

@@ -5,9 +5,9 @@ import androidx.lifecycle.*
 import com.applego.oblog.tppwatch.Event
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.Result
-import com.applego.oblog.tppwatch.data.source.TppsRepository
-import com.applego.oblog.tppwatch.data.source.local.EbaPassport
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.repository.TppsRepository
+import com.applego.oblog.tppwatch.data.model.EbaPassport
+import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,62 +30,52 @@ class TppDetailTabsViewModel (
     private val _editTppEvent = MutableLiveData<Event<Unit>>()
     val editTppEvent: LiveData<Event<Unit>> = _editTppEvent
 
-    //private val _deleteTppEvent = MutableLiveData<Event<Unit>>()
-    //val deleteTppEvent: LiveData<Event<Unit>> = _deleteTppEvent
-
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
 
     private val tppId: String?
-        get() = _tpp.value?.id
+        get() = _tpp.value?.getId()
 
     public val description: String?
         get() {
-            return tpp.value?.description ?: ""
+            return tpp.value?.getDescription() ?: ""
         }
 
-    public var ebaPassport: EbaPassport?
+    public var ebaPassport: EbaPassport
         get() {
-            return tpp.value?.ebaPassport?: EbaPassport()
+            return tpp.value?.getEbaPassport()?: EbaPassport()
         }
-        set(pass: EbaPassport?) {
-            this.ebaPassport = pass
+        set(pass: EbaPassport) {
+            tpp.value?.ebaEntity?._ebaPassport = pass
         }
 
     // This LiveData depends on another so we can use a transformation.
     val followed: LiveData<Boolean> = Transformations.map(_tpp) { input: Tpp? ->
-        input?.isFollowed ?: false
+        input?.isFollowed() ?: false
     }
 
     // This LiveData depends on another so we can use a transformation.
-    val active: LiveData<Boolean> = Transformations.map(_tpp) { input: Tpp? ->
-        input?.isActive ?: false
+    val used: LiveData<Boolean> = Transformations.map(_tpp) { input: Tpp? ->
+        input?.isUsed() ?: false
     }
-
-    /*fun deleteTpp() = viewModelScope.launch {
-        tppId?.let {
-            tppsRepository.deleteTpp(it)
-            _deleteTppEvent.value = Event(Unit)
-        }
-    }*/
 
     fun editTpp() {
         _editTppEvent.value = Event(Unit)
     }
 
     fun setFollowed(follow: Boolean) = viewModelScope.launch {
-        _tpp.value?.isFollowed = follow
+        _tpp.value?.setFollowed(follow)
         val tpp = _tpp.value ?: return@launch
         tppsRepository.setTppFollowedFlag(tpp, follow)
 
         showSnackbarMessage(if (follow) R.string.tpp_marked_followed else R.string.tpp_marked_followed)
     }
 
-    fun setActive(activate: Boolean) = viewModelScope.launch {
+    fun setUsed(activate: Boolean) = viewModelScope.launch {
         val tpp = _tpp.value ?: return@launch
         tppsRepository.setTppActivateFlag(tpp, activate)
 
-        showSnackbarMessage(if (activate) R.string.tpp_marked_active else R.string.tpp_marked_inactive)
+        showSnackbarMessage(if (activate) R.string.tpp_marked_used else R.string.tpp_marked_inused)
     }
 
     fun start(tppId: String?, forceRefresh: Boolean = false) {

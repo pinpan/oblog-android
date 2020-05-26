@@ -1,52 +1,52 @@
 <resources>
     <string-array name="env_names">
-        <item>Dev</item>
-        <item>Test</item>
-        <item>Staging</item>
-        <item>Production</item>
+        <item>@string/env_DEV</item>
+        <item>@string/env_TEST</item>
+        <item>@string/env_STAGING</item>
+        <item>@string/env_PRODUCTION</item>
     </string-array>
 
     <string-array name="env_base_url">
-        <item>DEV#http://192.168.0.15:8585"</item>
+        <item>DEV#http://192.168.0.194:27010"</item>
         <item>TEST#https://api.oblog.org:8443"</item>
         <item>STAGING#https://api.oblog.org:8443"</item>
         <item>PRODUCTION#https://api.oblog.org:8443"</item>
     </string-array>
 
-    <string-array name="env_Dev">
+    <string-array name="env_DEV">
         <item>Dev</item>
-        <item>\"http://192.168.0.15:8585\""</item>
+        <item>\"http://192.168.0.194:27010\""</item>
         <item>SomethingElse-Dev</item>
     </string-array>
 
-    <string-array name="env_Test">
+    <string-array name="env_TEST">
         <item>Test</item>
         <item>\"https://api.oblog.org:8443\""</item>
         <item>SomethingElse-Dev</item>
     </string-array>
 
-    <string-array name="env_Staging">
+    <string-array name="env_STAGING">
         <item>Staging</item>
         <item>\"https://api.oblog.org:8443\""</item>
         <item>SomethingElse-Dev</item>
     </string-array>
 
-    <string-array name="env_Production">
+    <string-array name="env_PRODUCTION">
         <item>Production</item>
         <item>\"https://api.oblog.org:8443\""</item>
         <item>SomethingElse-Dev</item>
     </string-array>
 
     <array name="environments">
-        <item>@array/env_Dev</item>
-        <item>@array/env_Test</item>
-        <item>@array/env_Staging</item>
-        <item>@array/env_Production</item>
+        <item>@array/env_DEV</item>
+        <item>@array/env_TEST</item>
+        <item>@array/env_STAGING</item>
+        <item>@array/env_PRODUCTION</item>
     </array>
 
     <string-array name="list_tpps_array">
         <item>@string/nav_all</item>
-        <item>@string/nav_active</item>
+        <item>@string/nav_used</item>
         <item>@string/nav_followed</item>
     </string-array>
 

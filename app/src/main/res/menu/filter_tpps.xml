@@ -19,9 +19,9 @@
     /> <!--android:checked="true"-->
 
     <item
-        android:id="@+id/active"
+        android:id="@+id/used"
         android:checkable="true"
-        android:title="@string/nav_active"
+        android:title="@string/nav_used"
     /> <!--android:checked="true"-->
 
     <item

@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.addedittpp
 
 import android.content.Context
@@ -33,7 +18,7 @@ import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.ServiceLocator
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.source.FakeRepository
-import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.tpps.ADD_EDIT_RESULT_OK
 import com.applego.oblog.tppwatch.util.getTppsBlocking
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -75,11 +60,11 @@ class AddEditTppFragmentTest {
         // GIVEN - On the "Add Tpp" screen.
         val bundle = AddEditTppFragmentArgs(
             null,
-            getApplicationContext<Context>().getString(R.string.add_tpp)
+                "Title"
         ).toBundle()
         launchFragmentInContainer<AddEditTppFragment>(bundle, R.style.AppTheme)
 
-        // WHEN - Enter invalid title and description combination and click save
+        // WHEN - Enter invalid entityName and description combination and click save
         onView(withId(R.id.add_tpp_title_edit_text)).perform(clearText())
         onView(withId(R.id.add_tpp_description_edit_text)).perform(clearText())
         onView(withId(R.id.save_tpp_fab)).perform(click())
@@ -94,8 +79,8 @@ class AddEditTppFragmentTest {
         val navController = mock(NavController::class.java)
         launchFragment(navController)
 
-        // WHEN - Valid title and description combination and click save
-        onView(withId(R.id.add_tpp_title_edit_text)).perform(replaceText("title"))
+        // WHEN - Valid entityName and description combination and click save
+        onView(withId(R.id.add_tpp_title_edit_text)).perform(replaceText("entityName"))
         onView(withId(R.id.add_tpp_description_edit_text)).perform(replaceText("description"))
         onView(withId(R.id.save_tpp_fab)).perform(click())
 
@@ -123,15 +108,15 @@ class AddEditTppFragmentTest {
         val navController = mock(NavController::class.java)
         launchFragment(navController)
 
-        // WHEN - Valid title and description combination and click save
-        onView(withId(R.id.add_tpp_title_edit_text)).perform(replaceText("title"))
+        // WHEN - Valid entityName and description combination and click save
+        onView(withId(R.id.add_tpp_title_edit_text)).perform(replaceText("entityName"))
         onView(withId(R.id.add_tpp_description_edit_text)).perform(replaceText("description"))
         onView(withId(R.id.save_tpp_fab)).perform(click())
 
         // THEN - Verify that the repository saved the tpp
         val tpps = (repository.getTppsBlocking(true) as Result.Success).data
         assertEquals(tpps.size, 1)
-        assertEquals(tpps[0].title, "title")
-        assertEquals(tpps[0].description, "description")
+        assertEquals(tpps[0].getEntityName(), "entityName")
+        assertEquals(tpps[0].getDescription(), "description")
     }
 }

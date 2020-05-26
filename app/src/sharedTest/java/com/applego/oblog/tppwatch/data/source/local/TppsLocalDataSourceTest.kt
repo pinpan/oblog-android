@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.data.source.local
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -23,7 +8,11 @@ import androidx.test.filters.MediumTest
 import com.applego.oblog.tppwatch.MainCoroutineRule
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.TppsFilter
+import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.NcaEntity
+import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.succeeded
+import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -77,90 +66,95 @@ class TppsLocalDataSourceTest {
     @Test
     fun saveTpp_retrievesTpp() = runBlockingTest {
         // GIVEN - a new tpp saved in the database
-        val newTpp = Tpp("Entity_CZ28173281", "title", "description")
-        newTpp.isFollowed = true
-        localDataSource.saveTpp(newTpp)
+        val newTpp = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        newTpp.followed = true
+        localDataSource.saveTpp(Tpp(newTpp, NcaEntity()))
 
         // WHEN  - Tpp retrieved by ID
-        val result = localDataSource.getTpp(newTpp.id)
+        val result = localDataSource.getTpp(newTpp.getId())
 
         // THEN - Same tpp is returned
         assertThat(result.succeeded, `is`(true))
         result as Success
-        assertThat(result.data.title, `is`("title"))
-        assertThat(result.data.description, `is`("description"))
-        assertThat(result.data.isFollowed, `is`(true))
+        assertThat(result.data.getEntityName(), `is`("entityName"))
+        assertThat(result.data.getDescription(), `is`("description"))
+        assertThat(result.data.isFollowed(), `is`(true))
     }
 
     @Test
     fun followedTpp_retrievedTppIsFollow() = runBlockingTest {
         // Given a new tpp in the persistent repository
-        val newTpp = Tpp("Entity_CZ28173281", "title")
-        localDataSource.saveTpp(newTpp)
+        val newTpp = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "", _globalUrn = "", _ebaEntityVersion = "cz")
+        val tpp = Tpp(newTpp, NcaEntity())
+        localDataSource.saveTpp(tpp)
+
 
         // When followed in the persistent repository
-        localDataSource.udateFollowing(newTpp, true)
-        val result = localDataSource.getTpp(newTpp.id)
+        localDataSource.updateFollowing(tpp, true)
+        val result = localDataSource.getTpp(newTpp.getId())
 
         // Then the tpp can be retrieved from the persistent repository and is Followed
         assertThat(result.succeeded, `is`(true))
         result as Success
-        assertThat(result.data.title, `is`(newTpp.title))
-        assertThat(result.data.isFollowed, `is`(true))
+        assertThat(result.data.getEntityName(), `is`(newTpp.getEntityName()))
+        assertThat(result.data.isFollowed(), `is`(true))
     }
 
     @Test
-    fun activateTpp_retrievedTppIsActive() = runBlockingTest {
+    fun activateTpp_retrievedTppIsUsed() = runBlockingTest {
         // Given a new followed tpp in the persistent repository
-        val newTpp = Tpp("Entity_CZ28173281", "Some title", "Some description")
-        localDataSource.saveTpp(newTpp)
+        val newTpp = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Some entityName", _description = "Some description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        localDataSource.saveTpp(Tpp(newTpp, NcaEntity()))
 
-        localDataSource.setTppActivateFlag(newTpp.id, true)
+        localDataSource.setTppActivateFlag(newTpp.getId(), true)
 
-        // Then the tppk can be retrieved from the persistent repository and is active
-        val result = localDataSource.getTpp(newTpp.id)
+        // Then the tppk can be retrieved from the persistent repository and is used
+        val result = localDataSource.getTpp(newTpp.getId())
 
         assertThat(result.succeeded, `is`(true))
         result as Success
 
-        assertThat(result.data.title, `is`("Some title"))
-        assertThat(result.data.isFollowed, `is`(false))
+        assertThat(result.data.getEntityName(), `is`("Some entityName"))
+        assertThat(result.data.isUsed(), `is`(true))
     }
 
     @Test
     fun clearUnfollowedTpp_tppNotRetrievable() = runBlockingTest {
-        // Given 2 new followed tpps and 1 active tpp in the persistent repository
-        val newTpp1 = Tpp("Entity_CZ28173281", "title")
-        val newTpp2 = Tpp("Entity_CZ28173282", "title2")
-        val newTpp3 = Tpp("Entity_CZ28173283", "title3")
+        // Given 2 new followed tpps and 1 used tpp in the persistent repository
+        val newTppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "", _globalUrn = "", _ebaEntityVersion = "cz")
+        val newTppEntity2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "title2", _description = "", _globalUrn = "", _ebaEntityVersion = "cz")
+        val newTppEntity3 = EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "title3", _description = "", _globalUrn = "", _ebaEntityVersion = "cz")
+        val newTpp1 = Tpp(newTppEntity1, NcaEntity())
+        val newTpp2 = Tpp(newTppEntity2, NcaEntity())
+        val newTpp3 = Tpp(newTppEntity3, NcaEntity())
         localDataSource.saveTpp(newTpp1)
-        localDataSource.udateFollowing(newTpp1, true)
+        localDataSource.updateFollowing(newTpp1, true)
 
         localDataSource.saveTpp(newTpp2)
-        localDataSource.udateFollowing(newTpp2, true)
+        localDataSource.updateFollowing(newTpp2, true)
 
         localDataSource.saveTpp(newTpp3)
         // When followed tpps are cleared in the repository
         localDataSource.clearFollowedTpps()
 
-        // Then the followed tpps cannot be retrieved and the active one can
-        assertThat(localDataSource.getTpp(newTpp1.id).succeeded, `is`(false))
-        assertThat(localDataSource.getTpp(newTpp2.id).succeeded, `is`(false))
+        // Then the followed tpps cannot be retrieved and the used one can
+        assertThat(localDataSource.getTpp(newTpp1.getId()).succeeded, `is`(false))
+        assertThat(localDataSource.getTpp(newTpp2.getId()).succeeded, `is`(false))
 
-        val result3 = localDataSource.getTpp(newTpp3.id)
+        val result3 = localDataSource.getTpp(newTpp3.getId())
 
         assertThat(result3.succeeded, `is`(true))
         result3 as Success
 
-        assertThat(result3.data, `is`(newTpp3))
+        assertEquals("Stored Tpp is not the same as fetched", result3.data.ebaEntity, newTpp3.ebaEntity)
     }
 
     @Test
     fun deleteAllTpps_emptyListOfRetrievedTpp() = runBlockingTest {
         // Given a new tpp in the persistent repository and a mocked callback
-        val newTpp = Tpp("Entity_CZ28173281", "title")
+        val newTppEntity = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "", _globalUrn = "", _ebaEntityVersion = "cz")
 
-        localDataSource.saveTpp(newTpp)
+        localDataSource.saveTpp(Tpp(newTppEntity, NcaEntity()))
 
         // When all tpps are deleted
         localDataSource.deleteAllTpps()
@@ -174,11 +168,11 @@ class TppsLocalDataSourceTest {
     @Test
     fun getTpps_retrieveSavedTpps() = runBlockingTest {
         // Given 2 new tpps in the persistent repository
-        val newTpp1 = Tpp("Entity_CZ28173281", "title")
-        val newTpp2 = Tpp("Entity_CZ28173282", "title2")
+        val newTppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "", _globalUrn = "", _ebaEntityVersion = "cz")
+        val newTppEntity2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "title2", _description = "", _globalUrn = "", _ebaEntityVersion = "cz")
 
-        localDataSource.saveTpp(newTpp1)
-        localDataSource.saveTpp(newTpp2)
+        localDataSource.saveTpp(Tpp(newTppEntity1, NcaEntity()))
+        localDataSource.saveTpp(Tpp(newTppEntity2, NcaEntity()))
         // Then the tpps can be retrieved from the persistent repository
         val results = localDataSource.getTpps(TppsFilter()) as Success<List<Tpp>>
         val tpps = results.data

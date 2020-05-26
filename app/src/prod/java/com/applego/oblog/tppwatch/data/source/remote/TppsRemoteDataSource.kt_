@@ -1,26 +1,11 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.data.source.remote
 
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
-import com.applego.oblog.tppwatch.data.source.remote.eba.TppsListResponse
+import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import kotlinx.coroutines.delay
 
 /**
@@ -44,7 +29,7 @@ object TppsRemoteDataSource : RemoteTppDataSource {
         return Success(tpps)
     }
 
-    override suspend fun getTpp(tppId: String): Result<Tpp> {
+    override suspend fun getEbaEntity(tppId: String): Result<Tpp> {
         // Simulate network by delaying the execution.
         delay(SERVICE_LATENCY_IN_MILLIS)
         TPPS_SERVICE_DATA[tppId]?.let {
@@ -58,22 +43,22 @@ object TppsRemoteDataSource : RemoteTppDataSource {
         TPPS_SERVICE_DATA[newTpp.id] = newTpp
     }
 
-    /*override suspend fun saveTpp(tpp: Tpp) {
-        TPPS_SERVICE_DATA[tpp.id] = tpp
+    /*override suspend fun saveTpp(ebaEntity: Tpp) {
+        TPPS_SERVICE_DATA[ebaEntity.id] = ebaEntity
     }
 
-    override suspend fun unfollowTpp(tpp: Tpp) {
-        val followedTpp = Tpp(tpp.title, tpp.description, true, tpp.id)
-        TPPS_SERVICE_DATA[tpp.id] = followedTpp
+    override suspend fun unfollowTpp(ebaEntity: Tpp) {
+        val followedTpp = Tpp(ebaEntity.title, ebaEntity.description, true, ebaEntity.id)
+        TPPS_SERVICE_DATA[ebaEntity.id] = followedTpp
     }
 
     override suspend fun unfollowTpp(tppId: String) {
         // Not required for the remote data source
     }
 
-    override suspend fun activateTpp(tpp: Tpp) {
-        val activeTpp = Tpp(tpp.title, tpp.description, false, tpp.id)
-        TPPS_SERVICE_DATA[tpp.id] = activeTpp
+    override suspend fun activateTpp(ebaEntity: Tpp) {
+        val usedTpp = Tpp(ebaEntity.title, ebaEntity.description, false, ebaEntity.id)
+        TPPS_SERVICE_DATA[ebaEntity.id] = usedTpp
     }
 
     override suspend fun activateTpp(tppId: String) {

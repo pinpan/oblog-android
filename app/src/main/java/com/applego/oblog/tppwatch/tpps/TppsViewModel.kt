@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.tpps
 
 import android.os.Bundle
@@ -26,7 +11,11 @@ import androidx.lifecycle.viewModelScope
 import com.applego.oblog.tppwatch.Event
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.model.EbaService
+import com.applego.oblog.tppwatch.data.model.Psd2Service
+import com.applego.oblog.tppwatch.data.model.SearchFilter
+import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.data.source.local.*
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.launch
@@ -40,7 +29,7 @@ class TppsViewModel(
 ) : ViewModel() {
 
     private var fetchedItems : List<Tpp> = emptyList()
-    private val _items = MutableLiveData<List<Tpp>>().apply { value = emptyList() }
+    private val _items = MutableLiveData<List<Tpp>>().apply { value = fetchedItems }
     val items: MutableLiveData<List<Tpp>> = _items
 
     private val _dataLoading = MutableLiveData<Boolean>()
@@ -72,6 +61,9 @@ class TppsViewModel(
     private val _newTppEvent = MutableLiveData<Event<Unit>>()
     val newTppEvent: LiveData<Event<Unit>> = _newTppEvent
 
+    private val _refreshEvent = MutableLiveData<Event<Unit>>()
+    val refreshEvent: LiveData<Event<Unit>> = _refreshEvent
+
     private val _aboutEvent = MutableLiveData<Event<Unit>>()
     val aboutEvent: LiveData<Event<Unit>> = _aboutEvent
 
@@ -89,6 +81,33 @@ class TppsViewModel(
 
     fun refresh() {
         loadTpps(false)
+    }
+
+
+    fun refreshTpp(tppId : String?) {
+        if (!tppId.isNullOrBlank() && !tppId.equals("0")) {
+            //_dataLoading.value = true
+            //wrapEspressoIdlingResource {
+                viewModelScope.launch {
+                    val tpp = findTppInList(fetchedItems, tppId)
+                    if (tpp != null) {
+                        tppsRepository.refreshTpp(tpp!!)
+                    }
+                    loadTpps(false)
+
+                    //_dataLoading.value = false
+                }
+            //}
+        }
+    }
+
+    private fun findTppInList(items: List<Tpp>, tppId: String): Tpp? {
+        items.forEach() {
+            if (it.getId() == tppId) {
+                return it
+            }
+        }
+        return null
     }
 
     /**
@@ -111,7 +130,7 @@ class TppsViewModel(
             when (requestType) {
                 TppsFilterType.USED_TPPS -> {
                     setFilterStatusViews(
-                            R.string.label_active, R.string.no_tpps_active,
+                            R.string.label_used, R.string.no_tpps_used,
                             R.drawable.ic_check_circle_96dp, true
                     )
                 }
@@ -133,13 +152,6 @@ class TppsViewModel(
                             R.drawable.ic_verified_user_96dp, true
                     )
                 }
-                /* This is handled by the slider
-                TppsFilterType.ONLY_PSD2_TPPS -> {
-                    setFilterStatusViews(
-                            R.string.label_followed, R.string.no_tpps_followed,
-                            R.drawable.ic_verified_user_96dp, false
-                    )
-                }*/
                 TppsFilterType.REVOKED_TPPS -> {
                     setFilterStatusViews(
                             R.string.label_revoked, R.string.no_revoked_tpps,
@@ -169,24 +181,18 @@ class TppsViewModel(
     }
 
     fun followTpp(tpp: Tpp, followed: Boolean) = viewModelScope.launch {
-
         viewModelScope.launch {
             tppsRepository.setTppFollowedFlag(tpp, followed)
             showSnackbarMessage(R.string.tpp_marked_followed)
         }
-
-        // Refresh single Tpp
-        //loadTpps(false)
     }
 
-    fun activateTpp(tpp: Tpp, active: Boolean) = viewModelScope.launch {
+    fun activateTpp(tpp: Tpp, used: Boolean) = viewModelScope.launch {
         viewModelScope.launch {
-            tppsRepository.setTppActivateFlag(tpp, active)
-            showSnackbarMessage(R.string.tpp_marked_active)
+            tppsRepository.setTppActivateFlag(tpp, used)
+            showSnackbarMessage(R.string.tpp_marked_used)
 
         }
-            // Refresh single Tpp
-            //loadTpps(false)
     }
 
     /**
@@ -212,7 +218,7 @@ class TppsViewModel(
         wrapEspressoIdlingResource {
 
             viewModelScope.launch {
-                val tppsResult = tppsRepository.getTpps(forceUpdate)
+                val tppsResult = tppsRepository.getAllTpps(forceUpdate)
 
                 if (tppsResult is Success) {
                     fetchedItems = tppsResult.data
@@ -221,7 +227,7 @@ class TppsViewModel(
 
                     isDataLoadingError.value = false
                 } else {
-                    isDataLoadingError.value = false
+                    isDataLoadingError.value = true
                     _items.value = emptyList()
                     showSnackbarMessage(R.string.loading_tpps_error)
                 }
@@ -281,7 +287,7 @@ class TppsViewModel(
             filteredTpps.addAll(inputTpps)
         } else {
             for (tpp in inputTpps) {
-                if (tpp.title.contains(_searchFilter.title, true)) {
+                if (tpp.getEntityName().contains(_searchFilter.title, true)) {
                     (filteredTpps as ArrayList<Tpp>).add(tpp)
                 }
             }
@@ -302,16 +308,16 @@ class TppsViewModel(
                 userInterests.forEach {
                     when (it.key) {
                         //TppsFilterType.ALL_TPPS -> filteredTpps.add(tpp)
-                        TppsFilterType.USED_TPPS -> if (it.value && tpp.isActive) {
+                        TppsFilterType.USED_TPPS -> if (it.value && tpp.isUsed()) {
                             filteredTpps.add(tpp)
                         }
-                        TppsFilterType.FOLLOWED_TPPS -> if (it.value && tpp.isFollowed) {
+                        TppsFilterType.FOLLOWED_TPPS -> if (it.value && tpp.isFollowed()) {
                             filteredTpps.add(tpp)
                         }
-                        TppsFilterType.PSD2_TPPS -> if (it.value && tpp.isPsd2) {
+                        TppsFilterType.PSD2_TPPS -> if (it.value && tpp.isPsd2()) {
                             filteredTpps.add(tpp)
                         }
-                        TppsFilterType.PSD2_TPPS -> if (it.value && tpp.isFis) {
+                        TppsFilterType.PSD2_TPPS -> if (it.value && tpp.isFis()) {
                             filteredTpps.add(tpp)
                         }
                     }
@@ -329,17 +335,13 @@ class TppsViewModel(
         }
 
         var filteredTpps = ArrayList<Tpp>()
-        /*if (_searchFilter.countries.isNullOrBlank() || _searchFilter.countries.equals("<ALL>")) {
-                filteredTpps.addAll(inputTpps)
-        } else {*/
-            _searchFilter.countries.forEach {
-                inputTpps?.forEach {
-                    if (it.country.equals(country)) {
-                        filteredTpps.add(it)
-                    }
+        _searchFilter.countries.forEach {
+            inputTpps?.forEach {
+                if (it.getCountry().equals(country)) {
+                    filteredTpps.add(it)
                 }
             }
-        //}
+        }
 
         return filteredTpps
     }
@@ -356,10 +358,10 @@ class TppsViewModel(
         } else {
             val psdService = EbaService.findPsd2Service(service)
             inputTpps?.forEach lit@{ tpp ->
-                if (tpp.ebaPassport != null) {
-                    tpp.ebaPassport.countryMap.entries.forEach() {
+                if (tpp.getEbaPassport() != null) {
+                    tpp.getEbaPassport().countryMap.entries.forEach() {
                         if (it.value != null) {
-                            val services = it.value as List<Service>
+                            val services = it.value as List<Psd2Service>
                             services.forEach {serv ->
                                 if (serv.title.equals(psdService.code)) {
                                     filteredTpps.add(tpp)
@@ -404,9 +406,8 @@ class TppsViewModel(
     }
 
     fun saveSearchFilter(outState: Bundle) {
-        //outState.putBoolean("created", viewModel._searchFilter.created)
 
-        outState.putString("title", _searchFilter.title)
+        outState.putString("entityName", _searchFilter.title)
         outState.putBoolean("searchDescription", _searchFilter.searchDescription)
         outState.putString("countries", _searchFilter.countries)
         outState.putString("services", _searchFilter.services)
@@ -416,7 +417,7 @@ class TppsViewModel(
         outState.putBoolean("revokedOnly", _searchFilter.revokedOnly)
         outState.putBoolean("showFis", _searchFilter.showFis)
         outState.putBoolean("followed", _searchFilter.followed)
-        outState.putBoolean("active", _searchFilter.active)
+        outState.putBoolean("used", _searchFilter.used)
     }
 
     fun setupSearchFilter(savedInstanceState: Bundle?) {
@@ -424,37 +425,37 @@ class TppsViewModel(
             _searchFilter.title = savedInstanceState?.getString("", "") ?: ""
             _searchFilter.searchDescription = savedInstanceState?.getBoolean("searchDescription", false)
                     ?: false
-            _searchFilter.countries = savedInstanceState?.getString("countries", "") ?: ""
-            _searchFilter.services = savedInstanceState?.getString("services", "") ?: ""
+            _searchFilter.countries = savedInstanceState.getString("countries", "") ?: ""
+            _searchFilter.services = savedInstanceState.getString("services", "") ?: ""
 
             if (savedInstanceState.getBoolean("installed", true)) {
                 _searchFilter.userSelectedFilterTypes.put(TppsFilterType.USED_TPPS, true)
             }
 
             // TODO: Duplicates installed or has semantic of: INSTALLED AND USED?
-            if (savedInstanceState.getBoolean("active", true)) {
-                _searchFilter.userSelectedFilterTypes.put(TppsFilterType.USED_TPPS, true) //_searchFilter.active
+            if (savedInstanceState.getBoolean("used", true)) {
+                _searchFilter.userSelectedFilterTypes.put(TppsFilterType.USED_TPPS, true) //_searchFilter.used
             }
 
             if (savedInstanceState.getBoolean("followed", true)) {
                 _searchFilter.userSelectedFilterTypes.put(TppsFilterType.FOLLOWED_TPPS, true) //_searchFilter.followed
             }
 
-            if (savedInstanceState?.getBoolean("psd2Only", false)) {
+            if (savedInstanceState.getBoolean("psd2Only", false)) {
                 _searchFilter.userSelectedFilterTypes.put(TppsFilterType.PSD2_TPPS, true) //_searchFilter.psd2Only
             }
 
-            if (savedInstanceState?.getBoolean("onlyPsd2", false)) {
+            if (savedInstanceState.getBoolean("onlyPsd2", false)) {
                 _searchFilter.userSelectedFilterTypes.put(TppsFilterType.ONLY_PSD2_TPPS, true) //_searchFilter.psd2Only
             }
 
-            if (savedInstanceState?.getBoolean("showFis", false)) {
+            if (savedInstanceState.getBoolean("showFis", false)) {
                 _searchFilter.userSelectedFilterTypes.put(TppsFilterType.FIS_AS_TPPS, true) //_searchFilter.showFis
             }
 
             // THIS is excluding all other filteres - means:
             //    Get all whos PSD2 license was revoked regardless if are used, followed, fis ...
-            if (savedInstanceState?.getBoolean("revokedOnly", false)) {
+            if (savedInstanceState.getBoolean("revokedOnly", false)) {
                 _searchFilter.userSelectedFilterTypes.put(TppsFilterType.REVOKED_TPPS, true) //_searchFilter.revokedOnly
             }
         }

@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.statistics
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -20,9 +5,11 @@ import com.applego.oblog.tppwatch.FakeFailingTppsLocalDataSource
 import com.applego.oblog.tppwatch.FakeFailingTppsRemoteDataSource
 import com.applego.oblog.tppwatch.LiveDataTestUtil
 import com.applego.oblog.tppwatch.MainCoroutineRule
-import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.data.source.DefaultTppsRepository
+import com.applego.oblog.tppwatch.data.repository.DefaultTppsRepository
 import com.applego.oblog.tppwatch.data.source.FakeRepository
+import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.NcaEntity
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -37,7 +24,7 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class StatisticsViewModelTest {
 
-    // Executes each tpp synchronously using Architecture Components.
+    // Executes each ebaEntity synchronously using Architecture Components.
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
@@ -70,16 +57,16 @@ class StatisticsViewModelTest {
 
     @Test
     fun loadNonEmptyTppsFromRepository_NonEmptyResults() {
-        // We initialise the tpps to 3, with one active and two followed
-        val tpp1 = Tpp("Entity_CZ28173281", "Title1", "Description1")
-        tpp1.isFollowed = true
-        val tpp2 = Tpp("Entity_CZ28173282", "Title2", "Description2")
-        tpp2.isFollowed = true
-        val tpp3 = Tpp("Entity_CZ28173283", "Title3", "Description3")
-        tpp3.isFollowed = true
-        val tpp4 = Tpp("Entity_CZ28173284", "Title4", "Description4")
-        tpp3.isActive = true
-        tppsRepository.addTpps(tpp1, tpp2, tpp3, tpp4)
+        // We initialise the tpps to 3, with one used and two followed
+        val tppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        tppEntity1.followed = true
+        val tppEntity2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "Title2", _description = "Description2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        tppEntity2.followed = true
+        val tppEntity3 = EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3", _description = "Description3", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        tppEntity3.followed = true
+        val tppEntity4 = EbaEntity(_entityId = "28173284", _entityCode = "Entity_CZ28173284", _entityName = "Title4", _description = "Description4", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        tppEntity3.used = true
+        tppsRepository.addTpps(Tpp(tppEntity1, NcaEntity()), Tpp(tppEntity2, NcaEntity()), Tpp(tppEntity3, NcaEntity()), Tpp(tppEntity4, NcaEntity()))
 
         // When loading of Tpps is requested
         statisticsViewModel.start()
@@ -87,7 +74,7 @@ class StatisticsViewModelTest {
         // Then the results are not empty
         assertThat(LiveDataTestUtil.getValue(statisticsViewModel.empty))
             .isFalse()
-        assertThat(LiveDataTestUtil.getValue(statisticsViewModel.activeTppsPercent))
+        assertThat(LiveDataTestUtil.getValue(statisticsViewModel.usedTppsPercent))
             .isEqualTo(25f)
         assertThat(LiveDataTestUtil.getValue(statisticsViewModel.followedTppsPercent))
             .isEqualTo(75f)
@@ -97,11 +84,12 @@ class StatisticsViewModelTest {
     fun loadStatisticsWhenTppsAreUnavailable_CallErrorToDisplay() =
         mainCoroutineRule.runBlockingTest {
             val errorViewModel = StatisticsViewModel(
-                DefaultTppsRepository(
-                    FakeFailingTppsRemoteDataSource,
-                    FakeFailingTppsLocalDataSource,
-                    Dispatchers.Main  // Main is set in MainCoroutineRule
-                )
+                    DefaultTppsRepository(
+                            FakeFailingTppsRemoteDataSource,
+                            FakeFailingTppsRemoteDataSource,
+                            FakeFailingTppsLocalDataSource,
+                            Dispatchers.Main  // Main is set in MainCoroutineRule
+                    )
             )
 
             // When statistics are loaded
@@ -117,7 +105,7 @@ class StatisticsViewModelTest {
         // Pause dispatcher so we can verify initial values
         mainCoroutineRule.pauseDispatcher()
 
-        // Load the tpp in the viewmodel
+        // Load the ebaEntity in the viewmodel
         statisticsViewModel.start()
 
         // Then progress indicator is shown

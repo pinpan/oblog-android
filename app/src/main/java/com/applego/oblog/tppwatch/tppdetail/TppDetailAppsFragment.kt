@@ -1,61 +1,35 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.tppdetail
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SimpleExpandableListAdapter
-import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.applego.oblog.tppwatch.EventObserver
 import com.applego.oblog.tppwatch.R
+import com.applego.oblog.tppwatch.addedittppapp.AddEditTppAppFragmentDirections
+import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.databinding.TppdetailAppsFragBinding
-import com.applego.oblog.tppwatch.databinding.TppdetailFragBinding
-import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
  * Main UI for the tpp detail screen.
  */
-class TppDetailAppsFragment(private val viewModel: TppDetailViewModel, @Nullable private val tppId : String) : Fragment() {
+class TppDetailAppsFragment(private val viewModel: AppsViewModel) : Fragment() {
     private lateinit var viewDataBinding: TppdetailAppsFragBinding
 
-    private val args: TppDetailFragmentArgs by navArgs()
-
-    private lateinit var listAdapter: TppDetailAdapter
-
-    //private val viewModel by viewModels<TppDetailAppsViewModel> { getViewModelFactory() }
+    private lateinit var listAdapter: AppsAdapter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
         setupListAdapter()
-        setupFab()
+        setupAddFab()
+        setupEditFab()
         view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
         setupNavigation()
 
@@ -65,44 +39,69 @@ class TppDetailAppsFragment(private val viewModel: TppDetailViewModel, @Nullable
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.viewmodel
         if (viewModel != null) {
-            listAdapter = TppDetailAdapter(viewModel, context!!, R.layout.tpp_passport)
-            viewDataBinding.passportsList.adapter = listAdapter
-
-            /* TODO:
-            expandableListAdapter = SimpleExpandableListAdapter(
-                    context!!
-                    , viewModel.tpp.value?.ebaPassport?.serviceMaps
-                    , R.layout.tpp_passport
-                    , R.layout.tpp_passport
-                    , R.layout.tpp_passport
-                    ,
-            )
-            viewDataBinding.passportsExpandableList.setAdapter(expandableListAdapter)
-            */
+            listAdapter = AppsAdapter(viewModel, context!!, R.layout.app_item)
+            viewDataBinding.appsList.adapter = listAdapter
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
         }
     }
 
     private fun setupNavigation() {
-        /*viewModel.deleteTppEvent.observe(this, EventObserver {
-            val action = TppDetailFragmentDirections
-                .actionTppDetailFragmentToTppsFragment(DELETE_RESULT_OK)
-            findNavController().navigate(action)
-        })*/
-        viewModel.editTppEvent.observe(this, EventObserver {
-            val action = TppDetailFragmentDirections
-                .actionTppDetailFragmentToAddEditTppFragment(
-                    args.tppId,
-                    resources.getString(R.string.edit_tpp)
-                )
+         viewModel.editAppEvent.observe(this.parentFragment!!, EventObserver {
+            val action = TppDetailTabsFragmentDirections
+                .actionTppDetailAppsFragmentToAddEditTppAppFragment(
+                        viewModel.tpp.value!!.getId(),
+                        it,
+                        "Edit Tpp application#" + viewModel.getApp(it) ?: "N/A"
+                    )
+            // TODO#FIX: Throws Action not found, because the current context is the Tabs fragment,
+            //  We didn't move to the Apps using action and changing the destination"
             findNavController().navigate(action)
         })
     }
 
-    private fun setupFab() {
-        activity?.findViewById<View>(R.id.edit_tpp_fab)?.setOnClickListener {
-            viewModel.editTpp()
+    private fun setupEditFab() {
+        activity?.findViewById<FloatingActionButton>(R.id.edit_app_fab)?.let {
+            it.setOnClickListener {
+                //viewModel.editApp()
+                navigateToEditApp()
+            }
+        }
+    }
+
+    private fun setupAddFab() {
+        activity?.findViewById<FloatingActionButton>(R.id.add_app_fab)?.let {
+            it.setOnClickListener {
+                //viewModel.addApp()
+                navigateToAddNewApp()
+            }
+        }
+    }
+
+    private fun navigateToAddNewApp() {
+        val action = TppDetailTabsFragmentDirections
+                .actionTppDetailAppsFragmentToAddEditTppAppFragment(
+                        viewModel.tpp.value!!.getId(),
+                        null,
+                        resources.getString(R.string.add_app)
+                )
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToEditApp() {
+        val theApp : App
+
+        if ((viewModel.items != null) && (viewModel.items != null) && !viewModel.items.isEmpty()) {
+            theApp = viewModel.items.get(0); /// TODO-FixIt: Edits always the first app. Place edit control next to app and seti the app as its context
+            val action = TppDetailTabsFragmentDirections
+                    .actionTppDetailAppsFragmentToAddEditTppAppFragment(
+                        viewModel.tpp.value!!.getId(),
+                        theApp.id,
+                        resources.getString(R.string.add_app)
+                )
+            findNavController().navigate(action)
+        } else {
+            // TODO: Alert uset that no App was selected
         }
     }
 
@@ -115,31 +114,17 @@ class TppDetailAppsFragment(private val viewModel: TppDetailViewModel, @Nullable
         val view = inflater.inflate(R.layout.tppdetail_apps_frag, container, false)
 
         viewDataBinding = TppdetailAppsFragBinding.bind(view).apply {
-            viewmodel = viewModel
+            this.viewmodel = viewModel
         }
 
-        viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
+        // Also set in onAActivityCreated: viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
         /*CoroutineScope(Dispatchers.Main).launch {
-            viewModel.start(viewModel.tpp.value?.id)
-            viewModel.start(tppId) //args.tppId)
+            //tpp
+            viewModel.start(args.tppId)
         }*/
 
         setHasOptionsMenu(true)
         return view
     }
-
-    /*override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_delete -> {
-                viewModel.deleteTpp()
-                true
-            }
-            else -> false
-        }
-    }*/
-
-    /*override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.tppdetail_fragment_menu, menu)
-    }*/
 }

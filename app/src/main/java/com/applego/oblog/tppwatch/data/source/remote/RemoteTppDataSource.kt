@@ -2,8 +2,7 @@ package com.applego.oblog.tppwatch.data.source.remote
 
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.TppFilter
-import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.data.source.remote.eba.TppsListResponse
+import com.applego.oblog.tppwatch.data.model.Tpp
 
 interface RemoteTppDataSource {
 
@@ -11,5 +10,7 @@ interface RemoteTppDataSource {
 
     suspend fun filterTpps(filter: TppFilter): Result<TppsListResponse>
 
-    suspend fun getTpp(tppId: String): Result<Tpp>
+    suspend fun getTppByName(country: String, tppName: String): Result<Tpp>
+
+    /*suspend */fun getTppById(coutry: String, tppId: String): Result<Tpp>
 }

@@ -32,7 +32,7 @@ class EmptySubmitSearchView : SearchView {
         mSearchSrcTextView = this.findViewById(searchPlateId) as AutoCompleteTextView
         mSearchSrcTextView?.setOnEditorActionListener({ textView, i, keyEvent ->
             if (listener != null) {
-                listener!!.onQueryTextSubmit(getQuery().toString())
+                listener.onQueryTextSubmit(getQuery().toString())
             }
             true
         })

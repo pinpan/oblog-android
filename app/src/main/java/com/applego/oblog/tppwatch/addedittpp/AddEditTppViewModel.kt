@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.applego.oblog.tppwatch.addedittpp
 
 import androidx.lifecycle.LiveData
@@ -23,8 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.applego.oblog.tppwatch.Event
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.repository.TppsRepository
+import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.NcaEntity
 import kotlinx.coroutines.launch
 
 /**
@@ -35,7 +21,7 @@ class AddEditTppViewModel(
 ) : ViewModel() {
 
     // Two-way databinding, exposing MutableLiveData
-    val title = MutableLiveData<String>()
+    val entityName = MutableLiveData<String>()
 
     // Two-way databinding, exposing MutableLiveData
     val description = MutableLiveData<String>()
@@ -68,6 +54,7 @@ class AddEditTppViewModel(
             isNewTpp = true
             return
         }
+
         if (isDataLoaded) {
             // No need to populate, already have data.
             return
@@ -78,46 +65,39 @@ class AddEditTppViewModel(
 
         viewModelScope.launch {
             tppsRepository.getTpp(tppId).let { result ->
+                _dataLoading.value = false
                 if (result is Success) {
                     onTppLoaded(result.data)
-                } else {
-                    onDataNotAvailable()
                 }
             }
         }
     }
 
     private fun onTppLoaded(tpp: Tpp) {
-        title.value = tpp.title
-        description.value = tpp.description
-        tppFollowed = tpp.isFollowed
-        _dataLoading.value = false
+        entityName.value = tpp.getEntityName()
+        description.value = tpp.getDescription()
+        tppFollowed = tpp.isFollowed()
         isDataLoaded = true
     }
 
     private fun onDataNotAvailable() {
-        _dataLoading.value = false
     }
 
     // Called when clicking on fab.
     fun saveTpp() {
-        val currentTitle = title.value
+        val currentTitle = entityName.value
         val currentDescription = description.value
 
         if (currentTitle == null || currentDescription == null) {
             _snackbarText.value = Event(R.string.empty_tpp_message)
             return
         }
-        if (Tpp("Entity_CZ28173282", currentTitle, currentDescription).isEmpty) {
-            _snackbarText.value = Event(R.string.empty_tpp_message)
-            return
-        }
 
         val currentTppId = tppId
         if (isNewTpp || currentTppId == null) {
-            createTpp(Tpp("Entity_CZ28173282", currentTitle, currentDescription))
+            createTpp(Tpp(EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = currentTitle, _description = currentDescription, _globalUrn = "", _ebaEntityVersion = "", _country = "cz"), NcaEntity()))
         } else {
-            val tpp = Tpp("Entity_CZ28173282", currentTitle, currentDescription, "", currentTppId)
+            val tpp = Tpp(EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = currentTitle, _description = currentDescription, _globalUrn = "", _ebaEntityVersion = currentTppId, _country = "cz"), NcaEntity())
             updateTpp(tpp)
         }
     }
@@ -129,7 +109,7 @@ class AddEditTppViewModel(
 
     private fun updateTpp(tpp: Tpp) {
         if (isNewTpp) {
-            throw RuntimeException("updateTpp() was called but tpp is new.")
+            throw RuntimeException("updateTppEntity() was called but tpp is new.")
         }
         viewModelScope.launch {
             tppsRepository.saveTpp(tpp)

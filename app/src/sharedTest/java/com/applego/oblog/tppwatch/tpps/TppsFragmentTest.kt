@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.applego.oblog.tppwatch.tpps
 
 import android.content.Context
@@ -38,9 +22,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.ServiceLocator
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.FakeRepository
-import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.repository.TppsRepository
+import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.NcaEntity
 import com.applego.oblog.tppwatch.util.saveTppBlocking
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -49,6 +35,7 @@ import org.hamcrest.Matcher
 import org.hamcrest.core.IsNot.not
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
@@ -83,7 +70,7 @@ class TppsFragmentTest {
     @Test
     fun displayTpp_whenRepositoryHasData() {
         // GIVEN - One tpp already in the repository
-        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1"))
+        repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"), NcaEntity()))
 
         // WHEN - On startup
         launchActivity()
@@ -93,11 +80,11 @@ class TppsFragmentTest {
     }
 
     @Test
-    fun displayActiveTpp() {
-        val tpp = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
-        tpp.isActive = true
-        tpp.isFollowed = false
-        repository.saveTppBlocking(tpp)
+    fun displayUsedTpp() {
+        val tppEntity = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        tppEntity.used = true
+        tppEntity.followed = false
+        repository.saveTppBlocking(Tpp(tppEntity, NcaEntity()))
 
         launchActivity()
 
@@ -105,12 +92,12 @@ class TppsFragmentTest {
 
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_active)).perform(click()) // Goes to FALSE
+        onView(withText(R.string.nav_used)).perform(click()) // Goes to FALSE
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
 
-        tpp.isActive = false
-        tpp.isFollowed = true
-        repository.saveTppBlocking(tpp)
+        tppEntity.used = false
+        tppEntity.followed = true
+        repository.saveTppBlocking(Tpp(tppEntity, NcaEntity()))
 
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_followed)).perform(click())
@@ -119,16 +106,16 @@ class TppsFragmentTest {
 
     @Test
     fun displayFollowedTpp() {
-        var tpp1 = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
-        tpp1.isFollowed = true
-        repository.saveTppBlocking(tpp1)
+        var tppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        tppEntity1.followed = true
+        repository.saveTppBlocking(Tpp(tppEntity1, NcaEntity()))
 
         launchActivity()
 
         onView(withText("TITLE1")).check(matches(isDisplayed()))
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_active)).perform(click())
+        onView(withText(R.string.nav_used)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
 
         onView(withId(R.id.menu_filter)).perform(click())
@@ -138,7 +125,7 @@ class TppsFragmentTest {
 
     //@Test
     fun deleteOneTpp() {
-        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1"))
+        repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"), NcaEntity()))
 
         launchActivity()
 
@@ -154,10 +141,11 @@ class TppsFragmentTest {
         onView(withText("TITLE1")).check(doesNotExist())
     }
 
-    //@Test
+    @Ignore
+    @Test
     fun deleteOneOfTwoTpps() {
-        repository.saveTppBlocking(Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1"))
-        repository.saveTppBlocking(Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION2"))
+        repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"), NcaEntity()))
+        repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"), NcaEntity()))
 
         launchActivity()
 
@@ -177,8 +165,8 @@ class TppsFragmentTest {
 
     @Test
     fun markTppAsFollowed() {
-        var tpp1 = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
-        repository.saveTppBlocking(tpp1)
+        var tppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        repository.saveTppBlocking(Tpp(tppEntity1, NcaEntity()))
 
         launchActivity()
 
@@ -200,34 +188,34 @@ class TppsFragmentTest {
     }
 
     @Test
-    fun markTppAsActive() {
-        var aTpp = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
-        repository.saveTppBlocking(aTpp)
+    fun markTppAsUsed() {
+        var aTpp = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        repository.saveTppBlocking(Tpp(aTpp, NcaEntity()))
 
         launchActivity()
 
-        // Mark the tpp as active
-        onView(checkboxActive()).perform(click())
+        // Mark the tpp as used
+        onView(checkboxUsed()).perform(click())
 
-        // Verify tpp is shown as active
+        // Verify tpp is shown as used
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_all)).perform(click())
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_active)).perform(click())
+        onView(withText(R.string.nav_used)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_active)).perform(click())
+        onView(withText(R.string.nav_used)).perform(click())
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
     }
 
     @Test
     fun showAllTpps() {
-        // Add one active tpp and one followed tpp
-        var tpp1 = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
-        repository.saveTppBlocking(tpp1)
-        var tpp2 = Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION2")
-        repository.saveTppBlocking(tpp2)
+        // Add one used tpp and one followed tpp
+        var tpp1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        repository.saveTppBlocking(Tpp(tpp1, NcaEntity()))
+        var tpp2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        repository.saveTppBlocking(Tpp(tpp2, NcaEntity()))
 
         launchActivity()
 
@@ -248,18 +236,18 @@ class TppsFragmentTest {
     }
 
     @Test
-    fun showActiveTpps() {
-        // Add 2 active tpps and one followed tpp
-        var tpp1 = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
-        tpp1.isActive = true
-        var tpp2 = Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION2")
-        tpp2.isActive = true
-        var tpp3 = Tpp("Entity_CZ28173283", "TITLE3", "DESCRIPTION3")
-        tpp3.isFollowed = true
+    fun showUsedTpps() {
+        // Add 2 used tpps and one followed tpp
+        var tppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        tppEntity1.used = true
+        var tppEntity2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        tppEntity2.used = true
+        var tppEntity3 = EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "TITLE3", _description = "DESCRIPTION3", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        tppEntity3.followed = true
 
-        repository.saveTppBlocking(tpp1)
-        repository.saveTppBlocking(tpp2)
-        repository.saveTppBlocking(tpp3)
+        repository.saveTppBlocking(Tpp(tppEntity1, NcaEntity()))
+        repository.saveTppBlocking(Tpp(tppEntity2, NcaEntity()))
+        repository.saveTppBlocking(Tpp(tppEntity3, NcaEntity()))
 
         launchActivity()
         // By default ALL is selected
@@ -267,16 +255,16 @@ class TppsFragmentTest {
         onView(withText("TITLE2")).check(matches(isDisplayed()))
         onView(withText("TITLE3")).check(matches(isDisplayed()))
 
-        // Verify that the active tpps are not shown, but others (e.g. followed) are shown
+        // Verify that the used tpps are not shown, but others (e.g. followed) are shown
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_active)).perform(click())
+        onView(withText(R.string.nav_used)).perform(click())
         onView(withText("TITLE1")).check(doesNotExist())
         onView(withText("TITLE2")).check(doesNotExist())
         onView(withText("TITLE3")).check(matches(isDisplayed()))
 
-        // Verify that the active tpps are not shown, but others (e.g. followed) are shown
+        // Verify that the used tpps are not shown, but others (e.g. followed) are shown
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_active)).perform(click())
+        onView(withText(R.string.nav_used)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withText("TITLE2")).check(matches(isDisplayed()))
         onView(withText("TITLE3")).check(matches(isDisplayed()))
@@ -284,17 +272,16 @@ class TppsFragmentTest {
 
     @Test
     fun showFollowedTpps() {
-        // Add one active tpp and 2 followed tpps
-        var tpp1 = Tpp("Entity_CZ28173281", "TITLE1", "DESCRIPTION1")
-        tpp1.isActive = true
-
-        var tpp2 = Tpp("Entity_CZ28173282", "TITLE2", "DESCRIPTION2")
-        tpp2.isFollowed = true
-        var tpp3 = Tpp("Entity_CZ28173283", "TITLE3", "DESCRIPTION3")
-        tpp3.isFollowed = true
-        repository.saveTppBlocking(tpp1)
-        repository.saveTppBlocking(tpp2)
-        repository.saveTppBlocking(tpp3)
+        // Add one used tpp and 2 followed tpps
+        var tppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        tppEntity1.used = true
+        var tppEntity2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        tppEntity2.followed = true
+        var tppEntity3 = EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "TITLE3", _description = "DESCRIPTION3", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        tppEntity3.followed = true
+        repository.saveTppBlocking(Tpp(tppEntity1, NcaEntity()))
+        repository.saveTppBlocking(Tpp(tppEntity2, NcaEntity()))
+        repository.saveTppBlocking(Tpp(tppEntity3, NcaEntity()))
 
         launchActivity()
 
@@ -302,7 +289,7 @@ class TppsFragmentTest {
         onView(withText("TITLE2")).check(matches(isDisplayed()))
         onView(withText("TITLE3")).check(matches(isDisplayed()))
 
-        // Verify that the followed tpps (but not the active tpp) are shown
+        // Verify that the followed tpps (but not the used tpp) are shown
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_followed)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
@@ -339,14 +326,14 @@ class TppsFragmentTest {
     }
 
     @Test
-    fun noTpps_ActiveTppsFilter_AddTppViewNotVisible() {
+    fun noTpps_UsedTppsFilter_AddTppViewNotVisible() {
         launchActivity()
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_active)).perform(click())
+        onView(withText(R.string.nav_used)).perform(click())
 
-        // Verify the "You have no active tpps!" text is shown
-        onView(withText("No active TPPs selected!")).check(matches((isDisplayed())))
+        // Verify the "You have no used tpps!" text is shown
+        onView(withText("No used TPPs selected!")).check(matches((isDisplayed())))
     }
 
     @Test
@@ -388,18 +375,12 @@ class TppsFragmentTest {
         return fragmentScenario
     }
 
-/*
-
-    private fun checkboxWithText(text: String): Matcher<View> {
-        return allOf(withId(R.id.follow_checkbox), hasSibling(withText(text)))
-    }
-*/
 
     private fun checkboxFollowed(): Matcher<View> {
         return allOf(withId(R.id.follow_checkbox))
     }
 
-    private fun checkboxActive(): Matcher<View> {
-        return allOf(withId(R.id.active_checkbox))
+    private fun checkboxUsed(): Matcher<View> {
+        return allOf(withId(R.id.used_checkbox))
     }
 }

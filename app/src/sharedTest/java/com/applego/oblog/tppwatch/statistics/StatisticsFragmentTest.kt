@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.statistics
 
 import android.content.Context
@@ -29,9 +14,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.ServiceLocator
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.FakeRepository
-import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.repository.TppsRepository
+import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.NcaEntity
 import com.applego.oblog.tppwatch.util.DataBindingIdlingResource
 import com.applego.oblog.tppwatch.util.monitorFragment
 import com.applego.oblog.tppwatch.util.saveTppBlocking
@@ -86,25 +73,25 @@ class StatisticsFragmentTest {
     fun tpps_showsNonEmptyMessage() {
         // Given some tpps
         repository.apply {
-            var tpp1 = Tpp("Entity_CZ28173281", "Title1", "Description1")
-            tpp1.isActive = true
-            tpp1.isFollowed = false
-            saveTppBlocking(tpp1)
-            var tpp2 = Tpp("Entity_CZ28173282", "Title2", "Description2")
-            tpp2.isFollowed = false
-            saveTppBlocking(tpp2)
+            var tpp1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+            tpp1.used = true
+            tpp1.followed = false
+            saveTppBlocking(Tpp(tpp1, NcaEntity()))
+            var tpp2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "Title2", _description = "Description2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+            tpp2.followed = false
+            saveTppBlocking(Tpp(tpp2, NcaEntity()))
         }
 
         val scenario = launchFragmentInContainer<StatisticsFragment>(Bundle(), R.style.AppTheme)
         dataBindingIdlingResource.monitorFragment(scenario)
 
-        val expectedActiveTppText = getApplicationContext<Context>()
-            .getString(R.string.statistics_active_tpps, 50.0f)
+        val expectedUsedTppText = getApplicationContext<Context>()
+            .getString(R.string.statistics_used_tpps, 50.0f)
         val expectedFollowedTppText = getApplicationContext<Context>()
             .getString(R.string.statistics_followed_tpps, 0.0f)
         // check that both info boxes are displayed and contain the correct info
-        onView(withId(R.id.stats_active_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.stats_active_text)).check(matches(withText(expectedActiveTppText)))
+        onView(withId(R.id.stats_used_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.stats_used_text)).check(matches(withText(expectedUsedTppText)))
         onView(withId(R.id.stats_followed_text)).check(matches(isDisplayed()))
         onView(withId(R.id.stats_followed_text)).check(matches(withText(expectedFollowedTppText)))
     }

@@ -1,108 +1,94 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.applego.oblog.tppwatch.statistics
 
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.NcaEntity
 import org.hamcrest.core.Is.`is`
 import org.junit.Assert.assertThat
 import org.junit.Test
 
 /**
- * Unit tests for [getActiveAndFollowedStats].
+ * Unit tests for [getUsedAndFollowedStats].
  */
 class StatisticsUtilsTest {
 
     @Test
-    fun getActiveAndFollowedStats_noFollowed() {
-        val aTpp = Tpp("Entity_CZ28173281", "title", "desc")
-        aTpp.isActive = true
+    fun getUsedAndFollowedStats_noFollowed() {
+        val aTppEntity = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        aTppEntity.used = true
         val tpps = listOf(
-                aTpp
+                Tpp(aTppEntity, NcaEntity())
         )
-        // When the list of tpps is computed with an active tpp
-        val result = getActiveAndFollowedStats(tpps)
+        // When the list of tpps is computed with an used ebaEntity
+        val result = getUsedAndFollowedStats(tpps)
 
         // Then the percentages are 100 and 0
-        assertThat(result.activeTppsPercent, `is`(100f))
+        assertThat(result.usedTppsPercent, `is`(100f))
         assertThat(result.followedTppsPercent, `is`(0f))
     }
 
     @Test
-    fun getActiveAndFollowedStats_noActive() {
-        var tpp1 = Tpp("Entity_CZ28173281", "title", "desc")
-        tpp1.isFollowed = true
+    fun getUsedAndFollowedStats_noUsed() {
+        var tppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        tppEntity1.followed = true
         val tpps = listOf(
-                tpp1
+                Tpp(tppEntity1, NcaEntity())
         )
-        // When the list of tpps is computed with a followed tpp
-        val result = getActiveAndFollowedStats(tpps)
+        // When the list of tpps is computed with a followed ebaEntity
+        val result = getUsedAndFollowedStats(tpps)
 
         // Then the percentages are 0 and 100
-        assertThat(result.activeTppsPercent, `is`(0f))
+        assertThat(result.usedTppsPercent, `is`(0f))
         assertThat(result.followedTppsPercent, `is`(100f))
     }
 
     @Test
-    fun getActiveAndFollowedStats_both() {
-        // Given 3 followed tpps and 2 active tpps
-        var tpp1 = Tpp("Entity_CZ28173281", "title", "desc")
-            tpp1.isFollowed = true
-        var tpp2 = Tpp("Entity_CZ28173282", "title", "desc")
-            tpp2.isFollowed = true
-        var tpp3 = Tpp("Entity_CZ28173283", "title", "desc")
-            tpp3.isFollowed = true
+    fun getUsedAndFollowedStats_both() {
+        // Given 3 followed tpps and 2 used tpps
+        var tpp1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+            tpp1.followed = true
+        var tpp2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+            tpp2.followed = true
+        var tpp3 = EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+            tpp3.followed = true
 
-        var tpp4 = Tpp("Entity_CZ28173284", "title", "desc")
-            tpp4.isActive = true
-        var tpp5 = Tpp("Entity_CZ28173285", "title", "desc")
-            tpp5.isActive = true
+        var tpp4 = EbaEntity(_entityId = "28173284", _entityCode = "Entity_CZ28173284", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+            tpp4.used = true
+        var tpp5 = EbaEntity(_entityId = "28173285", _entityCode = "Entity_CZ28173285", _entityName = "entityName", _description = "desc", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+            tpp5.used = true
 
         val tpps = listOf(
-                tpp1,
-                tpp2,
-                tpp3,
-                tpp4,
-                tpp5
+                Tpp(tpp1, NcaEntity()),
+                Tpp(tpp2, NcaEntity()),
+                Tpp(tpp3, NcaEntity()),
+                Tpp(tpp4, NcaEntity()),
+                Tpp(tpp5, NcaEntity())
         )
         // When the list of tpps is computed
-        val result = getActiveAndFollowedStats(tpps)
+        val result = getUsedAndFollowedStats(tpps)
 
         // Then the result is 40-60
-        assertThat(result.activeTppsPercent, `is`(40f))
+        assertThat(result.usedTppsPercent, `is`(40f))
         assertThat(result.followedTppsPercent, `is`(60f))
     }
 
     @Test
-    fun getActiveAndFollowdStats_error() {
+    fun getUsedAndFollowdStats_error() {
         // When there's an error loading stats
-        val result = getActiveAndFollowedStats(null)
+        val result = getUsedAndFollowedStats(null)
 
-        // Both active and followed tpps are 0
-        assertThat(result.activeTppsPercent, `is`(0f))
+        // Both used and followed tpps are 0
+        assertThat(result.usedTppsPercent, `is`(0f))
         assertThat(result.followedTppsPercent, `is`(0f))
     }
 
     @Test
-    fun getActiveAndFollowedStats_empty() {
+    fun getUsedAndFollowedStats_empty() {
         // When there are no tpps
-        val result = getActiveAndFollowedStats(emptyList())
+        val result = getUsedAndFollowedStats(emptyList())
 
-        // Both active and followed tpps are 0
-        assertThat(result.activeTppsPercent, `is`(0f))
+        // Both used and followed tpps are 0
+        assertThat(result.usedTppsPercent, `is`(0f))
         assertThat(result.followedTppsPercent, `is`(0f))
     }
 }

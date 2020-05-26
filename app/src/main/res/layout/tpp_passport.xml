@@ -7,7 +7,7 @@
 
         <variable
             name="countryVisa"
-            type="com.applego.oblog.tppwatch.data.source.local.EbaPassport.CountryVisa" />
+            type="com.applego.oblog.tppwatch.data.model.EbaPassport.CountryVisa" />
 
         <variable
             name="viewmodel"
@@ -43,7 +43,7 @@
             android:textSize="12sp"
             android:text="@{countryVisa.servicesAsString}"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        />
+        /> <!---->
     </LinearLayout>
 
 </layout>

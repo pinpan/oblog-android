@@ -4,11 +4,7 @@ package com.applego.oblog.tppwatch.tppdetail
 import android.widget.ListView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.applego.oblog.tppwatch.data.source.local.EbaPassport
-import com.applego.oblog.tppwatch.data.source.local.Tpp
-import com.applego.oblog.tppwatch.tpps.TppsAdapter
-
-import timber.log.Timber
+import com.applego.oblog.tppwatch.data.model.EbaPassport
 
 /**
  * [BindingAdapter]s for the [EbaPassport]s list.

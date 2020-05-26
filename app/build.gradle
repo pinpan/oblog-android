@@ -111,6 +111,7 @@ dependencies {
     annotationProcessor group: 'com.google.dagger', name: 'dagger-compiler', version: '2.21'
     //'com.google.dagger:dagger-compiler:2.16.1'
 
+    implementation 'com.google.android.gms:play-services:8.4.0'
     // App dependencies
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     // implementation 'com.android.support:appcompat-v7:27.1.1'
@@ -124,9 +125,9 @@ dependencies {
     implementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
     implementation "androidx.room:room-runtime:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
-    compileOnly "org.glassfish:javax.annotation:10.0-b28"
+    api "org.glassfish:javax.annotation:10.0-b28"
 
-    compile "android.arch.persistence.room:runtime:$roomVersion"
+    api "android.arch.persistence.room:runtime:$roomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
 
     // Architecture Components

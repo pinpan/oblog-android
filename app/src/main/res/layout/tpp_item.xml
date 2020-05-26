@@ -9,7 +9,7 @@
 
         <variable
             name="tpp"
-            type="com.applego.oblog.tppwatch.data.source.local.Tpp" />
+            type="com.applego.oblog.tppwatch.data.model.Tpp" />
 
         <variable
             name="viewmodel"
@@ -19,7 +19,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> viewmodel.openTpp(tpp.id)}"
+        android:onClick="@{() -> viewmodel.openTpp(tpp.ebaEntity.id)}"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/list_item_padding"
@@ -33,15 +33,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:checked="@{tpp.followed}"
+            android:checked="@{tpp.ebaEntity.followed}"
             android:textSize="10sp"
             android:onClick="@{(view) -> viewmodel.followTpp(tpp, ((CompoundButton)view).isChecked())}" />
         <CheckBox
-            android:id="@+id/active_checkbox"
+            android:id="@+id/used_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:checked="@{tpp.active}"
+            android:checked="@{tpp.ebaEntity.used}"
             android:textSize="10sp"
             android:onClick="@{(view) -> viewmodel.activateTpp(tpp, ((CompoundButton)view).isChecked())}" />
 

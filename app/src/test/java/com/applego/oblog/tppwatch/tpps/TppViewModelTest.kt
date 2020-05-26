@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.applego.oblog.tppwatch.tpps
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -22,8 +6,10 @@ import com.applego.oblog.tppwatch.MainCoroutineRule
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.assertLiveDataEventTriggered
 import com.applego.oblog.tppwatch.assertSnackbarMessage
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.FakeRepository
+import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.NcaEntity
 import com.applego.oblog.tppwatch.util.saveTppBlocking
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -44,23 +30,24 @@ class TppsViewModelTest {
     // Use a fake repository to be injected into the viewmodel
     private lateinit var tppsRepository: FakeRepository
 
+    val tppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+    val tppEntity2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "Title2", _description = "Description2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+    val tppEntity3 = EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3", _description = "Description3", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+
     // Set the main coroutines dispatcher for unit testing.
     @ExperimentalCoroutinesApi
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-    // Executes each tpp synchronously using Architecture Components.
+    // Executes each ebaEntity synchronously using Architecture Components.
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setupViewModel() {
-        // We initialise the tpps to 3, with one active and two followed
+        // We initialise the tpps to 3, with one used and two followed
         tppsRepository = FakeRepository()
-        val tpp1 = Tpp("Entity_CZ28173281", "Title1", "Description1")
-        val tpp2 = Tpp("Entity_CZ28173282", "Title2", "Description2")
-        val tpp3 = Tpp("Entity_CZ28173283", "Title3", "Description3")
-        tppsRepository.addTpps(tpp1, tpp2, tpp3)
+        tppsRepository.addTpps(Tpp(tppEntity1, NcaEntity()), Tpp(tppEntity2, NcaEntity()), Tpp(tppEntity3, NcaEntity()))
 
         tppsViewModel = TppsViewModel(tppsRepository)
     }
@@ -72,7 +59,7 @@ class TppsViewModelTest {
 
         val aTpp = tppsViewModel.items.value?.get(0)
         if (aTpp != null) {
-            aTpp.isPsd2 = true
+            aTpp.ebaEntity.psd2 = true
             tppsRepository.saveTppBlocking(aTpp)
         }
 
@@ -105,7 +92,7 @@ class TppsViewModelTest {
 
     @Ignore
     @Test
-    fun loadActiveTppsFromRepositoryAndLoadIntoView() {
+    fun loadUsedTppsFromRepositoryAndLoadIntoView() {
         // Given an initialized TppsViewModel with initialized tpps
         // When loading of Tpps is requested
         tppsViewModel.setFiltering(TppsFilterType.USED_TPPS)
@@ -130,13 +117,13 @@ class TppsViewModelTest {
         // When loading of Tpps is requested
         tppsViewModel.setFiltering(TppsFilterType.FOLLOWED_TPPS)
 
-        //val sTpps = tppsViewModel.items.value?.filter { it.title == "Title1" }?.forEach { it.isFollowed = true }
+        //val sTpps = tppsViewModel.items.value?.filter { it.entityName == "Title1" }?.forEach { it.isFollowed = true }
 
         // Then progress indicator is hidden
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading)).isFalse()
 
         val allTpps = tppsViewModel.items.value
-        val followedTpps = allTpps?.filter { it.isFollowed}
+        val followedTpps = allTpps?.filter { it.isFollowed()}
         assertThat(followedTpps?.size == 1)
 
         // And data correctly loaded
@@ -163,7 +150,7 @@ class TppsViewModelTest {
 
     @Test
     fun clickOnFab_showsAddTppUi() {
-        // When adding a new tpp
+        // When adding a new ebaEntity
         tppsViewModel.addNewTpp()
 
         // Then the event is triggered
@@ -173,7 +160,7 @@ class TppsViewModelTest {
 
     @Test
     fun clickOnOpenTpp_setsEvent() {
-        // When opening a new tpp
+        // When opening a new ebaEntity
         val tppId = "42"
         tppsViewModel.openTpp(tppId)
 
@@ -217,39 +204,43 @@ class TppsViewModelTest {
 
     @Test
     fun followTpp_dataAndSnackbarUpdated() {
-        // With a repository that has an active tpp
-        val tpp = Tpp("Entity_CZ28173281", "Title", "Description")
-        tppsRepository.addTpps(tpp)
+        // With a repository that has an used ebaEntity
+        val tppEntity = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title", _description = "Description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        tppsRepository.addTpps(Tpp(tppEntity, NcaEntity()))
 
-        // Follow tpp
-        tppsViewModel.followTpp(tpp, true)
+        // Follow ebaEntity
+        tppsViewModel.followTpp(Tpp(tppEntity, NcaEntity()), true)
 
-        // Verify the tpp is followed
-        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isFollowed).isTrue()
+        // Verify the ebaEntity is followed
+        assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isFollowed()).isTrue()
 
         // The snackbar is updated
         assertSnackbarMessage(
             tppsViewModel.snackbarText, R.string.tpp_marked_followed
         )
+
+        tppsRepository.addTpps(Tpp(tppEntity1, NcaEntity()))
     }
 
     @Test
     fun activateTpp_dataAndSnackbarUpdated() {
-        // With a repository that has a followed tpp
-        val tpp = Tpp("Entity_CZ28173281", "Title", "Description")
-        tppsRepository.addTpps(tpp)
+        // With a repository that has a followed ebaEntity
+        val tppEntity = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title", _description = "Description", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        tppsRepository.addTpps(Tpp(tppEntity, NcaEntity()))
 
-        // Activate tpp
-        tppsViewModel.followTpp(tpp, true)
-        tppsViewModel.followTpp(tpp, true)
+        // Activate ebaEntity
+        tppsViewModel.followTpp(Tpp(tppEntity, NcaEntity()), true)
+        tppsViewModel.followTpp(Tpp(tppEntity, NcaEntity()), true)
 
-        // Verify the tpp is active
-        assertThat(tppsRepository.tppsServiceData[tpp.id]?.isActive).isFalse()
+        // Verify the ebaEntity is used
+        assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isUsed()).isFalse()
 
         // The snackbar is updated
         assertSnackbarMessage(
             tppsViewModel.snackbarText, R.string.tpp_marked_followed
         )
+
+        tppsRepository.addTpps(Tpp(tppEntity1, NcaEntity()))
     }
 
     @Test
@@ -257,7 +248,7 @@ class TppsViewModelTest {
         // When the filter type is ALL_TPPS
         tppsViewModel.setFiltering(TppsFilterType.PSD2_TPPS)
 
-        // Then the "Add tpp" action is visible
+        // Then the "Add ebaEntity" action is visible
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.tppsAddViewVisible)).isTrue()
     }
 }

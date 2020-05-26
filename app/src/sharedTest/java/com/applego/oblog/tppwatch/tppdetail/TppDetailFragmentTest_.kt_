@@ -1,18 +1,4 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 package com.applego.oblog.tppwatch.tppdetail
 
 import androidx.fragment.app.testing.launchFragmentInContainer
@@ -26,9 +12,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.ServiceLocator
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.FakeRepository
-import com.applego.oblog.tppwatch.data.source.TppsRepository
+import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.util.saveTppBlocking
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -61,22 +47,22 @@ class TppDetailFragmentTest_ {
     }
 
     //@Test
-    fun activeTppDetails_DisplayedInUi() {
-        // GIVEN - Add active (unfollow) tpp to the DB
-        val activeTpp = Tpp("Entity_CZ28173281", "Active Tpp", "AndroidX Rocks")
-        repository.saveTppBlocking(activeTpp)
+    fun usedTppDetails_DisplayedInUi() {
+        // GIVEN - Add used (unfollow) ebaEntity to the DB
+        val usedTpp = Tpp("Entity_CZ28173281", "Used Tpp", "AndroidX Rocks")
+        repository.saveTppBlocking(usedTpp)
 
-        // WHEN - Details fragment launched to display tpp
-        val bundle = TppDetailFragmentArgs(activeTpp.id).toBundle()
+        // WHEN - Details fragment launched to display ebaEntity
+        val bundle = TppDetailFragmentArgs(usedTpp.id).toBundle()
         launchFragmentInContainer<TppDetailFragment>(bundle, R.style.AppTheme)
 
         // THEN - Tpp details are displayed on the screen
         // make sure that the title/description are both shown and correct
         onView(withId(R.id.tpp_title_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.tpp_title_text)).check(matches(withText("Active Tpp")))
+        onView(withId(R.id.tpp_title_text)).check(matches(withText("Used Tpp")))
         onView(withId(R.id.tpp_entity_code)).check(matches(isDisplayed()))
         onView(withId(R.id.tpp_entity_code)).check(matches(withText("Entity_CZ28173281")))
-        // and make sure the "active" checkbox is shown unchecked
+        // and make sure the "used" checkbox is shown unchecked
         onView(withId(R.id.tpp_detail_follow_checkbox)).check(matches(isDisplayed()))
         onView(withId(R.id.tpp_detail_follow_checkbox)).check(matches(not(isChecked())))
     }
@@ -84,13 +70,13 @@ class TppDetailFragmentTest_ {
     //@Test
     //@Ignore
     fun followedTppDetails_DisplayedInUi() {
-        // GIVEN - Add followed tpp to the DB
+        // GIVEN - Add followed ebaEntity to the DB
         var followedTpp = Tpp("Entity_CZ28173281", "Followed Tpp", "AndroidX Rocks")
         followedTpp.isFollowed = true
-        followedTpp.isActive = true
+        followedTpp.isUsed = true
         repository.saveTppBlocking(followedTpp)
 
-        // WHEN - Details fragment launched to display tpp
+        // WHEN - Details fragment launched to display ebaEntity
         val bundle = TppDetailFragmentArgs(followedTpp.id).toBundle()
         launchFragmentInContainer<TppDetailFragment>(bundle, R.style.AppTheme)
 
@@ -102,9 +88,9 @@ class TppDetailFragmentTest_ {
         onView(withId(R.id.tpp_entity_code)).check(matches(isDisplayed()))
         //onView(withId(R.id.tpp_entity_code)).check(matches(withText("Entity_CZ28173281")))
 
-        // and make sure the "active" checkbox is shown unchecked
-        onView(withId(R.id.tpp_detail_active_checkbox)).check(matches(isDisplayed()))
-        onView(withId(R.id.tpp_detail_active_checkbox)).check(matches(isChecked()))
+        // and make sure the "used" checkbox is shown unchecked
+        onView(withId(R.id.tpp_detail_used_checkbox)).check(matches(isDisplayed()))
+        onView(withId(R.id.tpp_detail_used_checkbox)).check(matches(isChecked()))
         // and make sure the "follow" checkbox is shown unchecked
         onView(withId(R.id.tpp_detail_follow_checkbox)).check(matches(isDisplayed()))
         onView(withId(R.id.tpp_detail_follow_checkbox)).check(matches(isChecked()))

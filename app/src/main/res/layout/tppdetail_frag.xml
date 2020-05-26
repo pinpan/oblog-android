@@ -38,14 +38,15 @@
                     android:layout_marginBottom="15dp"
                     android:layout_weight="6"
                     android:paddingTop="1dp"
-                    android:text="@{viewmodel.tpp.title}"
+                    android:text="@{viewmodel.tpp.ebaEntity.entityName}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#006496"
+                    android:textIsSelectable="true"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
-                    android:id="@+id/follow_active"
+                    android:id="@+id/follow_used"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/title"
@@ -65,15 +66,15 @@
                         android:textColor="#006496" />
 
                     <CheckBox
-                        android:id="@+id/checkbox_active"
+                        android:id="@+id/checkbox_used"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:checked="@{viewmodel.active}"
+                        android:checked="@{viewmodel.used}"
                         android:gravity="left|center_vertical"
-                        android:onClick="@{(view) -> viewmodel.setActive(((CompoundButton)view).isChecked())}"
+                        android:onClick="@{(view) -> viewmodel.setUsed(((CompoundButton)view).isChecked())}"
                         android:paddingTop="1dp"
-                        android:text="@string/label_activated"
+                        android:text="@string/label_used"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496" />
 
@@ -85,8 +86,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_below="@id/title"
-                    android:layout_alignRight="@id/follow_active"
-                    android:layout_alignBottom="@id/follow_active"
+                    android:layout_alignRight="@id/follow_used"
+                    android:layout_alignBottom="@id/follow_used"
                     android:layout_marginEnd="5dp"
                     android:text="refresh"
                     android:textSize="10sp"
@@ -147,11 +148,11 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:clickable="false"
                     android:focusable="false"
-                    android:hint="@string/tpp_home_country_label"
+                    android:hint="@string/label_home_country"
                     android:inputType="none"
                     android:textStyle="bold"
                     android:visibility="visible"
-                    tools:text="@string/tpp_home_country_label" />
+                    tools:text="@string/label_home_country" />
 
                 <TextView
                     android:id="@+id/home_country"
@@ -160,7 +161,7 @@
                     android:layout_alignBaseline="@id/label_home_country"
                     android:layout_toRightOf="@id/label_home_country"
                     android:gravity="left"
-                    android:text="@{viewmodel.tpp.country}"
+                    android:text="@{viewmodel.tpp.ebaEntity.country}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="#006496"
                     android:textSize="12sp"
@@ -184,9 +185,10 @@
                     android:layout_below="@id/home_country"
                     android:layout_alignLeft="@id/home_country"
                     android:paddingTop="1dp"
-                    android:text="@{viewmodel.tpp.entityCode}"
+                    android:text="@{viewmodel.tpp.ebaEntity.entityCode}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="#006496"
+                    android:textIsSelectable="true"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -245,7 +247,7 @@
                             android:id="@+id/label_visa_psd2_roles"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/checkbox_active"
+                            android:layout_below="@id/checkbox_used"
                             android:layout_toRightOf="@id/label_visa_country"
                             android:layout_weight="3"
                             android:clickable="false"
@@ -265,7 +267,7 @@
                         android:layout_marginBottom="10dp"
                         android:fadeScrollbars="false"
                         android:scrollbars="horizontal|vertical"
-                        app:items="@{viewmodel.tpp.ebaPassport.services}"
+                        app:items="@{viewmodel.tpp.ebaEntity.ebaPassport.services}"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
                 </LinearLayout>
 

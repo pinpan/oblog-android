@@ -1,39 +1,22 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.applego.oblog.tppwatch.statistics
 
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.model.Tpp
 
 /**
  * Function that does some trivial computation. Used to showcase unit tests.
  */
-internal fun getActiveAndFollowedStats(tpps: List<Tpp>?): StatsResult {
+internal fun getUsedAndFollowedStats(tpps: List<Tpp>?): StatsResult {
 
     return if (tpps == null || tpps.isEmpty()) {
         StatsResult(0f, 0f)
     } else {
-        val totalTpps = tpps.size
-        val numberOfActiveTpps = tpps.count { it.isActive }
-        val numberOfFollowedTpps = tpps.count { it.isFollowed}
+        val numberOfUsedTpps = tpps.count { it.isUsed()}
+        val numberOfFollowedTpps = tpps.count { it.isFollowed()}
         StatsResult(
-            activeTppsPercent = 100f * numberOfActiveTpps / tpps.size,
+            usedTppsPercent = 100f * numberOfUsedTpps / tpps.size,
             followedTppsPercent = 100f * numberOfFollowedTpps / tpps.size
         )
     }
 }
 
-data class StatsResult(val activeTppsPercent: Float, val followedTppsPercent: Float)
+data class StatsResult(val usedTppsPercent: Float, val followedTppsPercent: Float)

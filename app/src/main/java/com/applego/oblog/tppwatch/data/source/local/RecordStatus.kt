@@ -1,6 +1,7 @@
 package com.applego.oblog.tppwatch.data.source.local
 
 import androidx.room.TypeConverters
+import com.applego.oblog.tppwatch.data.convertor.OblogTypeConverters
 
 @TypeConverters(OblogTypeConverters::class)
 enum class RecordStatus (val statusId: Int, val code: String ) {

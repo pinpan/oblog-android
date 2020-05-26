@@ -42,14 +42,14 @@
                     android:layout_marginBottom="15dp"
                     android:layout_weight="6"
                     android:paddingTop="1dp"
-                    android:text="@{viewmodel.tpp.title}"
+                    android:text="@{viewmodel.tpp.ebaEntity.entityName}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#006496"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
-                    android:id="@+id/follow_active"
+                    android:id="@+id/follow_used"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/title"
@@ -69,15 +69,15 @@
                         android:textColor="#006496" />
 
                     <CheckBox
-                        android:id="@+id/checkbox_active"
+                        android:id="@+id/checkbox_used"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:checked="@{viewmodel.active}"
+                        android:checked="@{viewmodel.used}"
                         android:gravity="left|center_vertical"
-                        android:onClick="@{(view) -> viewmodel.setActive(((CompoundButton)view).isChecked())}"
+                        android:onClick="@{(view) -> viewmodel.setUsed(((CompoundButton)view).isChecked())}"
                         android:paddingTop="1dp"
-                        android:text="@string/label_activated"
+                        android:text="@string/label_using"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496" />
 
@@ -89,8 +89,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_below="@id/title"
-                    android:layout_alignRight="@id/follow_active"
-                    android:layout_alignBottom="@id/follow_active"
+                    android:layout_alignRight="@id/follow_used"
+                    android:layout_alignBottom="@id/follow_used"
                     android:layout_marginEnd="5dp"
                     android:text="refresh"
                     android:textSize="10sp"
@@ -113,7 +113,7 @@
             <View
                 android:id="@+id/divider4"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="5dp"
                 android:layout_below="@id/details_header"
                 android:background="?android:attr/listDivider" />
 
@@ -135,6 +135,7 @@
                         android:id="@+id/eba_details_tab"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+
                         android:text="EBA" />
 
                     <com.google.android.material.tabs.TabItem
@@ -147,8 +148,9 @@
                         android:id="@+id/apps_details_tab"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="APPs" />
 
+                        android:text="APPs" />
+                    <!--android:onClick="@{() -> viewmodel.addTppAppEvent(ebaEntity.ebaEntity.id)}"-->
                 </com.google.android.material.tabs.TabLayout>
             </androidx.viewpager.widget.ViewPager>
 

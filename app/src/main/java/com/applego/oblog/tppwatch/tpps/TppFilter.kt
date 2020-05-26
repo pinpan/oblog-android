@@ -4,7 +4,7 @@ class TppFilter {
 
     var followed = true
     var installed = true
-    var active = true
+    var used = true
 
     var country = ""
     var services = ArrayList<String>()

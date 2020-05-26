@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.tpps
 
 import android.content.Context
@@ -22,7 +7,7 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.applego.oblog.tppwatch.data.source.local.Tpp
+import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.databinding.TppItemBinding
 import kotlinx.android.synthetic.main.tppdetail_frag.view.*
 
@@ -77,10 +62,10 @@ class TppsAdapter(private val viewModel: TppsViewModel, ctx: Context, layoutId: 
  */
 class TppDiffCallback :  DiffUtil.ItemCallback<Tpp>() {
     override fun areItemsTheSame(oldItem: Tpp, newItem: Tpp): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.getId() == newItem.getId()
     }
 
     override fun areContentsTheSame(oldItem: Tpp, newItem: Tpp): Boolean {
-        return oldItem == newItem
+        return oldItem.equals(newItem)
     }
 }
