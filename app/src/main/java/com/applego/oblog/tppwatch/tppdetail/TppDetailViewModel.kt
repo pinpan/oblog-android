@@ -44,6 +44,9 @@ open class TppDetailViewModel(
     private val _editTppAppEvent = MutableLiveData<Event<String>>()
     val editTppAppEvent: LiveData<Event<String>> = _editTppAppEvent
 
+    private val _backToTppsListEvent = MutableLiveData<Event<String>>()
+    val backToTppsListEvent: LiveData<Event<String>> = _backToTppsListEvent
+
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
 

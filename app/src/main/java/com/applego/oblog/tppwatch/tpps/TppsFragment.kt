@@ -8,6 +8,7 @@ import android.widget.*
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.applego.oblog.tppwatch.EventObserver
@@ -46,8 +47,21 @@ class TppsFragment : Fragment() {
         }
         setHasOptionsMenu(true)
 
+        viewModel.refreshTpp(arguments?.getString("tppId"))
+
         return viewDataBinding.root
     }
+
+/*
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.refreshEvent.observe(this, Observer {
+            //setEventDetails() //it
+            viewModel.refreshTpp(arguments?.getString("tppId"))
+        })
+    }
+*/
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -103,7 +117,7 @@ class TppsFragment : Fragment() {
                     })
         }
 
-        val item = menu.findItem(R.id.revokedSwitchForActionBar)
+        /*val item = menu.findItem(R.id.revokedSwitchForActionBar)
         item.setActionView(R.layout.switch_item)
 
         val mySwitch = item.actionView.findViewById(R.id.mySwitch) as Switch
@@ -113,6 +127,7 @@ class TppsFragment : Fragment() {
                 viewModel.showRevokedOnly()
             }
         })
+        */
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
@@ -150,6 +165,12 @@ class TppsFragment : Fragment() {
 
         // Set the lifecycle owner to the lifecycle of the view
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
+        arguments?.let {
+            viewModel.showEditResultMessage(args.userMessage)
+        }
+
+       // viewModel.refreshTpp(arguments?.getString("tppId"))
+
         setupSnackbar()
         setupListAdapter()
         setupNavigation()
@@ -216,6 +237,9 @@ class TppsFragment : Fragment() {
         viewModel.aboutEvent.observe(this, EventObserver {
             openAbout()
         })
+        /*viewModel.refreshEvent.observe(this, EventObserver {
+            refresh()
+        })*/
     }
 
     private fun setupSnackbar() {
@@ -287,12 +311,13 @@ class TppsFragment : Fragment() {
     }
 
     private fun openTppDetails(tppId: String) {
+        arguments?.putString("tppId", tppId)
         val action = TppsFragmentDirections.actionTppsFragmentToTppDetailTabsFragment(tppId)
         findNavController().navigate(action)
     }
 
     private fun openAbout() {
-        val action = AboutFragmentDirections.actionAboutFragmentToTppsFragment()
+        val action = TppsFragmentDirections.actionTppsFragmentToAboutFragment()
         findNavController().navigate(action)
     }
 

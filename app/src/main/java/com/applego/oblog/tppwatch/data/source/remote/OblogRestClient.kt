@@ -27,7 +27,8 @@ object OblogRestClient {
     fun getBaseUrl(currentEnv: String, envsBaseUrls: Array<String>) : String {
 
         // HACK-HACK-HACK - because the statement above returns the preference ID instead if the value ... some times
-        var theEnv: String = if (!currentEnv.startsWith("@")) currentEnv else "TEST"
+        //var theEnv: String = if (!currentEnv.startsWith("@")) currentEnv else "TEST"
+        var theEnv: String = if (currentEnv.startsWith("env_")) currentEnv.substring(4).toUpperCase() else "TEST"
 
         /* This requires API level 21, while we go with 14
 
@@ -45,6 +46,7 @@ object OblogRestClient {
             for (i in envsBaseUrls.indices) {
                 if (envsBaseUrls[i].startsWith(theEnv.toUpperCase())) {
                     baseUrl = envsBaseUrls[i].substring(theEnv.length+1)
+                    break
                 }
             }
         }

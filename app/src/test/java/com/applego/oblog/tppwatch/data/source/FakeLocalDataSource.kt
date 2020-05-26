@@ -33,7 +33,7 @@ class FakeLocalDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : Local
         tpps?.add(tpp)
     }
 
-    override suspend fun udateFollowing(tpp: Tpp, follow: Boolean) {
+    override suspend fun updateFollowing(tpp: Tpp, follow: Boolean) {
         tpps?.firstOrNull { it.getEntityId() == tpp.getEntityId() }?.let { it.setFollowed(true)}
     }
 

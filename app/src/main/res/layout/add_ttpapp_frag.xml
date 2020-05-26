@@ -41,8 +41,9 @@
                     android:layout_marginTop="@dimen/fab_margin"
                     android:layout_marginEnd="@dimen/fab_margin"
                     android:layout_marginBottom="@dimen/fab_margin"
-                    android:src="@android:drawable/ic_input_delete"
                     android:onClick="@{() -> viewmodel.cancelAddApp()}"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    app:backgroundTint="#090909"
                     app:fabSize="mini"
                     app:layout_anchor="@id/refresh_layout"
                     app:layout_anchorGravity="bottom|right|end" />
@@ -56,7 +57,7 @@
                     android:layout_marginEnd="@dimen/fab_margin"
                     android:layout_marginBottom="@dimen/fab_margin"
                     android:onClick="@{() -> viewmodel.saveApp()}"
-                    android:src="@android:drawable/ic_input_add"
+                    android:src="@android:drawable/ic_menu_save"
                     app:fabSize="mini"
                     app:layout_anchor="@id/refresh_layout"
                     app:layout_anchorGravity="bottom|right|end" />

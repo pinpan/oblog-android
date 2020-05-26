@@ -47,7 +47,7 @@ class TppDetailAppsFragment(private val viewModel: AppsViewModel) : Fragment() {
     }
 
     private fun setupNavigation() {
-        viewModel.editAppEvent.observe(this.parentFragment!!, EventObserver {
+         viewModel.editAppEvent.observe(this.parentFragment!!, EventObserver {
             val action = TppDetailTabsFragmentDirections
                 .actionTppDetailAppsFragmentToAddEditTppAppFragment(
                         viewModel.tpp.value!!.getId(),

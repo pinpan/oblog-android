@@ -52,7 +52,7 @@ class AboutFragment : Fragment() {
     private fun setupNavigation() {
         viewModel.tppUpdatedEvent.observe(this, EventObserver {
             val action = AboutFragmentDirections
-                .actionAboutFragmentToTppsFragment(ADD_EDIT_RESULT_OK)
+                .actionAboutFragmentToTppsFragment(null, ADD_EDIT_RESULT_OK)
             findNavController().navigate(action)
         })
     }

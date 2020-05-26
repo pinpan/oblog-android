@@ -28,6 +28,7 @@
     <string name="label_used">Used TPPs</string>
     <string name="label_followed">Followed TPPs</string>
     <string name="label_following">Following</string>
+    <string name="label_using">Using</string>
     <string name="label_name">Tpp name</string>
     <string name="label_home_country">Home country</string>
     <string name="label_description">Description</string>

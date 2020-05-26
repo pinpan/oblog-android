@@ -29,7 +29,7 @@ class TppsViewModel(
 ) : ViewModel() {
 
     private var fetchedItems : List<Tpp> = emptyList()
-    private val _items = MutableLiveData<List<Tpp>>().apply { value = emptyList() }
+    private val _items = MutableLiveData<List<Tpp>>().apply { value = fetchedItems }
     val items: MutableLiveData<List<Tpp>> = _items
 
     private val _dataLoading = MutableLiveData<Boolean>()
@@ -61,6 +61,9 @@ class TppsViewModel(
     private val _newTppEvent = MutableLiveData<Event<Unit>>()
     val newTppEvent: LiveData<Event<Unit>> = _newTppEvent
 
+    private val _refreshEvent = MutableLiveData<Event<Unit>>()
+    val refreshEvent: LiveData<Event<Unit>> = _refreshEvent
+
     private val _aboutEvent = MutableLiveData<Event<Unit>>()
     val aboutEvent: LiveData<Event<Unit>> = _aboutEvent
 
@@ -78,6 +81,33 @@ class TppsViewModel(
 
     fun refresh() {
         loadTpps(false)
+    }
+
+
+    fun refreshTpp(tppId : String?) {
+        if (!tppId.isNullOrBlank() && !tppId.equals("0")) {
+            //_dataLoading.value = true
+            //wrapEspressoIdlingResource {
+                viewModelScope.launch {
+                    val tpp = findTppInList(fetchedItems, tppId)
+                    if (tpp != null) {
+                        tppsRepository.refreshTpp(tpp!!)
+                    }
+                    loadTpps(false)
+
+                    //_dataLoading.value = false
+                }
+            //}
+        }
+    }
+
+    private fun findTppInList(items: List<Tpp>, tppId: String): Tpp? {
+        items.forEach() {
+            if (it.getId() == tppId) {
+                return it
+            }
+        }
+        return null
     }
 
     /**
@@ -151,14 +181,10 @@ class TppsViewModel(
     }
 
     fun followTpp(tpp: Tpp, followed: Boolean) = viewModelScope.launch {
-
         viewModelScope.launch {
             tppsRepository.setTppFollowedFlag(tpp, followed)
             showSnackbarMessage(R.string.tpp_marked_followed)
         }
-
-        // Refresh single Tpp
-        //loadTpps(false)
     }
 
     fun activateTpp(tpp: Tpp, used: Boolean) = viewModelScope.launch {
@@ -167,8 +193,6 @@ class TppsViewModel(
             showSnackbarMessage(R.string.tpp_marked_used)
 
         }
-            // Refresh single Tpp
-            //loadTpps(false)
     }
 
     /**
@@ -203,7 +227,7 @@ class TppsViewModel(
 
                     isDataLoadingError.value = false
                 } else {
-                    isDataLoadingError.value = false
+                    isDataLoadingError.value = true
                     _items.value = emptyList()
                     showSnackbarMessage(R.string.loading_tpps_error)
                 }

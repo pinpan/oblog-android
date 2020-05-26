@@ -5,14 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.applego.oblog.tppwatch.EventObserver
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.AddTtpappFragBinding
-import com.applego.oblog.tppwatch.tpps.ADD_EDIT_RESULT_OK
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
@@ -57,14 +55,7 @@ class AddEditTppAppFragment : Fragment() {
         viewModel.appUpdatedEvent.observe(this, EventObserver {
             val action = AddEditTppAppFragmentDirections
                 .actionAddEditTppAppFragmentToTppDetailTabsFragment(args.tppId)
-
-            /*TODO#Replace this::class with something Kotlin understands well:
-               getFragmentManager()?.popBackStack(
-                    this.::class.simpleName,
-                    FragmentManager.POP_BACK_STACK_INCLUSIVE)
-            */
             findNavController().navigate(action)
-
         })
     }
 }

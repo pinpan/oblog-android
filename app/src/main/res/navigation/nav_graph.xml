@@ -80,13 +80,20 @@
         <action
             android:id="@+id/action_tppsFragment_to_addEditTppFragment"
             app:destination="@id/addedit_tpp_fragment_dest" />
-        <!--<action
+        <action
             android:id="@+id/action_tppsFragment_to_aboutFragment"
-            app:destination="@id/about_fragment_dest" />-->
+            app:destination="@id/about_fragment_dest" />
+        <argument
+            android:name="tppId"
+            app:argType="string"
+            android:defaultValue="0"
+            app:nullable="true"
+        />
         <argument
             android:name="userMessage"
             app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+        />
     </fragment>
 
     <fragment

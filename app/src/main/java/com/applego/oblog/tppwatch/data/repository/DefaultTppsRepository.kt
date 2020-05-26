@@ -189,10 +189,23 @@ class DefaultTppsRepository (
         cacheAndPerform(tpp) {
             tpp.let {
                 it.ebaEntity.followed = f
-                        coroutineScope {
-                    launch { tppsLocalDataSource.udateFollowing(it, it.ebaEntity.isFollowed()) }
+                coroutineScope {
+                    launch {
+                        tppsLocalDataSource.updateFollowing(it, it.ebaEntity.isFollowed())
+                    }
                 }
             }
+        }
+    }
+
+    override suspend fun refreshTpp(tpp: Tpp) {
+        val tppsResult = getTpp(tpp.getId())
+        if (tppsResult is Success) {
+            tpp.appsPortfolio = tppsResult.data.appsPortfolio
+            tpp.ebaEntity = tppsResult.data.ebaEntity
+            tpp.ncaEntity = tppsResult.data.ncaEntity
+            tpp.setFollowed(tppsResult.data.isFollowed())
+            tpp.setUsed(tppsResult.data.isUsed())
         }
     }
 

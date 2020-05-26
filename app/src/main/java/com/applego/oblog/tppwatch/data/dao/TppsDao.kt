@@ -29,7 +29,7 @@ interface TppsDao {
      * @return the tpp with tppId.
      */
     @Query("SELECT * FROM Tpps WHERE db_id = :tppId order by followed DESC")
-    suspend fun getTppEntityByDbId(tppId: String): EbaEntity?
+    /*suspend */fun getTppEntityByDbId(tppId: String): EbaEntity?
 
     /**
      * Select a tpp by id.
@@ -47,7 +47,7 @@ interface TppsDao {
      * @return the tpp with entityCode.
      */
     @Query("SELECT * FROM Tpps WHERE entityCode = :entityCode and codeType = :entityCodeType")
-    suspend fun getTppEntityByCode(entityCode: String, entityCodeType: String): EbaEntity?
+    /*suspend */fun getTppEntityByCode(entityCode: String, entityCodeType: String): EbaEntity?
 
     /**
      * Select a tpp by NCA entityId (provided by OBLOG backend).
@@ -64,7 +64,7 @@ interface TppsDao {
      * @param ebaEntity the ebaEntity to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTppEntity(ebaEntity: EbaEntity)
+    /*suspend */fun insertTppEntity(ebaEntity: EbaEntity)
 
     /**
      * Update a ebaEntity.
@@ -73,7 +73,7 @@ interface TppsDao {
      * @return the number of tpps updated. This should always be 1.
      */
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateTppEntity(ebaEntity: EbaEntity): Int
+    /*suspend */fun updateTppEntity(ebaEntity: EbaEntity): Int
 
     /**
      * Update the followed status of a tpp
@@ -127,7 +127,7 @@ interface TppsDao {
      * @return the tpp with tppId.
      */
     @Query("SELECT * FROM apps WHERE tppId = :tppId")
-    suspend fun getTppEntityAppsByDbId(tppId: String): List<App>
+    /*suspend */fun getTppEntityAppsByDbId(tppId: String): List<App>
 
 
     /**

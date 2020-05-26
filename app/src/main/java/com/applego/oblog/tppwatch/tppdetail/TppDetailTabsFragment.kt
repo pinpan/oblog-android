@@ -66,7 +66,7 @@ class TppDetailTabsFragment : Fragment() {
     private fun setupNavigation() {
         viewModel.tppUpdatedEvent.observe(this, EventObserver {
             val action = TppDetailTabsFragmentDirections
-                .actionTppDetailTabsFragmentToTppsFragment()
+                .actionTppDetailTabsFragmentToTppsFragment(args.tppId)
             findNavController().navigate(action)
         })
 
@@ -94,6 +94,14 @@ class TppDetailTabsFragment : Fragment() {
                 .actionAddEditTppAppFragmentToTppDetailTabsFragment(
                     args.tppId
                 )
+            findNavController().navigate(action)
+        })
+
+        viewModel.backToTppsListEvent.observe(this, EventObserver {
+            val action = TppDetailTabsFragmentDirections
+                    .actionTppDetailTabsFragmentToTppsFragment(
+                            args.tppId
+                    )
             findNavController().navigate(action)
         })
     }

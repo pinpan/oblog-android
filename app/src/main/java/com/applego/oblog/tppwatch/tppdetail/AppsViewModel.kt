@@ -22,7 +22,6 @@ class AppsViewModel (private val tppsRepository: TppsRepository) : ViewModel() {
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
 
-    //private val _items = MutableLiveData<List<App>>().apply { value = emptyList() }
     private val _openAppEvent = MutableLiveData<Event<String>>()
     val openAppEvent: LiveData<Event<String>> = _openAppEvent
 

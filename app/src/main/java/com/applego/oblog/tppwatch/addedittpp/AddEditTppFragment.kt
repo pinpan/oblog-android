@@ -13,7 +13,6 @@ import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.AddtppFragBinding
 import com.applego.oblog.tppwatch.tpps.ADD_EDIT_RESULT_OK
 import com.applego.oblog.tppwatch.util.getViewModelFactory
-//import com.applego.oblog.tppwatch.util.setupRefreshLayout
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
 
@@ -56,7 +55,7 @@ class AddEditTppFragment : Fragment() {
     private fun setupNavigation() {
         viewModel.tppUpdatedEvent.observe(this, EventObserver {
             val action = AddEditTppFragmentDirections
-                .actionAddEditTppFragmentToTppsFragment(ADD_EDIT_RESULT_OK)
+                .actionAddEditTppFragmentToTppsFragment(null, ADD_EDIT_RESULT_OK)
             findNavController().navigate(action)
         })
     }

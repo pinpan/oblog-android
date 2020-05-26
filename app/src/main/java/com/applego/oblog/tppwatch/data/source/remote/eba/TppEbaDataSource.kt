@@ -53,7 +53,7 @@ class TppEbaDataSource internal constructor (
     }
 
     // TODO: Refactor to single implementation <- This implementatiomn is exactly the same as for NcaDataSource
-    override suspend fun getTppById(country: String, tppId: String): Result<Tpp> {
+    override /*suspend */fun getTppById(country: String, tppId: String): Result<Tpp> {
         val paging = Paging()
 
         val call = tppsService.findById(theApiKey.apiKey, tppId.toString(), paging.page, paging.size, paging.sortBy)
@@ -88,7 +88,7 @@ class TppEbaDataSource internal constructor (
     }
 
 
-    suspend fun updateTppEntity(ebaTpp: Tpp) : Tpp {
+    /*suspend */fun updateTppEntity(ebaTpp: Tpp) : Tpp {
         val ebaEntity = ebaTpp.ebaEntity
         val dbEntity = tppsDao.getTppEntityByCode(ebaEntity.getEntityCode(), ebaEntity.ebaProperties.codeType)
         if (dbEntity == null) {

@@ -11,20 +11,12 @@ data class AppsPortfolio @JvmOverloads constructor(
         @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString()
 ) {
 
-    /**
-     * Map of TPP's apps
-     */
-    //@Embedded
-    //private var appsMap = HashMap<String, List<App>>()
-
     @Embedded
-    var appsList/*: List<App>*/ = ArrayList<App>()
+    var appsList = ArrayList<App>()
 
     public fun addApp(app: App) {
-        //appsMap.put(app.name, app);
         appsList.add(app);
     }
-
 
     fun getApp(appId: String) : App? {
         appsList.forEach({
@@ -34,5 +26,4 @@ data class AppsPortfolio @JvmOverloads constructor(
         })
         return null
     }
-
 }

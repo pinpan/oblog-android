@@ -12,11 +12,11 @@ interface LocalTppDataSource {
 
     suspend fun getTpps(filter: TppsFilter): Result<List<Tpp>>
 
-    suspend fun getTpp(tppId: String): Result<Tpp>
+    /*suspend */fun getTpp(tppId: String): Result<Tpp>
 
-    suspend fun saveTpp(tpp: Tpp)
+    /*suspend */fun saveTpp(tpp: Tpp)
 
-    suspend fun udateFollowing(tpp: Tpp, follow: Boolean)
+    suspend fun updateFollowing(tpp: Tpp, follow: Boolean)
 
     suspend fun setTppActivateFlag(tppId: String, used: Boolean)
 

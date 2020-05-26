@@ -16,6 +16,8 @@ interface TppsRepository {
 
     suspend fun getTpp(tppId: String, forceUpdate: Boolean = false): Result<Tpp>
 
+    suspend fun refreshTpp(tpp: Tpp)
+
     suspend fun saveTpp(tpp: Tpp)
 
     suspend fun setTppFollowedFlag(tpp: Tpp, followed: Boolean)

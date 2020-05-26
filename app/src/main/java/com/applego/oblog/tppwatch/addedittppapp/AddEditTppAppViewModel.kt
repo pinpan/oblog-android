@@ -47,10 +47,6 @@ class AddEditTppAppViewModel(
     private val _app = MutableLiveData<App>()
     val app: MutableLiveData<App> = _app
 
-    //private var app: App? = null
-
-    //private var isNewApp: Boolean = true
-
     fun start(tppId: String, appId: String?) {
         if (_dataLoading.value == true) {
             return
@@ -98,7 +94,6 @@ class AddEditTppAppViewModel(
     }
 
     fun saveApp() {
-        //tppsRepository.saveApp(newApp)
         val currentAppName = appName.value
         val currentDescription = description.value
         val currentWebAddr = webAddr.value
@@ -120,19 +115,20 @@ class AddEditTppAppViewModel(
             var newApp = App(currentAppName, currentDescription, currentWebAddr)
             createApp(newApp)
         }
-        //newApp.tppId = tppId
     }
-
 
     private fun createApp(app: App) = viewModelScope.launch {
-
-    }
-
-    private fun updateApp(app: App) = viewModelScope.launch {
-
         if (app != null) {
             app.tppId = tpp?.getId() ?: "-1"
             tppsRepository.saveApp(tpp!!, app)
+        }
+        _appUpdatedEvent.value = Event(Unit)
+    }
+
+    private fun updateApp(app: App) = viewModelScope.launch {
+        if (app != null) {
+            app.tppId = tpp?.getId() ?: "-1"
+            tppsRepository.updateApp(tpp!!, app)
         }
         _appUpdatedEvent.value = Event(Unit)
     }

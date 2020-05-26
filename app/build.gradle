@@ -111,6 +111,7 @@ dependencies {
     annotationProcessor group: 'com.google.dagger', name: 'dagger-compiler', version: '2.21'
     //'com.google.dagger:dagger-compiler:2.16.1'
 
+    implementation 'com.google.android.gms:play-services:8.4.0'
     // App dependencies
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     // implementation 'com.android.support:appcompat-v7:27.1.1'

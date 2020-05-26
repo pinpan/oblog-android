@@ -39,7 +39,7 @@ class TppsDaoDataSource internal constructor(
         return (!filter.country.isNullOrBlank() && filter.pasportedTo.isNullOrEmpty() && filter.services.isNullOrEmpty() && filter.tppName.isNullOrBlank());
     }
 
-    override suspend fun getTpp(tppId: String): Result<Tpp> = withContext(ioDispatcher) {
+    override /*suspend */fun getTpp(tppId: String): Result<Tpp> /*= withContext(ioDispatcher)*/ {
         try {
             val tppEntity = tppsDao.getTppEntityByDbId(tppId)
             if (tppEntity != null) {
@@ -50,16 +50,16 @@ class TppsDaoDataSource internal constructor(
                     tpp.appsPortfolio.tppId = tppId
                     tpp.appsPortfolio.appsList = apps as ArrayList
                 }
-                return@withContext Success(tpp)
+                return/*@withContext */Success(tpp)
             } else {
-                return@withContext Error(Exception("EbaEntity not found!"))
+                return/*@withContext*/ Error(Exception("EbaEntity not found!"))
             }
         } catch (e: Exception) {
-            return@withContext Error(e)
+            return/*@withContext*/ Error(e)
         }
     }
 
-    override suspend fun saveTpp(tpp: Tpp) = withContext(ioDispatcher) {
+    override /*suspend */fun saveTpp(tpp: Tpp) /*= withContext(ioDispatcher)*/ {
         tppsDao.insertTppEntity(tpp.ebaEntity)
     }
 
@@ -71,7 +71,7 @@ class TppsDaoDataSource internal constructor(
         }
     }
 
-    override suspend fun udateFollowing(tpp: Tpp, follow: Boolean) = withContext(ioDispatcher) {
+    override suspend fun updateFollowing(tpp: Tpp, follow: Boolean) = withContext(ioDispatcher) {
         tppsDao.updateFollowed(tpp.ebaEntity.getId(), follow)
     }
 
