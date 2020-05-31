@@ -34,7 +34,7 @@ class FakeRepository : TppsRepository {
         shouldReturnError = value
     }
 
-    override /*suspend */fun getTpp(tppId: String, forceUpdate: Boolean): Result<Tpp> {
+    override suspend fun getTpp(tppId: String, forceUpdate: Boolean): Result<Tpp> {
         if (shouldReturnError) {
             return Error(Exception("Test exception"))
         }
@@ -44,7 +44,7 @@ class FakeRepository : TppsRepository {
         return Error(Exception("Could not find tpp"))
     }
 
-    override fun refreshTpp(tpp: Tpp) {
+    override suspend fun refreshTpp(tpp: Tpp) {
         // Void
     }
 

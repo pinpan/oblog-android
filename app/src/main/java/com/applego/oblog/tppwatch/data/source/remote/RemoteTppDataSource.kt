@@ -12,5 +12,5 @@ interface RemoteTppDataSource {
 
     suspend fun getTppByName(country: String, tppName: String): Result<Tpp>
 
-    /*suspend */fun getTppById(coutry: String, tppId: String): Result<Tpp>
+    suspend fun getTppById(coutry: String, tppId: String): Result<Tpp>
 }

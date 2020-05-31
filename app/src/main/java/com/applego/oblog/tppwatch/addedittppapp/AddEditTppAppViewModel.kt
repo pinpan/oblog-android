@@ -120,7 +120,9 @@ class AddEditTppAppViewModel(
     private fun createApp(app: App) = viewModelScope.launch {
         if (app != null) {
             app.tppId = tpp?.getId() ?: "-1"
-            tppsRepository.saveApp(tpp!!, app)
+            //viewModelScope.launch {
+                tppsRepository.saveApp(tpp!!, app)
+            //}
         }
         _appUpdatedEvent.value = Event(Unit)
     }
@@ -128,14 +130,18 @@ class AddEditTppAppViewModel(
     private fun updateApp(app: App) = viewModelScope.launch {
         if (app != null) {
             app.tppId = tpp?.getId() ?: "-1"
-            tppsRepository.updateApp(tpp!!, app)
+            //viewModelScope.launch {
+                tppsRepository.updateApp(tpp!!, app)
+            //}
         }
         _appUpdatedEvent.value = Event(Unit)
     }
 
     private fun updateTpp(tpp: Tpp) {
         viewModelScope.launch {
-            tppsRepository.saveTpp(tpp)
+            viewModelScope.launch {
+                tppsRepository.saveTpp(tpp)
+            }
             _appUpdatedEvent.value = Event(Unit)
         }
     }

@@ -22,7 +22,7 @@ class FakeLocalDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : Local
         )
     }
 
-    override suspend fun getTpp(tppId: String): Result<Tpp> {
+    override /*suspend */fun getTpp(tppId: String): Result<Tpp> {
         tpps?.firstOrNull { it.getEntityId() == tppId }?.let { return Success(it) }
         return Error(
             Exception("Tpp not found")

@@ -87,7 +87,7 @@ class AddEditTppFragmentTest {
         // THEN - Verify that we navigated back to the tpps screen.
         verify(navController).navigate(
             AddEditTppFragmentDirections
-                .actionAddEditTppFragmentToTppsFragment(ADD_EDIT_RESULT_OK)
+                .actionAddEditTppFragmentToTppsFragment(null, ADD_EDIT_RESULT_OK)
         )
     }
 

@@ -263,16 +263,27 @@ class DefaultTppsRepository (
     override suspend fun saveApp(tpp: Tpp, app: App) {
         // Do in memory cache update to keep the app UI up to date
         //cacheAndPerform(аpp) {
-            coroutineScope {
-                launch { tppsLocalDataSource.saveАpp(app) }
-            }
+            /*coroutineScope {
+                launch {
+                    tppsLocalDataSource.saveАpp(app)
+                }
+            }*/
         //}
-        cacheAndPerform(tpp) {
+        tpp.appsPortfolio.addApp(app)
+        tpp.ebaEntity._description += " app"
+        //cacheAndPerform(tpp, {
+
             coroutineScope {
-                tpp.appsPortfolio.addApp(app)
-                launch { tppsLocalDataSource.saveTpp(it) }
-            }
-        }
+            //    launch {
+                    tppsLocalDataSource.saveАpp(app)
+                //}
+                //tppsLocalDataSource.saveАpp(app)
+            //    launch {
+                    tppsLocalDataSource.saveTpp(tpp)
+                }
+            //}}
+            //)
+        //}
     }
 
     override suspend fun deleteApp(tpp: Tpp, app: App) {
@@ -280,6 +291,13 @@ class DefaultTppsRepository (
     }
 
     override suspend fun updateApp(tpp: Tpp, app: App) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        //cacheAndPerform(tpp, {
+
+            coroutineScope {
+                launch {
+                    tppsLocalDataSource.saveАpp(app)
+                }
+            }
+        //})
     }
 }

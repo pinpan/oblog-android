@@ -14,7 +14,7 @@ interface LocalTppDataSource {
 
     /*suspend */fun getTpp(tppId: String): Result<Tpp>
 
-    /*suspend */fun saveTpp(tpp: Tpp)
+    suspend fun saveTpp(tpp: Tpp)
 
     suspend fun updateFollowing(tpp: Tpp, follow: Boolean)
 

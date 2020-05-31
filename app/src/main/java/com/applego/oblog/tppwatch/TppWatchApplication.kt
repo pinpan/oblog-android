@@ -46,7 +46,6 @@ class TppWatchApplication : Application() , SharedPreferences.OnSharedPreference
             sharedPreferences.edit().putString("environment", "PRODUCTION")
         }
 
-
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 }

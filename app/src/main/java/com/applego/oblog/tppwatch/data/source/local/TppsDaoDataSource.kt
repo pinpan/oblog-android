@@ -9,6 +9,7 @@ import com.applego.oblog.tppwatch.data.model.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 /**
  * Concrete implementation of a data source as a db.
@@ -59,11 +60,19 @@ class TppsDaoDataSource internal constructor(
         }
     }
 
-    override /*suspend */fun saveTpp(tpp: Tpp) /*= withContext(ioDispatcher)*/ {
+    override suspend fun saveTpp(tpp: Tpp) /*= withContext(ioDispatcher)*/ {
+        val apps = tpp.appsPortfolio.appsList
+        for (app in apps) {
+            try {
+                tppsDao.insertApp(app)
+            } catch (e: Exception) {
+                Timber.e(e)
+            }
+        }
         tppsDao.insertTppEntity(tpp.ebaEntity)
     }
 
-    override suspend fun saveАpp(аpp: App) = withContext(ioDispatcher) {
+    override suspend fun saveАpp(аpp: App) {//} = withContext(ioDispatcher) {
         if (аpp.id != null) {
             tppsDao.updateApp(аpp)
         } else {

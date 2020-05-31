@@ -35,11 +35,8 @@ interface  OblogEbaService {
 
         fun create(context: Context): OblogEbaService {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context) //Environment.getDataDirectory()
-            val sharedPreferences2 = context.getSharedPreferences("root_preferences", Context.MODE_PRIVATE) //PreferenceManager.getDefaultSharedPreferences(context)
 
             val currentEnv = sharedPreferences.getString("environment", "TEST")
-            val testEnvDefaults =  context.applicationContext.resources.getStringArray(com.applego.oblog.tppwatch.R.array.env_TEST);
-            val currentEnv2 = sharedPreferences.all //StringSet("environment", testEnvDefaults.toMutableSet())
 
             val envsBaseUrls : Array<String> = context.applicationContext.resources.getStringArray(com.applego.oblog.tppwatch.R.array.env_base_url);
             var baseUrl = OblogRestClient.getBaseUrl(currentEnv, envsBaseUrls)
@@ -53,11 +50,6 @@ interface  OblogEbaService {
         }
     }
 
-
-/*
-    @GET("tpps/local/")
-    fun getTppEntityByDbId(@Query("id") id: Int?): Call<Tpp>
-*/
     @GET("tpps/local/{entityId}")
     fun findById(@Header("X-Api-Key") apiKey: String,
                  @Path("entityId") entityId: String,

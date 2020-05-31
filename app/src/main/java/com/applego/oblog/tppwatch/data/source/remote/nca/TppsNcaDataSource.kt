@@ -78,7 +78,7 @@ class TppsNcaDataSource internal constructor (
         }
     }
 
-    override /*suspend*/ fun getTppById(country: String, tppId: String): Result<Tpp> {
+    override suspend fun getTppById(country: String, tppId: String): Result<Tpp> {
         val paging = Paging()
 
         val call = tppsService.findById(theApiKey.apiKey,country, tppId.toString(), paging.page, paging.size, paging.sortBy)
@@ -109,7 +109,7 @@ class TppsNcaDataSource internal constructor (
         }
     }
 
-    /*suspend */fun updateTppEntity(ncaTpp: Tpp) : Tpp {
+    suspend fun updateTppEntity(ncaTpp: Tpp) : Tpp {
         val ncaEntity = ncaTpp.ebaEntity
         val dbEntity = tppsDao.getTppEntityByCode(ncaEntity.getEntityCode(), ncaEntity.ebaProperties.codeType)
         if (dbEntity == null) {

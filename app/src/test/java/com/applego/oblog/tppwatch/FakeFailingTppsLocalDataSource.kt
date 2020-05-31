@@ -15,7 +15,7 @@ object FakeFailingTppsLocalDataSource : LocalTppDataSource {
         return Result.Error(Exception("Test"))
     }
 
-    override suspend fun getTpp(tppId: String): Result<Tpp> {
+    override /*suspend*/ fun getTpp(tppId: String): Result<Tpp> {
         return Result.Error(Exception("Test"))
     }
 

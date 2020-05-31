@@ -14,6 +14,7 @@ import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
+import timber.log.Timber
 
 /**
  * ViewModel for the Details screen.
@@ -98,12 +99,16 @@ open class TppDetailViewModel(
         wrapEspressoIdlingResource {
             runBlocking {
                 if (tppId != null) {
-                    tppsRepository.getTpp(tppId, forceRefresh).let { result ->
-                        if (result is Success) {
-                            onTppLoaded(result.data)
-                        } else {
-                            onDataNotAvailable(result)
+                    try {
+                        tppsRepository.getTpp(tppId, forceRefresh).let { result ->
+                            if (result is Success) {
+                                onTppLoaded(result.data)
+                            } else {
+                                onDataNotAvailable(result)
+                            }
                         }
+                    } catch (t: Throwable) {
+                        Timber.e(t)
                     }
                 }
                 _dataLoading.value = false

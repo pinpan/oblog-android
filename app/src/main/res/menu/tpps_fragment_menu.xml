@@ -14,11 +14,6 @@
         android:icon="@drawable/ic_filter_list"
         app:showAsAction="always" />
 
-    <!--<item
-        android:id="@+id/about_frag"
-        android:entityName="@string/about_menu_item"
-        app:showAsAction="never" />
--->
     <item
         android:id="@+id/menu_refresh"
         android:icon="@drawable/ic_refresh"
@@ -35,13 +30,18 @@
         android:title="@string/preferences_title"
         app:showAsAction="never" />
 
-<!--
     <item
-        android:id="@+id/revokedSwitchForActionBar"
-        android:title="Revoked"
-        android:layout_centerVertical="true"
-        app:showAsAction="always"
-        app:actionLayout="@layout/switch_item"
-        />
--->
+        android:id="@+id/about_frag"
+        android:title="@string/about_menu_item"
+        app:showAsAction="never" />
+
+    <!--
+        <item
+            android:id="@+id/revokedSwitchForActionBar"
+            android:title="Revoked"
+            android:layout_centerVertical="true"
+            app:showAsAction="always"
+            app:actionLayout="@layout/switch_item"
+            />
+    -->
 </menu>
