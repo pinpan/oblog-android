@@ -64,7 +64,7 @@ interface TppsDao {
      * @param ebaEntity the ebaEntity to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    /*suspend */fun insertTppEntity(ebaEntity: EbaEntity)
+    suspend fun insertTppEntity(ebaEntity: EbaEntity)
 
     /**
      * Update a ebaEntity.
@@ -73,7 +73,7 @@ interface TppsDao {
      * @return the number of tpps updated. This should always be 1.
      */
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    /*suspend */fun updateTppEntity(ebaEntity: EbaEntity): Int
+    suspend fun updateTppEntity(ebaEntity: EbaEntity): Int
 
     /**
      * Update the followed status of a tpp

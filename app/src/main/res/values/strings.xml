@@ -118,6 +118,7 @@
     <string name="A">A</string>
     <string name="F">F</string>
     <string name="about_menu_item">About</string>
-    <string name="about_header">About</string>
+    <string name="about_header">About OBLOG</string>
+    <string name="about_content">Open Banking Log (OBLog) - helps its users to make informed decisions when dealing with financial tools operated by Third Party Providers. </string>
 
 </resources>

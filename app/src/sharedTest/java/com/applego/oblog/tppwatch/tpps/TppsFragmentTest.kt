@@ -366,7 +366,7 @@ class TppsFragmentTest {
     }
 
     private fun launchTppsFragment(): FragmentScenario<TppsFragment>? {
-        val bundle = TppsFragmentArgs(1).toBundle()
+        val bundle = TppsFragmentArgs().toBundle()
 
         val fragmentScenario = launchFragmentInContainer<TppsFragment>(bundle, R.style.AppTheme)
         fragmentScenario.onFragment {

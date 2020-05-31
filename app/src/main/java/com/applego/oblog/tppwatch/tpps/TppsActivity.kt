@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
@@ -49,11 +48,15 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
     private var selectedTppId: String ?=null
 
+    private var userName = ""
+    private var userEmail = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val userName= getUsername()
         Log.i("userName", userName ?: "N/A")
+
 
         //val email = getEmailAddress()
         //Log.i("email", email.toString())
@@ -239,7 +242,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
     }
 
 
-    var EMAIL_ACCOUNTS_DATABASE_CONTENT_URI: Uri = Uri.parse("content://com.android.email.provider/account")
+    //var EMAIL_ACCOUNTS_DATABASE_CONTENT_URI: Uri = Uri.parse("content://com.android.email.provider/account")
 
     /*fun getEmailAddress(): ArrayList<String>? {
         getPermissionToAccessAccounts()
@@ -286,7 +289,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
     fun pickUserAccount() {
         val googlePicker = AccountPicker.newChooseAccountIntent(null, null, arrayOf(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE), true, null, null, null, null)
-        startActivityForResult(googlePicker, 11)
+        startActivity/*ForResult*/(googlePicker/*, 11*/)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -325,10 +328,14 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
     fun getPermissionToAccessAccounts() {
         var possibleEmail = "************* Get Registered Gmail Account *************\n\n";
 
-        pickUserAccount()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val userAccount = prefs.getString("userAccount", null)
+        if (userAccount == null) {
+            pickUserAccount()
+            // TODO: set the name
+        }
 
         var myPermissionRequest = getPermission(android.Manifest.permission.GET_ACCOUNTS);
-
         if (myPermissionRequest == -1) {
             // Do wait for user to grant permission
         } else {

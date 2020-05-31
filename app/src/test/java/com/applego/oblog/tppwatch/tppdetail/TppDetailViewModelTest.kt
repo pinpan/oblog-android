@@ -51,9 +51,7 @@ class TppDetailViewModelTest {
     @Before
     fun setupViewModel() {
         tppsRepository = FakeRepository()
-        if (tpp != null) {
-            tppsRepository.addTpps(tpp!!)
-        }
+        tppsRepository.addTpps(tpp)
 
         tppDetailViewModel = TppDetailViewModel(tppsRepository)
     }
