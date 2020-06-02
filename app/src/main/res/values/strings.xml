@@ -96,7 +96,7 @@
     <string name="psd2_services_only">Show only PSD2 SPs</string>
     <string name="banks_as_psd2">Show banks as PSD2 SPs</string>
 
-    <string name="user_account_title">User account</string>
+    <string name="user_id_title">User ID</string>
     <string name="actual_env_title">Actual environment</string>
     <string name="reply_title">Default reply action</string>
     <string name="sync_title">Sync SPs directory periodically</string>

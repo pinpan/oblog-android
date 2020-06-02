@@ -1,15 +1,20 @@
 
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
-    <PreferenceCategory app:title="@string/user_account">
+    <!--PreferenceCategory app:title="@string/user_account">-->
+        <SwitchPreferenceCompat
+            app:key="userAccount"
+            app:title="@string/user_account"
+            />
 
         <ListPreference
             app:defaultValue="N/A"
-            app:key="userAccount"
-            app:title="@string/user_account_title"
+            app:key="userId"
+            app:title="@string/user_id_title"
             app:useSimpleSummaryProvider="true"
+            app:dependency="userAccount"
             />
 
-    </PreferenceCategory>
+<!--    </PreferenceCategory>-->
 
     <PreferenceCategory app:title="@string/environments">
 
