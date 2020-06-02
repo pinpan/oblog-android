@@ -1,5 +1,15 @@
 
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory app:title="@string/user_account">
+
+        <ListPreference
+            app:defaultValue="N/A"
+            app:key="userAccount"
+            app:title="@string/user_account_title"
+            app:useSimpleSummaryProvider="true"
+            />
+
+    </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/environments">
 
@@ -12,23 +22,38 @@
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/sync_header">
+    <PreferenceCategory app:title= "@string/user_consents">
 
+        <SwitchPreferenceCompat
+            app:key="usage"
+            app:title="@string/anonymous_usage"
+        />
+<!--
         <EditTextPreference
-            app:key="signature"
-            app:title="@string/user_signature"
+            app:key="usage"
+            app:title="@string/anonymous_usage"
             app:useSimpleSummaryProvider="true" />
-
+-->
         <SwitchPreferenceCompat
             app:key="sync"
             app:title="@string/sync_title" />
 
         <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
+            app:dependency="usage"
+            app:key="location"
+            app:summaryOff= "@string/allow_location_off"
+            app:summaryOn="@string/allow_location_on"
+            app:title="@string/anonymous_location" />
+
+        <SwitchPreferenceCompat
+            app:key="User identification"
+            app:title="@string/anonymous_usage"
+            />
+
+        <!--
+        app:entries="@array/empty_array"
+        app:entryValues="@array/empty_array"
+-->
 
     </PreferenceCategory>
 

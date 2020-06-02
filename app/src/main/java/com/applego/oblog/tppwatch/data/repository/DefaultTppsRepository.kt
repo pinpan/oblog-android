@@ -240,13 +240,11 @@ class DefaultTppsRepository (
     }
 
     private suspend fun refreshLocalDataSource(tpps: List<Tpp>?) {
-        //TODO: Restore: tppsLocalDataSource.deleteAllTpps()
         if (tpps != null) {
             for (tpp in tpps) {
                 tppsLocalDataSource.saveTpp(tpp)
             }
         }
-        // TODO: Check if ViewModel refresh is triggered then
     }
 
     private suspend fun refreshLocalDataSource(tpp: Tpp) {
@@ -259,31 +257,14 @@ class DefaultTppsRepository (
         perform(tpp)
     }
 
-
     override suspend fun saveApp(tpp: Tpp, app: App) {
-        // Do in memory cache update to keep the app UI up to date
-        //cacheAndPerform(аpp) {
-            /*coroutineScope {
-                launch {
-                    tppsLocalDataSource.saveАpp(app)
-                }
-            }*/
-        //}
         tpp.appsPortfolio.addApp(app)
         tpp.ebaEntity._description += " app"
-        //cacheAndPerform(tpp, {
 
-            coroutineScope {
-            //    launch {
-                    tppsLocalDataSource.saveАpp(app)
-                //}
-                //tppsLocalDataSource.saveАpp(app)
-            //    launch {
-                    tppsLocalDataSource.saveTpp(tpp)
-                }
-            //}}
-            //)
-        //}
+        coroutineScope {
+            tppsLocalDataSource.saveАpp(app)
+            tppsLocalDataSource.saveTpp(tpp)
+        }
     }
 
     override suspend fun deleteApp(tpp: Tpp, app: App) {
@@ -291,13 +272,16 @@ class DefaultTppsRepository (
     }
 
     override suspend fun updateApp(tpp: Tpp, app: App) {
-        //cacheAndPerform(tpp, {
-
-            coroutineScope {
-                launch {
-                    tppsLocalDataSource.saveАpp(app)
-                }
+        coroutineScope {
+            launch {
+                tppsLocalDataSource.saveАpp(app)
             }
-        //})
+
+            /*
+                launch(Dispatchers.Main.immediate) {
+                    log("A")
+                }
+            */
+        }
     }
 }

@@ -8,7 +8,6 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.applego.oblog.tppwatch.Event
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -33,9 +32,9 @@ fun View.showSnackbar(snackbarText: String, timeLength: Int) {
  * Triggers a snackbar message when the value contained by snackbarTppMessageLiveEvent is modified.
  */
 fun View.setupSnackbar(
-    lifecycleOwner: LifecycleOwner,
-    snackbarEvent: LiveData<Event<Int>>,
-    timeLength: Int
+        lifecycleOwner: LifecycleOwner,
+        snackbarEvent: LiveData<Event<Int>>,
+        timeLength: Int
 ) {
 
     snackbarEvent.observe(lifecycleOwner, Observer { event ->

@@ -1,4 +1,8 @@
 <resources>
+    <string-array name="empty_array">
+        <item>p-pavlin@email.cz</item>
+    </string-array>
+
     <string-array name="env_names">
         <item>@string/env_DEV</item>
         <item>@string/env_TEST</item>

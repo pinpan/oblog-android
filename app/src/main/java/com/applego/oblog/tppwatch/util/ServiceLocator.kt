@@ -1,4 +1,4 @@
-package com.applego.oblog.tppwatch
+package com.applego.oblog.tppwatch.util
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting
@@ -28,7 +28,9 @@ object ServiceLocator {
 
     fun provideTppsRepository(context: Context): TppsRepository {
         synchronized(this) {
-            return tppsRepository ?: tppsRepository ?: createTppsRepository(context)
+            return tppsRepository
+                    ?: tppsRepository
+                    ?: createTppsRepository(context)
         }
     }
 
@@ -44,17 +46,20 @@ object ServiceLocator {
     }
 
     private fun createTppLocalDataSource(context: Context): LocalTppDataSource {
-        val database = database ?: createDataBase(context)
+        val database = database
+                ?: createDataBase(context)
         return TppsDaoDataSource(database.tppDao())
     }
 
     private fun createTppsEbaDataSource(context: Context): RemoteTppDataSource {
-        val database = database ?: createDataBase(context)
+        val database = database
+                ?: createDataBase(context)
         return TppEbaDataSource(OblogEbaService.create(context), database.tppDao())
     }
 
     private fun createTppsNcaDataSource(context: Context): TppsNcaDataSource {
-        val database = database ?: createDataBase(context)
+        val database = database
+                ?: createDataBase(context)
         return TppsNcaDataSource(OblogNcaService.create(context), database.tppDao())
     }
 

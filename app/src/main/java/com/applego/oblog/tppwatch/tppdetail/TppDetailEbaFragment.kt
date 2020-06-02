@@ -8,7 +8,7 @@ import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.applego.oblog.tppwatch.EventObserver
+import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.TppdetailEbaFragBinding
 import com.applego.oblog.tppwatch.util.setupSnackbar
@@ -49,10 +49,10 @@ class TppDetailEbaFragment (private val viewModel: TppDetailViewModel, @Nullable
     private fun setupNavigation() {
         viewModel.editTppEvent.observe(this, EventObserver {
             val action = TppDetailTabsFragmentDirections
-                .actionTppDetailTabsFragmentToAddEditTppFragment(
-                    args.tppId,
-                    resources.getString(R.string.edit_tpp)
-                )
+                    .actionTppDetailTabsFragmentToAddEditTppFragment(
+                            args.tppId,
+                            resources.getString(R.string.edit_tpp)
+                    )
             findNavController().navigate(action)
         })
     }

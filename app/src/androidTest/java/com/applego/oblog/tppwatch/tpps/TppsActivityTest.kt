@@ -20,7 +20,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.R.string
-import com.applego.oblog.tppwatch.ServiceLocator
+import com.applego.oblog.tppwatch.util.ServiceLocator
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.data.model.EbaEntity

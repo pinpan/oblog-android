@@ -11,7 +11,7 @@
             type="com.applego.oblog.tppwatch.statistics.StatisticsViewModel" />
     </data>
 
-    <com.applego.oblog.tppwatch.ScrollChildSwipeRefreshLayout
+    <com.applego.oblog.tppwatch.util.ScrollChildSwipeRefreshLayout
         android:id="@+id/refresh_layout"
         app:refreshing="@{viewmodel.dataLoading}"
         app:onRefreshListener="@{viewmodel::refresh}"
@@ -64,5 +64,5 @@
             </LinearLayout>
         </LinearLayout>
 
-    </com.applego.oblog.tppwatch.ScrollChildSwipeRefreshLayout>
+    </com.applego.oblog.tppwatch.util.ScrollChildSwipeRefreshLayout>
 </layout>

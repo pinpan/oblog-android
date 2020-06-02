@@ -1,4 +1,4 @@
-package com.applego.oblog.tppwatch
+package com.applego.oblog.tppwatch.util
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

@@ -3,7 +3,7 @@ package com.applego.oblog.tppwatch.tppdetail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.applego.oblog.tppwatch.Event
+import com.applego.oblog.tppwatch.util.Event
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.Tpp

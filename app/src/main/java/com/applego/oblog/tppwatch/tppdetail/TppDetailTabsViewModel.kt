@@ -2,7 +2,7 @@ package com.applego.oblog.tppwatch.tppdetail
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.*
-import com.applego.oblog.tppwatch.Event
+import com.applego.oblog.tppwatch.util.Event
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.repository.TppsRepository

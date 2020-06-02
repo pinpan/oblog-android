@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.applego.oblog.tppwatch.EventObserver
+import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.AddtppFragBinding
 import com.applego.oblog.tppwatch.tpps.ADD_EDIT_RESULT_OK
@@ -55,7 +55,7 @@ class AddEditTppFragment : Fragment() {
     private fun setupNavigation() {
         viewModel.tppUpdatedEvent.observe(this, EventObserver {
             val action = AddEditTppFragmentDirections
-                .actionAddEditTppFragmentToTppsFragment(null, ADD_EDIT_RESULT_OK)
+                    .actionAddEditTppFragmentToTppsFragment(null, ADD_EDIT_RESULT_OK)
             findNavController().navigate(action)
         })
     }
