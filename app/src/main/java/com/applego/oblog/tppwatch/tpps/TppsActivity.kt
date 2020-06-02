@@ -1,6 +1,5 @@
 package com.applego.oblog.tppwatch.tpps
 
-import android.accounts.Account
 import android.accounts.AccountManager
 import android.app.Activity
 import android.content.Intent
@@ -8,7 +7,6 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
@@ -30,7 +28,6 @@ import com.applego.oblog.tppwatch.tppdetail.TppDetailTabsFragment
 import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.common.AccountPicker
 import com.google.android.material.navigation.NavigationView
-import kotlinx.coroutines.*
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -49,9 +46,6 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val userName= getUsername()
-        Log.i("userName", userName ?: "N/A")
 
         setContentView(com.applego.oblog.tppwatch.R.layout.tpps_act)
         setupNavigationDrawer()
@@ -88,6 +82,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
             }
         }
 
+        getUserId()
 
         setupSharedPreferences();
 
@@ -199,6 +194,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
         super.onBackPressed()
     }
+/*
 
     fun getUsername(): String? {
         getPermissionToAccessAccounts()
@@ -218,34 +214,13 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
         }
         return null
     }
+*/
 
     private var lastPermissionRequestId = AtomicInteger(0)
 
     fun pickUserAccount() {
-        /*runBlocking<Unit> {
-            launch { // context of the parent, main runBlocking coroutine
-                println("main runBlocking      : I'm working in thread ${Thread.currentThread().name}")
-            }
-            launch(Dispatchers.Unconfined) { // not confined -- will work with main thread
-                println("Unconfined            : I'm working in thread ${Thread.currentThread().name}")
-            }
-            launch(Dispatchers.Default) { // will get dispatched to DefaultDispatcher
-                println("Default               : I'm working in thread ${Thread.currentThread().name}")
-            }
-            launch(newSingleThreadContext("MyOwnThread")) { // will get its own new thread
-                println("newSingleThreadContext: I'm working in thread ${Thread.currentThread().name}")
-            }
-        }*/
-
-        //runBlocking<Unit> {
-            //launch(Dispatchers.Main) {}
-            val googlePicker = AccountPicker.newChooseAccountIntent(null, null, arrayOf(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE), true, null, null, null, null)
-            startActivityForResult(googlePicker, 11)
-        //}
-
-        //CoroutineScope.launch(
-            //CoroutineScope(Dispatchers.Main).launch ( this,
-        //)
+        val googlePicker = AccountPicker.newChooseAccountIntent(null, null, arrayOf(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE), true, null, null, null, null)
+        startActivityForResult(googlePicker, 11)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -259,7 +234,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                 val prefs = PreferenceManager.getDefaultSharedPreferences(this)
                 val prefsEditor = prefs.edit()
                 prefsEditor.putString("userAccountType", data?.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE))
-                prefsEditor.putString("userAccountName", data?.getStringExtra(AccountManager.KEY_ACCOUNT_NAME))
+                prefsEditor.putString("userId", data?.getStringExtra(AccountManager.KEY_ACCOUNT_NAME))
                 prefsEditor.commit()
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 //Toast.makeText(this, R.string.pick_account, Toast.LENGTH_LONG).show()
@@ -287,34 +262,12 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
         return permissionRequest
     }
 
-    fun getPermissionToAccessAccounts() {
-        var possibleEmail = "************* Get Registered Gmail Account *************\n\n";
-
+    fun getUserId() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val userAccount = prefs.getString("userAccountName", null)
+        val userAccount = prefs.getString("userId", null)
         if (userAccount == null) {
             pickUserAccount()
         }
-
-        var myPermissionRequest = getPermission(android.Manifest.permission.GET_ACCOUNTS);
-        if (myPermissionRequest == -1) {
-            // Do wait for user to grant permission
-        } else {
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
-                myPermissionRequest = getPermission(android.Manifest.permission.READ_CONTACTS);
-                if (myPermissionRequest == -1) {
-                    // Do wait for user to grant permission
-                } else {
-                    val accounts = AccountManager.get(this).getAccountsByType("com.google");
-                    accounts.forEach {
-                        possibleEmail += " --> " + it.name + " : " + it.type + " , \n";
-                        possibleEmail += " \n\n";
-                    }
-                }
-            }
-        }
-
-        Log.i("EXCEPTION", "mails: " + possibleEmail);
     }
 }
 
