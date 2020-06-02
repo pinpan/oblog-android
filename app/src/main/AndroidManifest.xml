@@ -32,7 +32,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".PreferencesActivity"
+            android:name=".preferences.OblogPreferencesActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".tpps.TppsActivity">
             <meta-data

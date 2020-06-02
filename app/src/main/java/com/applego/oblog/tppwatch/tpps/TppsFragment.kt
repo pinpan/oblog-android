@@ -8,12 +8,10 @@ import android.widget.*
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.applego.oblog.tppwatch.EventObserver
+import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.about.AboutFragmentDirections
 import com.applego.oblog.tppwatch.databinding.TppsFragBinding
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar

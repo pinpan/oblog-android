@@ -2,6 +2,7 @@ package com.applego.oblog.tppwatch
 
 import androidx.lifecycle.LiveData
 import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.util.Event
 import org.junit.Assert.assertEquals
 
 fun assertLiveDataEventTriggered(
@@ -13,8 +14,8 @@ fun assertLiveDataEventTriggered(
 }
 
 fun assertLiveDataEventTriggered(
-    liveData: LiveData<Event<String>>,
-    tppId: String
+        liveData: LiveData<Event<String>>,
+        tppId: String
 ) {
     val value = LiveDataTestUtil.getValue(liveData)
     assertEquals(value.getContentIfNotHandled(), tppId)

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.applego.oblog.tppwatch.Event
+import com.applego.oblog.tppwatch.util.Event
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.model.App
@@ -120,29 +120,24 @@ class AddEditTppAppViewModel(
     private fun createApp(app: App) = viewModelScope.launch {
         if (app != null) {
             app.tppId = tpp?.getId() ?: "-1"
-            //viewModelScope.launch {
-                tppsRepository.saveApp(tpp!!, app)
-            //}
+            tppsRepository.saveApp(tpp!!, app)
         }
+
         _appUpdatedEvent.value = Event(Unit)
     }
 
     private fun updateApp(app: App) = viewModelScope.launch {
         if (app != null) {
             app.tppId = tpp?.getId() ?: "-1"
-            //viewModelScope.launch {
-                tppsRepository.updateApp(tpp!!, app)
-            //}
+            tppsRepository.updateApp(tpp!!, app)
         }
+
         _appUpdatedEvent.value = Event(Unit)
     }
 
-    private fun updateTpp(tpp: Tpp) {
-        viewModelScope.launch {
-            viewModelScope.launch {
-                tppsRepository.saveTpp(tpp)
-            }
-            _appUpdatedEvent.value = Event(Unit)
-        }
+    private fun updateTpp(tpp: Tpp)  = viewModelScope.launch {
+        tppsRepository.saveTpp(tpp)
+
+        _appUpdatedEvent.value = Event(Unit)
     }
 }

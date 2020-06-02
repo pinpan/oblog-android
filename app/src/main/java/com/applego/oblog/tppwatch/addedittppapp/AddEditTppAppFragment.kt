@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.applego.oblog.tppwatch.EventObserver
+import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.AddTtpappFragBinding
 import com.applego.oblog.tppwatch.util.getViewModelFactory
@@ -43,7 +43,7 @@ class AddEditTppAppFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         setupSnackbar()
         setupNavigation()
-        //this.setupRefreshLayout(viewDataBinding.refreshLayout)
+
         viewModel.start(args.tppId, args.appId)
     }
 
@@ -54,7 +54,7 @@ class AddEditTppAppFragment : Fragment() {
     private fun setupNavigation() {
         viewModel.appUpdatedEvent.observe(this, EventObserver {
             val action = AddEditTppAppFragmentDirections
-                .actionAddEditTppAppFragmentToTppDetailTabsFragment(args.tppId)
+                    .actionAddEditTppAppFragmentToTppDetailTabsFragment(args.tppId)
             findNavController().navigate(action)
         })
     }

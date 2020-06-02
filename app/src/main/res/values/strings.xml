@@ -90,26 +90,29 @@
     <string name="messages_header">Messages</string>
 
     <string name="sync_header">Sync</string>
+    <string name="user_consents">Consents</string>
 
     <string name="user_signature">Your signature</string>
     <string name="psd2_services_only">Show only PSD2 SPs</string>
     <string name="banks_as_psd2">Show banks as PSD2 SPs</string>
 
+    <string name="user_account_title">User account</string>
     <string name="actual_env_title">Actual environment</string>
     <string name="reply_title">Default reply action</string>
     <string name="sync_title">Sync SPs directory periodically</string>
 
     <!-- Preference Titles -->
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    <string name="anonymous_location">Anonymous location</string>
+    <string name="allow_location_on">Youd location will be anonymously shared with our server
     </string>
 
     <!-- Messages Preferences -->
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="allow_location_off">Switch On to allow sending your location anonymously</string>
     <string name="settings_no_tpps">No TPPs found</string>
     <string name="settings_followed_tpps">Followed TPPs</string>
     <string name="settings_used_tpps">Used TPPs</string>
     <string name="environments">Environments</string>
+    <string name="user_account">Account</string>
     <string name="label_fis">Financial institutions</string>
     <string name="no_fis_tpps">No financial institutions</string>
     <string name="label_psd2_only">TPPs with PSD2 only</string>
@@ -120,5 +123,6 @@
     <string name="about_menu_item">About</string>
     <string name="about_header">About OBLOG</string>
     <string name="about_content">Open Banking Log (OBLog) - helps its users to make informed decisions when dealing with financial tools operated by Third Party Providers. </string>
+    <string name="anonymous_usage">Send anonymous usage statistics</string>
 
 </resources>

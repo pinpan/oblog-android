@@ -1,4 +1,4 @@
-package com.applego.oblog.tppwatch
+package com.applego.oblog.tppwatch.util
 
 import android.content.Context
 import android.util.AttributeSet

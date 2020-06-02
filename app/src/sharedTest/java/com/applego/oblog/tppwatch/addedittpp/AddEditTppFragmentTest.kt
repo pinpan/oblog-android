@@ -15,7 +15,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.ServiceLocator
+import com.applego.oblog.tppwatch.util.ServiceLocator
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.source.FakeRepository
 import com.applego.oblog.tppwatch.data.repository.TppsRepository

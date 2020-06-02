@@ -6,9 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.applego.oblog.tppwatch.EventObserver
+import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.addedittppapp.AddEditTppAppFragmentDirections
 import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.databinding.TppdetailAppsFragBinding
 import com.applego.oblog.tppwatch.util.setupSnackbar
@@ -48,16 +47,16 @@ class TppDetailAppsFragment(private val viewModel: AppsViewModel) : Fragment() {
 
     private fun setupNavigation() {
          viewModel.editAppEvent.observe(this.parentFragment!!, EventObserver {
-            val action = TppDetailTabsFragmentDirections
-                .actionTppDetailAppsFragmentToAddEditTppAppFragment(
-                        viewModel.tpp.value!!.getId(),
-                        it,
-                        "Edit Tpp application#" + viewModel.getApp(it) ?: "N/A"
-                    )
-            // TODO#FIX: Throws Action not found, because the current context is the Tabs fragment,
-            //  We didn't move to the Apps using action and changing the destination"
-            findNavController().navigate(action)
-        })
+             val action = TppDetailTabsFragmentDirections
+                     .actionTppDetailAppsFragmentToAddEditTppAppFragment(
+                             viewModel.tpp.value!!.getId(),
+                             it,
+                             "Edit Tpp application#" + viewModel.getApp(it) ?: "N/A"
+                     )
+             // TODO#FIX: Throws Action not found, because the current context is the Tabs fragment,
+             //  We didn't move to the Apps using action and changing the destination"
+             findNavController().navigate(action)
+         })
     }
 
     private fun setupEditFab() {

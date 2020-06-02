@@ -12,7 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
-import com.applego.oblog.tppwatch.EventObserver
+import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.addedittppapp.AddEditTppAppFragmentDirections
 import com.applego.oblog.tppwatch.databinding.TppDetailTabsFragmentBinding
@@ -66,34 +66,34 @@ class TppDetailTabsFragment : Fragment() {
     private fun setupNavigation() {
         viewModel.tppUpdatedEvent.observe(this, EventObserver {
             val action = TppDetailTabsFragmentDirections
-                .actionTppDetailTabsFragmentToTppsFragment(args.tppId)
+                    .actionTppDetailTabsFragmentToTppsFragment(args.tppId)
             findNavController().navigate(action)
         })
 
         viewModel.editTppEvent.observe(this, EventObserver {
             val action = TppDetailTabsFragmentDirections
-                .actionTppDetailTabsFragmentToAddEditTppFragment(
-                    args.tppId,
-                    resources.getString(R.string.edit_tpp)
-                )
+                    .actionTppDetailTabsFragmentToAddEditTppFragment(
+                            args.tppId,
+                            resources.getString(R.string.edit_tpp)
+                    )
             findNavController().navigate(action)
         })
 
         viewModel.addTppAppEvent.observe(this, EventObserver {
             val action = TppDetailTabsFragmentDirections
                     .actionTppDetailAppsFragmentToAddEditTppAppFragment(
-                    args.tppId,
-                    null,
-                    resources.getString(R.string.add_app)
-                )
+                            args.tppId,
+                            null,
+                            resources.getString(R.string.add_app)
+                    )
             findNavController().navigate(action)
         })
 
         viewModel.editTppAppEvent.observe(this, EventObserver {
             val action = AddEditTppAppFragmentDirections
-                .actionAddEditTppAppFragmentToTppDetailTabsFragment(
-                    args.tppId
-                )
+                    .actionAddEditTppAppFragmentToTppDetailTabsFragment(
+                            args.tppId
+                    )
             findNavController().navigate(action)
         })
 

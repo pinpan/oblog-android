@@ -40,7 +40,7 @@ class TppsDaoDataSource internal constructor(
         return (!filter.country.isNullOrBlank() && filter.pasportedTo.isNullOrEmpty() && filter.services.isNullOrEmpty() && filter.tppName.isNullOrBlank());
     }
 
-    override /*suspend */fun getTpp(tppId: String): Result<Tpp> /*= withContext(ioDispatcher)*/ {
+    override fun getTpp(tppId: String): Result<Tpp> {
         try {
             val tppEntity = tppsDao.getTppEntityByDbId(tppId)
             if (tppEntity != null) {
@@ -51,16 +51,16 @@ class TppsDaoDataSource internal constructor(
                     tpp.appsPortfolio.tppId = tppId
                     tpp.appsPortfolio.appsList = apps as ArrayList
                 }
-                return/*@withContext */Success(tpp)
+                return Success(tpp)
             } else {
-                return/*@withContext*/ Error(Exception("EbaEntity not found!"))
+                return Error(Exception("EbaEntity not found!"))
             }
         } catch (e: Exception) {
-            return/*@withContext*/ Error(e)
+            return Error(e)
         }
     }
 
-    override suspend fun saveTpp(tpp: Tpp) /*= withContext(ioDispatcher)*/ {
+    override suspend fun saveTpp(tpp: Tpp) {
         val apps = tpp.appsPortfolio.appsList
         for (app in apps) {
             try {
@@ -72,7 +72,7 @@ class TppsDaoDataSource internal constructor(
         tppsDao.insertTppEntity(tpp.ebaEntity)
     }
 
-    override suspend fun saveАpp(аpp: App) {//} = withContext(ioDispatcher) {
+    override suspend fun saveАpp(аpp: App) {
         if (аpp.id != null) {
             tppsDao.updateApp(аpp)
         } else {
