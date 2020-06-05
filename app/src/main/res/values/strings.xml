@@ -124,5 +124,8 @@
     <string name="about_header">About OBLOG</string>
     <string name="about_content">Open Banking Log (OBLog) - helps its users to make informed decisions when dealing with financial tools operated by Third Party Providers. </string>
     <string name="anonymous_usage">Send anonymous usage statistics</string>
+    <string name="title_activity_onboarding">OnboardingActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
 
 </resources>

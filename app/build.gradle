@@ -100,21 +100,17 @@ android {
  */
 dependencies {
 
-    // https://mvnrepository.com/artifact/com.google.dagger/dagger-android
-    //implement group: 'com.google.dagger', name: 'dagger-android', version: '2.20'
-    // https://mvnrepository.com/artifact/com.google.dagger/dagger-compiler
-    //compile group: 'com.google.dagger', name: 'dagger-compiler', version: '2.21'
     implementation 'androidx.preference:preference:1.1.0-alpha05'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.android.material:material:1.1.0'
     annotationProcessor group: 'com.google.dagger', name: 'dagger-compiler', version: '2.21'
-    //'com.google.dagger:dagger-compiler:2.16.1'
-
     implementation 'com.google.android.gms:play-services:8.4.0'
+
     // App dependencies
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
-    // implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation "androidx.cardview:cardview:$cardVersion"
     implementation "com.google.android.material:material:$materialVersion"
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
@@ -131,19 +127,17 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
 
     // Architecture Components
+    kapt "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
     implementation "androidx.room:room-runtime:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycleVersion"
-    kapt "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifecycleVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 
-    //implementation "com.squareup.retrofit2:retrofit:v2.0"
-    // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
     implementation 'com.google.code.gson:gson:2.8.2'
-    implementation group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.3.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.3.0"

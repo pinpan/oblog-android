@@ -21,7 +21,10 @@ import com.applego.oblog.tppwatch.data.source.FakeRepository
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.tpps.ADD_EDIT_RESULT_OK
 import com.applego.oblog.tppwatch.util.getTppsBlocking
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -52,7 +55,9 @@ class AddEditTppFragmentTest {
 
     @After
     fun cleanupDb() = runBlockingTest {
-        ServiceLocator.resetRestDataSource()
+        CoroutineScope(Dispatchers.Main).launch {
+            ServiceLocator.resetRestDataSource()
+        }
     }
 
     @Test

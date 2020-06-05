@@ -2,11 +2,13 @@ package com.applego.oblog.tppwatch.tpps
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Looper.getMainLooper
 import android.view.View
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ActivityScenario.launch
@@ -15,20 +17,22 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.util.ServiceLocator
-import com.applego.oblog.tppwatch.data.model.Tpp
-import com.applego.oblog.tppwatch.data.source.FakeRepository
-import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.data.model.EbaEntity
 import com.applego.oblog.tppwatch.data.model.NcaEntity
+import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.repository.TppsRepository
+import com.applego.oblog.tppwatch.data.source.FakeRepository
+import com.applego.oblog.tppwatch.util.ServiceLocator
 import com.applego.oblog.tppwatch.util.saveTppBlocking
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matcher
@@ -40,6 +44,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.LooperMode
 import org.robolectric.annotation.TextLayoutMode
 
@@ -64,7 +69,10 @@ class TppsFragmentTest {
 
     @After
     fun cleanupDb() = runBlockingTest {
-        ServiceLocator.resetRestDataSource()
+        val job = CoroutineScope(Dispatchers.Main).launch {
+            ServiceLocator.resetRestDataSource()
+        }
+        //job.join()
     }
 
     @Test
@@ -166,9 +174,21 @@ class TppsFragmentTest {
     @Test
     fun markTppAsFollowed() {
         var tppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
+        tppEntity1.followed = true
         repository.saveTppBlocking(Tpp(tppEntity1, NcaEntity()))
 
         launchActivity()
+
+        /*shadowOf(getMainLooper()).idle();
+
+        val context: Context = getInstrumentation().getTargetContext()
+        val preferencesEditor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        preferencesEditor.putBoolean("isFirstRun", false).commit()
+        preferencesEditor.putBoolean("skipSplash", true).commit()
+*/
+        launchActivity()
+
+        shadowOf(getMainLooper()).idle();
 
         // Mark the tpp as followed
         onView(checkboxFollowed()).perform(click())

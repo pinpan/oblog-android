@@ -6,6 +6,21 @@
     app:startDestination="@id/tpps_fragment_dest">
 
     <fragment
+        android:id="@+id/oblog_onboarding_fragment_dest"
+        android:name="com.applego.oblog.tppwatch.onboarding.ui.main.OnboardingFragment"
+        android:label="OBLOG onboarding">
+
+        <action
+            android:id="@+id/action_nextOnboardingPage"
+            app:destination="@id/oblog_onboarding_fragment_dest" />
+
+        <action
+            android:id="@+id/action_finishOnboarding"
+            app:destination="@id/tpps_fragment_dest" />
+
+    </fragment>
+
+    <fragment
         android:id="@+id/tpp_detail_apps_fragment_dest"
         android:name="com.applego.oblog.tppwatch.tppdetail.TppDetailAppsFragment"
         android:label="Tpp Detail Apps">

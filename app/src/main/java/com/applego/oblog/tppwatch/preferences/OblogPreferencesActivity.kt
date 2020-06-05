@@ -1,10 +1,7 @@
 package com.applego.oblog.tppwatch.preferences
 
 import android.os.Bundle
-import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.ListPreference
-import androidx.preference.Preference
 import com.applego.oblog.tppwatch.R
 
 class OblogPreferencesActivity : AppCompatActivity() {

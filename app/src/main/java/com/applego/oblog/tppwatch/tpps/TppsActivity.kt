@@ -6,10 +6,12 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
 import android.preference.PreferenceManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -22,8 +24,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.applego.oblog.tppwatch.BuildConfig
-import com.applego.oblog.tppwatch.preferences.OblogPreferencesActivity
 import com.applego.oblog.tppwatch.R
+import com.applego.oblog.tppwatch.onboarding.OnboardingActivity
+import com.applego.oblog.tppwatch.preferences.OblogPreferencesActivity
 import com.applego.oblog.tppwatch.tppdetail.TppDetailTabsFragment
 import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.common.AccountPicker
@@ -46,6 +49,44 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
+        val skipSplash = sharedPerfs.getBoolean("skipSplash", false)
+        if (!skipSplash) {
+            Handler().postDelayed(object : Runnable {
+
+                override fun run(): Unit {
+                    setContentView(R.layout.spalsh_screen)
+
+                    Toast.makeText(this@TppsActivity, "Run only once", Toast.LENGTH_LONG)
+                            .show()
+                }
+            }, 5000)
+        }
+
+        val isFirstRun = sharedPerfs.getBoolean("isFirstRun", true)
+        if (isFirstRun) {
+            //show sign up activity
+            Handler().postDelayed(object : Runnable {
+
+                override fun run(): Unit {
+                    val editor = sharedPerfs.edit()
+                    editor.putBoolean("isFirstRun", true)
+                    editor.commit()
+
+                    /*val signOnIntent = Intent(this@TppsActivity, SignOnActivity::class)
+                    startActivity(signOnIntent)*/
+                    //finish()
+
+                    startActivity(Intent(this@TppsActivity, OnboardingActivity::class.java))
+                    Toast.makeText(this@TppsActivity, "Run only once", Toast.LENGTH_LONG)
+                            .show()
+                }
+            }, 5000)
+        }
+
+        /*getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE).edit()
+                .putBoolean("isFirstRun", false).commit()*/
 
         setContentView(com.applego.oblog.tppwatch.R.layout.tpps_act)
         setupNavigationDrawer()
