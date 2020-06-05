@@ -16,17 +16,6 @@
 
 <!--    </PreferenceCategory>-->
 
-    <PreferenceCategory app:title="@string/environments">
-
-        <ListPreference
-            app:defaultValue="env_TEST"
-            app:entries="@array/env_names"
-            app:entryValues="@array/env_names"
-            app:key="environment"
-            app:title="@string/actual_env_title"
-            app:useSimpleSummaryProvider="true" />
-    </PreferenceCategory>
-
     <PreferenceCategory app:title= "@string/user_consents">
 
         <SwitchPreferenceCompat
@@ -39,9 +28,11 @@
             app:title="@string/anonymous_usage"
             app:useSimpleSummaryProvider="true" />
 -->
-        <SwitchPreferenceCompat
+        <!--<SwitchPreferenceCompat
             app:key="sync"
-            app:title="@string/sync_title" />
+            app:title="@string/sync_title" />--><!--<SwitchPreferenceCompat
+            app:key="sync"
+            app:title="@string/sync_title" />-->
 
         <SwitchPreferenceCompat
             app:dependency="usage"
@@ -60,6 +51,17 @@
         app:entryValues="@array/empty_array"
 -->
 
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/environments">
+
+        <ListPreference
+            app:defaultValue="env_TEST"
+            app:entries="@array/env_names"
+            app:entryValues="@array/env_names"
+            app:key="environment"
+            app:title="@string/actual_env_title"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
 </PreferenceScreen>

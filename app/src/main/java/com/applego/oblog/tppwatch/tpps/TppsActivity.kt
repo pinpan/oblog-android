@@ -50,7 +50,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
+/*
         val skipSplash = sharedPerfs.getBoolean("skipSplash", false)
         if (!skipSplash) {
             Handler().postDelayed(object : Runnable {
@@ -63,15 +63,17 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                 }
             }, 5000)
         }
+*/
 
-        val isFirstRun = sharedPerfs.getBoolean("isFirstRun", true)
+        val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
+        val isFirstRun = sharedPerfs.getBoolean("isFirstRun", false)
         if (isFirstRun) {
             //show sign up activity
-            Handler().postDelayed(object : Runnable {
+            Handler().post/*Delayed*/(object : Runnable {
 
                 override fun run(): Unit {
                     val editor = sharedPerfs.edit()
-                    editor.putBoolean("isFirstRun", true)
+                    editor.putBoolean("isFirstRun", false)
                     editor.commit()
 
                     /*val signOnIntent = Intent(this@TppsActivity, SignOnActivity::class)
@@ -79,14 +81,10 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                     //finish()
 
                     startActivity(Intent(this@TppsActivity, OnboardingActivity::class.java))
-                    Toast.makeText(this@TppsActivity, "Run only once", Toast.LENGTH_LONG)
-                            .show()
+                    Toast.makeText(this@TppsActivity, "Run only once", Toast.LENGTH_LONG).show()
                 }
-            }, 5000)
+            }/*, 5000*/)
         }
-
-        /*getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE).edit()
-                .putBoolean("isFirstRun", false).commit()*/
 
         setContentView(com.applego.oblog.tppwatch.R.layout.tpps_act)
         setupNavigationDrawer()
