@@ -13,7 +13,7 @@
             type="com.applego.oblog.tppwatch.onboarding.ui.main.OnboardingViewModel" />
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinator_layout_2"
+        android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -43,7 +43,25 @@
                 android:clickable="true"
                 android:onClick="@{() -> viewmodel.finishOnboarding()}"
                 android:src="@drawable/ic_verified_user_96dp" />
-
         </RelativeLayout>
+
+        <Button
+            android:id="@+id/intro_btn_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:text="Skip"
+            android:textColor="@android:color/white"
+            />
+
+        <Button
+            android:id="@+id/intro_btn_finish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:text="Finish"
+            android:textColor="@android:color/white"
+            />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

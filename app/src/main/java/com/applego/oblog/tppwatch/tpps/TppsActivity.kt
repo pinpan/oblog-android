@@ -67,7 +67,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
         val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
         val isFirstRun = sharedPerfs.getBoolean("isFirstRun", false)
-        if (isFirstRun) {
+        if (!isFirstRun) {
             //show sign up activity
             Handler().post/*Delayed*/(object : Runnable {
 

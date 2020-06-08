@@ -124,7 +124,7 @@ class TppsViewModel(
         if (_searchFilter.all) {
             setFilterStatusViews(
                 R.string.label_all, R.string.no_tpps_all,
-                R.drawable.logo_no_fill, true
+                R.drawable.oblog_logo, true
             )
         } else {
             when (requestType) {

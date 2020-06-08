@@ -9,7 +9,7 @@ import com.applego.oblog.tppwatch.util.Event
 class OnboardingViewModel : ViewModel() {
 
     private val _onboardingFinishEvent = MutableLiveData<Event<Unit>>()
-    val onboardingFinishEvent: LiveData<Event<Unit>> = _onboardingFinishEvent
+    var onboardingFinishEvent: LiveData<Event<Unit>> = _onboardingFinishEvent
 
     private val _index = MutableLiveData<Int>()
     val text: LiveData<String> = Transformations.map(_index) {
