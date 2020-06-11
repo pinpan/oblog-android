@@ -99,7 +99,7 @@ class TppDetailViewModelTest {
 
         // Then the ebaEntity is not followed and the snackbar shows the correct message
         assertThat(tppsRepository.tppsServiceData[tppEntity.getEntityId()]?.isUsed()).isFalse()
-        assertSnackbarMessage(tppDetailViewModel.snackbarText, R.string.tpp_marked_inused)
+        assertSnackbarMessage(tppDetailViewModel.snackbarText, R.string.tpp_marked_unused)
     }
 
     @Test

@@ -85,7 +85,7 @@ open class TppDetailViewModel(
         val tpp = _tpp.value ?: return@launch
         tppsRepository.setTppActivateFlag(tpp, activate)
 
-        showSnackbarMessage(if (activate) R.string.tpp_marked_used else R.string.tpp_marked_inused)
+        showSnackbarMessage(if (activate) R.string.tpp_marked_used else R.string.tpp_marked_unused)
     }
 
     fun start(tppId: String?, forceRefresh: Boolean = false) {
@@ -97,14 +97,16 @@ open class TppDetailViewModel(
         _dataLoading.value = true
 
         wrapEspressoIdlingResource {
-            runBlocking {
+            //runBlocking {
                 if (tppId != null) {
                     try {
-                        tppsRepository.getTpp(tppId, forceRefresh).let { result ->
-                            if (result is Success) {
-                                onTppLoaded(result.data)
-                            } else {
-                                onDataNotAvailable(result)
+                        CoroutineScope(Dispatchers.Main).launch {
+                            tppsRepository.getTpp(tppId, forceRefresh).let { result ->
+                                if (result is Success) {
+                                    onTppLoaded(result.data)
+                                } else {
+                                    onDataNotAvailable(result)
+                                }
                             }
                         }
                     } catch (t: Throwable) {
@@ -112,7 +114,7 @@ open class TppDetailViewModel(
                     }
                 }
                 _dataLoading.value = false
-            }
+            //}
         }
     }
 
@@ -131,11 +133,11 @@ open class TppDetailViewModel(
     }
 
     fun refresh() {
-        CoroutineScope(Dispatchers.Main).launch {
+        //CoroutineScope(Dispatchers.Main).launch {
             tppId?.let {
                 start(it, true)
             }
-        }
+        //}
     }
 
     private fun showSnackbarMessage(@StringRes message: Int) {

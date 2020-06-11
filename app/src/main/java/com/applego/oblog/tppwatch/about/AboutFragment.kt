@@ -1,22 +1,27 @@
 package com.applego.oblog.tppwatch.about
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.AboutFragBinding
 import com.applego.oblog.tppwatch.tpps.ADD_EDIT_RESULT_OK
+import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
+
 
 /**
  * Main UI for the add tpp screen. Users can enter a tpp entityName and description.
@@ -41,20 +46,25 @@ class AboutFragment : Fragment() {
 
 
         //val x: View = inflater.inflate(R.layout.nosotros, container, false)
-        val mWebView = root.findViewById(R.id.aboutWV) as WebView
+        val myWebView = root.findViewById(R.id.aboutWV) as WebView
+        val webSettings: WebSettings = myWebView.getSettings()
+        webSettings.javaScriptEnabled = true
+        webSettings.setAppCacheEnabled(true)
+        //webSettings.setAppCachePath(getBaseContext().getCacheDir().getPath())
 
-        val url = "http://www.oblog.org"
-        if (mWebView != null) {
-            mWebView.loadUrl(url)
-            mWebView.setWebViewClient(object : WebViewClient() {
+        webSettings.cacheMode = /*if (isNetworkConnected())*/ WebSettings.LOAD_NO_CACHE /*else WebSettings.LOAD_CACHE_ONLY*/
+
+        val url = "https://www.oblog.org"
+        if (myWebView != null) {
+            myWebView.clearCache(true)
+            myWebView.loadUrl(url)
+            myWebView.setWebViewClient(object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(view: WebView, resourceRequest: WebResourceRequest): Boolean {
                     view.loadUrl(resourceRequest.url.toString())
                     return true
                 }
             })
         }
-        //return x
-
 
         return viewDataBinding.root
     }
@@ -78,4 +88,9 @@ class AboutFragment : Fragment() {
             findNavController().navigate(action)
         })
     }
+
+    /*private fun isNetworkConnected(): Boolean {
+        val cm = getSystemService<Any>(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        return cm!!.activeNetworkInfo != null
+    }*/
 }

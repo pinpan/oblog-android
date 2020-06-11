@@ -62,7 +62,7 @@
                     android:layout_weight="2"
                     android:width="32dp"
                     android:height="16dp"
-                    android:text="@string/A"
+                    android:text="@string/U"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textSize="11sp"

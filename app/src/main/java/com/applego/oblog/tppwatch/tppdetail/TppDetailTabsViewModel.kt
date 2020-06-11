@@ -75,7 +75,7 @@ class TppDetailTabsViewModel (
         val tpp = _tpp.value ?: return@launch
         tppsRepository.setTppActivateFlag(tpp, activate)
 
-        showSnackbarMessage(if (activate) R.string.tpp_marked_used else R.string.tpp_marked_inused)
+        showSnackbarMessage(if (activate) R.string.tpp_marked_used else R.string.tpp_marked_unused)
     }
 
     fun start(tppId: String?, forceRefresh: Boolean = false) {

@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.util.EventObserver
-import com.google.android.material.snackbar.Snackbar
 
 /**
  * A placeholder fragment containing a simple view.
@@ -34,8 +32,16 @@ class OnboardingFragment : Fragment() {
     }
 
     private fun setupNavigation() {
+/*
         viewModel.onboardingFinishEvent.observe(this, EventObserver {
             activity?.finish()
+        })
+*/
+        viewModel.onboardingPrevPage.observe(this, EventObserver {
+
+        })
+        viewModel.onboardingNextPage.observe(this, EventObserver {
+
         })
     }
 
@@ -49,19 +55,6 @@ class OnboardingFragment : Fragment() {
         viewModel.text.observe(this, Observer<String> {
             textView.text = it
         })
-
-        val skip: Button = root.findViewById(R.id.intro_btn_finish)
-        skip.setOnClickListener { view ->
-            Snackbar.make(view, "Introduction skipped", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
-
-        val finish: Button = root.findViewById(R.id.intro_btn_finish)
-        finish.setOnClickListener { view ->
-            Snackbar.make(view, "Introduction finished", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-            viewModel.finishOnboarding()
-        }
 
         return root
     }

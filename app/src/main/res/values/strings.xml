@@ -41,7 +41,7 @@
 
     <string name="tpp_applications">Applications</string>
     <string name="tpp_marked_used">TPP marked used</string>
-    <string name="tpp_marked_inused">TPP marked inused</string>
+    <string name="tpp_marked_unused">TPP marked unused</string>
     <string name="loading_tpps_error">Error while loading TPPs</string>
     <string name="followed_tpps_cleared">Followed TPPs cleared</string>
     <string name="menu_filter">Filter</string>
@@ -79,6 +79,7 @@
     <!-- Content Descriptions -->
     <string name="no_tpps_image_content_description">No TPPs image</string>
     <string name="oblog_api_base_url">http://192.168.0.15:8585/eba-registry/</string>
+    <string name="oblog_web_base_url">https://www.oblog.org/</string>
 
     <string name="reset_name_filter">Reset name filter</string>
 
@@ -118,14 +119,15 @@
     <string name="label_psd2_only">TPPs with PSD2 only</string>
     <string name="no_psd2_only">No TPPs with PSD2 license only</string>
     <string name="no_revoked_tpps">No revoked institutions</string>
-    <string name="A">A</string>
+    <string name="U">U</string>
     <string name="F">F</string>
     <string name="about_menu_item">About</string>
     <string name="about_header">About OBLOG</string>
     <string name="about_content">Open Banking Log (OBLog) - helps its users to make informed decisions when dealing with financial tools operated by Third Party Providers. </string>
     <string name="anonymous_usage">Send anonymous usage statistics</string>
     <string name="title_activity_onboarding">OnboardingActivity</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
+    <string name="label_intro_tab1">Tab 1</string>
+    <string name="label_intro_tab2">Tab 2</string>
+    <string name="label_intro_tab3">Tab 3</string>
 
 </resources>

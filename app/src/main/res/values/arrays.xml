@@ -141,4 +141,16 @@
         <item>SE</item>
     </string-array>
 
+    <string-array name="Introduction_titles">
+        <item>Introduction</item>
+        <item>Features</item>
+        <item>Disclaimer</item>
+    </string-array>
+
+    <string-array name="Onboarding_titles">
+        <item>Select account</item>
+        <item>Home country</item>
+        <item>Disclaimer</item>
+    </string-array>
+
 </resources>
