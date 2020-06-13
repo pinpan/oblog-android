@@ -7,9 +7,9 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.applego.oblog.tppwatch.R
 
 private val TAB_TITLES = arrayOf(
-        R.string.label_intro_tab1,
-        R.string.label_intro_tab2,
-        R.string.label_intro_tab3
+        R.string.label_onbording_introduction,
+        R.string.label_onboarding_features,
+        R.string.label_onboarding_disclaimer
 )
 
 /**
@@ -22,7 +22,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
     override fun getItem(position: Int): Fragment {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
-        return OnboardingFragment.newInstance(position + 1)
+        return OnboardingFragment.newInstance(position)
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
@@ -30,7 +30,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
     }
 
     override fun getCount(): Int {
-        // Show 2 total pages.
+        // Show 3 total pages.
         return 3
     }
 }
