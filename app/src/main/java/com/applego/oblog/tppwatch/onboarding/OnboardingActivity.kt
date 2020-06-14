@@ -22,10 +22,10 @@ class OnboardingActivity : AppCompatActivity() {
 
     private val indicatorViewes = ArrayList<ImageView>()
 
-    override fun onSaveInstanceState(outState: Bundle) {
+    /*override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt("ACTIVE_ONBOARDING_PAGE", viewModel.index.value ?: 0)
-    }
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,19 +37,22 @@ class OnboardingActivity : AppCompatActivity() {
         viewPager.adapter = sectionsPagerAdapter
 
         viewModel = ViewModelProviders.of(this).get(OnboardingViewModel::class.java)
+        if (viewModel.index == null) {
+            viewModel.setIndex(0)
+        }
 
         findViewById<Button>(R.id.intro_btn_next)?.let {
             it.setOnClickListener { view ->
-                Snackbar.make(it, "Introduction Next", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show()
+                /*Snackbar.make(it, "Introduction Next", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()*/
                 viewModel.nextPage()
             }
         }
 
         findViewById<Button>(R.id.intro_btn_prev)?.let {
             it.setOnClickListener { view ->
-                Snackbar.make(it, "Introduction Prev", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show()
+                /*Snackbar.make(it, "Introduction Prev", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()*/
                 viewModel.prevPage()
             }
         }
@@ -66,6 +69,22 @@ class OnboardingActivity : AppCompatActivity() {
         viewModel.index.observe(this, Observer<Int> {
             onPageIndexChanged(it)
         })
+    }
+
+/*
+    override fun onStart() {
+        super.onStart()
+        if (viewModel.index.value == null) {
+            viewModel.setIndex(0)
+        }
+    }
+*/
+
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.index.value == null) {
+            viewModel.setIndex(0)
+        }
     }
 
     fun onPageIndexChanged(pageNo: Int) {

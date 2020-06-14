@@ -19,9 +19,9 @@ class OnboardingFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this.activity!!).get(OnboardingViewModel::class.java).apply {
+        viewModel = ViewModelProviders.of(this.activity!!).get(OnboardingViewModel::class.java)/*.apply {
             setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 0)
-        }
+        }*/
     }
 
     override fun onCreateView(
