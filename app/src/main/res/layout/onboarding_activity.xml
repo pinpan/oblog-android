@@ -110,6 +110,7 @@
                         android:enabled="false"
                         android:padding="5pt"
                         android:paddingRight="10pt"
+                        android:paddingBottom="10pt"
                         android:text="Prev"
                         android:textColor="@android:color/white"
                         tools:visibility="invisible" />
@@ -129,6 +130,7 @@
                         android:enabled="true"
                         android:padding="5pt"
                         android:paddingRight="10pt"
+                        android:paddingBottom="10pt"
                         android:text="Next"
                         android:textColor="@android:color/white" />
 

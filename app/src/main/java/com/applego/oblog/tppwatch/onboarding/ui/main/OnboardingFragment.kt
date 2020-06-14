@@ -9,8 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.onboarding.OnboardingActivity
-import com.applego.oblog.tppwatch.util.EventObserver
 
 /**
  * A placeholder fragment containing a simple view.
@@ -21,32 +19,9 @@ class OnboardingFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(OnboardingViewModel::class.java).apply {
+        viewModel = ViewModelProviders.of(this.activity!!).get(OnboardingViewModel::class.java).apply {
             setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 0)
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        setupNavigation()
-    }
-
-    private fun setupNavigation() {
-
-/*
-        viewModel.onboardingPrevPage.observe(this, EventObserver {
-            (activity as OnboardingActivity).onPageIndexChanged(viewModel.index.value ?: 0)
-        })
-
-        viewModel.onboardingNextPage.observe(this, EventObserver {
-            (activity as OnboardingActivity).onPageIndexChanged(viewModel.index.value ?: 0)
-        })
-*/
-
-        viewModel.indexChangedEvent.observe(this, EventObserver<Int> {
-            (activity as OnboardingActivity).onPageIndexChanged(it)
-        })
     }
 
     override fun onCreateView(
