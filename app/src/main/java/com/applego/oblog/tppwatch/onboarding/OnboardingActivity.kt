@@ -1,6 +1,7 @@
 package com.applego.oblog.tppwatch.onboarding
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +12,9 @@ import androidx.viewpager.widget.ViewPager
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.onboarding.ui.main.OnboardingViewModel
 import com.applego.oblog.tppwatch.onboarding.ui.main.SectionsPagerAdapter
+import com.applego.oblog.tppwatch.util.Event
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.tppdetail_frag.view.*
 
 class OnboardingActivity : AppCompatActivity() {
 
@@ -35,6 +38,15 @@ class OnboardingActivity : AppCompatActivity() {
 
         viewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
+
+        viewPager.addOnPageChangeListener(object: ViewPager.SimpleOnPageChangeListener() {
+
+            override public fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                //val colorUpdate = (Int) evaluator . evaluate (positionOffset, colorList[position], colorList[position == 2 ? position : position+1]);
+                //viewPager.setBackgroundColor(colorUpdate);
+                viewModel.setIndex(position)
+            }
+        })
 
         viewModel = ViewModelProviders.of(this).get(OnboardingViewModel::class.java)
         if (viewModel.index == null) {
@@ -71,14 +83,12 @@ class OnboardingActivity : AppCompatActivity() {
         })
     }
 
-/*
     override fun onStart() {
         super.onStart()
         if (viewModel.index.value == null) {
             viewModel.setIndex(0)
         }
     }
-*/
 
     override fun onResume() {
         super.onResume()
@@ -91,8 +101,20 @@ class OnboardingActivity : AppCompatActivity() {
         activeIndicator.background = ContextCompat.getDrawable(this, R.color.colorGrey)
         activeIndicator = indicatorViewes.get(pageNo)
         activeIndicator.background = ContextCompat.getDrawable(this, R.color.colorDarkGrey)
-        findViewById<Button>(R.id.intro_btn_next)?.setEnabled(pageNo < (viewPager.adapter?.count ?: 0)-1)
-        findViewById<Button>(R.id.intro_btn_prev)?.setEnabled(pageNo > 0)
+        val btnNext = findViewById<Button>(R.id.intro_btn_next)
+        if (btnNext != null) {
+            if (pageNo == (viewPager.adapter?.count ?: 0)-1) {
+                btnNext.text  = resources.getString(R.string.label_onbording_start_using)
+            } else {
+                btnNext.text  = resources.getString(R.string.label_intro_next)
+            }
+            /*btnNext.setEnabled(pageNo < (viewPager.adapter?.count ?: 0)-1)*/
+        }
+        val btnPrev = findViewById<Button>(R.id.intro_btn_prev)
+        if (btnPrev != null) {
+            btnPrev.setEnabled(pageNo < (viewPager.adapter?.count ?: 0))
+            btnPrev.visibility = if (pageNo > 0) android.view.View.VISIBLE else View.GONE
+        }
     }
 
     override fun onBackPressed() {

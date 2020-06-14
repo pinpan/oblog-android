@@ -17,6 +17,13 @@ class OnboardingFragment : Fragment() {
 
     private lateinit var viewModel: OnboardingViewModel
 
+/*
+    var color1 = ContextCompat.getColor(this.activity, R.color.cyan)
+    var color2 = ContextCompat.getColor(this, R.color.orange)
+    var color3 = ContextCompat.getColor(this, R.color.green)
+    var colorList = intArrayOf(color1, color2, color3)
+*/
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.activity!!).get(OnboardingViewModel::class.java)/*.apply {

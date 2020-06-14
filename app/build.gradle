@@ -111,6 +111,8 @@ dependencies {
 
     // App dependencies
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
+    implementation "androidx.appcompat:appcompat:$appCompatVersion"
+    //implementation "androidx.support:design:23.1.1"
     implementation "androidx.cardview:cardview:$cardVersion"
     implementation "com.google.android.material:material:$materialVersion"
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
