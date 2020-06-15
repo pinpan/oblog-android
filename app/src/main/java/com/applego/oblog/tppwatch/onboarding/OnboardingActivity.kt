@@ -24,37 +24,21 @@ class OnboardingActivity : AppCompatActivity() {
 
     private val indicatorViewes = ArrayList<ImageView>()
 
-    /*override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt("ACTIVE_ONBOARDING_PAGE", viewModel.index.value ?: 0)
-    }*/
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.onboarding_activity)
+
+        viewModel = ViewModelProviders.of(this).get(OnboardingViewModel::class.java)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
 
         viewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
-
         viewPager.addOnPageChangeListener(object: ViewPager.SimpleOnPageChangeListener() {
-
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                //val colorUpdate = (Int) evaluator . evaluate (positionOffset, colorList[position], colorList[position == 2 ? position : position+1]);
-                //viewPager.setBackgroundColor(colorUpdate);
                 viewModel.setIndex(position)
             }
-
-            override fun onPageSelected(position: Int) {
-                //onPageIndexChanged(position)
-            }
         })
-
-        viewModel = ViewModelProviders.of(this).get(OnboardingViewModel::class.java)
-        /*if (viewModel.index == null) {
-            viewModel.setIndex(0)
-        }*/
 
         findViewById<ImageButton>(R.id.intro_btn_next)?.let {
             it.setOnClickListener { view ->
@@ -80,9 +64,7 @@ class OnboardingActivity : AppCompatActivity() {
             val indicator: ImageView = window.decorView.findViewWithTag(resources.getString(R.string.tag_intro_indicator) + n)
             indicatorViewes.add(indicator)
         }
-
-        val curModelPage = viewModel.index.value ?: 0
-        activeIndicator = indicatorViewes.get(curModelPage)
+        activeIndicator = indicatorViewes.get(viewModel.index.value ?: 0)
 
         viewModel.index.observe(this, Observer<Int> {
             onPageIndexChanged(it)

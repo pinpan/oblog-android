@@ -55,7 +55,7 @@
                 android:layout_height="8dp"
                 android:layout_marginEnd="@dimen/activity_vertical_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:background="@color/colorLightGrey"
+                android:background="@color/colorDarkGrey"
                 android:tag="intro_indicator_0"/>
 
             <!-- Your other 2 indicators here -->
@@ -65,7 +65,7 @@
                 android:layout_height="8dp"
                 android:layout_marginEnd="@dimen/activity_vertical_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:background="@color/colorLightGrey"
+                android:background="@color/colorGrey"
                 android:tag="intro_indicator_1"/>
 
             <ImageView
@@ -74,7 +74,7 @@
                 android:layout_height="8dp"
                 android:layout_marginEnd="@dimen/activity_vertical_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:background="@color/colorLightGrey"
+                android:background="@color/colorGrey"
                 android:tag="intro_indicator_2"/>
         </LinearLayout>
 

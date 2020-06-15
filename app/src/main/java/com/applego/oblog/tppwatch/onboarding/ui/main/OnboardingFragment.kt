@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.applego.oblog.tppwatch.R
+
 
 /**
  * A placeholder fragment containing a simple view.
@@ -16,6 +18,9 @@ import com.applego.oblog.tppwatch.R
 class OnboardingFragment : Fragment() {
 
     private lateinit var viewModel: OnboardingViewModel
+
+    // var img: ImageView? = null
+    var bgs: IntArray = intArrayOf(R.drawable.ic_flight_24dp, R.drawable.ic_mail_24dp, R.drawable.ic_explore_24dp)
 
 /*
     var color1 = ContextCompat.getColor(this.activity, R.color.cyan)
@@ -41,6 +46,11 @@ class OnboardingFragment : Fragment() {
         viewModel.text.observe(this, Observer<String> {
             textView.text = it
         })
+
+
+        val img = root.findViewById(R.id.section_img) as ImageView
+        img.setBackgroundResource(bgs.get(arguments!!.getInt(ARG_SECTION_NUMBER) - 1))
+
 
         return root
     }
