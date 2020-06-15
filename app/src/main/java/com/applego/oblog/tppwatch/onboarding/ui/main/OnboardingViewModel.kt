@@ -47,7 +47,7 @@ class OnboardingViewModel : ViewModel() {
     /**
      * Called by Data Binding.
      */
-    /*fun finishOnboarding() {
+    fun finishOnboarding() {
         _onboardingFinishEvent.value = Event(Unit)
-    }*/
+    }
 }

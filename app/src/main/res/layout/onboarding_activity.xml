@@ -6,25 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".onboarding.OnboardingActivity">
 
-    <!--
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:minHeight="?actionBarSize"
-                    android:padding="@dimen/appbar_padding"
-                    android:text="@string/app_name"
-                    android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
-
-            </LinearLayout>
-    -->
-
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
@@ -33,54 +14,34 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         />
 
-    <LinearLayout
+    <!-- divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="?attr/actionBarSize"
+        android:alpha="0.12"
+        android:background="@android:color/white" />
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_gravity="bottom|center"
-        android:orientation="vertical"
+        android:layout_gravity="bottom"
         android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingStart="@dimen/activity_horizontal_margin"
+        android:background="@color/wallet_highlighted_text_holo_dark"
         >
 
-        <LinearLayout
+        <Button
+            android:id="@+id/intro_btn_skip"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:paddingBottom="5pt">
-
-            <ImageView
-                android:id="@+id/intro_indicator_0"
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:background="@color/colorGrey"
-                android:contentDescription="@string/indicator_image"
-                android:tag="intro_indicator_0"
-                />
-
-            <ImageView
-                android:id="@+id/intro_indicator_1"
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:background="@color/colorLightGrey"
-                android:contentDescription="@string/indicator_image"
-                android:tag="intro_indicator_1"
-                />
-
-            <ImageView
-                android:id="@+id/intro_indicator_2"
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:background="@color/colorLightGrey"
-                android:contentDescription="@string/indicator_image"
-                android:tag="intro_indicator_2"
-                />
-        </LinearLayout>
+            android:layout_gravity="start|center"
+            android:text="Skip"
+            android:textColor="@android:color/white" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -88,80 +49,59 @@
             android:layout_gravity="center"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/intro_btn_prev"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start|center"
-                android:background="@color/wallet_highlighted_text_holo_dark"
-                android:enabled="false"
-                android:text="@string/label_intro_prev"
-                android:textColor="@android:color/white"
-                tools:visibility="invisible"
-                />
-    <!--
-                <Button
-                android:layout_weight="1"
-                android:paddingRight="10pt"
-                android:paddingBottom="10pt"
-                android:padding="5pt"
-                    android:id="@+id/intro_btn_prev"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start|center"
-                    android:text="Prev"
-                    android:textColor="@android:color/white"
-                    tools:visibility="invisible"
-                    />
-    -->
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:minWidth="40pt"
-                    />
+            <ImageView
+                android:id="@+id/intro_indicator_0"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginEnd="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:background="@color/colorLightGrey"
+                android:tag="intro_indicator_0"/>
 
-                <Button
-                    android:id="@+id/intro_btn_next"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|right|end"
-                    android:background="@color/wallet_highlighted_text_holo_dark"
-                    android:enabled="true"
-                    android:padding="5pt"
-                    android:paddingRight="10pt"
-                    android:paddingBottom="10pt"
-                    android:text="@string/label_intro_next"
-                    android:textColor="@android:color/white"
-                    />
+            <!-- Your other 2 indicators here -->
+            <ImageView
+                android:id="@+id/intro_indicator_1"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginEnd="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:background="@color/colorLightGrey"
+                android:tag="intro_indicator_1"/>
 
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/intro_indicator_2"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginEnd="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:background="@color/colorLightGrey"
+                android:tag="intro_indicator_2"/>
         </LinearLayout>
 
-        <!--
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:minHeight="?actionBarSize"
-                android:padding="@dimen/appbar_padding"
-                android:text="@string/app_name"
-                android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary" />
-        </com.google.android.material.appbar.AppBarLayout>
+        <!-- This overlaps the next button in the last slide
+        android:background="@android:color/background_dark"
         -->
+        <Button
+            android:id="@+id/intro_btn_finish"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:text="Finish"
+            android:textColor="@android:color/white"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/intro_btn_next"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:src="@drawable/mr_media_play_light"
+            android:tint="@android:color/white" />
+
+    </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

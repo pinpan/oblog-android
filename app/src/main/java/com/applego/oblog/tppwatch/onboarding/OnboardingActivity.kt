@@ -3,6 +3,7 @@ package com.applego.oblog.tppwatch.onboarding
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -13,8 +14,6 @@ import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.onboarding.ui.main.OnboardingViewModel
 import com.applego.oblog.tppwatch.onboarding.ui.main.SectionsPagerAdapter
 import com.applego.oblog.tppwatch.util.Event
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.tppdetail_frag.view.*
 
 class OnboardingActivity : AppCompatActivity() {
 
@@ -41,31 +40,38 @@ class OnboardingActivity : AppCompatActivity() {
 
         viewPager.addOnPageChangeListener(object: ViewPager.SimpleOnPageChangeListener() {
 
-            override public fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                 //val colorUpdate = (Int) evaluator . evaluate (positionOffset, colorList[position], colorList[position == 2 ? position : position+1]);
                 //viewPager.setBackgroundColor(colorUpdate);
                 viewModel.setIndex(position)
             }
+
+            override fun onPageSelected(position: Int) {
+                //onPageIndexChanged(position)
+            }
         })
 
         viewModel = ViewModelProviders.of(this).get(OnboardingViewModel::class.java)
-        if (viewModel.index == null) {
+        /*if (viewModel.index == null) {
             viewModel.setIndex(0)
-        }
+        }*/
 
-        findViewById<Button>(R.id.intro_btn_next)?.let {
+        findViewById<ImageButton>(R.id.intro_btn_next)?.let {
             it.setOnClickListener { view ->
-                /*Snackbar.make(it, "Introduction Next", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show()*/
-                viewModel.nextPage()
+                //viewModel.nextPage()
+                viewPager.setCurrentItem(viewModel.index.value?.inc() ?: 0, true);
             }
         }
 
-        findViewById<Button>(R.id.intro_btn_prev)?.let {
+        findViewById<Button>(R.id.intro_btn_finish)?.let {
             it.setOnClickListener { view ->
-                /*Snackbar.make(it, "Introduction Prev", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show()*/
-                viewModel.prevPage()
+                viewModel.finishOnboarding()
+            }
+        }
+
+        findViewById<Button>(R.id.intro_btn_skip)?.let {
+            it.setOnClickListener { view ->
+                viewModel.finishOnboarding()
             }
         }
 
@@ -80,6 +86,10 @@ class OnboardingActivity : AppCompatActivity() {
 
         viewModel.index.observe(this, Observer<Int> {
             onPageIndexChanged(it)
+        })
+
+        viewModel.onboardingFinishEvent.observe(this, Observer<Event<Unit>> {
+            finish()
         })
     }
 
@@ -98,22 +108,26 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     fun onPageIndexChanged(pageNo: Int) {
+
         activeIndicator.background = ContextCompat.getDrawable(this, R.color.colorGrey)
         activeIndicator = indicatorViewes.get(pageNo)
         activeIndicator.background = ContextCompat.getDrawable(this, R.color.colorDarkGrey)
-        val btnNext = findViewById<Button>(R.id.intro_btn_next)
-        if (btnNext != null) {
-            if (pageNo == (viewPager.adapter?.count ?: 0)-1) {
-                btnNext.text  = resources.getString(R.string.label_onbording_start_using)
-            } else {
-                btnNext.text  = resources.getString(R.string.label_intro_next)
-            }
-            /*btnNext.setEnabled(pageNo < (viewPager.adapter?.count ?: 0)-1)*/
+
+        val isLastPage = !(pageNo < (viewPager.adapter?.count ?: 0) - 1)
+
+        val btnSkip = findViewById<Button>(R.id.intro_btn_skip)
+        if (btnSkip != null) {
+            btnSkip.visibility = if (!isLastPage) View.VISIBLE else View.GONE
         }
-        val btnPrev = findViewById<Button>(R.id.intro_btn_prev)
-        if (btnPrev != null) {
-            btnPrev.setEnabled(pageNo < (viewPager.adapter?.count ?: 0))
-            btnPrev.visibility = if (pageNo > 0) android.view.View.VISIBLE else View.GONE
+
+        val btnNext = findViewById<ImageButton>(R.id.intro_btn_next)
+        if (btnNext != null) {
+            btnNext.visibility = if (!isLastPage) View.VISIBLE else View.GONE
+        }
+
+        val btnFinish = findViewById<Button>(R.id.intro_btn_finish)
+        if (btnFinish != null) {
+                btnFinish.visibility = if (isLastPage)  View.VISIBLE else View.GONE
         }
     }
 
