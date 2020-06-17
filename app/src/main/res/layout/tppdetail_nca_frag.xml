@@ -43,7 +43,7 @@
                 tools:text="@string/label_home_country" />
 
             <TextView
-                android:id="@+id/home_country"
+                android:id="@+id/entity_home_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/label_home_country"
@@ -70,8 +70,8 @@
                 android:id="@+id/entity_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/home_country"
-                android:layout_alignLeft="@id/home_country"
+                android:layout_below="@id/entity_home_country"
+                android:layout_alignLeft="@id/entity_home_country"
                 android:paddingTop="1dp"
                 android:text="@{viewmodel.tpp.ebaEntity.entityCode}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"

@@ -49,7 +49,7 @@ class OnboardingFragment : Fragment() {
 
 
         val img = root.findViewById(R.id.section_img) as ImageView
-        img.setBackgroundResource(bgs.get(arguments!!.getInt(ARG_SECTION_NUMBER) - 1))
+        img.setBackgroundResource(bgs.get(arguments!!.getInt(ARG_SECTION_NUMBER)))
 
 
         return root

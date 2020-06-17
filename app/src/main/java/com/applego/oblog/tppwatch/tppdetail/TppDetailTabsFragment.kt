@@ -1,21 +1,19 @@
 package com.applego.oblog.tppwatch.tppdetail
 
+import android.accessibilityservice.AccessibilityServiceInfo
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
-import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.addedittppapp.AddEditTppAppFragmentDirections
 import com.applego.oblog.tppwatch.databinding.TppDetailTabsFragmentBinding
+import com.applego.oblog.tppwatch.util.Event
+import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
@@ -54,7 +52,7 @@ class TppDetailTabsFragment : Fragment() {
         //this.setupRefreshLayout(viewDataBinding.refreshLayout)
     }
 
-    private fun setupRefresh() {
+    private fun setupRefresh() {7
         activity?.findViewById<Button>(R.id.refresh_tpp)?.let {
             it.setOnClickListener {
                 viewModel.refresh()

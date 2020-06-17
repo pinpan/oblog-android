@@ -29,31 +29,31 @@ data class EbaEntity @JvmOverloads constructor(
         @ColumnInfo(name = "country") var _country: String = "",
 
         @PrimaryKey @ColumnInfo(name = "db_id") var _db_id: String = UUID.randomUUID().toString()
-) /*: TppModel*/ {
+) {
 
     @Ignore
-    /*override */fun getEntityId() = _entityId
+    fun getEntityId() = _entityId
 
     @Ignore
-    /*override */fun getEntityCode() = _entityCode
+    fun getEntityCode() = _entityCode
 
     @Ignore
-    /*override */fun getEntityName() = _entityName
+    fun getEntityName() = _entityName
 
     @Ignore
-    /*override */fun getDescription() = _description
+    fun getDescription() = _description
 
     @Ignore
-    /*override */fun getGlobalUrn() = _globalUrn
+    fun getGlobalUrn() = _globalUrn
 
     @Ignore
-    /*override */fun getEbaEntityVersion() = _ebaEntityVersion
+    fun getEbaEntityVersion() = _ebaEntityVersion
 
     @Ignore
-    /*override */fun getCountry() = _country
+    fun getCountry() = _country
 
     @Ignore
-    /*override */fun getId() = _db_id
+    fun getId() = _db_id
 
     @Embedded
     var ebaProperties = EbaEntityProperties()
@@ -76,30 +76,82 @@ data class EbaEntity @JvmOverloads constructor(
     var _ebaPassport : EbaPassport = EbaPassport()
 
     @Ignore
-    /*override */fun getEbaPassport() = _ebaPassport
+    fun getEbaPassport() = _ebaPassport
 
     @Ignore
-    /*override */fun isFollowed() : Boolean = followed
+    fun isFollowed() : Boolean = followed
 
     @Ignore
-    /*override */fun isUsed() : Boolean = used
+    fun isUsed() : Boolean = used
 
     @Ignore
-    /*override */fun isFis(): Boolean = fis
+    fun isFis(): Boolean = fis
 
     @Ignore
-    /*override */fun isPsd2(): Boolean = psd2
+    fun isPsd2(): Boolean = psd2
 
     @Ignore
-    /*override */fun getStatus() = _status
+    fun getStatus() = _status
 
-    /*override */fun getTitleForList(): String {
-        return (getEntityName()) ?: getDescription()
+    fun getTitleForList(): String {
+        return getEntityName() ?: getDescription()
     }
 
+/*
+    @ColumnInfo(name="ENT_NAM")
+    var ebaEntityName: String = "Payver Limited"
 
-    // TODO#: Consider Following fields
-    //  details aka properties from EBA
+    @ColumnInfo(name="ENT_COD_TYP")
+    var ebaEntityCodeType:String = "NON_LEI"
+
+    @ColumnInfo(name="ENT_COU_RES")
+    var ebaEntityCountryOfRES: String = "GB"
+
+    @ColumnInfo(name="ENT_NAT_REF_COD")
+    var ebaEntityNationalReferenceCode: String = "901016"
+
+    @ColumnInfo(name="ENT_NAM_COM")
+    var ebaEntityNameCOM:String = "Payver Limited"
+
+    @ColumnInfo(name="ENT_ADD")
+    var ebaEntityAddress = ""
+    //[
+    //    "Enfield",
+    //    "134 Percival Road",
+    //    "Middlesex"
+    // ]
+
+    @ColumnInfo(name="ENT_TOW_CIT_RES")
+    var ebaEntityTownCityRES: String = "London"
+
+    @ColumnInfo(name="ENT_POS_COD")
+    var ebaEntitiyPostalCode: String = "EN1 1QU"
+
+    @ColumnInfo(name="EBA_ENT_AUTH")
+    var dateAuth: Date = Date()
+
+*/
+
     //  tppRoles, - CZ has, Eba hasn't
-    //  apps,
+
+/* Sample record
+    "ebaProperties":{
+        "ENT_NAM":"Payver Limited",
+        "ENT_COD_TYP":"NON_LEI",
+        "ENT_COU_RES":"GB",
+        "ENT_NAT_REF_COD":"901016",
+        "ENT_NAM_COM":"Payver Limited",
+        "ENT_ADD":[
+        "Enfield",
+        "134 Percival Road",
+        "Middlesex"
+        ],
+        "ENT_TOW_CIT_RES":"London",
+        "ENT_POS_COD":"EN1 1QU",
+        "ENT_AUT":[
+        "2020-02-20"
+        ]
+    }
+*/
+
 }

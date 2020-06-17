@@ -45,7 +45,7 @@
                 tools:text="@string/label_home_country" />
 
             <TextView
-                android:id="@+id/home_country"
+                android:id="@+id/entity_home_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/label_home_country"
@@ -61,7 +61,7 @@
                 android:id="@+id/label_entity_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/label_home_country"
+                android:layout_below="@id/entity_home_country"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:clickable="false"
                 android:focusable="false"
@@ -72,8 +72,80 @@
                 android:id="@+id/entity_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/home_country"
-                android:layout_alignLeft="@id/home_country"
+                android:layout_below="@id/label_entity_code"
+                android:layout_alignLeft="@id/entity_home_country"
+                android:paddingTop="1dp"
+                android:text="@{viewmodel.tpp.ebaEntity.entityCode}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#006496"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/label_national_ref_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/entity_code"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:clickable="false"
+                android:focusable="false"
+                android:inputType="none"
+                android:text="@string/label_entity_code" />
+
+            <TextView
+                android:id="@+id/entity_national_ref_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label_national_ref_code"
+                android:layout_alignLeft="@id/label_national_ref_code"
+                android:paddingTop="1dp"
+                android:text="@{viewmodel.tpp.ebaEntity.entityCode}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#006496"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/label_entity_names"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/entity_national_ref_code"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:clickable="false"
+                android:focusable="false"
+                android:inputType="none"
+                android:text="@string/label_entity_code" />
+
+            <TextView
+                android:id="@+id/entity_names"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label_entity_names"
+                android:layout_alignLeft="@id/entity_home_country"
+                android:paddingTop="1dp"
+                android:text="@{viewmodel.tpp.ebaEntity.entityCode}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#006496"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/label_city_of_residence"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/entity_names"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:clickable="false"
+                android:focusable="false"
+                android:inputType="none"
+                android:text="@string/label_entity_code" />
+
+            <TextView
+                android:id="@+id/entity_city_of_residence"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label_city_of_residence"
+                android:layout_alignLeft="@id/entity_home_country"
                 android:paddingTop="1dp"
                 android:text="@{viewmodel.tpp.ebaEntity.entityCode}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -85,7 +157,7 @@
                 android:id="@+id/divider2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/entity_code"
+                android:layout_below="@id/entity_city_of_residence"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
                 android:background="?android:attr/listDivider" />

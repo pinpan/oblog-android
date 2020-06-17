@@ -143,4 +143,8 @@ open class TppDetailViewModel(
     private fun showSnackbarMessage(@StringRes message: Int) {
         _snackbarText.value = Event(message)
     }
+
+    public fun goBack() {
+        _backToTppsListEvent.value = Event<String>("")
+    }
 }

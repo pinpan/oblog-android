@@ -19,6 +19,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigator
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -164,12 +166,18 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        val id = item?.getItemId();
-        if (id == R.id.settings) {
-            val intent = Intent(this@TppsActivity, OblogPreferencesActivity::class.java)
-            startActivity(intent);
-            return true;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                //finish();
+                onBackPressed()
+                return true
+            }
+            R.id.settings -> {
+                val intent = Intent(this@TppsActivity, OblogPreferencesActivity::class.java)
+                startActivity(intent);
+                return true
+            }
         }
 
         return super.onOptionsItemSelected(item)
@@ -208,8 +216,10 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
     override  fun onBackPressed() {
         val lastStack = supportFragmentManager.backStackEntryCount
 
+        //(supportFragmentManager.primaryNavigationFragment as NavHostFragment)?.navController // childFragmentManager. findNavController()?.graph
         if (supportFragmentManager.getBackStackEntryCount() > 1) {
-            supportFragmentManager.popBackStack();
+            startActivity(Intent(this, TppsActivity::class.java))
+            //supportFragmentManager.popBackStack();
         }
 
         //If the last fragment was named/tagged "three"
@@ -233,27 +243,6 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
         super.onBackPressed()
     }
-/*
-
-    fun getUsername(): String? {
-        getPermissionToAccessAccounts()
-
-        val manager: AccountManager = AccountManager.get(this)
-        val accounts: Array<Account> = manager.accounts
-        val possibleEmails = ArrayList<String>()
-        for (account in accounts) {
-            // TODO: Check possibleEmail against an email regex or treat
-            // account.name as an email address only for certain account.type values.
-            possibleEmails.add(account.name)
-        }
-        if (!possibleEmails.isEmpty() && possibleEmails[0] != null) {
-            val email = possibleEmails[0]
-            val parts = email!!.split("@").toTypedArray()
-            if (parts.size > 1) return parts[0]
-        }
-        return null
-    }
-*/
 
     private var lastPermissionRequestId = AtomicInteger(0)
 

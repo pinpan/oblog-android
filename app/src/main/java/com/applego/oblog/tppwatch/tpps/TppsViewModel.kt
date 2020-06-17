@@ -18,7 +18,7 @@ import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.data.source.local.*
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.util.ArrayList
 
 /**
@@ -83,21 +83,15 @@ class TppsViewModel(
         loadTpps(false)
     }
 
-
     fun refreshTpp(tppId : String?) {
         if (!tppId.isNullOrBlank() && !tppId.equals("0")) {
-            //_dataLoading.value = true
-            //wrapEspressoIdlingResource {
-                viewModelScope.launch {
-                    val tpp = findTppInList(fetchedItems, tppId)
-                    if (tpp != null) {
-                        tppsRepository.refreshTpp(tpp!!)
-                    }
-                    loadTpps(false)
-
-                    //_dataLoading.value = false
+            val tpp = findTppInList(fetchedItems, tppId)
+            runBlocking {
+                if (tpp != null) {
+                    tppsRepository.refreshTpp(tpp!!)
                 }
-            //}
+            }
+            loadTpps(false)
         }
     }
 

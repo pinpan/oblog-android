@@ -198,14 +198,19 @@ class DefaultTppsRepository (
         }
     }
 
-    override suspend fun refreshTpp(tpp: Tpp) {
-        val tppsResult = getTpp(tpp.getId())
-        if (tppsResult is Success) {
-            tpp.appsPortfolio = tppsResult.data.appsPortfolio
-            tpp.ebaEntity = tppsResult.data.ebaEntity
-            tpp.ncaEntity = tppsResult.data.ncaEntity
-            tpp.setFollowed(tppsResult.data.isFollowed())
-            tpp.setUsed(tppsResult.data.isUsed())
+    override suspend fun refreshTpp(tpp: Tpp)  = coroutineScope {
+        var tppsResult: Result<Tpp> = Result.Loading(Timeout())
+        val result = async {
+            tppsResult = getTpp(tpp.getId())
+        }
+        result.await()
+
+        if (tppsResult is Success<Tpp>) {
+            tpp.appsPortfolio = (tppsResult as Success<Tpp>).data.appsPortfolio
+            tpp.ebaEntity = (tppsResult as Success<Tpp>).data.ebaEntity
+            tpp.ncaEntity = (tppsResult as Success<Tpp>).data.ncaEntity
+            tpp.setFollowed((tppsResult as Success<Tpp>).data.isFollowed())
+            tpp.setUsed((tppsResult as Success<Tpp>).data.isUsed())
         }
     }
 
