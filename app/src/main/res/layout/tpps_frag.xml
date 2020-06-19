@@ -87,6 +87,7 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
+<!--
                 <View
                     android:id="@+id/divider"
                     android:layout_width="match_parent"
@@ -94,6 +95,14 @@
                     android:foregroundTint="@color/design_default_color_primary_dark"
                     android:minHeight="2dp"
                     android:visibility="visible" />
+-->
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="?android:attr/listDivider" />
+                />
 
                 <com.applego.oblog.tppwatch.util.ScrollChildSwipeRefreshLayout
                     android:id="@+id/refresh_layout"

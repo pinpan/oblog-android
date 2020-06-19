@@ -158,10 +158,10 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> {
+            /*android.R.id.home -> {
                 onBackPressed()
                 return true
-            }
+            }*/
             R.id.settings -> {
                 val intent = Intent(this@TppsActivity, OblogPreferencesActivity::class.java)
                 startActivity(intent);

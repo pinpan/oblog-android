@@ -58,6 +58,7 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:inputType="none"
+                        android:textSize="10sp"
                         android:text="@string/label_entity_code" />
 
                     <TextView
@@ -69,6 +70,7 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:inputType="none"
+                        android:textSize="10sp"
                         android:text="@string/label_entity_names" />
 
                     <TextView
@@ -82,6 +84,7 @@
                         android:inputType="none"
                         android:textStyle="bold"
                         android:visibility="visible"
+                        android:textSize="10sp"
                         tools:text="@string/label_home_country" />
 
                     <TextView
@@ -93,6 +96,7 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:inputType="none"
+                        android:textSize="10sp"
                         android:text="@string/label_national_ref_code" />
 
                     <TextView
@@ -103,6 +107,7 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:inputType="none"
+                        android:textSize="10sp"
                         android:text="@string/label_entity_address" />
 
                     <TextView
@@ -113,6 +118,7 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:inputType="none"
+                        android:textSize="10sp"
                         android:text="@string/label_entity_authorization_start" />
 
                     <TextView
@@ -123,6 +129,7 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:inputType="none"
+                        android:textSize="10sp"
                         android:text="@string/label_entity_authorization_end" />
                 </LinearLayout>
 
@@ -141,7 +148,7 @@
                         android:text="@{viewmodel.tpp.ebaEntity.entityCode}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -152,7 +159,7 @@
                         android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.entityNames}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -163,7 +170,7 @@
                         android:text="@{viewmodel.tpp.ebaEntity.country}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -174,7 +181,7 @@
                         android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.nationalReferenceCode}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -185,7 +192,7 @@
                         android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.address}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -196,7 +203,7 @@
                         android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.address}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -207,7 +214,7 @@
                         android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.authorizationEnd}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -227,13 +234,13 @@
                     android:layout_marginTop="10dp"
                     android:background="?android:attr/listDivider" />
 
+<!--                android:ems="10"-->
                 <TextView
                     android:id="@+id/label_passports"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/divider2"
                     android:clickable="false"
-                    android:ems="10"
                     android:enabled="false"
                     android:focusable="false"
                     android:inputType="none"
@@ -263,11 +270,11 @@
                         android:layout_marginTop="0dp"
                         android:layout_weight="1"
                         android:clickable="false"
-                        android:editable="false"
                         android:enabled="false"
                         android:inputType="none|textPersonName"
                         android:text="@string/label_country"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        />
 
                     <EditText
                         android:id="@+id/label_visa_psd2_roles"
