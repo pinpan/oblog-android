@@ -29,7 +29,7 @@ data class EbaEntityProperties @JvmOverloads constructor(
      ,@ColumnInfo(name = "postalCode") val postalCode: String = ""
      ,@ColumnInfo(name = "entCouRes") val countryOfResidence: String = ""
      ,@ColumnInfo(name = "authorizationStart") val authorizationStart: String = ""
-     ,@ColumnInfo(name = "autorizationEnd") val autorizationEnd: String = ""
+     ,@ColumnInfo(name = "autorizationEnd") val authorizationEnd: String = ""
 
     //, @PrimaryKey @ColumnInfo(name = "properties_db_id") var _db_id: String = UUID.randomUUID().toString()
 ) {

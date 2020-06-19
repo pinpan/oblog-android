@@ -4,7 +4,6 @@ import android.accounts.AccountManager
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
@@ -13,14 +12,10 @@ import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigator
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -34,7 +29,6 @@ import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.common.AccountPicker
 import com.google.android.material.navigation.NavigationView
 import timber.log.Timber
-import java.util.concurrent.atomic.AtomicInteger
 
 
 /**
@@ -78,14 +72,10 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                     editor.putBoolean("isFirstRun", false)
                     editor.commit()
 
-                    /*val signOnIntent = Intent(this@TppsActivity, SignOnActivity::class)
-                    startActivity(signOnIntent)*/
-                    //finish()
-
                     startActivity(Intent(this@TppsActivity, OnboardingActivity::class.java))
                     Toast.makeText(this@TppsActivity, "Run only once", Toast.LENGTH_LONG).show()
                 }
-            }/*, 5000*/)
+            })
         }
 
         setContentView(com.applego.oblog.tppwatch.R.layout.tpps_act)
@@ -169,7 +159,6 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                //finish();
                 onBackPressed()
                 return true
             }
@@ -209,10 +198,11 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
             }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
+    /*override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState);
     }
-
+*/
+/*
     override  fun onBackPressed() {
         val lastStack = supportFragmentManager.backStackEntryCount
 
@@ -243,8 +233,9 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
         super.onBackPressed()
     }
+*/
 
-    private var lastPermissionRequestId = AtomicInteger(0)
+    //private var lastPermissionRequestId = AtomicInteger(0)
 
     fun pickUserAccount() {
         val googlePicker = AccountPicker.newChooseAccountIntent(null, null, arrayOf(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE), true, null, null, null, null)
@@ -270,13 +261,18 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
         }
     }
 
+/*
     fun getPermission(permission : String) :Int {
         val permissionRequest = lastPermissionRequestId.getAndIncrement()
 
         // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) { /*android.Manifest.permission.GET_ACCOUNTS*/
+        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) { */
+/*android.Manifest.permission.GET_ACCOUNTS*//*
+
             // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) { /*android.Manifest.permission.GET_ACCOUNTS*/
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) { */
+/*android.Manifest.permission.GET_ACCOUNTS*//*
+
                 // Show an expanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
@@ -289,6 +285,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
         return permissionRequest
     }
+*/
 
     fun getUserId() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)

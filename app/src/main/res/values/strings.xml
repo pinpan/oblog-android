@@ -17,6 +17,12 @@
     <string name="label_country">Country</string>
     <string name="label_pass_countries">Home country</string>
     <string name="label_entity_code">Entity code</string>
+    <string name="label_entity_address">Entity address</string>
+    <string name="label_entity_authorization_start">Authorization Start</string>
+    <string name="label_entity_authorization_end">Authorization End</string>
+    <string name="label_entity_city_of_residence">City of residence</string>
+    <string name="label_entity_names">Entity names</string>
+    <string name="label_national_ref_code">National ref. code</string>
     <string name="label_tpp_services">Servicess</string>
     <string name="label_role">Role</string>
     <string name="label_roles">Roles</string>

@@ -50,17 +50,6 @@ class TppsFragment : Fragment() {
         return viewDataBinding.root
     }
 
-/*
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewModel.refreshEvent.observe(this, Observer {
-            //setEventDetails() //it
-            viewModel.refreshTpp(arguments?.getString("tppId"))
-        })
-    }
-*/
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         activity?.menuInflater?.inflate(R.menu.tpps_fragment_menu, menu)
@@ -167,8 +156,6 @@ class TppsFragment : Fragment() {
             viewModel.showEditResultMessage(args.userMessage)
         }
 
-       // viewModel.refreshTpp(arguments?.getString("tppId"))
-
         setupSnackbar()
         setupListAdapter()
         setupNavigation()
@@ -235,9 +222,6 @@ class TppsFragment : Fragment() {
         viewModel.aboutEvent.observe(this, EventObserver {
             openAbout()
         })
-        /*viewModel.refreshEvent.observe(this, EventObserver {
-            refresh()
-        })*/
     }
 
     private fun setupSnackbar() {
@@ -330,5 +314,4 @@ class TppsFragment : Fragment() {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
         }
     }
-
 }

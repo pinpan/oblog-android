@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tpps_advanced_search_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="0dp"
+    android:paddingBottom="0dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -13,41 +13,43 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/no_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin">
+        android:paddingTop="@dimen/header_padding"
+        android:paddingBottom="@dimen/header_padding"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_marginTop="0dp"
             android:weightSum="2">
 
+            <!--android:ems="10"-->
             <EditText
                 android:id="@+id/label_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
                 android:layout_weight="1"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
                 android:clickable="false"
-                android:editable="false"
-                android:ems="10"
                 android:enabled="false"
-                android:textSize="12sp"
-                android:inputType="none|textPersonName"
+                android:textSize="8sp"
+                android:inputType="none"
                 android:text="@string/label_country" />
 
+            <!--android:ems="10"
+                android:layout_toRightOf="@id/label_country"
+            -->
             <EditText
                 android:id="@+id/label_psd2_role"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/label_country"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
                 android:layout_weight="1"
                 android:clickable="false"
-                android:editable="false"
-                android:ems="10"
-                android:textSize="12sp"
+                android:textSize="8sp"
                 android:enabled="false"
                 android:inputType="textPersonName"
                 android:text="@string/label_role" />
@@ -57,26 +59,28 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_marginTop="0dp"
             android:weightSum="2">
 
+<!--
+            android:layout_below="@id/label_country"
+            android:layout_alignLeft="@id/label_country"
+-->
             <Spinner
                 android:id="@+id/serarch_country"
-                android:layout_width="100dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/label_country"
-                android:layout_alignLeft="@id/label_country"
                 android:layout_weight="1"
                 android:textSize="8sp" />
 
+            <!--android:layout_below="@id/label_psd2_role"
+                android:layout_alignLeft="@id/label_psd2_role"
+                android:layout_toRightOf="@id/serarch_country"
+                android:layout_marginLeft="10dp"
+            -->
             <Spinner
                 android:id="@+id/search_role"
-                android:layout_width="100dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/label_psd2_role"
-                android:layout_alignLeft="@id/label_psd2_role"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/serarch_country"
                 android:textSize="8sp"
                 android:layout_weight="1" />
         </LinearLayout>

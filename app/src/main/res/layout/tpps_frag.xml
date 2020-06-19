@@ -28,128 +28,134 @@
 
             <include layout="@layout/tpps_search" />
 
+            <!---->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/list_item_padding"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingBottom="@dimen/list_item_padding"
-                android:weightSum="10">
+                android:orientation="vertical"
+                >
 
-                <TextView
-                    android:id="@+id/follow_checkbox_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|left"
-                    android:layout_marginStart="12dp"
-                    android:layout_weight="2"
-                    android:width="32dp"
-                    android:height="16dp"
-                    android:text="@string/F"
-                    android:textAlignment="gravity"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/used_checkbox_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="clip_horizontal|center|center_vertical"
-                    android:layout_marginStart="12dp"
-                    android:layout_weight="2"
-                    android:width="32dp"
-                    android:height="16dp"
-                    android:text="@string/U"
-                    android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tpp_name"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="24sp"
-                    android:layout_weight="8"
-                    android:text="@string/label_name"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/list_item_padding"
+                    android:weightSum="10">
 
-            </LinearLayout>
-
-            <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:foregroundTint="@color/design_default_color_primary_dark"
-                android:minHeight="2dp"
-                android:visibility="visible" />
-
-            <com.applego.oblog.tppwatch.util.ScrollChildSwipeRefreshLayout
-                android:id="@+id/refresh_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:onRefreshListener="@{viewmodel::refresh}"
-                app:refreshing="@{viewmodel.dataLoading}">
-
-                <RelativeLayout
-                    android:id="@+id/tpps_container_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clickable="true"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:id="@+id/tpps_linear_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:paddingTop="0dp"
-                        android:paddingBottom="0dp"
-                        android:visibility="@{viewmodel.empty ? View.GONE : View.VISIBLE}">
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/tpps_list"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="0dp"
-                            app:items="@{viewmodel.items}"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/no_tpps_layout"
+                    <TextView
+                        android:id="@+id/follow_checkbox_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:orientation="vertical"
-                        android:visibility="@{viewmodel.empty ? View.VISIBLE : View.GONE}">
+                        android:layout_gravity="bottom|left"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="2"
+                        android:width="32dp"
+                        android:height="16dp"
+                        android:text="@string/F"
+                        android:textAlignment="gravity"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
 
-                        <ImageView
-                            android:id="@+id/no_tpps_icon"
-                            android:layout_width="96dp"
-                            android:layout_height="96dp"
-                            android:layout_gravity="center"
-                            android:src="@{ContextCompat.getDrawable(context, viewmodel.noTppIconRes)}"
-                            android:contentDescription="@string/no_tpps_image_content_description" />
+                    <TextView
+                        android:id="@+id/used_checkbox_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="clip_horizontal|center|center_vertical"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="2"
+                        android:width="32dp"
+                        android:height="16dp"
+                        android:text="@string/U"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/no_tpps_text"
+                    <TextView
+                        android:id="@+id/tpp_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="24sp"
+                        android:layout_weight="8"
+                        android:text="@string/label_name"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:foregroundTint="@color/design_default_color_primary_dark"
+                    android:minHeight="2dp"
+                    android:visibility="visible" />
+
+                <com.applego.oblog.tppwatch.util.ScrollChildSwipeRefreshLayout
+                    android:id="@+id/refresh_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:onRefreshListener="@{viewmodel::refresh}"
+                    app:refreshing="@{viewmodel.dataLoading}">
+
+                    <RelativeLayout
+                        android:id="@+id/tpps_container_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/tpps_linear_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:paddingTop="0dp"
+                            android:paddingBottom="0dp"
+                            android:visibility="@{viewmodel.empty ? View.GONE : View.VISIBLE}">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/tpps_list"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="0dp"
+                                android:layout_marginBottom="0dp"
+                                app:items="@{viewmodel.items}"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/no_tpps_layout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="@dimen/list_item_padding"
-                            android:text="@{context.getString(viewmodel.noTppsLabel)}" />
-                    </LinearLayout>
-                </RelativeLayout>
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical"
+                            android:visibility="@{viewmodel.empty ? View.VISIBLE : View.GONE}">
 
-            </com.applego.oblog.tppwatch.util.ScrollChildSwipeRefreshLayout>
+                            <ImageView
+                                android:id="@+id/no_tpps_icon"
+                                android:layout_width="96dp"
+                                android:layout_height="96dp"
+                                android:layout_gravity="center"
+                                android:src="@{ContextCompat.getDrawable(context, viewmodel.noTppIconRes)}"
+                                android:contentDescription="@string/no_tpps_image_content_description" />
+
+                            <TextView
+                                android:id="@+id/no_tpps_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="@dimen/list_item_padding"
+                                android:text="@{context.getString(viewmodel.noTppsLabel)}" />
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                </com.applego.oblog.tppwatch.util.ScrollChildSwipeRefreshLayout>
+            </LinearLayout>
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

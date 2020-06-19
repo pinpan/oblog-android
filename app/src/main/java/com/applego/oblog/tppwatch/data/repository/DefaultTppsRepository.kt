@@ -50,13 +50,8 @@ class DefaultTppsRepository (
                 if (forceUpdate) {
                     fetchTppsFromRemoteDatasource()
                 }
-                // TODO:
-                //  Verify multiple fetches running in parallel are prevented:
-                //          in the load.... call
 
-                val newTpps = loadTppsFromLocalDatasource(filter)
-
-                return@withContext newTpps
+                return@withContext loadTppsFromLocalDatasource(filter)
             }
         }
     }
@@ -281,12 +276,6 @@ class DefaultTppsRepository (
             launch {
                 tppsLocalDataSource.saveАpp(app)
             }
-
-            /*
-                launch(Dispatchers.Main.immediate) {
-                    log("A")
-                }
-            */
         }
     }
 }
