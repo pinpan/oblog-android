@@ -2,27 +2,18 @@
 
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-<!--
-
-    <data>
-        <variable
-            android:name="viewmodel"
-            android:type="com.applego.oblog.tppwatch.tpps.TppsViewModel" />
-    </data>
--->
 
     <item
         android:id="@+id/all"
         android:checkable="true"
         android:title="@string/nav_all"
-
-    /> <!--android:checked="true"-->
+    />
 
     <item
         android:id="@+id/used"
         android:checkable="true"
         android:title="@string/nav_used"
-    /> <!--android:checked="true"-->
+    />
 
     <item
         android:id="@+id/followed"
@@ -36,18 +27,18 @@
         android:title="@string/label_fis"
         android:checkable="true"
         android:checked="true"
-    /> <!--android:onClick="@{() -> viewmodel}"-->
+    />
 
     <item
         android:id="@+id/psd2Only"
         android:title="@string/psd2_services_only"
         android:checkable="true"
         android:checked="true"
-    /> <!--android:onClick="@{() -> viewmodel}"-->
+    />
 
     <item
         android:id="@+id/revoked"
         android:checkable="true"
         android:checked="true"
-        android:title="@string/label_revoked" /> <!--android:onClick="@{() -> viewmodel}"-->
+        android:title="@string/label_revoked" />
 </menu>

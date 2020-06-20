@@ -1,6 +1,7 @@
 package com.applego.oblog.tppwatch.tpps
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Looper.getMainLooper
 import android.view.View
@@ -382,7 +383,10 @@ class TppsFragmentTest {
     }
 
     private fun launchActivity(): ActivityScenario<TppsActivity>? {
-        val activityScenario = launch(TppsActivity::class.java)
+        val intent = Intent(getApplicationContext(), TppsActivity::class.java)
+        intent.putExtra("com.applego.oblog.tppwatch.isFirstRun", true);
+        val activityScenario: ActivityScenario<TppsActivity> = launch(intent)
+
         activityScenario.onActivity { activity ->
             // Disable animations in RecyclerView
             (activity.findViewById(R.id.tpps_list) as RecyclerView).itemAnimator = null

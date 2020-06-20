@@ -50,18 +50,14 @@ class TppsViewModelTest {
         tppsRepository.addTpps(Tpp(tppEntity1, NcaEntity()), Tpp(tppEntity2, NcaEntity()), Tpp(tppEntity3, NcaEntity()))
 
         tppsViewModel = TppsViewModel(tppsRepository)
+        tppsViewModel.searchFilter.setAll(true)
+        tppsViewModel.loadTpps(false)
     }
 
     @Test
     fun loadAllTppsFromRepository_loadingTogglesAndDataLoaded() {
         // Pause dispatcher so we can verify initial values
         mainCoroutineRule.pauseDispatcher()
-
-        val aTpp = tppsViewModel.items.value?.get(0)
-        if (aTpp != null) {
-            aTpp.ebaEntity.psd2 = true
-            tppsRepository.saveTppBlocking(aTpp)
-        }
 
         // Trigger loading of tpps
         tppsViewModel.loadTpps(false)
@@ -80,12 +76,21 @@ class TppsViewModelTest {
 
         // Given an initialized TppsViewModel with initialized tpps
         // When loading of Tpps is requested
-        tppsViewModel.setFiltering(TppsFilterType.USED_TPPS)
+        val aTpp = tppsViewModel.items.value?.get(0)
+        if (aTpp != null) {
+            aTpp.ebaEntity.used = true
+            tppsRepository.saveTppBlocking(aTpp)
+        }
+
+        tppsViewModel.searchFilter.setAll(false)
+        tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.USED_TPPS)
+
+        //tppsViewModel.setFiltering(TppsFilterType.USED_TPPS)
         tppsViewModel.loadTpps(false)
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.items)).hasSize(1)
 
-
-        tppsViewModel.setFiltering(TppsFilterType.PSD2_TPPS)
+        tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.USED_TPPS)
+        tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.ONLY_PSD2_TPPS)
         tppsViewModel.loadTpps(false)
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.items)).hasSize(0)
     }
@@ -246,7 +251,7 @@ class TppsViewModelTest {
     @Test
     fun getTppsAddViewVisible() {
         // When the filter type is ALL_TPPS
-        tppsViewModel.setFiltering(TppsFilterType.PSD2_TPPS)
+        tppsViewModel.setFiltering(TppsFilterType.ONLY_PSD2_TPPS)
 
         // Then the "Add ebaEntity" action is visible
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.tppsAddViewVisible)).isTrue()

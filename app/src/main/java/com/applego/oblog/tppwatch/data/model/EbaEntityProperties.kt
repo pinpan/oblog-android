@@ -8,8 +8,6 @@ import java.util.*
  * Immutable model class for Eba Tpp properties.
  *
  */
-//@Entity(tableName = "tpps")
-//@TypeConverters(OblogTypeConverters::class)
 data class EbaEntityProperties @JvmOverloads constructor(
         /*
         {ENT_COD_TYP: "NON_LEI"}
@@ -31,7 +29,6 @@ data class EbaEntityProperties @JvmOverloads constructor(
      ,@ColumnInfo(name = "authorizationStart") val authorizationStart: String = ""
      ,@ColumnInfo(name = "autorizationEnd") val authorizationEnd: String = ""
 
-    //, @PrimaryKey @ColumnInfo(name = "properties_db_id") var _db_id: String = UUID.randomUUID().toString()
 ) {
 
 }

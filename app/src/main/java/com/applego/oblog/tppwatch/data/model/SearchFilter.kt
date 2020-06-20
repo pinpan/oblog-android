@@ -37,7 +37,7 @@ data class SearchFilter @JvmOverloads constructor(
         }
     }
 
-    private fun setAll(b: Boolean) {
+    fun setAll(b: Boolean) {
         allFilterTypes.forEach {userSelectedFilterTypes.put(it, b)}
     }
 
