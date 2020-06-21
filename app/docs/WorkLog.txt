@@ -1,5 +1,11 @@
 20200208
 ------------------
+Know-How:
+ - When a visual compoennt is removed - make tests work by clearing all usages and dependency components
+        Caused by: android.content.res.Resources$NotFoundException: Resource ID #0x0
+            ->
+20200208
+------------------
 TODO:
     1, REFRESH 1 TPP from DB in the TPPSViewMOdel
     2. Display EntityCode instead of description
@@ -42,3 +48,135 @@ SNIPETS
      }
 */
 --------------------------
+
+/**
+
+{
+    "content": [
+        {
+            "entityId": "CZ_CNB!03570967",
+            "entityName": [
+                "Benxy s.r.o. "
+            ],
+            "entityCode": "CZ_CNB!03570967",
+            "services": [
+                {
+                    "CZ": [
+                        "PS_03A",
+                        "PS_03B",
+                        "PS_03C",
+                        "PS_05A",
+                        "PS_05B",
+                        "PS_070",
+                        "PS_080"
+                    ]
+                }
+            ],
+            "ebaProperties": {
+                "ENT_NAM": "Benxy s.r.o. ",
+                "ENT_COD_TYP": "NON_LEI",
+                "ENT_COU_RES": "CZ",
+                "ENT_NAT_REF_COD": "03570967",
+                "ENT_ADD": "Evropská 2690/17",
+                "ENT_TOW_CIT_RES": "Praha",
+                "ENT_POS_COD": "16000",
+                "ENT_AUT": [
+                "2019-04-12"
+                ]
+            }
+        },
+
+        {
+            "entityId": "CZ_CNB!03570967",
+            "entityName": [
+                "Benxy s.r.o. "
+            ],
+            "entityCode": "CZ_CNB!03570967",
+            "services": [
+                {
+                    "CZ": [
+                        "PS_03A",
+                        "PS_03B",
+                        "PS_03C",
+                        "PS_05A",
+                        "PS_05B"
+                    ]
+                }
+            ],
+            "ebaProperties": {
+                "ENT_NAM": "Benxy s.r.o. ",
+                "ENT_COD_TYP": "NON_LEI",
+                "ENT_COU_RES": "CZ",
+                "ENT_NAT_REF_COD": "03570967",
+                "ENT_ADD": "Evropská 2690/17",
+                "ENT_TOW_CIT_RES": "Praha",
+                "ENT_POS_COD": "16000",
+                "ENT_AUT": [
+                    "2015-03-27",
+                    "2019-04-12"
+                ]
+            }
+        }
+    ],
+
+    "pageable": {
+        "sort": {
+            "sorted": false,
+            "unsorted": true,
+            "empty": true
+        },
+        "offset": 0,
+        "pageNumber": 0,
+        "pageSize": 10,
+        "unpaged": false,
+        "paged": true
+    },
+    "totalPages": 1,
+    "totalElements": 2,
+    "last": true,
+    "number": 0,
+    "size": 10,
+    "sort": {
+        "sorted": false,
+        "unsorted": true,
+        "empty": true
+    },
+    "numberOfElements": 2,
+    "first": true,
+    "empty": false
+}
+*/
+
+
+/* CNB - returns on
+https://api.oblog.org:8443/api/nca-registry/cz/03570967
+
+{
+  "content": [
+    {
+      "entityId": "03570967",
+      "entityName": [
+        "Benxy s.r.o."
+      ],
+      "entityCode": "03570967",
+      "services": [],
+      "ebaProperties": {}
+    }
+  ],
+
+  "pageable": "INSTANCE",
+  "totalPages": 1,
+  "totalElements": 1,
+  "last": true,
+  "number": 0,
+  "size": 1,
+  "sort": {
+    "sorted": false,
+    "unsorted": true,
+    "empty": true
+  },
+  "numberOfElements": 1,
+  "first": true,
+  "empty": false
+}
+*/

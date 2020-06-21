@@ -50,7 +50,7 @@ class TppsViewModelTest {
         tppsRepository.addTpps(Tpp(tppEntity1, NcaEntity()), Tpp(tppEntity2, NcaEntity()), Tpp(tppEntity3, NcaEntity()))
 
         tppsViewModel = TppsViewModel(tppsRepository)
-        tppsViewModel.searchFilter.setAll(true)
+        tppsViewModel.searchFilter.init()
         tppsViewModel.loadTpps(false)
     }
 
@@ -82,7 +82,7 @@ class TppsViewModelTest {
             tppsRepository.saveTppBlocking(aTpp)
         }
 
-        tppsViewModel.searchFilter.setAll(false)
+        tppsViewModel.searchFilter.init()
         tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.USED_TPPS)
 
         //tppsViewModel.setFiltering(TppsFilterType.USED_TPPS)

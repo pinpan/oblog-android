@@ -10,7 +10,6 @@ import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken
 import java.util.*
 
-
 class OblogTypeConverters {
 
     val gson = Gson()

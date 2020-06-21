@@ -41,4 +41,5 @@ interface TppModel  {
     //  details aka properties from EBA
     //  tppRoles, - CZ has, Eba hasn't
     //  apps,
+    fun isRevoked(): Boolean
 }

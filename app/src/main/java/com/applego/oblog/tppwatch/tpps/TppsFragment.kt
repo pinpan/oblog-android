@@ -237,41 +237,38 @@ class TppsFragment : Fragment() {
             PopupMenu(requireContext(), view).run {
                 menuInflater.inflate(com.applego.oblog.tppwatch.R.menu.filter_tpps, menu)
 
-                TppsFilterType.allFilterTypes.forEach { ft ->
-                    val userFilter = viewModel.searchFilter.userSelectedFilterTypes.get(ft) ?: false
+/*                TppsFilterType.allFilterTypes.forEach { ft ->
+                    val userFilter = viewModel.searchFilter.pspType.get(ft) ?: false
 
                     val menuItem = menu.findItem(
                         when (ft) {
-                            //TppsFilterType.ALL_TPPS -> R.id.all
+                            TppsFilterType.ALL_TPPS -> R.id.all
                             TppsFilterType.FOLLOWED_TPPS -> R.id.followed
                             TppsFilterType.USED_TPPS -> R.id.used
                             TppsFilterType.FIS_AS_TPPS -> R.id.fis
                             TppsFilterType.PSD2_TPPS -> R.id.psd2Only
                             TppsFilterType.REVOKED_TPPS -> R.id.revoked
-                            //else -> R.id.all
                             TppsFilterType.NONE -> R.id.psd2Only
-                            //TppsFilterType.ALL_TPPS -> R.id.psd2Only
                             TppsFilterType.ONLY_PSD2_TPPS -> R.id.psd2Only
-                            else ->  R.id.psd2Only
                         })
 
                     menuItem.isChecked = userFilter
-                    }
+                    }*/
 
                 setOnMenuItemClickListener {
                     it.isChecked = !it.isChecked
                     viewModel.setFiltering(
                             when (it.itemId) {
-                                //R.id.all -> TppsFilterType.ALL_TPPS
+                                R.id.all -> TppsFilterType.ALL_TPPS
                                 R.id.used -> TppsFilterType.USED_TPPS
                                 R.id.followed -> TppsFilterType.FOLLOWED_TPPS
-                                R.id.fis -> TppsFilterType.FIS_AS_TPPS
-                                R.id.psd2Only-> TppsFilterType.PSD2_TPPS
+                                R.id.fis -> TppsFilterType.ONLY_FIS_AS_TPPS
+                                R.id.psd2Only-> TppsFilterType.ONLY_PSD2_TPPS
                                 R.id.revoked-> TppsFilterType.REVOKED_TPPS
                                 else -> TppsFilterType.ONLY_PSD2_TPPS
                             }
                     )
-                    viewModel.loadTpps(false) // TODO: Use toggle on action bar - default to NO
+                    viewModel.loadTpps(false)
                     true
                 }
                 show()

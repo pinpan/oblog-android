@@ -47,6 +47,8 @@ class Tpp : TppModel {
 
     override fun isUsed() = ebaEntity.isUsed()
 
+    override fun isRevoked() = ebaEntity.isRevoked()
+
     override fun isFis(): Boolean = ebaEntity.isFis()
 
     override fun isPsd2(): Boolean = ebaEntity.isPsd2()

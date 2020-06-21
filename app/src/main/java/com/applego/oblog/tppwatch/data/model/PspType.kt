@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.applego.oblog.tppwatch.tpps
+package com.applego.oblog.tppwatch.data.model
 
 /**
  * Used with the filter countriesSpinner in the tpps list.
  */
-enum class TppsFilterType {
+enum class PspType {
 
     /**
      * No criteria selected
@@ -31,51 +31,23 @@ enum class TppsFilterType {
     ALL_TPPS,
 
     /**
-     * Filter followed tpps (used tpps are implicitly followed).
-     */
-    FOLLOWED_TPPS,
-
-    /**
-     * Filter used tpps.
-     */
-    USED_TPPS,
-
-    /**
-     * Filter tpps, which have only PSD2 licence but are not FIS.
-     */
-    //PSD2_TPPS,
-
-    /**
      * Filter tpps, which have PSD2 licence, including FIS.
      */
-    ONLY_PSD2_TPPS,
+    ONLY_AIS_PISP_CISP,
 
     /**
      * Filter FIS.
      */
-    ONLY_FIS_AS_TPPS,
-
-    /**
-     * Filter revoked only Tpps.
-     */
-    REVOKED_TPPS;
-
+    ONLY_ASPSPs;
 
     companion object {
         //var allFilterTypes: MutableList<TppsFilterType> = ArrayList<TppsFilterType>()
-        val allFilterTypes = mutableListOf<TppsFilterType>()
+        val allPspTypes = mutableListOf<PspType>()
 
         init {
-        //fun get(): MutableList<TppsFilterType> {
-            //if (allFilterTypes.isEmpty()) {
-                allFilterTypes.add(TppsFilterType.ONLY_FIS_AS_TPPS)
-                //allFilterTypes.add(TppsFilterType.PSD2_TPPS)
-                allFilterTypes.add(TppsFilterType.USED_TPPS)
-                allFilterTypes.add(TppsFilterType.FOLLOWED_TPPS)
-                allFilterTypes.add(TppsFilterType.ONLY_PSD2_TPPS)
-            //}
-
-            //return allFilterTypes
+            allPspTypes.add(ALL_TPPS)
+            allPspTypes.add(ONLY_AIS_PISP_CISP)
+            allPspTypes.add(ONLY_ASPSPs)
         }
     }
 }

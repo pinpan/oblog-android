@@ -28,7 +28,7 @@
     <string name="label_roles">Roles</string>
     <string name="label_psd2_role">PSD2 role</string>
     <string name="label_license_revoked">Revoked</string>
-    <string name="label_revoked">Revoked</string>
+    <string name="label_revoked">Show revoked</string>
     <string name="label_passports">Passports</string>
     <string name="label_all">All TPPs</string>
     <string name="label_used">Used TPPs</string>
@@ -71,8 +71,8 @@
     <string name="loading">LOADING</string>
 
     <string name="nav_all">All</string>
-    <string name="nav_used">Used</string>
-    <string name="nav_followed">Followed</string>
+    <string name="nav_used">Used only</string>
+    <string name="nav_followed">Followed only</string>
 
     <string name="no_tpps_all">No TPPs available!</string>
     <string name="no_tpps_used">No used TPPs selected!</string>
@@ -100,8 +100,8 @@
     <string name="user_consents">Consents</string>
 
     <string name="user_signature">Your signature</string>
-    <string name="psd2_services_only">Show only PSD2 SPs</string>
-    <string name="banks_as_psd2">Show banks as PSD2 SPs</string>
+    <string name="psd2_services_only">PSD2 (non FI) PSPs only</string>
+    <string name="banks_as_psd2">Banks as PSD2 PSPs</string>
 
     <string name="user_id_title">User ID</string>
     <string name="actual_env_title">Actual environment</string>
@@ -120,7 +120,7 @@
     <string name="settings_used_tpps">Used TPPs</string>
     <string name="environments">Environments</string>
     <string name="user_account">Account</string>
-    <string name="label_fis">Financial institutions</string>
+    <string name="label_fis">FIs (banks, MI) only</string>
     <string name="no_fis_tpps">No financial institutions</string>
     <string name="label_psd2_only">TPPs with PSD2 only</string>
     <string name="no_psd2_only">No TPPs with PSD2 license only</string>

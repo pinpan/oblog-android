@@ -14,8 +14,11 @@ import java.util.*
  * @param entityCode  entityCode assigned by EBA. Inconsistently includes TPP home country, Tpp Home NCA ID and TPP's NCA given ID
  * @param entityName  entityName of the tpp
  * @param description description of the tpp
- * @param isFollowed  whether or not this tpp is followed
- * @param id          id of the tpp
+ * @param globalUrn  entity globalUrn assigned by OBLOG
+ * @param ebaEntityVersion EBA entity version
+ * @param country  entity country of origin
+ *
+ * @param db_id  OBLOG database id of the tpp
  */
 @Entity(tableName = "tpps")
 @TypeConverters(OblogTypeConverters::class)
@@ -70,6 +73,9 @@ data class EbaEntity @JvmOverloads constructor(
     @ColumnInfo(name = "used")
     var used: Boolean = false
 
+    @ColumnInfo(name = "revoked")
+    var revoked: Boolean = false
+
     @ColumnInfo(name = "status")
     var _status: RecordStatus = RecordStatus.NEW
 
@@ -83,6 +89,9 @@ data class EbaEntity @JvmOverloads constructor(
 
     @Ignore
     fun isUsed() : Boolean = used
+
+    @Ignore
+    fun isRevoked(): Boolean = revoked
 
     @Ignore
     fun isFis(): Boolean = fis

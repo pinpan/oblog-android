@@ -9,36 +9,35 @@
         android:title="@string/nav_all"
     />
 -->
-    <item
-        android:id="@+id/used"
-        android:checkable="true"
-        android:title="@string/nav_used"
-    />
-
-    <item
-        android:id="@+id/followed"
-        android:checkable="true"
-        android:checked="true"
-        android:title="@string/nav_followed"
-    />
-
-    <item
-        android:id="@+id/fis"
-        android:title="@string/label_fis"
-        android:checkable="true"
-        android:checked="true"
-    />
-
-    <item
-        android:id="@+id/psd2Only"
-        android:title="@string/psd2_services_only"
-        android:checkable="true"
-        android:checked="true"
-    />
+    <group android:checkableBehavior="single" >
+        <item
+            android:id="@+id/all"
+            android:checked="true"
+            android:title="@string/label_all" />
+        <item
+            android:id="@+id/psd2Only"
+            android:title="@string/psd2_services_only" />
+        <item
+            android:id="@+id/fis"
+            android:checked="false"
+            android:title="@string/label_fis" />
+    </group>
+    <group android:checkableBehavior="all">
+        <item
+            android:id="@+id/followed"
+            android:checkable="true"
+            android:checked="false"
+            android:title="@string/nav_followed" />
+        <item
+            android:id="@+id/used"
+            android:checkable="true"
+            android:checked="false"
+            android:title="@string/nav_used" />
+    </group>
 
     <item
         android:id="@+id/revoked"
         android:checkable="true"
-        android:checked="true"
+        android:checked="false"
         android:title="@string/label_revoked" />
 </menu>

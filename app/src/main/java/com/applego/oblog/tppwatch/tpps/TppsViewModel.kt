@@ -11,10 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.applego.oblog.tppwatch.util.Event
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.model.EbaService
-import com.applego.oblog.tppwatch.data.model.Psd2Service
-import com.applego.oblog.tppwatch.data.model.SearchFilter
-import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.model.*
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.data.source.local.*
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
@@ -74,9 +71,9 @@ class TppsViewModel(
 
     init {
         // Set initial state
-        searchFilter.setAll(true)
+        searchFilter.init()
 
-        setFiltering(TppsFilterType.NONE)
+        setFiltering(TppsFilterType.ALL_TPPS)
 
         refresh()
     }
@@ -117,13 +114,19 @@ class TppsViewModel(
         _searchFilter.updateUserSelection(requestType)
 
         // Depending on the filter type, set the filtering label, icon drawables, etc.
-        if (_searchFilter.all) {
+        /*if (_searchFilter.all) {
             setFilterStatusViews(
                 R.string.label_all, R.string.no_tpps_all,
                 R.drawable.oblog_logo, true
             )
-        } else {
+        } else {*/
             when (requestType) {
+                TppsFilterType.ALL_TPPS -> {
+                    setFilterStatusViews(
+                        R.string.label_all, R.string.no_tpps_all,
+                        R.drawable.oblog_logo, true
+                    )
+                }
                 TppsFilterType.USED_TPPS -> {
                     setFilterStatusViews(
                             R.string.label_used, R.string.no_tpps_used,
@@ -136,15 +139,15 @@ class TppsViewModel(
                             R.drawable.ic_verified_user_96dp, true
                     )
                 }
-                TppsFilterType.FIS_AS_TPPS -> {
+                TppsFilterType.ONLY_FIS_AS_TPPS -> {
                     setFilterStatusViews(
                             R.string.label_fis, R.string.no_fis_tpps,
                             R.drawable.ic_verified_user_96dp, true
                     )
                 }
-                TppsFilterType.PSD2_TPPS -> {
+                TppsFilterType.ONLY_PSD2_TPPS -> {
                     setFilterStatusViews(
-                            R.string.label_psd2_only, R.string.no_psd2_only,
+                            R.string.label_psd2_only, R.string.psd2_services_only,
                             R.drawable.ic_verified_user_96dp, true
                     )
                 }
@@ -155,7 +158,7 @@ class TppsViewModel(
                     )
                 }
             }
-        }
+        //}
     }
 
     private fun setFilterStatusViews(
@@ -258,10 +261,10 @@ class TppsViewModel(
 
         var tppsToShow: MutableList<Tpp> = filterTppsByName(tppsList)
 
-        if (!_searchFilter.all) {
-            tppsList = tppsToShow
-            tppsToShow = filterTppsByUserInterest(tppsList, _searchFilter.userSelectedFilterTypes)
-        }
+        //if (!_searchFilter.all) {
+        //    tppsList = tppsToShow
+            tppsToShow = filterTppsByUserInterest(tppsList, _searchFilter)
+        //}
 
         if (!_searchFilter.countries.isNullOrBlank() && !_searchFilter.countries.equals("<ALL>")) {
             tppsList = tppsToShow
@@ -292,18 +295,35 @@ class TppsViewModel(
         return filteredTpps
     }
 
-    private fun filterTppsByUserInterest(inputTpps: List<Tpp>, userInterests: Map<TppsFilterType, Boolean>): MutableList<Tpp> {
+    private fun filterTppsByUserInterest(inputTpps: List<Tpp>, searchFilter: SearchFilter): MutableList<Tpp> {
         val filteredTpps = ArrayList<Tpp>()
 
         // userSelectedFilterTypes works as discriminator. If empty -> show all
+/*
         if (_searchFilter.all) {
             filteredTpps.addAll(inputTpps)
         } else {
+*/
             // individual interests are then OR-ed
             inputTpps.forEach { tpp ->
-                userInterests.forEach {
-                    when (it.key) {
-                        //TppsFilterType.ALL_TPPS -> filteredTpps.add(tpp)
+                //userInterests.forEach {
+                var addIt : Boolean = when (searchFilter.pspType) {
+                    PspType.ONLY_AIS_PISP_CISP -> tpp.isPsd2()
+                    PspType.ONLY_ASPSPs -> tpp.isFis()
+                    else -> true
+                }
+
+                if (searchFilter.showRevoked) {
+                    addIt = tpp.isRevoked()
+                }
+
+                if (addIt) {
+                    if (searchFilter.showUsedOnly) {
+                        addIt = tpp.isUsed()
+                    } else if (searchFilter.showFollowedOnly) {
+                        addIt = tpp.isFollowed() || tpp.isUsed()
+                    }
+/*
                         TppsFilterType.USED_TPPS -> if (it.value && tpp.isUsed()) {
                             filteredTpps.add(tpp)
                         }
@@ -316,10 +336,14 @@ class TppsViewModel(
                         TppsFilterType.PSD2_TPPS -> if (it.value && tpp.isFis()) {
                             filteredTpps.add(tpp)
                         }
+*/
+                    }
+                    if (addIt) {
+                        filteredTpps.add(tpp)
                     }
                 }
-            }
-        }
+            //}
+//        }
 
         return filteredTpps
     }
@@ -385,7 +409,7 @@ class TppsViewModel(
         _items.value = getTppsByGlobalFilter()
     }
 
-    fun showRevokedOnly() {
+    fun showRevoked() {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -408,12 +432,12 @@ class TppsViewModel(
         outState.putString("countries", _searchFilter.countries)
         outState.putString("services", _searchFilter.services)
 
-        outState.putBoolean("installed", _searchFilter.installed)
+        /*outState.putBoolean("installed", _searchFilter.installed)
         outState.putBoolean("psd2Only", _searchFilter.psd2Only)
         outState.putBoolean("revokedOnly", _searchFilter.revokedOnly)
         outState.putBoolean("showFis", _searchFilter.showFis)
         outState.putBoolean("followed", _searchFilter.followed)
-        outState.putBoolean("used", _searchFilter.used)
+        outState.putBoolean("used", _searchFilter.used)*/
     }
 
     fun setupSearchFilter(savedInstanceState: Bundle?) {
@@ -424,36 +448,37 @@ class TppsViewModel(
             _searchFilter.countries = savedInstanceState.getString("countries", "") ?: ""
             _searchFilter.services = savedInstanceState.getString("services", "") ?: ""
 
-            if (savedInstanceState.getBoolean("installed", true)) {
-                _searchFilter.userSelectedFilterTypes.put(TppsFilterType.USED_TPPS, true)
+            /*if (savedInstanceState.getBoolean("installed", true)) {
+                _searchFilter.pspType.put(TppsFilterType.USED_TPPS, true)
             }
 
             // TODO: Duplicates installed or has semantic of: INSTALLED AND USED?
             if (savedInstanceState.getBoolean("used", true)) {
-                _searchFilter.userSelectedFilterTypes.put(TppsFilterType.USED_TPPS, true) //_searchFilter.used
+                _searchFilter.pspType.put(TppsFilterType.USED_TPPS, true) //_searchFilter.used
             }
 
             if (savedInstanceState.getBoolean("followed", true)) {
-                _searchFilter.userSelectedFilterTypes.put(TppsFilterType.FOLLOWED_TPPS, true) //_searchFilter.followed
+                _searchFilter.pspType.put(TppsFilterType.FOLLOWED_TPPS, true) //_searchFilter.followed
             }
 
             if (savedInstanceState.getBoolean("psd2Only", false)) {
-                _searchFilter.userSelectedFilterTypes.put(TppsFilterType.PSD2_TPPS, true) //_searchFilter.psd2Only
+                _searchFilter.pspType.put(TppsFilterType.PSD2_TPPS, true) //_searchFilter.psd2Only
             }
 
             if (savedInstanceState.getBoolean("onlyPsd2", false)) {
-                _searchFilter.userSelectedFilterTypes.put(TppsFilterType.ONLY_PSD2_TPPS, true) //_searchFilter.psd2Only
+                _searchFilter.pspType.put(TppsFilterType.ONLY_PSD2_TPPS, true) //_searchFilter.psd2Only
             }
 
             if (savedInstanceState.getBoolean("showFis", false)) {
-                _searchFilter.userSelectedFilterTypes.put(TppsFilterType.FIS_AS_TPPS, true) //_searchFilter.showFis
+                _searchFilter.pspType.put(TppsFilterType.FIS_AS_TPPS, true) //_searchFilter.showFis
             }
 
             // THIS is excluding all other filteres - means:
             //    Get all whos PSD2 license was revoked regardless if are used, followed, fis ...
             if (savedInstanceState.getBoolean("revokedOnly", false)) {
-                _searchFilter.userSelectedFilterTypes.put(TppsFilterType.REVOKED_TPPS, true) //_searchFilter.revokedOnly
+                _searchFilter.pspType.put(TppsFilterType.REVOKED_TPPS, true) //_searchFilter.revokedOnly
             }
+*/
         }
     }
 }

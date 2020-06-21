@@ -94,10 +94,9 @@ class TppsFragmentTest {
 
         onView(withText("TITLE1")).check(matches(isDisplayed()))
 
-
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_used)).perform(click()) // Goes to FALSE
-        onView(withText("TITLE1")).check(matches(not(isDisplayed())))
+        onView(withText("TITLE1")).check(matches(isDisplayed()))
 
         tppEntity.used = false
         tppEntity.followed = true
@@ -119,12 +118,12 @@ class TppsFragmentTest {
         onView(withText("TITLE1")).check(matches(isDisplayed()))
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_used)).perform(click())
+        onView(withText(R.string.nav_followed)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
 
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_followed)).perform(click())
-        onView(withText("TITLE1")).check(matches(not(isDisplayed())))
+        onView(withText("TITLE1")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -176,11 +175,11 @@ class TppsFragmentTest {
         launchTppsActivity(false)
 
         // Mark the tpp as followed
-        //onView(checkboxFollowed()).perform(click())
+        onView(checkboxFollowed()).perform(click())
 
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_followed)).perform(click())
-        onView(withText("TITLE1")).check(matches(not(isDisplayed())))
+        onView(withText("TITLE1")).check(matches(isDisplayed()))
 
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_followed)).perform(click())
@@ -259,9 +258,9 @@ class TppsFragmentTest {
         // Verify that the used tpps are not shown, but others (e.g. followed) are shown
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_used)).perform(click())
-        onView(withText("TITLE1")).check(doesNotExist())
-        onView(withText("TITLE2")).check(doesNotExist())
-        onView(withText("TITLE3")).check(matches(isDisplayed()))
+        onView(withText("TITLE1")).check(matches(isDisplayed()))
+        onView(withText("TITLE2")).check(matches(isDisplayed()))
+        onView(withText("TITLE3")).check(doesNotExist())
 
         // Verify that the used tpps are not shown, but others (e.g. followed) are shown
         onView(withId(R.id.menu_filter)).perform(click())
@@ -294,8 +293,8 @@ class TppsFragmentTest {
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_followed)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
-        onView(withText("TITLE2")).check(doesNotExist())
-        onView(withText("TITLE3")).check(doesNotExist())
+        onView(withText("TITLE2")).check(matches(isDisplayed()))
+        onView(withText("TITLE3")).check(matches(isDisplayed()))
 
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_followed)).perform(click())
