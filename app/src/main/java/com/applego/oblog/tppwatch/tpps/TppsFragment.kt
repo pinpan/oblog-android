@@ -248,7 +248,11 @@ class TppsFragment : Fragment() {
                             TppsFilterType.FIS_AS_TPPS -> R.id.fis
                             TppsFilterType.PSD2_TPPS -> R.id.psd2Only
                             TppsFilterType.REVOKED_TPPS -> R.id.revoked
-                            else -> R.id.all
+                            //else -> R.id.all
+                            TppsFilterType.NONE -> R.id.psd2Only
+                            //TppsFilterType.ALL_TPPS -> R.id.psd2Only
+                            TppsFilterType.ONLY_PSD2_TPPS -> R.id.psd2Only
+                            else ->  R.id.psd2Only
                         })
 
                     menuItem.isChecked = userFilter
@@ -258,13 +262,13 @@ class TppsFragment : Fragment() {
                     it.isChecked = !it.isChecked
                     viewModel.setFiltering(
                             when (it.itemId) {
-                                R.id.all -> TppsFilterType.ALL_TPPS
+                                //R.id.all -> TppsFilterType.ALL_TPPS
                                 R.id.used -> TppsFilterType.USED_TPPS
                                 R.id.followed -> TppsFilterType.FOLLOWED_TPPS
                                 R.id.fis -> TppsFilterType.FIS_AS_TPPS
                                 R.id.psd2Only-> TppsFilterType.PSD2_TPPS
                                 R.id.revoked-> TppsFilterType.REVOKED_TPPS
-                                else -> TppsFilterType.NONE
+                                else -> TppsFilterType.ONLY_PSD2_TPPS
                             }
                     )
                     viewModel.loadTpps(false) // TODO: Use toggle on action bar - default to NO

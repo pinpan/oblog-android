@@ -27,9 +27,9 @@ data class SearchFilter @JvmOverloads constructor(
         var wasChecked = userSelectedFilterTypes.get(requestType) ?: false
 
         // If all was checked
-        val isAllClicked = TppsFilterType.ALL_TPPS.equals(requestType)
+        val isAllClicked = false //TppsFilterType.ALL_TPPS.equals(requestType)
         if (isAllClicked) {
-            userSelectedFilterTypes.put(TppsFilterType.ALL_TPPS, !wasChecked)
+            //userSelectedFilterTypes.put(TppsFilterType.ALL_TPPS, !wasChecked)
             setAll(!wasChecked)
         } else {
             userSelectedFilterTypes.put(requestType, !wasChecked)

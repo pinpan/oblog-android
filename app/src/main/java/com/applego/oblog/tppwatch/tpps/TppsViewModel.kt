@@ -74,7 +74,9 @@ class TppsViewModel(
 
     init {
         // Set initial state
-        setFiltering(TppsFilterType.ALL_TPPS)
+        searchFilter.setAll(true)
+
+        setFiltering(TppsFilterType.NONE)
 
         refresh()
     }
@@ -107,7 +109,7 @@ class TppsViewModel(
     /**
      * Sets the current tpp filtering type.
      *
-     * @param requestType Can be [TppsFilterType.ALL_TPPS],
+     * @param requestType Can be
      * [TppsFilterType.FOLLOWED_TPPS], or
      * [TppsFilterType.USED_TPPS]
      */
@@ -294,7 +296,7 @@ class TppsViewModel(
         val filteredTpps = ArrayList<Tpp>()
 
         // userSelectedFilterTypes works as discriminator. If empty -> show all
-        if ((userInterests.get(TppsFilterType.ALL_TPPS) ?: false) || _searchFilter.all) {
+        if (_searchFilter.all) {
             filteredTpps.addAll(inputTpps)
         } else {
             // individual interests are then OR-ed
