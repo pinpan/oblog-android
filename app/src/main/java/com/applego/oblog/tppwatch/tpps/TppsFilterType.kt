@@ -28,7 +28,7 @@ enum class TppsFilterType {
     /**
      * Use all Tpps.
      */
-    ALL_TPPS,
+    //ALL_TPPS,
 
     /**
      * Filter followed tpps (used tpps are implicitly followed).

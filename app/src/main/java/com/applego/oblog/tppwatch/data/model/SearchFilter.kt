@@ -33,7 +33,7 @@ data class SearchFilter @JvmOverloads constructor(
             setAll(!wasChecked)
         } else {
             userSelectedFilterTypes.put(requestType, !wasChecked)
-            userSelectedFilterTypes.put(TppsFilterType.ALL_TPPS, all)
+            //userSelectedFilterTypes.put(TppsFilterType.ALL_TPPS, all)
         }
     }
 

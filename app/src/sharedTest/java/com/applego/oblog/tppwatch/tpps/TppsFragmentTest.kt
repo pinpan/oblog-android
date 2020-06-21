@@ -3,13 +3,11 @@ package com.applego.oblog.tppwatch.tpps
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Looper.getMainLooper
 import android.view.View
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ActivityScenario.launch
@@ -21,7 +19,6 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
-import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.model.EbaEntity
 import com.applego.oblog.tppwatch.data.model.NcaEntity
@@ -45,7 +42,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
-import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.LooperMode
 import org.robolectric.annotation.TextLayoutMode
 
@@ -73,7 +69,6 @@ class TppsFragmentTest {
         val job = CoroutineScope(Dispatchers.Main).launch {
             ServiceLocator.resetRestDataSource()
         }
-        //job.join()
     }
 
     @Test
@@ -82,7 +77,7 @@ class TppsFragmentTest {
         repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"), NcaEntity()))
 
         // WHEN - On startup
-        launchActivity()
+        launchTppsActivity(false)
 
         // THEN - Verify tpp is displayed on screen
         onView(withText("TITLE1")).check(matches(isDisplayed()))
@@ -95,7 +90,7 @@ class TppsFragmentTest {
         tppEntity.followed = false
         repository.saveTppBlocking(Tpp(tppEntity, NcaEntity()))
 
-        launchActivity()
+        launchTppsActivity(false)
 
         onView(withText("TITLE1")).check(matches(isDisplayed()))
 
@@ -119,10 +114,9 @@ class TppsFragmentTest {
         tppEntity1.followed = true
         repository.saveTppBlocking(Tpp(tppEntity1, NcaEntity()))
 
-        launchActivity()
+        launchTppsActivity(false)
 
         onView(withText("TITLE1")).check(matches(isDisplayed()))
-        //onView(withText("TITLE1")).check(matches(not(isDisplayed())))
 
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_used)).perform(click())
@@ -133,11 +127,11 @@ class TppsFragmentTest {
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
     }
 
-    //@Test
+    @Test
     fun deleteOneTpp() {
         repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"), NcaEntity()))
 
-        launchActivity()
+        launchTppsActivity(false)
 
         // Open it in details view
         onView(withText("TITLE1")).perform(click())
@@ -146,18 +140,18 @@ class TppsFragmentTest {
         onView(withId(R.id.menu_delete)).perform(click())
 
         // Verify it was deleted
-        onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_all)).perform(click())
+        //onView(withId(R.id.menu_filter)).perform(click())
+        //onView(withText(R.string.nav_followed)).perform(click())
         onView(withText("TITLE1")).check(doesNotExist())
     }
 
-    @Ignore
+    //@Ignore
     @Test
     fun deleteOneOfTwoTpps() {
         repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"), NcaEntity()))
         repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz"), NcaEntity()))
 
-        launchActivity()
+        launchTppsActivity(false)
 
         // Open it in details view
         onView(withText("TITLE1")).perform(click())
@@ -166,49 +160,30 @@ class TppsFragmentTest {
         onView(withId(R.id.menu_delete)).perform(click())
 
         // Verify it was deleted
-        onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_all)).perform(click())
         onView(withText("TITLE1")).check(doesNotExist())
+
+        launchTppsActivity(false)
         // but not the other one
         onView(withText("TITLE2")).check(matches(isDisplayed()))
     }
 
-    @Ignore
     @Test
     fun markTppAsFollowed() {
         var tppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         tppEntity1.followed = true
         repository.saveTppBlocking(Tpp(tppEntity1, NcaEntity()))
 
-        //launchActivity()
-
-        /*shadowOf(getMainLooper()).idle();
-
-        val context: Context = getInstrumentation().getTargetContext()
-        val preferencesEditor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-        preferencesEditor.putBoolean("isFirstRun", false).commit()
-        preferencesEditor.putBoolean("skipSplash", true).commit()
-*/
-        launchActivity()
-
-        shadowOf(getMainLooper()).idle();
+        launchTppsActivity(false)
 
         // Mark the tpp as followed
-        onView(checkboxFollowed()).perform(click())
-
-        // Verify tpp is shown as followed
-        onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_all)).perform(click())
-        //onView(withText("TITLE1")).check(matches(not(isDisplayed())))
-
-        onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_followed)).perform(click())
         //onView(checkboxFollowed()).perform(click())
-        onView(withText("TITLE1")).check(matches(isDisplayed()))
 
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_followed)).perform(click())
-        //onView(withText(R.string.nav_followed)).perform(click())
+        onView(withText("TITLE1")).check(matches(not(isDisplayed())))
+
+        onView(withId(R.id.menu_filter)).perform(click())
+        onView(withText(R.string.nav_followed)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
     }
 
@@ -218,7 +193,7 @@ class TppsFragmentTest {
         var aTpp = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         repository.saveTppBlocking(Tpp(aTpp, NcaEntity()))
 
-        launchActivity()
+        launchTppsActivity(false)
 
         // Mark the tpp as used
         onView(checkboxUsed()).perform(click())
@@ -243,20 +218,20 @@ class TppsFragmentTest {
         var tpp2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz")
         repository.saveTppBlocking(Tpp(tpp2, NcaEntity()))
 
-        launchActivity()
+        launchTppsActivity(false)
 
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withText("TITLE2")).check(matches(isDisplayed()))
 
         // Verify that both of our tpps are shown
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_all)).perform(click())
+        onView(withText(R.string.nav_followed)).perform(click())
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
         onView(withText("TITLE2")).check(matches(not(isDisplayed())))
 
         // Verify that both of our tpps are shown
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_all)).perform(click())
+        onView(withText(R.string.nav_followed)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withText("TITLE2")).check(matches(isDisplayed()))
     }
@@ -275,7 +250,7 @@ class TppsFragmentTest {
         repository.saveTppBlocking(Tpp(tppEntity2, NcaEntity()))
         repository.saveTppBlocking(Tpp(tppEntity3, NcaEntity()))
 
-        launchActivity()
+        launchTppsActivity(false)
         // By default ALL is selected
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withText("TITLE2")).check(matches(isDisplayed()))
@@ -309,7 +284,7 @@ class TppsFragmentTest {
         repository.saveTppBlocking(Tpp(tppEntity2, NcaEntity()))
         repository.saveTppBlocking(Tpp(tppEntity3, NcaEntity()))
 
-        launchActivity()
+        launchTppsActivity(false)
 
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withText("TITLE2")).check(matches(isDisplayed()))
@@ -330,19 +305,19 @@ class TppsFragmentTest {
     }
 
     @Test
-    fun noTpps_AllTppsFilter_AddTppViewVisible() {
-        launchActivity()
+    fun noTpps_FollowedTppsFilter_AddTppViewVisible() {
+        launchTppsActivity(false)
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_all)).perform(click())
+        onView(withText(R.string.nav_followed)).perform(click())
 
         // Verify the "You have no tpps!" text is shown
-        onView(withText("No TPPs available!")).check(matches(isDisplayed()))
+        onView(withText("You have no followed TPPs!")).check(matches(isDisplayed()))
     }
 
     @Test
     fun noTpps_FollowedTppsFilter_AddTppViewNotVisible() {
-        launchActivity()
+        launchTppsActivity(false)
 
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_followed)).perform(click())
@@ -353,7 +328,7 @@ class TppsFragmentTest {
 
     @Test
     fun noTpps_UsedTppsFilter_AddTppViewNotVisible() {
-        launchActivity()
+        launchTppsActivity(false)
 
         onView(withId(R.id.menu_filter)).perform(click())
         onView(withText(R.string.nav_used)).perform(click())
@@ -382,9 +357,9 @@ class TppsFragmentTest {
         )
     }
 
-    private fun launchActivity(): ActivityScenario<TppsActivity>? {
+    private fun launchTppsActivity(isFirstRun: Boolean): ActivityScenario<TppsActivity>? {
         val intent = Intent(getApplicationContext(), TppsActivity::class.java)
-        intent.putExtra("com.applego.oblog.tppwatch.isFirstRun", true);
+        intent.putExtra("com.applego.oblog.tppwatch.isFirstRun", isFirstRun);
         val activityScenario: ActivityScenario<TppsActivity> = launch(intent)
 
         activityScenario.onActivity { activity ->
