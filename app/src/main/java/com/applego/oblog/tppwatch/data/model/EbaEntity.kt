@@ -25,12 +25,12 @@ import java.util.*
 data class EbaEntity @JvmOverloads constructor(
         @ColumnInfo(name = "entityId") val _entityId: String = "",
         @ColumnInfo(name = "entityCode") val _entityCode: String = "",
-        @ColumnInfo(name = "entityName") var _entityName: String = "",
-        @ColumnInfo(name = "description") var _description: String = "",
-        @ColumnInfo(name = "globalUrn") var _globalUrn: String = "",
-        @ColumnInfo(name = "ebaEntityVersion") var _ebaEntityVersion: String = "",
-        @ColumnInfo(name = "country") var _country: String = "",
-
+        @ColumnInfo(name = "entityName") var _entityName: String,
+        @ColumnInfo(name = "description") var _description: String,
+        @ColumnInfo(name = "globalUrn") val _globalUrn: String,
+        @ColumnInfo(name = "ebaEntityVersion") var _ebaEntityVersion: String,
+        @ColumnInfo(name = "country") val _country: String,
+        @ColumnInfo(name = "entityType") val entityType: EbaEntityType, // TODO: Move up after entityName Fix tests!
         @PrimaryKey @ColumnInfo(name = "db_id") var _db_id: String = UUID.randomUUID().toString()
 ) {
 
@@ -61,11 +61,18 @@ data class EbaEntity @JvmOverloads constructor(
     @Embedded
     var ebaProperties = EbaEntityProperties()
 
-    @ColumnInfo(name = "fis")
-    var fis: Boolean = false
-
     @ColumnInfo(name = "psd2")
-    var psd2: Boolean = false
+    var psd2: Boolean = (entityType.equals(EbaEntityType.PSD_PI)
+                      || entityType.equals(EbaEntityType.PSD_EMI)
+                      || entityType.equals(EbaEntityType.PSD_AISP)
+                      || entityType.equals(EbaEntityType.PSD_AGENT)
+                      || entityType.equals(EbaEntityType.PSD_BRANCH)
+                      || entityType.equals(EbaEntityType.PSD_EPI)
+                      || entityType.equals(EbaEntityType.PSD_EEMI)
+            )
+
+    @ColumnInfo(name = "fis")
+    var fis: Boolean = !psd2
 
     @ColumnInfo(name = "followed")
     var followed: Boolean = false

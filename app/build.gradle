@@ -48,7 +48,7 @@ android {
         }
 
         release {
-            buildConfigField "String", 'BASE_URL', "\"https://api.oblog.org:8443/eba-registry/\""
+            buildConfigField "String", 'BASE_URL', "\"https://api.oblog.org:443/eba-registry/\""
         }
     }
 
@@ -64,7 +64,7 @@ android {
 */
         prod {
             dimension "default"
-            buildConfigField "String", 'BASE_URL', "\"https://api.oblog.org:8443/api\""
+            buildConfigField "String", 'BASE_URL', "\"https://api.oblog.org:443/api\""
         }
 
     }

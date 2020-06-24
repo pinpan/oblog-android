@@ -24,7 +24,7 @@ class TppsNcaDataSource internal constructor (
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : RemoteTppDataSource {
 
-    var theApiKey : ApiKey = ApiKey("2Dvgcj0W7sinv0mqtwm2CSQuYYsW79xb")
+    var theApiKey : ApiKey = ApiKey("T11NOL41x0L7Cn4OAc1FNQogHAcpWvQA ")
 
     override suspend fun getAllTpps(): Result<TppsListResponse> = withContext(ioDispatcher) {
         var paging = Paging(10, 1, 10, true)

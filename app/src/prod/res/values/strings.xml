@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="oblog_api_base_url">http://api.oblog.org:8443/eba-registry/</string>
+    <string name="oblog_api_base_url">http://api.oblog.org:443/eba-registry/</string>
 </resources>

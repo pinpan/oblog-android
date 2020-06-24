@@ -1,10 +1,7 @@
 package com.applego.oblog.tppwatch.data.source.remote.serializer
 
 import com.applego.oblog.tppwatch.data.convertor.OblogTypeConverters
-import com.applego.oblog.tppwatch.data.model.Tpp
-import com.applego.oblog.tppwatch.data.model.EbaEntity
-import com.applego.oblog.tppwatch.data.model.EbaEntityProperties
-import com.applego.oblog.tppwatch.data.model.NcaEntity
+import com.applego.oblog.tppwatch.data.model.*
 import com.google.gson.*
 import java.lang.reflect.Type
 import timber.log.Timber
@@ -36,6 +33,7 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         }
 
         val entityCode: String  = jsonObject?.get("entityCode")?.asString ?: ""
+        val entityType: String  = jsonObject?.get("entityType")?.asString ?: ""
         var entityId: String   =  jsonObject.get("entityId")?.asString ?: entityCode
         if (!entityId.isNullOrBlank()) {
             entityId = getEntityId(entityId)
@@ -70,11 +68,11 @@ class TppDeserializer : JsonDeserializer<Tpp> {
 
         val globalUrn = jsonObject.get("globalUrn")?.asString ?:""
         val country: String = ebaProperties.countryOfResidence
-        val ebaEntityVersion: String = jsonObject.get("ebaEntityVersion")?.asString ?: ""
+        val ebaEntityVersion: String = jsonObject.get("entityVersion")?.asString ?: ""
         // val status: String = jsonObject?.get("status")?.asString ?: ""
         val description: String = jsonObject.get("description")?.asString ?: ""
 
-        val ebaEntity = EbaEntity(_entityId = entityId, _entityCode = entityCode, _entityName = entityName, _description = description, _globalUrn = globalUrn, _ebaEntityVersion = ebaEntityVersion, _country = country)
+        val ebaEntity = EbaEntity(_entityId = entityId, _entityCode = entityCode, _entityName = entityName, _description = description, _globalUrn = globalUrn, _ebaEntityVersion = ebaEntityVersion, _country = country, entityType = EbaEntityType.valueOf(entityType))
         ebaEntity.ebaProperties = ebaProperties
         var tpp = Tpp(ebaEntity, NcaEntity())
 

@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.R
+import com.applego.oblog.tppwatch.data.model.PspType
 import com.applego.oblog.tppwatch.databinding.TppsFragBinding
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
@@ -63,9 +64,11 @@ class TppsFragment : Fragment() {
 
         searchView?.setIconifiedByDefault(true)
         searchView?.setQueryHint("Type text to filter listed TPPs")
-        searchView?.setOnQueryTextFocusChangeListener { v, hasFocus ->
+
+        /*searchView?.setOnQueryTextFocusChangeListener { v, hasFocus ->
             //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
+            searchBy("")
+        }*/
         // perform set on query text listener event
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
@@ -83,15 +86,16 @@ class TppsFragment : Fragment() {
         searchView?.setOnCloseListener (object: SearchView.OnCloseListener {
             override fun onClose(): Boolean {
                 if (!lastTppsSearchViewQuery.isNullOrBlank()) {
-                    viewModel.loadTpps(false)
                     lastTppsSearchViewQuery = ""
+                    //viewModel.loadTpps(false)
+                    searchBy("")
                 }
                 return false
             }
         })
 
-        var searchPlateId = searchView?.context?.resources?.getIdentifier("android:id/search_src_text", null, null)
-        searchPlateId = searchView?.context?.resources?.getIdentifier("android:id/search_close_button", null, null)
+        //var searchPlateId = searchView?.context?.resources?.getIdentifier("android:id/search_src_text", null, null)
+        var searchPlateId = searchView?.context?.resources?.getIdentifier("android:id/search_close_button", null, null)
         if (searchPlateId != null) {
             val closeBtn = searchView?.findViewById<ImageButton>(searchPlateId)
             closeBtn?.setOnClickListener(object: View.OnClickListener {
@@ -232,40 +236,31 @@ class TppsFragment : Fragment() {
     }
 
     private fun showFilteringPopUpMenu() {
-        val view = activity?.findViewById<View>(R.id.menu_filter) //?: return
+        val view = activity?.findViewById<View>(R.id.menu_filter)
         if (view != null) {
             PopupMenu(requireContext(), view).run {
-                menuInflater.inflate(com.applego.oblog.tppwatch.R.menu.filter_tpps, menu)
+                menuInflater.inflate(R.menu.filter_tpps, menu)
 
-/*                TppsFilterType.allFilterTypes.forEach { ft ->
-                    val userFilter = viewModel.searchFilter.pspType.get(ft) ?: false
-
-                    val menuItem = menu.findItem(
-                        when (ft) {
-                            TppsFilterType.ALL_TPPS -> R.id.all
-                            TppsFilterType.FOLLOWED_TPPS -> R.id.followed
-                            TppsFilterType.USED_TPPS -> R.id.used
-                            TppsFilterType.FIS_AS_TPPS -> R.id.fis
-                            TppsFilterType.PSD2_TPPS -> R.id.psd2Only
-                            TppsFilterType.REVOKED_TPPS -> R.id.revoked
-                            TppsFilterType.NONE -> R.id.psd2Only
-                            TppsFilterType.ONLY_PSD2_TPPS -> R.id.psd2Only
-                        })
-
-                    menuItem.isChecked = userFilter
-                    }*/
+                when (viewModel.searchFilter.pspType) {
+                    PspType.ALL_PSD2 -> menu.findItem(R.id.allPSD2).isChecked = true
+                    PspType.ONLY_PSD2_TPPs -> menu.findItem(R.id.tppOnly).isChecked = true
+                    PspType.ONLY_ASPSPs -> menu.findItem(R.id.aspspOnly).isChecked = true
+                }
+                menu.findItem(R.id.followed).isChecked = viewModel.searchFilter.showFollowedOnly
+                menu.findItem(R.id.used).isChecked = viewModel.searchFilter.showUsedOnly
+                menu.findItem(R.id.revoked).isChecked = viewModel.searchFilter.showRevoked
 
                 setOnMenuItemClickListener {
-                    it.isChecked = !it.isChecked
+                    //it.isChecked = !it.isChecked
                     viewModel.setFiltering(
                             when (it.itemId) {
-                                R.id.all -> TppsFilterType.ALL_TPPS
-                                R.id.used -> TppsFilterType.USED_TPPS
-                                R.id.followed -> TppsFilterType.FOLLOWED_TPPS
-                                R.id.fis -> TppsFilterType.ONLY_FIS_AS_TPPS
-                                R.id.psd2Only-> TppsFilterType.ONLY_PSD2_TPPS
-                                R.id.revoked-> TppsFilterType.REVOKED_TPPS
-                                else -> TppsFilterType.ONLY_PSD2_TPPS
+                                R.id.allPSD2 -> TppsFilterType.ALL_TPPs
+                                R.id.used -> TppsFilterType.USED_TPPs
+                                R.id.followed -> TppsFilterType.FOLLOWED_TPPs
+                                R.id.aspspOnly -> TppsFilterType.ONLY_PSD2_FIs
+                                R.id.tppOnly-> TppsFilterType.ONLY_PSD2_TPPs
+                                R.id.revoked-> TppsFilterType.REVOKED_TPPs
+                                else -> TppsFilterType.ONLY_PSD2_TPPs
                             }
                     )
                     viewModel.loadTpps(false)

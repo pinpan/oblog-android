@@ -12,9 +12,9 @@
 
     <string-array name="env_base_url">
         <item>DEV#http://192.168.0.194:27010"</item>
-        <item>TEST#https://api.oblog.org:8443"</item>
-        <item>STAGING#https://api.oblog.org:8443"</item>
-        <item>PRODUCTION#https://api.oblog.org:8443"</item>
+        <item>TEST#https://api.oblog.org:443"</item>
+        <item>STAGING#https://api.oblog.org:443"</item>
+        <item>PRODUCTION#https://api.oblog.org:443"</item>
     </string-array>
 
     <string-array name="env_DEV">
@@ -25,19 +25,19 @@
 
     <string-array name="env_TEST">
         <item>Test</item>
-        <item>\"https://api.oblog.org:8443\""</item>
+        <item>\"https://api.oblog.org:443\""</item>
         <item>SomethingElse-Dev</item>
     </string-array>
 
     <string-array name="env_STAGING">
         <item>Staging</item>
-        <item>\"https://api.oblog.org:8443\""</item>
+        <item>\"https://api.oblog.org:443\""</item>
         <item>SomethingElse-Dev</item>
     </string-array>
 
     <string-array name="env_PRODUCTION">
         <item>Production</item>
-        <item>\"https://api.oblog.org:8443\""</item>
+        <item>\"https://api.oblog.org:443\""</item>
         <item>SomethingElse-Dev</item>
     </string-array>
 

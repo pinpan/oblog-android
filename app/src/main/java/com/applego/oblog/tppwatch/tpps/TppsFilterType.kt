@@ -23,22 +23,22 @@ enum class TppsFilterType {
     /**
      * No criteria selected
      */
-    NONE,
+    //NONE,
 
     /**
      * Use all Tpps.
      */
-    ALL_TPPS,
+    ALL_TPPs,
 
     /**
      * Filter followed tpps (used tpps are implicitly followed).
      */
-    FOLLOWED_TPPS,
+    FOLLOWED_TPPs,
 
     /**
      * Filter used tpps.
      */
-    USED_TPPS,
+    USED_TPPs,
 
     /**
      * Filter tpps, which have only PSD2 licence but are not FIS.
@@ -48,34 +48,28 @@ enum class TppsFilterType {
     /**
      * Filter tpps, which have PSD2 licence, including FIS.
      */
-    ONLY_PSD2_TPPS,
+    ONLY_PSD2_TPPs,
 
     /**
      * Filter FIS.
      */
-    ONLY_FIS_AS_TPPS,
+    ONLY_PSD2_FIs,
 
     /**
      * Filter revoked only Tpps.
      */
-    REVOKED_TPPS;
+    REVOKED_TPPs;
 
 
     companion object {
-        //var allFilterTypes: MutableList<TppsFilterType> = ArrayList<TppsFilterType>()
         val allFilterTypes = mutableListOf<TppsFilterType>()
 
         init {
-        //fun get(): MutableList<TppsFilterType> {
-            //if (allFilterTypes.isEmpty()) {
-                allFilterTypes.add(TppsFilterType.ONLY_FIS_AS_TPPS)
-                //allFilterTypes.add(TppsFilterType.PSD2_TPPS)
-                allFilterTypes.add(TppsFilterType.USED_TPPS)
-                allFilterTypes.add(TppsFilterType.FOLLOWED_TPPS)
-                allFilterTypes.add(TppsFilterType.ONLY_PSD2_TPPS)
-            //}
-
-            //return allFilterTypes
+            allFilterTypes.add(TppsFilterType.ONLY_PSD2_FIs)
+            //allFilterTypes.add(TppsFilterType.PSD2_TPPS)
+            allFilterTypes.add(TppsFilterType.USED_TPPs)
+            allFilterTypes.add(TppsFilterType.FOLLOWED_TPPs)
+            allFilterTypes.add(TppsFilterType.ONLY_PSD2_TPPs)
         }
     }
 }

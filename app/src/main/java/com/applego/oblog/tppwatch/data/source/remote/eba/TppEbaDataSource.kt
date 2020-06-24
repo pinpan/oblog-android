@@ -28,7 +28,7 @@ class TppEbaDataSource internal constructor (
 
     // TODO: Get the String from config per Base URL
     // Old key MyhCyIKQ0IlIG5dFVk6sjXcG2aHhFbj0
-    var theApiKey : ApiKey = ApiKey("2Dvgcj0W7sinv0mqtwm2CSQuYYsW79xb")
+    var theApiKey : ApiKey = ApiKey("T11NOL41x0L7Cn4OAc1FNQogHAcpWvQA") //"2Dvgcj0W7sinv0mqtwm2CSQuYYsW79xb")
 
     override suspend fun getAllTpps(): Result<TppsListResponse> = withContext(ioDispatcher) {
         var paging = Paging(10, 1, 10, true)

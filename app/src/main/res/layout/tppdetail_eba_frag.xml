@@ -58,8 +58,9 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:inputType="none"
-                        android:textSize="10sp"
-                        android:text="@string/label_entity_code" />
+                        android:text="@string/label_entity_code"
+                        android:textIsSelectable="true"
+                        android:textSize="10sp" />
 
                     <TextView
                         android:id="@+id/label_entity_names"
@@ -70,8 +71,9 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:inputType="none"
-                        android:textSize="10sp"
-                        android:text="@string/label_entity_names" />
+                        android:text="@string/label_entity_names"
+                        android:textIsSelectable="true"
+                        android:textSize="10sp" />
 
                     <TextView
                         android:id="@+id/label_home_country"
@@ -82,9 +84,10 @@
                         android:focusable="false"
                         android:hint="@string/label_home_country"
                         android:inputType="none"
+                        android:textIsSelectable="true"
+                        android:textSize="10sp"
                         android:textStyle="bold"
                         android:visibility="visible"
-                        android:textSize="10sp"
                         tools:text="@string/label_home_country" />
 
                     <TextView
@@ -96,8 +99,9 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:inputType="none"
-                        android:textSize="10sp"
-                        android:text="@string/label_national_ref_code" />
+                        android:text="@string/label_national_ref_code"
+                        android:textIsSelectable="true"
+                        android:textSize="10sp" />
 
                     <TextView
                         android:id="@+id/label_entity_address"
@@ -107,8 +111,9 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:inputType="none"
-                        android:textSize="10sp"
-                        android:text="@string/label_entity_address" />
+                        android:text="@string/label_entity_address"
+                        android:textIsSelectable="true"
+                        android:textSize="10sp" />
 
                     <TextView
                         android:id="@+id/label_authorization_start"
@@ -118,8 +123,9 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:inputType="none"
-                        android:textSize="10sp"
-                        android:text="@string/label_entity_authorization_start" />
+                        android:text="@string/label_entity_authorization_start"
+                        android:textIsSelectable="true"
+                        android:textSize="10sp" />
 
                     <TextView
                         android:id="@+id/label_authorization_end"
@@ -129,8 +135,9 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:inputType="none"
-                        android:textSize="10sp"
-                        android:text="@string/label_entity_authorization_end" />
+                        android:text="@string/label_entity_authorization_end"
+                        android:textIsSelectable="true"
+                        android:textSize="10sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -148,6 +155,7 @@
                         android:text="@{viewmodel.tpp.ebaEntity.entityCode}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496"
+                        android:textIsSelectable="true"
                         android:textSize="10sp"
                         android:textStyle="bold" />
 
@@ -159,6 +167,7 @@
                         android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.entityNames}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496"
+                        android:textIsSelectable="true"
                         android:textSize="10sp"
                         android:textStyle="bold" />
 
@@ -170,6 +179,7 @@
                         android:text="@{viewmodel.tpp.ebaEntity.country}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496"
+                        android:textIsSelectable="true"
                         android:textSize="10sp"
                         android:textStyle="bold" />
 
@@ -181,6 +191,7 @@
                         android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.nationalReferenceCode}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496"
+                        android:textIsSelectable="true"
                         android:textSize="10sp"
                         android:textStyle="bold" />
 
@@ -192,6 +203,7 @@
                         android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.address}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496"
+                        android:textIsSelectable="true"
                         android:textSize="10sp"
                         android:textStyle="bold" />
 
@@ -200,9 +212,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="1dp"
-                        android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.address}"
+                        android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.authorizationStart}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496"
+                        android:textIsSelectable="true"
                         android:textSize="10sp"
                         android:textStyle="bold" />
 
@@ -214,6 +227,7 @@
                         android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.authorizationEnd}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496"
+                        android:textIsSelectable="true"
                         android:textSize="10sp"
                         android:textStyle="bold" />
 

@@ -1,6 +1,7 @@
 package com.applego.oblog.tppwatch.data.convertor
 
 import androidx.room.TypeConverter
+import com.applego.oblog.tppwatch.data.model.EbaEntityType
 import com.applego.oblog.tppwatch.data.model.EbaPassport
 import com.applego.oblog.tppwatch.data.model.EbaService
 import com.applego.oblog.tppwatch.data.model.Psd2Service
@@ -40,6 +41,16 @@ class OblogTypeConverters {
         } else {
             throw IllegalArgumentException("Could not recognize status")
         }
+    }
+
+    @TypeConverter
+    fun toEntitytype(type: String) : EbaEntityType {
+        return EbaEntityType.valueOf(type)
+    }
+
+    @TypeConverter
+    fun fromEntitytype(type: EbaEntityType) : String {
+        return type.code
     }
 
     @TypeConverter

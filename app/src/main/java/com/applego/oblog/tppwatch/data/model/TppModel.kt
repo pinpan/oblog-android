@@ -19,9 +19,9 @@ interface TppModel  {
 
     fun getDescription(): String
 
-    fun isFis(): Boolean
+    fun isASPSP(): Boolean
 
-    fun isPsd2(): Boolean
+    fun isPsd2Tpp(): Boolean
 
     fun isUsed(): Boolean
 

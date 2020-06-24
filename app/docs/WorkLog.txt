@@ -149,7 +149,7 @@ SNIPETS
 
 
 /* CNB - returns on
-https://api.oblog.org:8443/api/nca-registry/cz/03570967
+https://api.oblog.org:443/api/nca-registry/cz/03570967
 
 {
   "content": [
@@ -180,3 +180,49 @@ https://api.oblog.org:8443/api/nca-registry/cz/03570967
   "empty": false
 }
 */
+
+
+
+{
+   "entityId":"PSD_EMI!GB_FCA!901016",
+   "entityName":[
+      "Payver Limited"
+   ],
+   "entityCode":"PSD_EMI!GB_FCA!901016",
+   "services":[
+      {
+         "country":"GB",
+         "list":[
+            "ES_010",
+            "PS_010",
+            "PS_020",
+            "PS_03A",
+            "PS_03B",
+            "PS_03C",
+            "PS_04A",
+            "PS_04B",
+            "PS_04C",
+            "PS_05A",
+            "PS_05B",
+            "PS_060"
+         ]
+      }
+   ],
+   "ebaProperties":{
+      "ENT_NAM":"Payver Limited",
+      "ENT_COD_TYP":"NON_LEI",
+      "ENT_COU_RES":"GB",
+      "ENT_NAT_REF_COD":"901016",
+      "ENT_NAM_COM":"Payver Limited",
+      "ENT_ADD":[
+         "Enfield",
+         "134 Percival Road",
+         "Middlesex"
+      ],
+      "ENT_TOW_CIT_RES":"London",
+      "ENT_POS_COD":"EN1 1QU",
+      "ENT_AUT":[
+         "2020-02-20"
+      ]
+   }
+}

@@ -49,9 +49,9 @@ class Tpp : TppModel {
 
     override fun isRevoked() = ebaEntity.isRevoked()
 
-    override fun isFis(): Boolean = ebaEntity.isFis()
+    override fun isASPSP(): Boolean = ebaEntity.isFis()
 
-    override fun isPsd2(): Boolean = ebaEntity.isPsd2()
+    override fun isPsd2Tpp(): Boolean = ebaEntity.isPsd2()
 
     override fun isFollowed(): Boolean = ebaEntity.isFollowed()
 

@@ -28,12 +28,12 @@ enum class PspType {
     /**
      * Use all Tpps.
      */
-    ALL_TPPS,
+    ALL_PSD2,
 
     /**
      * Filter tpps, which have PSD2 licence, including FIS.
      */
-    ONLY_AIS_PISP_CISP,
+    ONLY_PSD2_TPPs,
 
     /**
      * Filter FIS.
@@ -45,8 +45,8 @@ enum class PspType {
         val allPspTypes = mutableListOf<PspType>()
 
         init {
-            allPspTypes.add(ALL_TPPS)
-            allPspTypes.add(ONLY_AIS_PISP_CISP)
+            allPspTypes.add(ALL_PSD2)
+            allPspTypes.add(ONLY_PSD2_TPPs)
             allPspTypes.add(ONLY_ASPSPs)
         }
     }

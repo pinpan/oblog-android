@@ -19,38 +19,36 @@ data class SearchFilter @JvmOverloads constructor(
 ) {
 
     @Embedded
-    var pspType: PspType = PspType.ALL_TPPS //MutableMap<TppsFilterType, Boolean> = HashMap<TppsFilterType, Boolean>()
+    var pspType: PspType = PspType.ALL_PSD2 //MutableMap<TppsFilterType, Boolean> = HashMap<TppsFilterType, Boolean>()
     var showFollowedOnly = false //MutableMap<TppsFilterType, Boolean> = HashMap<TppsFilterType, Boolean>()
     var showUsedOnly = false //MutableMap<TppsFilterType, Boolean> = HashMap<TppsFilterType, Boolean>()
     var showRevoked = false //MutableMap<TppsFilterType, Boolean> = HashMap<TppsFilterType, Boolean>()
 
-    //var userSelectedFilterTypes: MutableMap<TppsFilterType, Boolean> = HashMap<TppsFilterType, Boolean>()
-
     fun updateUserSelection(requestType: TppsFilterType) {
         when (requestType) {
-            TppsFilterType.ALL_TPPS -> {
-                pspType = PspType.ALL_TPPS
+            TppsFilterType.ALL_TPPs -> {
+                pspType = PspType.ALL_PSD2
             }
-            TppsFilterType.ONLY_FIS_AS_TPPS -> {
+            TppsFilterType.ONLY_PSD2_FIs -> {
                 pspType = PspType.ONLY_ASPSPs
             }
-            TppsFilterType.ONLY_PSD2_TPPS -> {
-                pspType = PspType.ONLY_AIS_PISP_CISP
+            TppsFilterType.ONLY_PSD2_TPPs -> {
+                pspType = PspType.ONLY_PSD2_TPPs
             }
-            TppsFilterType.FOLLOWED_TPPS -> {
+            TppsFilterType.FOLLOWED_TPPs -> {
                 showFollowedOnly = !showFollowedOnly
             }
-            TppsFilterType.USED_TPPS -> {
+            TppsFilterType.USED_TPPs -> {
                 showUsedOnly = !showUsedOnly
             }
-            TppsFilterType.REVOKED_TPPS -> {
+            TppsFilterType.REVOKED_TPPs -> {
                 showRevoked = !showRevoked
             }
         }
     }
 
     fun init() {
-        pspType = PspType.ALL_TPPS
+        pspType = PspType.ALL_PSD2
         showFollowedOnly = false
         showUsedOnly = false
         showRevoked = false
