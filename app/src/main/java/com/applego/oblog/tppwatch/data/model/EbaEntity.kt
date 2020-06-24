@@ -101,10 +101,17 @@ data class EbaEntity @JvmOverloads constructor(
     fun isRevoked(): Boolean = revoked
 
     @Ignore
-    fun isFis(): Boolean = fis
+    fun isFis(): Boolean = !isPsd2()//fis
 
     @Ignore
-    fun isPsd2(): Boolean = psd2
+    fun isPsd2(): Boolean = (entityType.equals(EbaEntityType.PSD_PI)
+            || entityType.equals(EbaEntityType.PSD_EMI)
+            || entityType.equals(EbaEntityType.PSD_AISP)
+            || entityType.equals(EbaEntityType.PSD_AGENT)
+            || entityType.equals(EbaEntityType.PSD_BRANCH)
+            || entityType.equals(EbaEntityType.PSD_EPI)
+            || entityType.equals(EbaEntityType.PSD_EEMI)
+            )//psd2
 
     @Ignore
     fun getStatus() = _status

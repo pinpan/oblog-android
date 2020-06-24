@@ -35,7 +35,7 @@
             android:id="@+id/used"
             android:checkable="true"
             android:checked="false"
-            android:title="@string/nav_used" />
+            android:title="@string/nav_used_only" />
     </group>
 
     <item

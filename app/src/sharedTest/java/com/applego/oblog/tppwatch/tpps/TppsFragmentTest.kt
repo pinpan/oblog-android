@@ -96,7 +96,7 @@ class TppsFragmentTest {
         onView(withText("TITLE1")).check(matches(isDisplayed()))
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_used)).perform(click()) // Goes to FALSE
+        onView(withText(R.string.nav_used_only)).perform(click()) // Goes to FALSE
         onView(withText("TITLE1")).check(matches(isDisplayed()))
 
         tppEntity.used = false
@@ -203,10 +203,10 @@ class TppsFragmentTest {
         onView(withText(R.string.nav_all)).perform(click())
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_used)).perform(click())
+        onView(withText(R.string.nav_used_only)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_used)).perform(click())
+        onView(withText(R.string.nav_used_only)).perform(click())
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
     }
 
@@ -258,14 +258,14 @@ class TppsFragmentTest {
 
         // Verify that the used tpps are not shown, but others (e.g. followed) are shown
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_used)).perform(click())
+        onView(withText(R.string.nav_used_only)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withText("TITLE2")).check(matches(isDisplayed()))
         onView(withText("TITLE3")).check(doesNotExist())
 
         // Verify that the used tpps are not shown, but others (e.g. followed) are shown
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_used)).perform(click())
+        onView(withText(R.string.nav_used_only)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withText("TITLE2")).check(matches(isDisplayed()))
         onView(withText("TITLE3")).check(matches(isDisplayed()))
@@ -331,7 +331,7 @@ class TppsFragmentTest {
         launchTppsActivity(false)
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_used)).perform(click())
+        onView(withText(R.string.nav_used_only)).perform(click())
 
         // Verify the "You have no used tpps!" text is shown
         onView(withText("No used TPPs selected!")).check(matches((isDisplayed())))
