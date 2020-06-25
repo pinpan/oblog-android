@@ -66,6 +66,14 @@
     <string name="statistics_no_tpps">You have no TPPs.</string>
     <string name="statistics_used_tpps">Used TPPs: %.1f%%</string>
     <string name="statistics_followed_tpps">Followed TPPs: %.1f%%</string>
+    <string name="statistics_total_tpps">Total number of TPPs: %1$d</string>
+    <string name="statistics_total_aisp">Total number of AISPs: %1$d</string>
+    <string name="statistics_total_pisp">Total number of PISPs: %1$d</string>
+    <string name="statistics_total_emi">Total number of EMIs: %1$d</string>
+    <string name="statistics_this_year">Tpps registered this year: %1$d</string>
+    <string name="statistics_last_year">Tpps registered within one year: %1$d</string>
+    <string name="statistics_last_month">Tpps registered within one month: %1$d</string>
+    <string name="statistics_last_week">Tpps registered within one week: %1$d</string>
     <string name="statistics_error">Error loading statistics.</string>
     <string name="no_data">No data</string>
     <string name="loading">LOADING</string>
@@ -142,5 +150,21 @@
     <string name="label_onbording_start_using">Start using</string>
     <string name="label_intro_next">Next</string>
     <string name="label_intro_prev">Prev</string>
+    <string name="country_it">IT</string>
+    <string name="country_hu">HU</string>
+    <string name="country_hr">HR</string>
+    <string name="country_fr">FR</string>
+    <string name="country_es">ES</string>
+    <string name="country_dk">DK</string>
+    <string name="country_de">DE</string>
+    <string name="country_cz">CZ</string>
+    <string name="country_bg">BG</string>
+    <string name="country_at">AT</string>
+    <string name="country_pl">PL</string>
+    <string name="country_ro">RO</string>
+    <string name="country_se">SE</string>
+    <string name="country_sk">SK</string>
+    <string name="country_sl">SL</string>
+    <string name="country_uk">UK</string>
 
 </resources>

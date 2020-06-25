@@ -16,25 +16,24 @@ import java.util.*
  * ‘Service providers excluded from the scope of PSD2' under points (i) and (ii) of point (k) and point (l) of Article 3 of PSD2.
  */
 
-enum class EbaEntityType (val code: String, val description: String) {
+enum class TppType (val code: Int, val description: String) {
 
-    NONE("NONE", "No entity type specified initially."),
+    NONE(0, "No entity type specified initially."),
 
-    CREDIT_INSTITUTION("CI", "No entity type specified initially."),
+    PSD_PI(1, "Payment Institution."),
+    PSD_EPI(2, "Exempted Payment Institution."),
+    PSD_AISP(4, "Account Information Services Provider."),
+    PSD_EMI(8, "Electronic Money Institution."),
+    PSD_EEMI(16, "Exempted Electronic Money Institution."),
 
-    PSD_PI("PSD_PI", "Payment Institution."),
-    PSD_EPI("PSD_EPI", "Exempted Payment Institution."),
-    PSD_AISP("PSD_AISP", "Account Information Services Provider."),
-    PSD_EMI("PSD_EMI", "Electronic Money Institution."),
-    PSD_EEMI("PSD_EEMI", "Exempted Electronic Money Institution."),
-
-    PSD_AGENT("PSD_AG", "‘Agents' as legally defined in Article 4(38) of PSD2."),
-    PSD_BRANCH("PSD_BR", "‘EEA branches' as legally defined in Article 4(39) of PSD2."),
-    PSD_NLE_SP("PSD_NLE_SP", "Institutions entitled under national law to provide payment services' under Article 2(5) of PSD2."),
-    NON_PSD_SP("NON_PSD_SP", "Service providers excluded from the scope of PSD2 under points (i) and (ii) of point (k) and point (l) of Article 3 of PSD2.");
+    PSD_AGENT(32, "‘Agents' as legally defined in Article 4(38) of PSD2."),
+    PSD_BRANCH(64, "‘EEA branches' as legally defined in Article 4(39) of PSD2."),
+    PSD_NLE_SP(128, "Institutions entitled under national law to provide payment services' under Article 2(5) of PSD2."),
+    NON_PSD_SP(256, "Service providers excluded from the scope of PSD2 under points (i) and (ii) of point (k) and point (l) of Article 3 of PSD2."),
+    PSD2(512, "ALL TPPs");
 
     companion object {
-        val allEntityTypes = HashMap<String, EbaEntityType>()
+        val allEntityTypes = HashMap<Int, TppType>()
         init {
             allEntityTypes.put(PSD_PI.code, PSD_PI)
             allEntityTypes.put(PSD_AISP.code, PSD_AISP)
