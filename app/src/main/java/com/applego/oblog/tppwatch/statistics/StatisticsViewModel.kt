@@ -1,15 +1,19 @@
 package com.applego.oblog.tppwatch.statistics
 
+import android.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.applego.oblog.tppwatch.data.Result.Success
+import com.applego.oblog.tppwatch.data.model.EUCountry
 import com.applego.oblog.tppwatch.data.model.EbaEntityType
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
-import kotlinx.coroutines.launch
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.utils.ColorTemplate
+import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -44,8 +48,10 @@ class StatisticsViewModel(
     private val _lastWeekRegisteredTpps = MutableLiveData<Int>()
     val lastWeekRegisteredTpps: LiveData<Int> = _lastWeekRegisteredTpps
 
+/*
     private val _perCountryTppsMap = MutableLiveData<Map<String, Int>>()
     val perCountryTppsMap: MutableLiveData<Map<String, Int>> = _perCountryTppsMap
+*/
 
     private val _perServiceTppsMap = MutableLiveData<Map<String, Int>>()
     val perServiceTppsMap: MutableLiveData<Map<String, Int>> = _perServiceTppsMap
@@ -68,6 +74,9 @@ class StatisticsViewModel(
     private val _followedTppsPercent = MutableLiveData<Float>()
     val followedTppsPercent: LiveData<Float> = _followedTppsPercent
 
+    private val _countriesTppsSet = MutableLiveData<ArrayList<BarEntry>>()
+    private val countriesTppsSet: LiveData<ArrayList<BarEntry>> = _countriesTppsSet
+
     private var usedTpps = 0
 
     private var followedTpps = 0
@@ -83,7 +92,7 @@ class StatisticsViewModel(
         _dataLoading.value = true
 
         wrapEspressoIdlingResource {
-            viewModelScope.launch {
+            runBlocking {
                 tppsRepository.getAllTpps().let { result ->
                     if (result is Success) {
                         _error.value = false
@@ -106,7 +115,7 @@ class StatisticsViewModel(
     /**
      * Called when new data is ready.
      */
-    private fun computeStats(tpps: List<Tpp>?) {
+    fun computeStats(tpps: List<Tpp>?) {
         _totalTpps.value = tpps?.size ?: 0
         calculateEntityTypeStatistics(tpps)
 
@@ -119,6 +128,12 @@ class StatisticsViewModel(
     }
 
     private fun calculateEntityTypeStatistics(tpps: List<Tpp>?) {
+        val tppsPerCountryCount = HashMap<String, Int>()
+        EUCountry.allEUCountries.forEach {
+            var c: Int = 0
+            tppsPerCountryCount.put(it.name, c)
+        }
+
         var aispCounter = 0
         var pispCounter = 0
         var emiCounter = 0
@@ -173,6 +188,9 @@ class StatisticsViewModel(
                     thisYearAuthorizedTpps++
                 }
             }
+
+            var counter: Int = tppsPerCountryCount.get(it.getCountry()) as Int
+            tppsPerCountryCount.put(it.getCountry(), ++counter)
         }
         _lastWeekRegisteredTpps.value = aWeekOldTpps
         _lastMonthRegisteredTpps.value = aMonthOldTpps
@@ -182,8 +200,16 @@ class StatisticsViewModel(
         _totalAISPTpps.value = aispCounter
         _totalPISPTpps.value = pispCounter
         _totalEMITpps.value = emiCounter
+
+        _countriesTppsSet.value = ArrayList<BarEntry>()
+        var num = 0
+        tppsPerCountryCount.forEach {
+            val be = BarEntry(it.value.toFloat(), (num++).toFloat())
+            countriesTppsSet.value?.add(be)
+        }
     }
 
+/*
     private fun countLastPeriodAdditions(tpps: List<Tpp>?, period: Int): Int? {
         val before = Calendar.getInstance()
         val after = Calendar.getInstance()
@@ -218,7 +244,9 @@ class StatisticsViewModel(
 
         return counter
     }
+*/
 
+/*
     private fun countLastYearAdditions(tpps: List<Tpp>?): Int? {
         return countLastPeriodAdditions(tpps, Calendar.YEAR)
     }
@@ -230,20 +258,77 @@ class StatisticsViewModel(
     private fun countLastWeekAdditions(tpps: List<Tpp>?): Int? {
         return countLastPeriodAdditions(tpps, Calendar.WEEK_OF_YEAR)
     }
+*/
+
+    fun getPerCountryDataSet(): BarDataSet {
+        /*val valueSet1 = ArrayList<BarEntry>()
+
+        val v1e1 = BarEntry(110.000f, 0f) // Jan
+        valueSet1.add(v1e1)
+        val v1e2 = BarEntry(40.000f, 1f) // Feb
+        valueSet1.add(v1e2)
+        val v1e3 = BarEntry(60.000f, 2f) // Mar
+        valueSet1.add(v1e3)
+        val v1e4 = BarEntry(30.000f, 3f) // Apr
+        valueSet1.add(v1e4)
+        val v1e5 = BarEntry(90.000f, 4f) // May
+        valueSet1.add(v1e5)
+        val v1e6 = BarEntry(100.000f, 5f) // Jun
+        valueSet1.add(v1e6)*/
+        /*val valueSet2 = ArrayList<BarEntry>()
+        val v2e1 = BarEntry(150.000f, 0f) // Jan
+        valueSet2.add(v2e1)
+        val v2e2 = BarEntry(90.000f, 1f) // Feb
+        valueSet2.add(v2e2)
+        val v2e3 = BarEntry(120.000f, 2f) // Mar
+        valueSet2.add(v2e3)
+        val v2e4 = BarEntry(60.000f, 3f) // Apr
+        valueSet2.add(v2e4)
+        val v2e5 = BarEntry(20.000f, 4f) // May
+        valueSet2.add(v2e5)
+        val v2e6 = BarEntry(80.000f, 5f) // Jun
+        valueSet2.add(v2e6)*/
+        //val barDataSet2 = BarDataSet(valueSet2, "Brand 2")
+
+        val barDataSet1 = BarDataSet(countriesTppsSet.value, "Brand 1")
+        barDataSet1.color = Color.rgb(0, 155, 0)
+        barDataSet1.setColors(*ColorTemplate.COLORFUL_COLORS)
+
+        /*var dataSet = BarDataSet()
+        dataSet.add(barDataSet1)
+        dataSet.add(barDataSet2)*/
+
+        return barDataSet1
+    }
 
 /*
-    private fun countTppsOfType(tpps: List<Tpp>?, entityType: EbaEntityType): Int? {
-        var counter = 0
-        tpps?.forEach {
-            if (it.ebaEntity.entityType.equals(entityType)) {
-                counter++
-            }
-        }
+    fun getXAxisValues(): ArrayList<String> {
+        val valueSet1 = ArrayList<BarEntry>()
+        val v1e1 = BarEntry(1.0f, 0f) // Jan
 
-        return counter
+        val xAxis = ArrayList<String>()
+        xAxis.add("AT")
+        xAxis.add("BG")
+        xAxis.add("CZ")
+        xAxis.add("DE")
+        xAxis.add("DK")
+        xAxis.add("ES")
+        xAxis.add("FR")
+        xAxis.add("HR")
+        xAxis.add("HU")
+        xAxis.add("IT")
+        xAxis.add("PL")
+        xAxis.add("RO")
+        xAxis.add("SE")
+        xAxis.add("SK")
+        xAxis.add("SL")
+        xAxis.add("UK")
+        return xAxis
     }
 */
 
+
+/*
     private fun countPSD2Tpps(tpps: List<Tpp>?): Int? {
         var counter = 0
         tpps?.forEach {
@@ -256,4 +341,5 @@ class StatisticsViewModel(
 
         return counter
     }
+*/
 }

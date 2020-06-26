@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:weightSum="3"
+            android:weightSum="4"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
@@ -36,7 +36,7 @@
                 android:id="@+id/nodata_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 android:visibility="@{viewmodel.empty ? View.VISIBLE : View.GONE}"
                 >
@@ -47,175 +47,6 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     />
             </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/chart_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="2"
-                android:visibility="@{viewmodel.dataLoading ? View.GONE : View.VISIBLE}"
-                >
-
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/chart"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                />
-            </LinearLayout>
-
-            <!--
-                <LinearLayout
-                    android:id="@+id/statistics_countries_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:visibility="@{viewmodel.dataLoading ? View.GONE : View.VISIBLE}"
-                    >
-
-
-                    <ScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:weightSum="1"
-                            android:orientation="horizontal" >
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical" >
-
-                                <TextView
-                                    android:id="@+id/country_AT"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/country_at" />
-
-                                <TextView
-                                    android:id="@+id/country_BG"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/country_bg" />
-
-                                <TextView
-                                    android:id="@+id/country_CZ"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/country_cz" />
-
-                                <TextView
-                                    android:id="@+id/country_DE"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/country_de" />
-
-                                <TextView
-                                    android:id="@+id/country_DK"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/country_dk" />
-
-                                <TextView
-                                    android:id="@+id/country_ES"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/country_es" />
-
-                                <TextView
-                                    android:id="@+id/country_FR"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/country_fr" />
-
-                                <TextView
-                                    android:id="@+id/country_HR"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/country_hr" />
-
-                                <TextView
-                                    android:id="@+id/country_HU"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/country_hu" />
-
-                                <TextView
-                                    android:id="@+id/country_IT"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/country_it" />
-
-                                <TextView
-                                    android:id="@+id/country_PL"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/country_pl" />
-
-                                <TextView
-                                    android:id="@+id/country_RO"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/country_ro" />
-
-                                <TextView
-                                    android:id="@+id/country_SE"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/country_se" />
-
-                                <TextView
-                                    android:id="@+id/country_SK"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/country_sk" />
-
-                                <TextView
-                                    android:id="@+id/country_SL"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/country_sl" />
-
-                                <TextView
-                                    android:id="@+id/country_UK"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/country_uk" />
-                            </LinearLayout>
-
-                        </LinearLayout>
-                    </ScrollView>
-    -->
-<!--
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </TableLayout>
-            </LinearLayout>
--->
 
             <LinearLayout
                 android:id="@+id/statistics_layout"
@@ -331,7 +162,51 @@
                     android:visibility="@{viewmodel.empty ? View.GONE : View.VISIBLE}" />
 
             </LinearLayout>
+<!--
 
+            <LinearLayout
+                android:id="@+id/chart_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="2"
+                android:visibility="@{viewmodel.dataLoading ? View.GONE : View.VISIBLE}"
+                >
+-->
+
+            <!--<ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:scrollbarAlwaysDrawHorizontalTrack="true"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                android:scrollbars="horizontal|vertical">
+-->
+                <!--
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+-->
+
+                <LinearLayout
+                    android:id="@+id/chart_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="2"
+                    android:visibility="@{viewmodel.dataLoading ? View.GONE : View.VISIBLE}">
+
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+   <!--         </ScrollView>
+-->
+<!--
+            </LinearLayout>
+-->
 <!--        </LinearLayout>-->
         </LinearLayout>
     </com.applego.oblog.tppwatch.util.ScrollChildSwipeRefreshLayout>
