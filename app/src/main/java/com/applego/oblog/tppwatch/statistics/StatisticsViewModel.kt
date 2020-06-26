@@ -32,8 +32,8 @@ class StatisticsViewModel(
     private val _empty = MutableLiveData<Boolean>()
     val empty: LiveData<Boolean> = _empty
 
-    private val _thisYearRegisteredTpps = MutableLiveData<Int>()
-    val thisYearRegisteredTpps: LiveData<Int> = _thisYearRegisteredTpps
+    private val _thisYearAuthorizedTpps = MutableLiveData<Int>()
+    val thisYearAuthorizedTpps: LiveData<Int> = _thisYearAuthorizedTpps
 
     private val _lastYearRegisteredTpps = MutableLiveData<Int>()
     val lastYearRegisteredTpps: LiveData<Int> = _lastYearRegisteredTpps
@@ -108,21 +108,80 @@ class StatisticsViewModel(
      */
     private fun computeStats(tpps: List<Tpp>?) {
         _totalTpps.value = tpps?.size ?: 0
-        _totalAISPTpps.value = countTppsOfType(tpps, EbaEntityType.PSD_AISP)
-        _totalPISPTpps.value = countTppsOfType(tpps, EbaEntityType.PSD_PI)
-        _totalEMITpps.value = countTppsOfType(tpps, EbaEntityType.PSD_EMI)
+        calculateEntityTypeStatistics(tpps)
 
-        _lastWeekRegisteredTpps.value = countLastWeekAdditions(tpps)
-        _lastMonthRegisteredTpps.value = countLastMonthAdditions(tpps)
-        _lastYearRegisteredTpps.value = countLastYearAdditions(tpps)
-        _thisYearRegisteredTpps.value = countThisYearAdditions(tpps)
-
-        getUsedAndFollowedStats(tpps).let {
+         getUsedAndFollowedStats(tpps).let {
             _usedTppsPercent.value = it.usedTppsPercent
             _followedTppsPercent.value = it.followedTppsPercent
         }
         _empty.value = tpps.isNullOrEmpty()
         _dataLoading.value = false
+    }
+
+    private fun calculateEntityTypeStatistics(tpps: List<Tpp>?) {
+        var aispCounter = 0
+        var pispCounter = 0
+        var emiCounter = 0
+
+        var anYearOldTpps = 0
+        var aMonthOldTpps = 0
+        var aWeekOldTpps = 0
+
+        var thisYearAuthorizedTpps = 0
+
+        var cal = Calendar.getInstance()
+        val now = cal.time
+
+        cal = Calendar.getInstance()
+        cal.set(Calendar.MONTH, Calendar.JANUARY)
+        cal.set(Calendar.DAY_OF_MONTH, 1)
+        val thisYearStart = cal.time
+
+        cal = Calendar.getInstance()
+        cal.roll(Calendar.MONTH, -1)
+        val aMonthAgo = cal.time
+
+        cal = Calendar.getInstance()
+        cal.roll(Calendar.WEEK_OF_YEAR, -1)
+        val aWeekAgo = cal.time
+
+        cal = Calendar.getInstance()
+        cal.roll(Calendar.YEAR, -1)
+        val anYearAgo = cal.time
+
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+
+        tpps?.forEach {
+            when (it.ebaEntity.entityType) {
+                EbaEntityType.PSD_AISP -> aispCounter++
+                EbaEntityType.PSD_PI -> pispCounter++
+                EbaEntityType.PSD_EMI -> emiCounter++
+            }
+            val authStart = it.ebaEntity.ebaProperties.authorizationStart
+            if (!authStart.isNullOrBlank()) {
+                cal.time = sdf.parse(authStart)
+                if (cal.time.after(anYearAgo) && cal.time.before(now)) {
+                    anYearOldTpps++
+                }
+                if (cal.time.after(aMonthAgo) && cal.time.before(now)) {
+                    aMonthOldTpps++
+                }
+                if (cal.time.after(aWeekAgo) && cal.time.before(now)) {
+                    aWeekOldTpps++
+                }
+                if (cal.time.after(thisYearStart) && cal.time.before(now)) {
+                    thisYearAuthorizedTpps++
+                }
+            }
+        }
+        _lastWeekRegisteredTpps.value = aWeekOldTpps
+        _lastMonthRegisteredTpps.value = aMonthOldTpps
+        _lastYearRegisteredTpps.value = anYearOldTpps
+        _thisYearAuthorizedTpps.value = thisYearAuthorizedTpps
+
+        _totalAISPTpps.value = aispCounter
+        _totalPISPTpps.value = pispCounter
+        _totalEMITpps.value = emiCounter
     }
 
     private fun countLastPeriodAdditions(tpps: List<Tpp>?, period: Int): Int? {
@@ -172,6 +231,7 @@ class StatisticsViewModel(
         return countLastPeriodAdditions(tpps, Calendar.WEEK_OF_YEAR)
     }
 
+/*
     private fun countTppsOfType(tpps: List<Tpp>?, entityType: EbaEntityType): Int? {
         var counter = 0
         tpps?.forEach {
@@ -182,6 +242,7 @@ class StatisticsViewModel(
 
         return counter
     }
+*/
 
     private fun countPSD2Tpps(tpps: List<Tpp>?): Int? {
         var counter = 0
