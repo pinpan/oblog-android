@@ -101,21 +101,4 @@ class StatisticsViewModelTest {
             assertThat(LiveDataTestUtil.getValue(errorViewModel.error)).isTrue()
         }
 
-    @Test
-    fun loadTpps_loading() {
-        // Pause dispatcher so we can verify initial values
-        mainCoroutineRule.pauseDispatcher()
-
-        // Load the ebaEntity in the viewmodel
-        statisticsViewModel.start()
-
-        // Then progress indicator is shown
-        assertThat(LiveDataTestUtil.getValue(statisticsViewModel.dataLoading)).isTrue()
-
-        // Execute pending coroutines actions
-        mainCoroutineRule.resumeDispatcher()
-
-        // Then progress indicator is hidden
-        assertThat(LiveDataTestUtil.getValue(statisticsViewModel.dataLoading)).isFalse()
-    }
 }

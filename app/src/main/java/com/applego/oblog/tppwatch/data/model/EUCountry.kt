@@ -176,7 +176,9 @@ enum class EUCountry(val country: String, val aliases: String = "", val nca: Str
     SK("Slovakia");
 
     companion object {
-        val allEUCountries = mutableListOf<EUCountry>()
+
+        val allEUCountriesMap = hashMapOf<String, EUCountry>()
+        val allEUCountries = arrayListOf<EUCountry>()
         init {
             allEUCountries.add(AT)
             allEUCountries.add(BE)
@@ -209,6 +211,10 @@ enum class EUCountry(val country: String, val aliases: String = "", val nca: Str
             allEUCountries.add(SE)
             allEUCountries.add(SI)
             allEUCountries.add(SK)
+
+            allEUCountries.forEach {
+                allEUCountriesMap.put(it.name, it)
+            }
         }
     }
 }

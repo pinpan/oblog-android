@@ -154,8 +154,8 @@ dependencies {
 
     implementation 'com.android.support:percent:25.3.1'
 
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
-
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+//:v3.0.3
     // Dependencies for local unit tests
     testImplementation "junit:junit:$junitVersion"
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
