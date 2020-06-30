@@ -65,8 +65,8 @@ data class EbaEntity @JvmOverloads constructor(
     var psd2: Boolean = (entityType.equals(EbaEntityType.PSD_PI)
                       || entityType.equals(EbaEntityType.PSD_EMI)
                       || entityType.equals(EbaEntityType.PSD_AISP)
-                      || entityType.equals(EbaEntityType.PSD_AGENT)
-                      || entityType.equals(EbaEntityType.PSD_BRANCH)
+                      || entityType.equals(EbaEntityType.PSD_AG)
+                      || entityType.equals(EbaEntityType.PSD_BR)
                       || entityType.equals(EbaEntityType.PSD_EPI)
                       || entityType.equals(EbaEntityType.PSD_EEMI)
             )
@@ -98,7 +98,8 @@ data class EbaEntity @JvmOverloads constructor(
     fun isUsed() : Boolean = used
 
     @Ignore
-    fun isRevoked(): Boolean = revoked
+    fun isRevoked(): Boolean = !ebaProperties.authorizationEnd.isNullOrBlank()
+                            && !"N/A".contentEquals(ebaProperties.authorizationEnd)
 
     @Ignore
     fun isFis(): Boolean = !isPsd2()//fis
@@ -107,8 +108,8 @@ data class EbaEntity @JvmOverloads constructor(
     fun isPsd2(): Boolean = (entityType.equals(EbaEntityType.PSD_PI)
             || entityType.equals(EbaEntityType.PSD_EMI)
             || entityType.equals(EbaEntityType.PSD_AISP)
-            || entityType.equals(EbaEntityType.PSD_AGENT)
-            || entityType.equals(EbaEntityType.PSD_BRANCH)
+            || entityType.equals(EbaEntityType.PSD_BR)
+            || entityType.equals(EbaEntityType.PSD_AG)
             || entityType.equals(EbaEntityType.PSD_EPI)
             || entityType.equals(EbaEntityType.PSD_EEMI)
             )//psd2

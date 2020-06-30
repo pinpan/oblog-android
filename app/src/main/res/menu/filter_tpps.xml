@@ -42,7 +42,15 @@
         android:id="@+id/revoked"
         android:checkable="true"
         android:checked="false"
-        android:enabled="false"
+        android:enabled="true"
         android:title="@string/label_revoked"
+        android:visible="true" />
+
+    <item
+        android:id="@+id/revoked_only"
+        android:checkable="true"
+        android:checked="false"
+        android:enabled="true"
+        android:title="@string/label_revoked_only"
         android:visible="true" />
 </menu>

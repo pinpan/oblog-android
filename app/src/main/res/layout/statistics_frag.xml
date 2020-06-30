@@ -21,9 +21,10 @@
         > <!--android:visibility="@{viewmodel.dataLoading ? View.GONE : View.VISIBLE}"-->
 
         <LinearLayout
-            android:id="@+id/all_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+                android:id="@+id/all_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
             >
             <LinearLayout
                 android:id="@+id/nodata_layout"

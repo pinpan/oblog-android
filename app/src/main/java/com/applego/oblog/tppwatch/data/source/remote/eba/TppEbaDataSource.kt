@@ -31,15 +31,16 @@ class TppEbaDataSource internal constructor (
     var theApiKey : ApiKey = ApiKey("T11NOL41x0L7Cn4OAc1FNQogHAcpWvQA") //"2Dvgcj0W7sinv0mqtwm2CSQuYYsW79xb")
 
     override suspend fun getAllTpps(): Result<TppsListResponse> = withContext(ioDispatcher) {
-        var paging = Paging(10, 1, 10, true)
+        var paging = Paging(100, 1, 0, true)
 
         launch {
             while (!paging.last) {
-                paging.page +=1
+                //
                 var result = loadTppsPage(paging)
                 when (result) {
                     is Result.Success -> {
                         paging = result.data
+                        paging.page +=1
                     }
                     is Result.Error -> {
                         // TODO: IMplement proper Error handing. For now, jump out
@@ -92,7 +93,7 @@ class TppEbaDataSource internal constructor (
         val ebaEntity = ebaTpp.ebaEntity
         val dbEntity = tppsDao.getTppEntityByCode(ebaEntity.getEntityCode(), ebaEntity.ebaProperties.codeType)
         if (dbEntity == null) {
-            tppsDao.insertTppEntity(ebaEntity)
+            tppsDao.insertorUpdateEbaEntity(ebaEntity)
         } else {
             dbEntity._description = ebaEntity._description
             dbEntity._entityName = ebaEntity._entityName
@@ -132,15 +133,17 @@ class TppEbaDataSource internal constructor (
                     System.out.println("Insert/Update tpp: " + tpp.ebaEntity.getEntityName() + " into database")
 
                     runBlocking<Unit> {
-                        val foundEntity = tppsDao.getTppEntityByCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType)
-                        if (foundEntity == null) {
-                            tppsDao.insertTppEntity(tpp.ebaEntity)
-                        } else {
+                        //val foundEntity = tppsDao.getTppEntityByCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType)
+                        //if (foundEntity == null) {
+                            tppsDao.insertorUpdateEbaEntity(tpp.ebaEntity)
+                        /*} else {
                             val updatedNumber = tppsDao.updateTppEntity(tpp.ebaEntity)
                             if (updatedNumber != 1) {
                                 Timber.w("Update of TPP with ID %s was not successfull.", tpp.getEntityId())
                             }
                         }
+
+                         */
                     }
                 }
                 if (tppsListResponse?.paging != null) {

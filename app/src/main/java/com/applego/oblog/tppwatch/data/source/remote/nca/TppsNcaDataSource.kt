@@ -62,7 +62,7 @@ class TppsNcaDataSource internal constructor (
 
                     runBlocking<Unit> {
                         if (tppsDao.getTppEntityByCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType) == null) {
-                            tppsDao.insertTppEntity(tpp.ebaEntity)
+                            tppsDao.insertorUpdateEbaEntity(tpp.ebaEntity)
                         } else {
                             tppsDao.updateTppEntity(tpp.ebaEntity)
                         }
@@ -113,7 +113,7 @@ class TppsNcaDataSource internal constructor (
         val ncaEntity = ncaTpp.ebaEntity
         val dbEntity = tppsDao.getTppEntityByCode(ncaEntity.getEntityCode(), ncaEntity.ebaProperties.codeType)
         if (dbEntity == null) {
-            tppsDao.insertTppEntity(ncaEntity)
+            tppsDao.insertorUpdateEbaEntity(ncaEntity)
         } else {
             dbEntity._description = ncaEntity._description
             dbEntity._entityName = ncaEntity._entityName
@@ -142,7 +142,7 @@ class TppsNcaDataSource internal constructor (
                 val tppEntity = theTpp.ebaEntity
                 Timber.d("tppsList=" + tppEntity)
                 if (tppsDao.getTppEntityByCode(tppEntity.getEntityCode(), tppEntity.ebaProperties.codeType) == null) {
-                    tppsDao.insertTppEntity(tppEntity)
+                    tppsDao.insertorUpdateEbaEntity(tppEntity)
                 } else {
                     tppsDao.updateTppEntity(tppEntity)
                 }

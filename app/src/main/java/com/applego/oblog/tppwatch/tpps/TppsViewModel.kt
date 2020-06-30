@@ -250,17 +250,13 @@ class TppsViewModel(
             return fetchedItems
         }
 
-        //var tppsList: List<Tpp> = fetchedItems
-
         var tppsToShow = filterTppsByUserInterest(fetchedItems, _searchFilter)
 
         if (!_searchFilter.countries.isNullOrBlank() && !_searchFilter.countries.equals("<ALL>")) {
-            //tppsList = tppsToShow
             tppsToShow = filterTppsByCountry(tppsToShow, _searchFilter.countries)
         }
 
         if (!_searchFilter.services.isNullOrBlank() && !_searchFilter.services.equals("<ALL>")) {
-            //tppsList = tppsToShow
             tppsToShow = filterTppsByService(tppsToShow, _searchFilter.services)
         }
 
@@ -297,19 +293,26 @@ class TppsViewModel(
                 else -> true
             }
 
-            if (searchFilter.showRevoked) {
-                addIt = tpp.isRevoked()
-            }
-
             if (addIt) {
-                if (searchFilter.showUsedOnly) {
-                    addIt = tpp.isUsed()
-                } else if (searchFilter.showFollowedOnly) {
-                    addIt = tpp.isFollowed() || tpp.isUsed()
+                if (!searchFilter.showRevoked) {
+                    addIt = !tpp.ebaEntity.isRevoked()
                 }
-            }
-            if (addIt) {
-                filteredTpps.add(tpp)
+
+                if (searchFilter.showRevokedOnly) {
+                    addIt = tpp.ebaEntity.isRevoked()
+                }
+
+                if (addIt) {
+                    if (searchFilter.showUsedOnly) {
+                        addIt = tpp.isUsed()
+                    } else if (searchFilter.showFollowedOnly) {
+                        addIt = tpp.isFollowed() || tpp.isUsed()
+                    }
+
+                    if (addIt) {
+                        filteredTpps.add(tpp)
+                    }
+                }
             }
         }
 

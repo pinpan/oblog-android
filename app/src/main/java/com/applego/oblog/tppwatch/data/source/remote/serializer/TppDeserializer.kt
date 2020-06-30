@@ -5,6 +5,7 @@ import com.applego.oblog.tppwatch.data.model.*
 import com.google.gson.*
 import java.lang.reflect.Type
 import timber.log.Timber
+import java.util.*
 
 class TppDeserializer : JsonDeserializer<Tpp> {
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Tpp? {
@@ -76,10 +77,16 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         ebaEntity.ebaProperties = ebaProperties
         var tpp = Tpp(ebaEntity, NcaEntity())
 
-        val services = jsonObject.get("services").asJsonArray ?: JsonArray()
-        if (services != null) {
-            val passportedServices = __oblogTypeConverters.fromJsonElementToEbaPassport(services)
-            tpp.ebaEntity._ebaPassport = passportedServices
+        try {
+            val services = jsonObject.get("services")
+            //val servicesJsonArray = services?.asJsonArray ?: JsonArray()
+            if (services != null) {
+                val serviceJson = (if ((services != null) && services.isJsonNull && "null"!=services.asString) services.asJsonArray else JsonArray())
+                val passportedServices = __oblogTypeConverters.fromJsonElementToEbaPassport(serviceJson)
+                tpp.ebaEntity._ebaPassport = passportedServices
+            }
+        } catch (t: Throwable ) {
+            Timber.e(t)
         }
 
         return tpp

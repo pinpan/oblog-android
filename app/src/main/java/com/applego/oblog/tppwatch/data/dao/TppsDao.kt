@@ -59,20 +59,20 @@ interface TppsDao {
     suspend fun getTppEntityByEntityId(entityId: String): EbaEntity?
 
     /**
-     * Insert a ebaEntity in the database. If the ebaEntity already exists, replace it.
+     * Insert or Update an EbaEntity in the database. If the EbaEntity already exists, replace it.
      *
-     * @param ebaEntity the ebaEntity to be inserted.
+     * @param ebaEntity the EbaEntity to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTppEntity(ebaEntity: EbaEntity)
+    suspend fun insertorUpdateEbaEntity(ebaEntity: EbaEntity)
 
     /**
-     * Update a ebaEntity.
+     * Update an EbaEntity.
      *
-     * @param ebaEntity ebaEntity to be updated
-     * @return the number of tpps updated. This should always be 1.
+     * @param ebaEntity an EbaEntity to be updated
+     * @return the number of EbaEntity-s updated. This should always be 1.
      */
-    @Update(onConflict = OnConflictStrategy.REPLACE)
+    @Update
     suspend fun updateTppEntity(ebaEntity: EbaEntity): Int
 
     /**

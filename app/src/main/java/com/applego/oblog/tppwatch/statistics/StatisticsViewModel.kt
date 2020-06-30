@@ -127,11 +127,6 @@ class StatisticsViewModel(
     }
 
     private fun calculateEntityTypeStatistics(tpps: List<Tpp>?) {
-        val tppsPerCountryCount = hashMapOf<String, Int>()
-        EUCountry.allEUCountries.forEach {
-            tppsPerCountryCount.put(it.name, 0)
-        }
-
         var aispCounter = 0
         var pispCounter = 0
         var emiCounter = 0
@@ -163,6 +158,11 @@ class StatisticsViewModel(
         val anYearAgo = cal.time
 
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+
+        val tppsPerCountryCount = hashMapOf<String, Int>()
+        EUCountry.allEUCountries.forEach {
+            tppsPerCountryCount.put(it.name, 0)
+        }
 
         tpps?.forEach {
             when (it.ebaEntity.entityType) {

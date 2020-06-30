@@ -248,7 +248,13 @@ class TppsFragment : Fragment() {
                 }
                 menu.findItem(R.id.followed).isChecked = viewModel.searchFilter.showFollowedOnly
                 menu.findItem(R.id.used).isChecked = viewModel.searchFilter.showUsedOnly
-                menu.findItem(R.id.revoked).isChecked = viewModel.searchFilter.showRevoked
+                menu.findItem(R.id.revoked_only).isChecked = viewModel.searchFilter.showRevokedOnly
+                if (menu.findItem(R.id.revoked_only).isChecked) {
+                    viewModel.searchFilter.showRevoked = true
+                    menu.findItem(R.id.revoked).isChecked = true
+                } else {
+                    menu.findItem(R.id.revoked).isChecked = viewModel.searchFilter.showRevoked
+                }
 
                 setOnMenuItemClickListener {
                     //it.isChecked = !it.isChecked
@@ -260,6 +266,7 @@ class TppsFragment : Fragment() {
                                 R.id.aspspOnly -> TppsFilterType.ONLY_PSD2_FIs
                                 R.id.tppOnly-> TppsFilterType.ONLY_PSD2_TPPs
                                 R.id.revoked-> TppsFilterType.REVOKED_TPPs
+                                R.id.revoked_only-> TppsFilterType.REVOKED_ONLY_TPPs
                                 else -> TppsFilterType.ONLY_PSD2_TPPs
                             }
                     )

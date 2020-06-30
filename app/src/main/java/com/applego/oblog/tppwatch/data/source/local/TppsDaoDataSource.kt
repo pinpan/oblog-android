@@ -69,7 +69,7 @@ class TppsDaoDataSource internal constructor(
                 Timber.e(e)
             }
         }
-        tppsDao.insertTppEntity(tpp.ebaEntity)
+        tppsDao.insertorUpdateEbaEntity(tpp.ebaEntity)
     }
 
     override suspend fun saveАpp(аpp: App) {

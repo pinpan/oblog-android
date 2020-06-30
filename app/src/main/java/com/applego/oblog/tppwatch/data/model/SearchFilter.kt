@@ -23,6 +23,7 @@ data class SearchFilter @JvmOverloads constructor(
     var showFollowedOnly = false //MutableMap<TppsFilterType, Boolean> = HashMap<TppsFilterType, Boolean>()
     var showUsedOnly = false //MutableMap<TppsFilterType, Boolean> = HashMap<TppsFilterType, Boolean>()
     var showRevoked = false //MutableMap<TppsFilterType, Boolean> = HashMap<TppsFilterType, Boolean>()
+    var showRevokedOnly = false //MutableMap<TppsFilterType, Boolean> = HashMap<TppsFilterType, Boolean>()
 
     fun updateUserSelection(requestType: TppsFilterType) {
         when (requestType) {
@@ -44,6 +45,9 @@ data class SearchFilter @JvmOverloads constructor(
             TppsFilterType.REVOKED_TPPs -> {
                 showRevoked = !showRevoked
             }
+            TppsFilterType.REVOKED_ONLY_TPPs -> {
+                showRevokedOnly = !showRevokedOnly
+            }
         }
     }
 
@@ -52,5 +56,6 @@ data class SearchFilter @JvmOverloads constructor(
         showFollowedOnly = false
         showUsedOnly = false
         showRevoked = false
+        showRevokedOnly = false
     }
 }

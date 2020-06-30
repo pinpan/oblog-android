@@ -35,11 +35,10 @@ interface TppModel  {
 
     fun getApps() : List<App>
 
-
     fun getTitleForList(): String
-    // TODO#: Consider Following fields
-    //  details aka properties from EBA
-    //  tppRoles, - CZ has, Eba hasn't
-    //  apps,
+
     fun isRevoked(): Boolean
+
+    // TODO#: Consider Following fields
+    //  tppRoles, - CZ has, Eba hasn't
 }

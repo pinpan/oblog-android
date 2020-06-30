@@ -46,7 +46,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-/*
+    /*
         val skipSplash = sharedPerfs.getBoolean("skipSplash", false)
         if (!skipSplash) {
             Handler().postDelayed(object : Runnable {
@@ -59,12 +59,11 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                 }
             }, 5000)
         }
-*/
+    */
 
         val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
         var isFirstRun = sharedPerfs.getBoolean("isFirstRun", false)
         if (getIntent().getExtras()?.getBoolean("com.applego.oblog.tppwatch.isFirstRun", false) == true) {
-        //if ((savedInstanceState != null) && (savedInstanceState.getBoolean("com.applego.oblog.tppwatch.isFirstRun") ?: false)) {
             isFirstRun = false
         }
         if (isFirstRun) {
@@ -94,18 +93,6 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
         setupActionBarWithNavController(navController, appBarConfiguration)
         findViewById<NavigationView>(com.applego.oblog.tppwatch.R.id.nav_view).setupWithNavController(navController)
 
-        // This is for passing arguments to a destination fragment when changing whole screen
-        //    - call it master fragment change.
-        // When using tabview we have multiple fragments which does not occur in the navigation flow.
-        // We need to pass data in a different way - inject or pass on creation.
-        /*navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            when(destination.id) {
-                R.id.addedit_tppapp_fragment_dest -> {
-                    val argument = NavArgument.Builder().setDefaultValue(6).build()
-                    destination.addArgument("Argument", argument)
-                }
-            }
-        }*/
         navController.addOnDestinationChangedListener { navController, destination, arguments ->
 
             Timber.i("onDestinationChanged: "+ destination.label);
@@ -117,7 +104,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
             }
         }
 
-        getUserId()
+    //    getUserId()
 
         setupSharedPreferences();
 
@@ -162,10 +149,6 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            /*android.R.id.home -> {
-                onBackPressed()
-                return true
-            }*/
             R.id.settings -> {
                 val intent = Intent(this@TppsActivity, OblogPreferencesActivity::class.java)
                 startActivity(intent);
@@ -202,44 +185,6 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
             }
     }
 
-    /*override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState);
-    }
-*/
-/*
-    override  fun onBackPressed() {
-        val lastStack = supportFragmentManager.backStackEntryCount
-
-        //(supportFragmentManager.primaryNavigationFragment as NavHostFragment)?.navController // childFragmentManager. findNavController()?.graph
-        if (supportFragmentManager.getBackStackEntryCount() > 1) {
-            startActivity(Intent(this, TppsActivity::class.java))
-            //supportFragmentManager.popBackStack();
-        }
-
-        //If the last fragment was named/tagged "three"
-        val tag = supportFragmentManager.fragments[lastStack].tag
-        if (tag != null) {
-            if (tag.equals("THIRD", ignoreCase = true)) {
-
-                supportFragmentManager.popBackStackImmediate()
-                supportFragmentManager.popBackStackImmediate()
-
-                //Get your first fragment that you loaded in the beginning.
-                val first = supportFragmentManager.findFragmentByTag("FirstFragment")
-                if (first != null) {
-                    val transaction = supportFragmentManager.beginTransaction()
-                    transaction.replace(com.applego.oblog.tppwatch.R.id.drawer_layout, first)
-                    transaction.commit()
-                }
-                return
-            }
-        }
-
-        super.onBackPressed()
-    }
-*/
-
-    //private var lastPermissionRequestId = AtomicInteger(0)
 
     fun pickUserAccount() {
         val googlePicker = AccountPicker.newChooseAccountIntent(null, null, arrayOf(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE), true, null, null, null, null)
@@ -265,32 +210,6 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
         }
     }
 
-/*
-    fun getPermission(permission : String) :Int {
-        val permissionRequest = lastPermissionRequestId.getAndIncrement()
-
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) { */
-/*android.Manifest.permission.GET_ACCOUNTS*//*
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) { */
-/*android.Manifest.permission.GET_ACCOUNTS*//*
-
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-                return -1
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this, arrayOf(permission), permissionRequest);
-            }
-        }
-
-        return permissionRequest
-    }
-*/
-
     fun getUserId() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val userAccount = prefs.getString("userId", null)
@@ -304,3 +223,16 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 const val ADD_EDIT_RESULT_OK = Activity.RESULT_FIRST_USER + 1
 const val DELETE_RESULT_OK = Activity.RESULT_FIRST_USER + 2
 const val EDIT_RESULT_OK = Activity.RESULT_FIRST_USER + 3
+
+// This is for passing arguments to a destination fragment when changing whole screen
+//    - call it master fragment change.
+// When using tabview we have multiple fragments which does not occur in the navigation flow.
+// We need to pass data in a different way - inject or pass on creation.
+/*navController.addOnDestinationChangedListener { controller, destination, arguments ->
+    when(destination.id) {
+        R.id.addedit_tppapp_fragment_dest -> {
+            val argument = NavArgument.Builder().setDefaultValue(6).build()
+            destination.addArgument("Argument", argument)
+        }
+    }
+}*/
