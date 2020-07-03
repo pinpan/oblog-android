@@ -53,16 +53,46 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         val nameJson = jsonObject.get("entityName")
         val entityName = if (nameJson is JsonArray) getStringFromJsonArray(nameJson.asJsonArray) else nameJson.asString
 
+        var entityTowCitRes = ""
+        val entTowCitRes = ebaPropertiesJson.get("ENT_TOW_CIT_RES")
+        if (entTowCitRes == null) {
+            // dummy
+        } else if (entTowCitRes.isJsonArray) {
+            // TODO: Concatenate all strings in the array
+            entityTowCitRes = entTowCitRes.asJsonArray[0].asString
+        } else {
+            entityTowCitRes = entTowCitRes.asString
+        }
+
+        var entityPosCod = ""
+        val entPosCod = ebaPropertiesJson.get("ENT_POS_COD")
+        if (entPosCod == null) {
+            // Dummy
+        } else if (entPosCod.isJsonArray) {
+            // TODO: Concatenate all strings in the array
+            entityPosCod = entPosCod.asJsonArray[0].asString
+        } else {
+            entityPosCod = entPosCod.asString
+        }
+
+        var entityCouRes = ""
+        val entCouRes = ebaPropertiesJson.get("ENT_COU_RES")
+        if (entCouRes == null) {
+            // dummy
+        } else if (entCouRes.isJsonArray) {
+            entityCouRes = entCouRes.asJsonArray[0].asString
+        } else {
+            entityCouRes = entCouRes.asString
+        }
+
         val ebaProperties = EbaEntityProperties(
                   ebaPropertiesJson.get("ENT_COD_TYP")?.asString ?: ""
                 , ebaPropertiesJson.get("ENT_NAT_REF_COD")?.asString ?: ""
                 , entityName //ebaPropertiesJson?.get("ENT_NAM")?.asString ?: ""
-
                 , enityAddress
-
-                , ebaPropertiesJson.get("ENT_TOW_CIT_RES")?.asString ?: ""
-                , ebaPropertiesJson.get("ENT_POS_COD")?.asString ?: ""
-                , ebaPropertiesJson.get("ENT_COU_RES")?.asString ?: ""
+                , entityTowCitRes
+                , entityPosCod
+                , entityCouRes
                 , entAuthStart
                 , entAuthEnd
         )
@@ -77,11 +107,11 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         ebaEntity.ebaProperties = ebaProperties
         var tpp = Tpp(ebaEntity, NcaEntity())
 
+        val services = jsonObject.get("services")
         try {
-            val services = jsonObject.get("services")
             //val servicesJsonArray = services?.asJsonArray ?: JsonArray()
             if (services != null) {
-                val serviceJson = (if ((services != null) && services.isJsonNull && "null"!=services.asString) services.asJsonArray else JsonArray())
+                val serviceJson = if ((services != null) && services.isJsonArray) services.asJsonArray else JsonArray()
                 val passportedServices = __oblogTypeConverters.fromJsonElementToEbaPassport(serviceJson)
                 tpp.ebaEntity._ebaPassport = passportedServices
             }

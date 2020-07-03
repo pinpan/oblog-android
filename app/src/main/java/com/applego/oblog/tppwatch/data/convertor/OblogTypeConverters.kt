@@ -70,32 +70,36 @@ class OblogTypeConverters {
 
     @TypeConverter
     fun fromJsonElementToEbaPassport(json : JsonElement) : EbaPassport {
-        val aList: List<Map<String, List<Psd2Service>>> = gson.fromJson(json, ebaPassportMapListType)
+        val aList: List<Map<String, Any /*List<Psd2Service>*/>> = gson.fromJson(json, ebaPassportMapListType)
 
         val ebaPassport = EbaPassport()
-        ebaPassport.serviceMaps = aList
+        //TODO-Transform: ebaPassport.serviceMaps = aList
 
         val countryMap = HashMap<String, MutableList<Psd2Service>>()
         ebaPassport.countryMap = countryMap
 
         for (aMap in aList) {
-            val entrySet: Set<Map.Entry<String, Any>> = aMap.entries
-            for (entry in entrySet) {
-                val countryCode = entry.key
+            //val entrySet: Set<Map.Entry<String, Any>> = aMap.entries
+            val countryCode: String = aMap.get("country") as String//key
+            val servicesList = aMap.get("list") as ArrayList<String>//key
 
+            //for (entry in entrySet) {
+                //val countryCode = entry.key
                 val theServices = ArrayList<Psd2Service>()
-                countryMap.put(countryCode, theServices)
+                countryMap.put(countryCode.toString(), theServices)
 
-                if (entry.value is String) {
+                /*if (entry.value is String) {
                     val ebaService = EbaService.findService(entry.value as String)
                     theServices.add(Psd2Service(ebaService.code, ebaService.psd2Code, ebaService.description))
                 } else {
-                    for (aService in entry.value as List<String>) {
+                 */
+                    for (aService in servicesList as List<String>) {
                         val ebaService = EbaService.findService(aService)
                         theServices.add(Psd2Service(ebaService.code, ebaService.psd2Code, ebaService.description))
                     }
-                }
-            }
+                    //countryMap.put(countryCode.toString(), theServices)
+                //}
+            //}
         }
 
         return ebaPassport

@@ -62,10 +62,12 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
     */
 
         val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
-        var isFirstRun = sharedPerfs.getBoolean("isFirstRun", false)
-        if (getIntent().getExtras()?.getBoolean("com.applego.oblog.tppwatch.isFirstRun", false) == true) {
+        var isFirstRun = sharedPerfs.getBoolean("isFirstRun", true)
+/*
+        if (getIntent().getExtras()?.getBoolean("com.applego.oblog.tppwatch.isFirstRun", true) == true) {
             isFirstRun = false
         }
+*/
         if (isFirstRun) {
             //show sign up activity
             Handler().post/*Delayed*/(object : Runnable {
