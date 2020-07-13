@@ -56,89 +56,88 @@
                             android:clickable="false"
                             android:focusable="false"
                             android:inputType="none"
+
+                            android:padding="2dp"
                             android:text="@string/label_entity_code"
                             android:textIsSelectable="true"
                             android:textSize="10sp" />
 
-                        <!--android:textSize="10sp"-->
                         <TextView
                             android:id="@+id/label_entity_names"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="none"
-                            android:text="@string/label_entity_names"
-
                             android:clickable="false"
                             android:focusable="false"
+                            android:inputType="none"
+
+                            android:padding="2dp"
+                            android:text="@string/label_entity_names"
                             android:textIsSelectable="true"
-                            />
+                            android:textSize="10sp" />
 
                         <TextView
                             android:id="@+id/label_home_country"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="none"
-                            tools:text="@string/label_home_country"
-
                             android:clickable="false"
                             android:focusable="false"
-                            android:textIsSelectable="true"
+                            android:inputType="none"
 
-                            android:textSize="10sp"
-                            android:visibility="visible"
-                            android:hint="@string/label_home_country"
-                            />
+                            android:padding="2dp"
+                            android:text="@string/label_home_country"
+                            android:textIsSelectable="true"
+                            android:textSize="10sp" />
 
                         <TextView
                             android:id="@+id/label_national_ref_code"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="none"
-                            android:text="@string/label_national_ref_code"
-
                             android:clickable="false"
                             android:focusable="false"
-                            android:textIsSelectable="true"
+                            android:inputType="none"
 
+                            android:padding="2dp"
+                            android:text="@string/label_national_ref_code"
+                            android:textIsSelectable="true"
                             android:textSize="10sp" />
 
                         <TextView
                             android:id="@+id/label_entity_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="none"
-                            android:text="@string/label_entity_address"
-
                             android:clickable="false"
                             android:focusable="false"
-                            android:textIsSelectable="true"
+                            android:inputType="none"
 
+                            android:padding="2dp"
+                            android:text="@string/label_entity_address"
+                            android:textIsSelectable="true"
                             android:textSize="10sp" />
 
                         <TextView
                             android:id="@+id/label_authorization_start"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="none"
-                            android:text="@string/label_entity_authorization_start"
-
                             android:clickable="false"
                             android:focusable="false"
-                            android:textIsSelectable="true"
+                            android:inputType="none"
 
+                            android:padding="2dp"
+                            android:text="@string/label_entity_authorization_start"
+                            android:textIsSelectable="true"
                             android:textSize="10sp" />
 
                         <TextView
                             android:id="@+id/label_authorization_end"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="none"
-                            android:text="@string/label_entity_authorization_end"
-
                             android:clickable="false"
                             android:focusable="false"
-                            android:textIsSelectable="true"
+                            android:inputType="none"
 
+                            android:padding="2dp"
+                            android:text="@string/label_entity_authorization_end"
+                            android:textIsSelectable="true"
                             android:textSize="10sp" />
                     </LinearLayout>
 
@@ -146,15 +145,16 @@
                         android:id="@+id/values"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/entity_code"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@{viewmodel.tpp.ebaEntity.entityCode}"
+                            android:padding="2dp"
 
+                            android:text="@{viewmodel.tpp.ebaEntity.entityCode}"
                             android:textColor="#006496"
                             android:textIsSelectable="true"
                             android:textSize="10sp" />
@@ -163,8 +163,9 @@
                             android:id="@+id/entity_names"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.entityNames}"
+                            android:padding="2dp"
 
+                            android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.entityNames}"
                             android:textColor="#006496"
                             android:textIsSelectable="true"
                             android:textSize="10sp" />
@@ -173,8 +174,9 @@
                             android:id="@+id/entity_home_country"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@{viewmodel.tpp.ebaEntity.country}"
+                            android:padding="2dp"
 
+                            android:text="@{viewmodel.tpp.ebaEntity.country}"
                             android:textColor="#006496"
                             android:textIsSelectable="true"
                             android:textSize="10sp" />
@@ -183,8 +185,9 @@
                             android:id="@+id/entity_national_ref_code"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.nationalReferenceCode}"
+                            android:padding="2dp"
 
+                            android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.nationalReferenceCode}"
                             android:textColor="#006496"
                             android:textIsSelectable="true"
                             android:textSize="10sp" />
@@ -193,8 +196,9 @@
                             android:id="@+id/entity_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.address}"
+                            android:padding="2dp"
 
+                            android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.address}"
                             android:textColor="#006496"
                             android:textIsSelectable="true"
                             android:textSize="10sp" />
@@ -203,8 +207,9 @@
                             android:id="@+id/entity_authorization_start"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.authorizationStart}"
+                            android:padding="2dp"
 
+                            android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.authorizationStart}"
                             android:textColor="#006496"
                             android:textIsSelectable="true"
                             android:textSize="10sp" />
@@ -213,8 +218,9 @@
                             android:id="@+id/entity_authorization_end"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.authorizationEnd}"
+                            android:padding="2dp"
 
+                            android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.authorizationEnd}"
                             android:textColor="#006496"
                             android:textIsSelectable="true"
                             android:textSize="10sp" />
