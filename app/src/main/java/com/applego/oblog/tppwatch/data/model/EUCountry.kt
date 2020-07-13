@@ -173,7 +173,9 @@ enum class EUCountry(val country: String, val aliases: String = "", val nca: Str
     /**
      * Slovakia
      */
-    SK("Slovakia");
+    SK("Slovakia"),
+
+    NEU("NotInEU");
 
     companion object {
 

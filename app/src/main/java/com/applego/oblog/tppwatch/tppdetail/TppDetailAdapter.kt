@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.tppdetail_frag.view.*
  * Adapter for the tpp details. Has a reference to the [TppDetailViewModel] to send actions back to it.
  */
 class TppDetailAdapter(private val viewModel: TppDetailViewModel, ctx: Context, layoutId: Int) :
-    ListAdapter<EbaPassport.CountryVisa, TppDetailAdapter.ViewHolder>(TppDiffCallback()) {
+    ListAdapter<EbaPassport.ServiceVisa, TppDetailAdapter.ViewHolder>(TppDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
@@ -36,10 +36,10 @@ class TppDetailAdapter(private val viewModel: TppDetailViewModel, ctx: Context, 
     class ViewHolder private constructor(val binding: TppPassportBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(viewModel: TppDetailViewModel, item: EbaPassport.CountryVisa) {
+        fun bind(viewModel: TppDetailViewModel, item: EbaPassport.ServiceVisa) {
 
-            binding.viewmodel = viewModel
-            binding.countryVisa = item
+            //binding.viewmodel = viewModel
+            binding.serviceVisa = item
             binding.executePendingBindings()
         }
 
@@ -60,12 +60,12 @@ class TppDetailAdapter(private val viewModel: TppDetailViewModel, ctx: Context, 
  * Used by ListAdapter to calculate the minimum number of changes between and old list and a new
  * list that's been passed to `submitList`.
  */
-class TppDiffCallback : DiffUtil.ItemCallback<EbaPassport.CountryVisa>() {
-    override fun areItemsTheSame(oldItem: EbaPassport.CountryVisa, newItem: EbaPassport.CountryVisa): Boolean {
+class TppDiffCallback : DiffUtil.ItemCallback<EbaPassport.ServiceVisa>() {
+    override fun areItemsTheSame(oldItem: EbaPassport.ServiceVisa, newItem: EbaPassport.ServiceVisa): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: EbaPassport.CountryVisa, newItem: EbaPassport.CountryVisa): Boolean {
+    override fun areContentsTheSame(oldItem: EbaPassport.ServiceVisa, newItem: EbaPassport.ServiceVisa): Boolean {
         return oldItem.equals(newItem)
     }
 }

@@ -27,10 +27,10 @@ class ViewModelFactory constructor(
                     TppDetailViewModel(tppsRepository)
                 isAssignableFrom(AppsViewModel::class.java) ->
                     AppsViewModel(tppsRepository)
-                isAssignableFrom(TppDetailEbaViewModel::class.java) ->
-                    TppDetailEbaViewModel(tppsRepository)
-                isAssignableFrom(TppDetailNcaViewModel::class.java) ->
-                    TppDetailNcaViewModel(tppsRepository)
+                /*isAssignableFrom(TppDetailEbaViewModel::class.java) ->
+                    TppDetailEbaViewModel(tppsRepository)*/
+                /*isAssignableFrom(TppDetailNcaViewModel::class.java) ->
+                    TppDetailNcaViewModel(tppsRepository)*/
                 /*isAssignableFrom(AppsViewModel::class.java) ->
                     AppsViewModel(tppsRepository)*/
                 isAssignableFrom(AddEditTppViewModel::class.java) ->

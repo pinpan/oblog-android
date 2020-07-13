@@ -18,12 +18,21 @@ data class EbaPassport @JvmOverloads constructor(
     var countryMap = HashMap<String, MutableList<Psd2Service>>()
 
     @Embedded
-    var serviceMaps : List<Map<String, List<Psd2Service>>> = ArrayList<Map<String, MutableList<Psd2Service>>>()
+    var serviceMap = HashMap<String, MutableList<EUCountry>>()
 
     val services : List<CountryVisa>
         get() {
             val myPasportedServices = ArrayList<CountryVisa>()
             countryMap.entries.forEach({myPasportedServices.add(CountryVisa(it.key, it.value))})
+            return myPasportedServices
+        }
+
+    val countries : List<ServiceVisa>
+        get() {
+            val myPasportedServices = ArrayList<ServiceVisa>()
+            serviceMap.forEach({
+                myPasportedServices.add(ServiceVisa(it.key, it.value))
+            })
             return myPasportedServices
         }
 
@@ -41,6 +50,31 @@ data class EbaPassport @JvmOverloads constructor(
             get() {
                 val sb = StringBuilder()
                 services.forEach { sb.append(if (!it.psd2Code.isNullOrEmpty()) it.psd2Code else it.title).append(" ,")}
+                val str = sb.removeSuffix(" ,")
+                return str.toString()
+            }
+
+        // #TODO-PZA: Implement hash and equals
+    }
+
+    class ServiceVisa {
+
+        var service = String()
+        var countries : List<EUCountry> = ArrayList<EUCountry>()
+
+        constructor(service: String, countries: List<EUCountry>) {
+            this.service = service
+            this.countries = countries
+        }
+
+        val countriesAsString : String
+            get() {
+                val sb = StringBuilder()
+                for (c in countries) {
+                    sb.append(c.name).append(" ,")
+                }
+
+                //countries.forEach { sb.append(it.toString()).append(" ,")}
                 val str = sb.removeSuffix(" ,")
                 return str.toString()
             }

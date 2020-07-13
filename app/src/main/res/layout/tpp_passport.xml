@@ -5,13 +5,19 @@
 
     <data>
 
+<!--
         <variable
             name="countryVisa"
             type="com.applego.oblog.tppwatch.data.model.EbaPassport.CountryVisa" />
+-->
 
         <variable
+            name="serviceVisa"
+            type="com.applego.oblog.tppwatch.data.model.EbaPassport.ServiceVisa" />
+
+        <!--<variable
             name="viewmodel"
-            type="com.applego.oblog.tppwatch.tppdetail.TppDetailViewModel" />
+            type="com.applego.oblog.tppwatch.tppdetail.TppDetailViewModel" />-->
     </data>
 
     <LinearLayout
@@ -24,7 +30,7 @@
             android:id="@+id/visa_country"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="@{countryVisa.country}"
+            android:text="@{serviceVisa.service}"
             android:textSize="10sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
@@ -34,7 +40,7 @@
             android:layout_height="wrap_content"
             android:textSize="10sp"
             android:textAlignment="viewStart"
-            android:text="@{countryVisa.servicesAsString}"
+            android:text="@{serviceVisa.countriesAsString}"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
         />
     </LinearLayout>

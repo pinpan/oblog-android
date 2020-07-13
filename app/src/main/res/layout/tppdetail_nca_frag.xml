@@ -154,7 +154,7 @@
                     android:layout_marginBottom="10dp"
                     android:fadeScrollbars="false"
                     android:scrollbars="horizontal|vertical"
-                    app:items="@{viewmodel.tpp.ebaEntity.ebaPassport.services}"
+                    app:items="@{viewmodel.tpp.ebaEntity.ebaPassport.countries}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
 

@@ -1,10 +1,8 @@
 package com.applego.oblog.tppwatch.data.convertor
 
 import androidx.room.TypeConverter
-import com.applego.oblog.tppwatch.data.model.EbaEntityType
-import com.applego.oblog.tppwatch.data.model.EbaPassport
-import com.applego.oblog.tppwatch.data.model.EbaService
-import com.applego.oblog.tppwatch.data.model.Psd2Service
+import com.applego.oblog.tppwatch.data.model.*
+import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountriesMap
 import com.applego.oblog.tppwatch.data.source.local.RecordStatus
 import com.google.gson.Gson
 import com.google.gson.JsonElement
@@ -78,28 +76,27 @@ class OblogTypeConverters {
         val countryMap = HashMap<String, MutableList<Psd2Service>>()
         ebaPassport.countryMap = countryMap
 
+        val serviceMap = HashMap<String, MutableList<EUCountry>>()
+        ebaPassport.serviceMap = serviceMap
+
         for (aMap in aList) {
-            //val entrySet: Set<Map.Entry<String, Any>> = aMap.entries
-            val countryCode: String = aMap.get("country") as String//key
-            val servicesList = aMap.get("list") as ArrayList<String>//key
+            val countryCode: String = aMap.get("country") as String
+            val servicesList = aMap.get("list") as ArrayList<String>
 
-            //for (entry in entrySet) {
-                //val countryCode = entry.key
-                val theServices = ArrayList<Psd2Service>()
-                countryMap.put(countryCode.toString(), theServices)
+            val theServices = ArrayList<Psd2Service>()
+            countryMap.put(countryCode, theServices)
 
-                /*if (entry.value is String) {
-                    val ebaService = EbaService.findService(entry.value as String)
-                    theServices.add(Psd2Service(ebaService.code, ebaService.psd2Code, ebaService.description))
-                } else {
-                 */
-                    for (aService in servicesList as List<String>) {
-                        val ebaService = EbaService.findService(aService)
-                        theServices.add(Psd2Service(ebaService.code, ebaService.psd2Code, ebaService.description))
-                    }
-                    //countryMap.put(countryCode.toString(), theServices)
-                //}
-            //}
+            for (aService in servicesList) {
+                var serviceCountries = serviceMap.get(aService)
+                if (serviceCountries == null) {
+                    serviceCountries = ArrayList<EUCountry>()
+                    serviceMap.put(aService, serviceCountries)
+                }
+                serviceCountries.add(allEUCountriesMap.get(countryCode) ?: EUCountry.NEU)
+
+                val ebaService = EbaService.findService(aService)
+                theServices.add(Psd2Service(ebaService.code, ebaService.psd2Code, ebaService.description))
+            }
         }
 
         return ebaPassport

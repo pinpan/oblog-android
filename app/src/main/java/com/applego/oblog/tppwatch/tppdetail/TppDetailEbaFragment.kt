@@ -40,7 +40,7 @@ class TppDetailEbaFragment (private val viewModel: TppDetailViewModel, @Nullable
         //val viewModel = viewDataBinding.viewmodel
         if (viewModel != null) {
             fragmentAdapter = TppDetailAdapter(viewModel, context!!, R.layout.tpp_passport)
-            viewDataBinding.passportsList.adapter = fragmentAdapter
+            viewDataBinding.passportsServicesList.adapter = fragmentAdapter
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
         }
