@@ -18,32 +18,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="4 ">
+        >
 
         <TextView
-            android:id="@+id/tpp_name"
-            android:layout_width="match_parent"
+            android:id="@+id/visa_country"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:text="@{countryVisa.country}"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
         <TextView
-            android:id="@+id/countries"
-            android:layout_width="match_parent"
+            android:id="@+id/visa_services"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:textSize="12sp"
+            android:textSize="10sp"
+            android:textAlignment="viewStart"
             android:text="@{countryVisa.servicesAsString}"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        /> <!---->
+        />
     </LinearLayout>
-
 </layout>

@@ -146,6 +146,7 @@ class TppsFragmentTest {
     }
 
     //@Ignore
+/*
     @Test
     fun deleteOneOfTwoTpps() {
         repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz", entityType = EbaEntityType.NONE), NcaEntity()))
@@ -166,6 +167,7 @@ class TppsFragmentTest {
         // but not the other one
         onView(withText("TITLE2")).check(matches(isDisplayed()))
     }
+*/
 
     @Test
     fun markTppAsFollowed() {
