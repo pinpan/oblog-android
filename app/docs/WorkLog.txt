@@ -1,3 +1,23 @@
+20200715
+--------
+TODO:
+1. Respect EBA labels
+"
+ Type of Institution  Electronic-money institution
+ National Identification Number 5272811301
+ Institution Name Billon Solutions spółka z ograniczoną odpowiedzialnością
+ Street Address Aleja Jana Pawła II 29, Warszawa, 00-867, PL
+ City Warszawa
+ PostCode 00-867
+ Country Poland
+ Status Authorised: 2020-04-09 (Current)
+ National Competent Authority PL - Polish Financial Supervision Authority / Komisji Nadzoru Finansowego
+"
+
+2. TPP Detail - add "Last updated"
+3. Services - translate codes to short description
+
+
 20200208
 ------------------
 Know-How:

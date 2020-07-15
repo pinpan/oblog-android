@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.model.EUCountry
+import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountries
 import com.applego.oblog.tppwatch.databinding.StatisticsFragBinding
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.github.mikephil.charting.charts.BarChart
@@ -87,7 +88,7 @@ class StatisticsFragment : Fragment() {
             xAxis.labelCount = EUCountry.allEUCountries.size
             xAxis.setValueFormatter(object: ValueFormatter() {
                 override fun getFormattedValue(value: Float): String? {
-                    return viewModel.getCountryName(value.toInt())
+                    return allEUCountries[value.toInt()].name //viewModel.getCountryName(value.toInt())
                 }
             })
 

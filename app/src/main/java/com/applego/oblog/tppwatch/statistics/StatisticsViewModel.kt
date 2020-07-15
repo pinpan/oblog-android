@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.model.EUCountry
 import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountries
-import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountriesMap
 import com.applego.oblog.tppwatch.data.model.EbaEntityType
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
@@ -77,12 +76,6 @@ class StatisticsViewModel(
     private var usedTpps = 0
 
     private var followedTpps = 0
-
-/*
-    init {
-        start()
-    }
-*/
 
     fun start() {
         if (_dataLoading.value == true) {
@@ -159,10 +152,7 @@ class StatisticsViewModel(
 
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
 
-        val tppsPerCountryCount = hashMapOf<String, Int>()
-        EUCountry.allEUCountries.forEach {
-            tppsPerCountryCount.put(it.name, 0)
-        }
+        val tppsPerCountryArray = Array(allEUCountries.size) { 0 }
 
         tpps?.forEach {
             when (it.ebaEntity.entityType) {
@@ -189,8 +179,7 @@ class StatisticsViewModel(
 
             val euCountry = it.getCountry()
             if (euCountry != null) {
-                var counter = tppsPerCountryCount.getOrPut(euCountry) {0}
-                tppsPerCountryCount.put(euCountry,  ++counter)
+                tppsPerCountryArray[EUCountry.valueOf(euCountry).order] = tppsPerCountryArray[EUCountry.valueOf(euCountry).order]+1
             }
         }
         _lastWeekRegisteredTpps.value = aWeekOldTpps
@@ -205,7 +194,7 @@ class StatisticsViewModel(
         _countriesTppsSet.value = ArrayList<BarEntry>()
         var num = 0
         allEUCountries.forEach {
-            val be = BarEntry((num++).toFloat(), tppsPerCountryCount.get(it.name)!!.toFloat())
+            val be = BarEntry((num++).toFloat(), tppsPerCountryArray[it.order].toFloat())
             countriesTppsSet.value?.add(be)
         }
     }
@@ -220,9 +209,9 @@ class StatisticsViewModel(
         return barDataSet1
     }
 
-    fun getCountryName(idx: Int): String? {
+    /*fun getCountryName(idx: Int): String? {
         return allEUCountries[idx].name
-    }
+    }*/
 
 /*
     fun getXAxisValues(): ArrayList<String> {

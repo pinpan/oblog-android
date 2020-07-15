@@ -18,164 +18,167 @@ package com.applego.oblog.tppwatch.data.model
 /**
  * Used with the filter countriesSpinner in the tpps list.
  */
-enum class EUCountry(val country: String, val aliases: String = "", val nca: String = "") {
+enum class EUCountry(val country: String, val order: Int, val aliases: String = "", val nca: String = "") {
 
     /**
      * Austria
      */
-    AT("Austria"),
+    AT("Austria", 0),
 
     /**
      * Belgium
      */
-    BE("Belgium"),
+    BE("Belgium", 1),
 
     /**
      * Bulgaria
      */
-    BG("Bulgaria"),
+    BG("Bulgaria", 2),
 
     /**
      * Republic of Cyprus
      */
-    CY("Republic of Cyprus"),
+    CY("Republic of Cyprus", 3),
 
     /**
      * Czech Republic
      */
-    CZ("Czech Republic"),
+    CZ("Czech Republic", 4),
 
     /**
      * Germany
      */
-    DE("Germany"),
+    DE("Germany", 5),
 
     /**
      * Denmark
      */
-    DK("Denmark"),
+    DK("Denmark", 6),
 
     /**
      * Estonia
      */
-    EE("Estonia"),
+    EE("Estonia", 7),
 
     /**
      * Spain
      */
-    ES("Spain"),
+    ES("Spain", 8),
 
     /**
      * Finland
      */
-    FI("Finland"),
+    FI("Finland", 9),
 
     /**
      * France
      */
-    FR("France"),
+    FR("France", 10),
 
     /**
      * Great Britain
      */
-    GB("Great Britain"),
+    GB("Great Britain", 11),
 
     /**
      * Greece
      */
-    GR("Greece"),
+    GR("Greece", 12),
 
     /**
      * Croatia
      */
-    HR("Croatia"),
+    HR("Croatia", 13),
 
     /**
      * Hungary
      */
-    HU("Hungary"),
+    HU("Hungary", 14),
 
     /**
      * Ireland
      */
-    IE("Ireland"),
+    IE("Ireland", 15),
 
     /**
      * ISLAND
      */
-    IS("ISLAND"),
+    IS("ISLAND", 16),
 
     /**
      * Italy
      */
-    IT("Italy"),
+    IT("Italy", 17),
 
     /**
      * Lithuania
      */
-    LI("Liechtenstein"),
+    LI("Liechtenstein", 18),
 
     /**
      * Latvia
      */
-    LT("Lithuania"),
+    LT("Lithuania", 19),
 
     /**
      * Luxembourg
      */
-    LU("Luxembourg"),
+    LU("Luxembourg", 20),
 
     /**
      * Lithuania - Financial and Capital Market Commission
      */
-    LV("Latvia"),
+    LV("Latvia", 21),
 
     /**
      * Malta
      */
-    MT("Malta"),
+    MT("Malta", 22),
 
     /**
      * Netherlands
      */
-    NL("Netherlands"),
+    NL("Netherlands", 22),
 
     /**
      * Norway
      */
-    NO("Norway"),
+    NO("Norway", 23),
 
     /**
      * Poland
      */
-    PL("Poland"),
+    PL("Poland", 24),
 
     /**
      * Portugal
      */
-    PT("Portugal"),
+    PT("Portugal", 25),
 
     /**
      * Romania
      */
-    RO("Romania"),
+    RO("Romania", 26),
 
     /**
      * Sweden
      */
-    SE("Sweden"),
+    SE("Sweden", 27),
 
     /**
      * Slovenia
      */
-    SI("Slovenia"),
+    SI("Slovenia", 28),
 
     /**
      * Slovakia
      */
-    SK("Slovakia"),
+    SK("Slovakia", 29),
 
-    NEU("NotInEU");
+    /**
+     * Usd to indicate that no EU country was found
+     */
+    NEU("NotInEU", 30);
 
     companion object {
 
@@ -185,8 +188,8 @@ enum class EUCountry(val country: String, val aliases: String = "", val nca: Str
             allEUCountries.add(AT)
             allEUCountries.add(BE)
             allEUCountries.add(BG)
-            allEUCountries.add(CZ)
             allEUCountries.add(CY)
+            allEUCountries.add(CZ)
             allEUCountries.add(DE)
             allEUCountries.add(DK)
             allEUCountries.add(EE)
