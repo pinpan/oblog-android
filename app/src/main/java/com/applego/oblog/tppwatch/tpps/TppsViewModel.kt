@@ -348,16 +348,16 @@ class TppsViewModel(
             val psdService = EbaService.findPsd2Service(service)
             inputTpps?.forEach lit@{ tpp ->
                 if (tpp.getEbaPassport() != null) {
-                    tpp.getEbaPassport().countryMap.entries.forEach() {
-                        if (it.value != null) {
-                            val services = it.value as List<Psd2Service>
-                            services.forEach {serv ->
-                                if (serv.title.equals(psdService.code)) {
+                    tpp.getEbaPassport().serviceMap.entries.forEach() {
+                        //if (it.value != null) {
+                            //val services = it.value as List<Psd2Service>
+                            //services.forEach {serv ->
+                                if (it.key.equals(psdService.code)) {
                                     filteredTpps.add(tpp)
                                     return@lit;
                                 }
-                            }
-                        }
+                            //}
+                        //}
                     }
                 }
             }

@@ -73,8 +73,8 @@ class OblogTypeConverters {
         val ebaPassport = EbaPassport()
         //TODO-Transform: ebaPassport.serviceMaps = aList
 
-        val countryMap = HashMap<String, MutableList<Psd2Service>>()
-        ebaPassport.countryMap = countryMap
+        //val countryMap = HashMap<String, MutableList<Psd2Service>>()
+        //ebaPassport.countryMap = countryMap
 
         val serviceMap = HashMap<String, MutableList<EUCountry>>()
         ebaPassport.serviceMap = serviceMap
@@ -84,7 +84,7 @@ class OblogTypeConverters {
             val servicesList = aMap.get("list") as ArrayList<String>
 
             val theServices = ArrayList<Psd2Service>()
-            countryMap.put(countryCode, theServices)
+            //countryMap.put(countryCode, theServices)
 
             for (aService in servicesList) {
                 var serviceCountries = serviceMap.get(aService)

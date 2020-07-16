@@ -16,7 +16,7 @@ TODO:
 
 2. TPP Detail - add "Last updated"
 3. Services - translate codes to short description
-
+4. Display numbers of filtered items
 
 20200208
 ------------------

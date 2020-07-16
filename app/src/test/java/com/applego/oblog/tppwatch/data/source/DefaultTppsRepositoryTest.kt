@@ -22,12 +22,12 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class DefaultTppsRepositoryTest {
 
-    private val tpp1 = Tpp(EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "cz", entityType = EbaEntityType.NONE), NcaEntity())
-    private val tpp2 = Tpp(EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "Title2", _description = "Description2", _globalUrn = "", _ebaEntityVersion = "", _country = "cz", entityType = EbaEntityType.NONE), NcaEntity())
-    private val tpp3 = Tpp(EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3", _description = "Description3", _globalUrn = "", _ebaEntityVersion = "", _country = "cz", entityType = EbaEntityType.NONE), NcaEntity())
-    private val tpp31 = Tpp(EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3-EBA-CHANGED", _description = "Description3-EBA-CHANGED", _globalUrn = "", _ebaEntityVersion = "", _country = "cz", entityType = EbaEntityType.NONE), NcaEntity())
-    private val tpp32 = Tpp(EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3-NCA-CHANGED", _description = "Description3-NCA-CHANGED", _globalUrn = "", _ebaEntityVersion = "", _country = "cz", entityType = EbaEntityType.NONE), NcaEntity())
-    private val newTppEntity = EbaEntity(_entityId = "28173280", _entityCode = "Entity_CZ28173280", _entityName = "Title new", _description = "Description new", _globalUrn = "", _ebaEntityVersion = "", _country = "cz", entityType = EbaEntityType.NONE)
+    private val tpp1 = Tpp(EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "CZ", entityType = EbaEntityType.NONE), NcaEntity())
+    private val tpp2 = Tpp(EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "Title2", _description = "Description2", _globalUrn = "", _ebaEntityVersion = "", _country = "CZ", entityType = EbaEntityType.NONE), NcaEntity())
+    private val tpp3 = Tpp(EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3", _description = "Description3", _globalUrn = "", _ebaEntityVersion = "", _country = "CZ", entityType = EbaEntityType.NONE), NcaEntity())
+    private val tpp31 = Tpp(EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3-EBA-CHANGED", _description = "Description3-EBA-CHANGED", _globalUrn = "", _ebaEntityVersion = "", _country = "CZ", entityType = EbaEntityType.NONE), NcaEntity())
+    private val tpp32 = Tpp(EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3-NCA-CHANGED", _description = "Description3-NCA-CHANGED", _globalUrn = "", _ebaEntityVersion = "", _country = "CZ", entityType = EbaEntityType.NONE), NcaEntity())
+    private val newTppEntity = EbaEntity(_entityId = "28173280", _entityCode = "Entity_CZ28173280", _entityName = "Title new", _description = "Description new", _globalUrn = "", _ebaEntityVersion = "", _country = "CZ", entityType = EbaEntityType.NONE)
     private val allTpps = listOf(tpp1, tpp2, tpp3).sortedBy { it.getId() }
     private val remoteTpps = listOf(tpp1, tpp2).sortedBy { it.getId() }
     private val remoteEbaTpps = listOf(tpp31)

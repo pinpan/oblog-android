@@ -14,18 +14,20 @@ data class EbaPassport @JvmOverloads constructor(
     /**
      * Map of counties and list of services which are passported to the corresponding country
      */
-    @Embedded
-    var countryMap = HashMap<String, MutableList<Psd2Service>>()
+   // @Embedded
+   // var countryMap = HashMap<String, MutableList<Psd2Service>>()
 
     @Embedded
     var serviceMap = HashMap<String, MutableList<EUCountry>>()
 
+/*
     val services : List<CountryVisa>
         get() {
             val myPasportedServices = ArrayList<CountryVisa>()
             countryMap.entries.forEach({myPasportedServices.add(CountryVisa(it.key, it.value))})
             return myPasportedServices
         }
+*/
 
     val countries : List<ServiceVisa>
         get() {
@@ -36,7 +38,7 @@ data class EbaPassport @JvmOverloads constructor(
             return myPasportedServices
         }
 
-    class CountryVisa {
+    /*class CountryVisa {
 
         var country = String()
         var services : List<Psd2Service> = ArrayList<Psd2Service>()
@@ -56,7 +58,7 @@ data class EbaPassport @JvmOverloads constructor(
 
         // #TODO-PZA: Implement hash and equals
     }
-
+*/
     class ServiceVisa {
 
         var service = String()
