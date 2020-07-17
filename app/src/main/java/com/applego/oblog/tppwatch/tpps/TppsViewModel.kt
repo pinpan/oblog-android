@@ -25,9 +25,19 @@ class TppsViewModel(
     private val tppsRepository: TppsRepository
 ) : ViewModel() {
 
-    private var fetchedItems : List<Tpp> = emptyList()
-    private val _items = MutableLiveData<List<Tpp>>().apply { value = fetchedItems }
-    val items: MutableLiveData<List<Tpp>> = _items
+    //private var fetchedItems : List<Tpp> = emptyList()
+    private val _allItems: MutableLiveData<List<Tpp>> = MutableLiveData(listOf<Tpp>())
+    val allItems: LiveData<List<Tpp>> = _allItems
+
+    private val _items = MutableLiveData<List<Tpp>>().apply { value = allItems.value }
+    val items: LiveData<List<Tpp>> = _items
+
+    private val _isFiltered = MutableLiveData<Boolean>(isFiltered()/*_allItems.value?.size == _items.value?.size*/)
+    val isFiltered: LiveData<Boolean> = _isFiltered
+
+    private fun isFiltered() : Boolean {
+        return (_allItems.value?.size == _items.value?.size)
+    }
 
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
@@ -69,6 +79,11 @@ class TppsViewModel(
         it.isEmpty()
     }
 
+    // This LiveData depends on another so we can use a transformation.
+    val filtered : LiveData<Boolean> = Transformations.map(_items) {
+        it.isEmpty()
+    }
+
     init {
         // Set initial state
         searchFilter.init()
@@ -83,8 +98,8 @@ class TppsViewModel(
     }
 
     fun refreshTpp(tppId : String?) {
-        if (!tppId.isNullOrBlank() && !tppId.equals("0")) {
-            val tpp = findTppInList(fetchedItems, tppId)
+        if (allItems.value.isNullOrEmpty() && !tppId.isNullOrBlank() && !tppId.equals("0")) {
+            val tpp = findTppInList(allItems.value!!, tppId)
             runBlocking {
                 if (tpp != null) {
                     tppsRepository.refreshTpp(tpp!!)
@@ -213,9 +228,11 @@ class TppsViewModel(
                 val tppsResult = tppsRepository.getAllTpps(forceUpdate)
 
                 if (tppsResult is Success) {
-                    fetchedItems = tppsResult.data
+                    //fetchedItems = tppsResult.data
+                    _allItems.value = tppsResult.data
 
                     _items.value = getTppsByGlobalFilter()
+                    _isFiltered.value = isFiltered()
 
                     isDataLoadingError.value = false
                 } else {
@@ -246,11 +263,11 @@ class TppsViewModel(
     fun getTppsByGlobalFilter(): List<Tpp> {
         _dataLoading.value = true
 
-        if (fetchedItems.isNullOrEmpty()) {
-            return fetchedItems
+        if (allItems.value.isNullOrEmpty()) {
+            return listOf<Tpp>() //allItems.value!!
         }
 
-        var tppsToShow = filterTppsByUserInterest(fetchedItems, _searchFilter)
+        var tppsToShow = filterTppsByUserInterest(allItems.value, _searchFilter)
 
         if (!_searchFilter.countries.isNullOrBlank() && !_searchFilter.countries.equals("<ALL>")) {
             tppsToShow = filterTppsByCountry(tppsToShow, _searchFilter.countries)
@@ -283,10 +300,10 @@ class TppsViewModel(
         return filteredTpps
     }
 
-    private fun filterTppsByUserInterest(inputTpps: List<Tpp>, searchFilter: SearchFilter): MutableList<Tpp> {
+    private fun filterTppsByUserInterest(inputTpps : List<Tpp>?, searchFilter: SearchFilter): MutableList<Tpp> {
         val filteredTpps = ArrayList<Tpp>()
 
-        inputTpps.forEach { tpp ->
+        inputTpps?.forEach { tpp ->
             var addIt : Boolean = when (searchFilter.pspType) {
                 PspType.ONLY_PSD2_TPPs -> tpp.isPsd2Tpp()
                 PspType.ONLY_ASPSPs -> tpp.isASPSP()
@@ -349,15 +366,10 @@ class TppsViewModel(
             inputTpps?.forEach lit@{ tpp ->
                 if (tpp.getEbaPassport() != null) {
                     tpp.getEbaPassport().serviceMap.entries.forEach() {
-                        //if (it.value != null) {
-                            //val services = it.value as List<Psd2Service>
-                            //services.forEach {serv ->
-                                if (it.key.equals(psdService.code)) {
-                                    filteredTpps.add(tpp)
-                                    return@lit;
-                                }
-                            //}
-                        //}
+                        if (it.key.equals(psdService.code)) {
+                            filteredTpps.add(tpp)
+                            return@lit;
+                        }
                     }
                 }
             }
@@ -378,11 +390,9 @@ class TppsViewModel(
         _items.value = getTppsByGlobalFilter()
     }
 
-/*
-    fun showRevoked() {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-*/
+    /*fun isFiltered(): Boolean {
+        return _allItems.value?.size != _items.value?.size
+    }*/
 
     fun showEditResultMessage(result: Int) {
         when (result) {

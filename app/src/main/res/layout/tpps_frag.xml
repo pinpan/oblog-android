@@ -28,7 +28,6 @@
 
             <include layout="@layout/tpps_search" />
 
-            <!---->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -101,8 +100,46 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="10dp"
-                    android:background="?android:attr/listDivider" />
+                    android:background="?android:attr/listDivider"
                 />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="5dp"
+                    >
+
+                    <TextView
+                        android:id="@+id/tpps_displayed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|start"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="0dp"
+                        android:paddingTop="@dimen/list_item_padding"
+                        android:background="@color/colorLightGrey"
+                        android:paddingEnd="0dp"
+                        android:text="@{@string/tpps_displayed_number(viewmodel.items.size)}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textSize="12sp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tpps_registered"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|start"
+                        android:paddingStart="0dp"
+                        android:layout_marginStart="0dp"
+                        android:paddingTop="@dimen/list_item_padding"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textSize="12sp"
+                        android:background="@color/colorLightGrey"
+                        android:visibility="@{viewmodel.isFiltered ? View.GONE : View.VISIBLE}"
+                        android:text="@{@string/tpps_registered_number(viewmodel.allItems.size)}"
+                        />
+                </LinearLayout>
 
                 <com.applego.oblog.tppwatch.util.ScrollChildSwipeRefreshLayout
                     android:id="@+id/refresh_layout"

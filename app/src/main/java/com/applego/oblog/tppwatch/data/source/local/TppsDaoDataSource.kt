@@ -19,7 +19,7 @@ class TppsDaoDataSource internal constructor(
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : LocalTppDataSource {
 
-    override suspend fun getTpps(filter: TppsFilter): Result<List<Tpp>> = withContext(ioDispatcher) {
+        override suspend fun getTpps(filter: TppsFilter): Result<List<Tpp>> = withContext(ioDispatcher) {
         var tpps = ArrayList<Tpp>()
         try {
             var ebaEntities : List<EbaEntity>
@@ -29,7 +29,7 @@ class TppsDaoDataSource internal constructor(
                 ebaEntities = tppsDao.getAllTppEntities()
             }
             ebaEntities.forEach { ebaEntity ->
-                tpps.add(Tpp(ebaEntity, NcaEntity()))}
+                tpps.add(Tpp(ebaEntity))}
         } catch (e: Exception) {
             Error(e)
         }

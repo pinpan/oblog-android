@@ -45,6 +45,8 @@
     <string name="label_app_flags">Flags</string>
     <string name="label_app_psd2">PSD2</string>
     <string name="label_app_home">Web home</string>
+    <string name="tpps_displayed_number">Displaying %1$d TPPs</string>
+    <string name="tpps_registered_number">, filtered out of %1$d TPPs in registry</string>
 
     <string name="tpp_applications">Applications</string>
     <string name="tpp_marked_used">TPP marked used</string>
