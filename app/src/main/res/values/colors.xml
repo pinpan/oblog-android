@@ -9,6 +9,16 @@
     <color name="colorLightGrey">#CACACA</color>
     <color name="colorDarkGrey">#323232</color>
 
+    <color name="colorEULightGrey">#ececec</color>
+    <color name="colorEUYellow">#ffd617</color>
+    <color name="colorEUFlagBlue">#003399</color>
+    <color name="colorEUFlagYellow">#FFCC00</color>
+    <color name="colorEUDarkBlue">#004494</color>
+    <color name="colorEULightBlue">#006fb4</color>
+    <color name="colorEURed">#da2131</color>
+    <color name="colorEUGreen">#467a39</color>
+    <color name="colorEUOrange">#f29527</color>
+
     <drawable name="followedTppBackground">#CCCCCC</drawable>
 
     <drawable name="touchFeedback">#CFD8DC</drawable>

@@ -91,7 +91,7 @@ class TppsViewModel(
     }
 
     private fun isFiltered() : Boolean {
-        return (_allItems.value?.size == _items.value?.size)
+        return (_allItems.value?.size != _items.value?.size)
     }
 
     fun refreshTpp(tppId : String?) {

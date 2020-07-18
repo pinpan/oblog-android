@@ -4,12 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.databinding.TppItemBinding
 import kotlinx.android.synthetic.main.tppdetail_frag.view.*
+import timber.log.Timber
 
 
 /**
@@ -22,11 +25,17 @@ class TppsAdapter(private val viewModel: TppsViewModel, ctx: Context, layoutId: 
         val item = getItem(position)
 
         holder.bind(viewModel, item)
+        val isrevoked = item!!.ebaEntity.isRevoked()
+        if (isrevoked) {
+            Timber.d(item!!.getId() + " is revoked")
+        }
+        holder.itemView.setBackgroundResource((if (isrevoked) R.color.colorEUOrange else R.color.colorEULightGrey))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val vH = ViewHolder.from(parent)
         val view : LinearLayout = vH.itemView as LinearLayout
+        val item = vH.binding.tpp
         if (view != null) {
             view.title?.textSize = 10f
         }
