@@ -29,11 +29,11 @@ data class EbaPassport @JvmOverloads constructor(
         }
 */
 
-    val countries : List<ServiceVisa>
+    val services : List<ServiceVisa>
         get() {
             val myPasportedServices = ArrayList<ServiceVisa>()
             serviceMap.forEach({
-                myPasportedServices.add(ServiceVisa(it.key, it.value))
+                myPasportedServices.add(ServiceVisa(it.key, EbaService.findService(it.key).description, it.value))
             })
             return myPasportedServices
         }
@@ -62,10 +62,12 @@ data class EbaPassport @JvmOverloads constructor(
     class ServiceVisa {
 
         var service = String()
+        var serviceDetail = String()
         var countries : List<EUCountry> = ArrayList<EUCountry>()
 
-        constructor(service: String, countries: List<EUCountry>) {
+        constructor(service: String, detail: String, countries: List<EUCountry>) {
             this.service = service
+            this.serviceDetail = detail
             this.countries = countries
         }
 

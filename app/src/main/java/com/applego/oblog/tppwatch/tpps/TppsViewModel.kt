@@ -16,7 +16,7 @@ import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.data.source.local.*
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
-import java.util.ArrayList
+import java.util.*
 
 /**
  * ViewModel for the tpp list screen.
@@ -25,19 +25,18 @@ class TppsViewModel(
     private val tppsRepository: TppsRepository
 ) : ViewModel() {
 
-    //private var fetchedItems : List<Tpp> = emptyList()
     private val _allItems: MutableLiveData<List<Tpp>> = MutableLiveData(listOf<Tpp>())
     val allItems: LiveData<List<Tpp>> = _allItems
 
+    // TODO: rename to displayedItems
     private val _items = MutableLiveData<List<Tpp>>().apply { value = allItems.value }
     val items: LiveData<List<Tpp>> = _items
 
-    private val _isFiltered = MutableLiveData<Boolean>(isFiltered()/*_allItems.value?.size == _items.value?.size*/)
-    val isFiltered: LiveData<Boolean> = _isFiltered
+    private val _statusLine = MutableLiveData<String>("")
+    val statusLine: LiveData<String> = _statusLine
 
-    private fun isFiltered() : Boolean {
-        return (_allItems.value?.size == _items.value?.size)
-    }
+    private val _isFiltered = MutableLiveData<Boolean>(isFiltered())
+    val isFiltered: LiveData<Boolean> = _isFiltered
 
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
@@ -60,7 +59,7 @@ class TppsViewModel(
     val snackbarText: LiveData<Event<Int>> = _snackbarText
 
     // Not used at the moment
-    private val isDataLoadingError = MutableLiveData<Boolean>()
+    //private val isDataLoadingError = MutableLiveData<Boolean>()
 
     private val _openTppEvent = MutableLiveData<Event<String>>()
     val openTppEvent: LiveData<Event<String>> = _openTppEvent
@@ -68,8 +67,8 @@ class TppsViewModel(
     private val _newTppEvent = MutableLiveData<Event<Unit>>()
     val newTppEvent: LiveData<Event<Unit>> = _newTppEvent
 
-    private val _refreshEvent = MutableLiveData<Event<Unit>>()
-    val refreshEvent: LiveData<Event<Unit>> = _refreshEvent
+    //private val _refreshEvent = MutableLiveData<Event<Unit>>()
+    //val refreshEvent: LiveData<Event<Unit>> = _refreshEvent
 
     private val _aboutEvent = MutableLiveData<Event<Unit>>()
     val aboutEvent: LiveData<Event<Unit>> = _aboutEvent
@@ -79,13 +78,7 @@ class TppsViewModel(
         it.isEmpty()
     }
 
-    // This LiveData depends on another so we can use a transformation.
-    val filtered : LiveData<Boolean> = Transformations.map(_items) {
-        it.isEmpty()
-    }
-
     init {
-        // Set initial state
         searchFilter.init()
 
         setFiltering(TppsFilterType.ALL_TPPs)
@@ -95,6 +88,10 @@ class TppsViewModel(
 
     fun refresh() {
         loadTpps(false)
+    }
+
+    private fun isFiltered() : Boolean {
+        return (_allItems.value?.size == _items.value?.size)
     }
 
     fun refreshTpp(tppId : String?) {
@@ -182,7 +179,7 @@ class TppsViewModel(
     fun loadEbaDirectory() {
         viewModelScope.launch {
             showSnackbarMessage(R.string.loading)
-            // Load from Eba
+            // Load from OBLOG API
             loadTpps(true)
         }
     }
@@ -228,15 +225,17 @@ class TppsViewModel(
                 val tppsResult = tppsRepository.getAllTpps(forceUpdate)
 
                 if (tppsResult is Success) {
-                    //fetchedItems = tppsResult.data
                     _allItems.value = tppsResult.data
 
                     _items.value = getTppsByGlobalFilter()
                     _isFiltered.value = isFiltered()
 
-                    isDataLoadingError.value = false
+                    // TODO: Get it from fetched EBA / OBLOG data
+                    _statusLine.value = "Last EBA version: " + Random().nextLong()
+
+                    //isDataLoadingError.value = false
                 } else {
-                    isDataLoadingError.value = true
+                    //isDataLoadingError.value = true
                     _items.value = emptyList()
                     showSnackbarMessage(R.string.loading_tpps_error)
                 }
@@ -264,7 +263,7 @@ class TppsViewModel(
         _dataLoading.value = true
 
         if (allItems.value.isNullOrEmpty()) {
-            return listOf<Tpp>() //allItems.value!!
+            return listOf<Tpp>()
         }
 
         var tppsToShow = filterTppsByUserInterest(allItems.value, _searchFilter)
@@ -292,7 +291,7 @@ class TppsViewModel(
         } else {
             for (tpp in inputTpps) {
                 if (tpp.getEntityName().contains(_searchFilter.title, true)) {
-                    (filteredTpps as ArrayList<Tpp>).add(tpp)
+                    filteredTpps.add(tpp)
                 }
             }
         }
@@ -389,10 +388,6 @@ class TppsViewModel(
 
         _items.value = getTppsByGlobalFilter()
     }
-
-    /*fun isFiltered(): Boolean {
-        return _allItems.value?.size != _items.value?.size
-    }*/
 
     fun showEditResultMessage(result: Int) {
         when (result) {

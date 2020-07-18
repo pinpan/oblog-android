@@ -1,9 +1,16 @@
 package com.applego.oblog.tppwatch.tppdetail
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
+import androidx.appcompat.widget.TooltipCompat
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +29,17 @@ class TppDetailAdapter(private val viewModel: TppDetailViewModel, ctx: Context, 
         val item = getItem(position)
 
         holder.bind(viewModel, item)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // 26
+            holder.itemView.setTooltipText(item.serviceDetail)
+        } else {
+            TooltipCompat.setTooltipText(holder.itemView, "Service description");
+            holder.itemView.setOnLongClickListener(object: View.OnLongClickListener {
+                override fun onLongClick(v: View) :  Boolean {
+                    Toast.makeText(v.getContext(), "My tool-tip text", Toast.LENGTH_SHORT).show()
+                    return true
+                }
+            })
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

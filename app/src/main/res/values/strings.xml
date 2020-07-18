@@ -169,5 +169,6 @@
     <string name="country_sk">SK</string>
     <string name="country_sl">SL</string>
     <string name="country_uk">UK</string>
+    <string name="label_entity_version">EBA entity version</string>
 
 </resources>

@@ -115,6 +115,19 @@
                             android:textSize="10sp" />
 
                         <TextView
+                            android:id="@+id/label_entity_version"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:inputType="none"
+
+                            android:padding="2dp"
+                            android:text="@string/label_entity_version"
+                            android:textIsSelectable="true"
+                            android:textSize="10sp" />
+
+                        <TextView
                             android:id="@+id/label_authorization_start"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -199,6 +212,17 @@
                             android:padding="2dp"
 
                             android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.address}"
+                            android:textColor="#006496"
+                            android:textIsSelectable="true"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/entity_version"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+
+                            android:text="@{viewmodel.tpp.ebaEntity.ebaEntityVersion}"
                             android:textColor="#006496"
                             android:textIsSelectable="true"
                             android:textSize="10sp" />
@@ -299,7 +323,7 @@
                         android:scrollbars="horizontal|vertical"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 
-                        app:items="@{viewmodel.tpp.ebaEntity.ebaPassport.countries}"
+                        app:items="@{viewmodel.tpp.ebaEntity.ebaPassport.services}"
                         />
                 </LinearLayout>
             </LinearLayout>

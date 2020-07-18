@@ -103,44 +103,6 @@
                     android:background="?android:attr/listDivider"
                 />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="5dp"
-                    >
-
-                    <TextView
-                        android:id="@+id/tpps_displayed"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|start"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginEnd="0dp"
-                        android:paddingTop="@dimen/list_item_padding"
-                        android:background="@color/colorLightGrey"
-                        android:paddingEnd="0dp"
-                        android:text="@{@string/tpps_displayed_number(viewmodel.items.size)}"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textSize="12sp"
-                        />
-
-                    <TextView
-                        android:id="@+id/tpps_registered"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|start"
-                        android:paddingStart="0dp"
-                        android:layout_marginStart="0dp"
-                        android:paddingTop="@dimen/list_item_padding"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textSize="12sp"
-                        android:background="@color/colorLightGrey"
-                        android:visibility="@{viewmodel.isFiltered ? View.GONE : View.VISIBLE}"
-                        android:text="@{@string/tpps_registered_number(viewmodel.allItems.size)}"
-                        />
-                </LinearLayout>
-
                 <com.applego.oblog.tppwatch.util.ScrollChildSwipeRefreshLayout
                     android:id="@+id/refresh_layout"
                     android:layout_width="match_parent"
@@ -148,17 +110,20 @@
                     app:onRefreshListener="@{viewmodel::refresh}"
                     app:refreshing="@{viewmodel.dataLoading}">
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:id="@+id/tpps_container_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clickable="true"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:weightSum="10"
+                        >
 
                         <LinearLayout
                             android:id="@+id/tpps_linear_layout"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
                             android:orientation="vertical"
                             android:paddingTop="0dp"
                             android:paddingBottom="0dp"
@@ -172,6 +137,63 @@
                                 android:layout_marginBottom="0dp"
                                 app:items="@{viewmodel.items}"
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_weight="1"
+                            android:layout_marginBottom="5dp"
+                            >
+
+                            <TextView
+                                android:id="@+id/tpps_displayed"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|start"
+                                android:layout_marginStart="12dp"
+                                android:layout_marginEnd="0dp"
+                                android:paddingTop="@dimen/list_item_padding"
+                                android:background="@color/colorLightGrey"
+                                android:paddingEnd="0dp"
+                                android:text="@{@string/tpps_displayed_number(viewmodel.items.size)}"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:textSize="12sp"
+                                />
+
+                            <TextView
+                                android:id="@+id/tpps_registered"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|start"
+                                android:paddingStart="0dp"
+                                android:layout_marginStart="0dp"
+                                android:paddingTop="@dimen/list_item_padding"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:textSize="12sp"
+                                android:background="@color/colorLightGrey"
+                                android:visibility="@{viewmodel.isFiltered ? View.GONE : View.VISIBLE}"
+                                android:text="@{@string/tpps_registered_number(viewmodel.allItems.size)}"
+                                />
+                        </LinearLayout>
+
+                        <!--android:visibility="@{viewmodel.empty ? View.VISIBLE : View.GONE}"-->
+                        <LinearLayout
+                            android:id="@+id/status_line_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1"
+                            >
+
+                            <TextView
+                                android:id="@+id/status_line"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/list_item_padding"
+                                android:text="@{viewmodel.statusLine}"
+                                />
                         </LinearLayout>
 
                         <LinearLayout
@@ -198,9 +220,10 @@
                                 android:layout_marginBottom="@dimen/list_item_padding"
                                 android:text="@{context.getString(viewmodel.noTppsLabel)}" />
                         </LinearLayout>
-                    </RelativeLayout>
 
+                    </LinearLayout>
                 </com.applego.oblog.tppwatch.util.ScrollChildSwipeRefreshLayout>
+
             </LinearLayout>
         </LinearLayout>
 

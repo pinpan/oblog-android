@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="about_header">About OBLOG</string>
+    <string name="label_entity_version">EBA entity version</string>
 </resources>
