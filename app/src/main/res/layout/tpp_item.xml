@@ -6,6 +6,7 @@
     <data>
 
         <import type="android.widget.CompoundButton" />
+        <import type="android.view.View" />
 
         <variable
             name="tpp"
@@ -25,8 +26,23 @@
         android:paddingTop="@dimen/list_item_padding"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingBottom="@dimen/list_item_padding"
-        android:background="@{ tpp.ebaEntity.isRevoked() ? @color/orange : @color/blue}"
+        android:background="@{ tpp.ebaEntity.isRevoked() ? @color/colorEUOrange : @color/colorEULightGrey}"
         >
+
+<!--
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+-->
+        <TextView
+            android:id="@+id/tpp_revoked_alert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="12sp"
+            android:textColor="@color/colorEURed"
+            android:text="!"
+            android:visibility="@{tpp.ebaEntity.isRevoked() ? View.VISIBLE:View.GONE}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
         <CheckBox
             android:id="@+id/follow_checkbox"

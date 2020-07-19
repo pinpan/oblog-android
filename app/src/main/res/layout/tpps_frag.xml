@@ -41,7 +41,7 @@
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"
                     android:paddingTop="@dimen/list_item_padding"
-                    android:background="@color/colorEULightBlue"
+                    android:background="@color/colorEULightGrey"
                     android:weightSum="10">
 
                     <TextView
@@ -88,10 +88,9 @@
                 </LinearLayout>
 
                 <View
-                    android:id="@+id/divider2"
+                    android:id="@+id/divider1"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="10dp"
                     android:background="?android:attr/listDivider"
                 />
 
@@ -124,18 +123,27 @@
                                 android:id="@+id/tpps_list"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="0dp"
-                                android:layout_marginBottom="0dp"
                                 app:items="@{viewmodel.items}"
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
                         </LinearLayout>
+<!--
+                        android:layout_marginTop="0dp"
+                        android:layout_marginBottom="0dp"
+-->
+
+                        <View
+                            android:id="@+id/divider2"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_margin="1dp"
+                            android:background="?android:attr/listDivider"
+                            />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:layout_margin="2dp"
-                            android:background="@color/colorEULightBlue"
+                            android:background="@color/colorEUDarkBlue"
                             >
 
                             <TextView
@@ -176,7 +184,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_marginBottom="@dimen/list_item_padding"
                                 android:text="@{context.getString(viewmodel.noTppsLabel)}" />
                         </LinearLayout>
 

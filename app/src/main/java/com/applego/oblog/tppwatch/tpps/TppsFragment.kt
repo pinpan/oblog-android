@@ -139,7 +139,11 @@ class TppsFragment : Fragment() {
                 viewModel.loadTpps(false)
                 true
             }
-            else -> false
+            R.id.menu_add_tpp -> {
+                navigateToAddNewTpp()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
 
 

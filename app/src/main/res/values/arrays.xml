@@ -56,12 +56,13 @@
 
     <!-- Sync Preferences -->
     <string-array name="psd2_roles">
-        <item>&lt;ALL&gt;</item>
+        <item>&lt;All PSD2 roles&gt;</item>
         <item>ASPSP</item>
         <item>AISP</item>
         <item>PISP</item>
         <item>CIIP</item>
     </string-array>
+
     <string-array name="eba_institutions">
         <item>&lt;ALL&gt;</item>
         <item>EMS</item>
@@ -80,7 +81,7 @@
     </string-array>
 
     <string-array name="eu_countries">
-        <item>&lt;ALL&gt;</item>
+        <item>&lt;All EU countries&gt;</item>
         <item>Austria</item>
         <item>Belgium</item>
         <item>Bulgaria</item>
@@ -111,7 +112,7 @@
     </string-array>
 
     <string-array name="eu_countries_iso">
-        <item>&lt;ALL&gt;</item>
+        <item>&lt;All EU countries&gt;</item>
         <item>AT</item>
         <item>BE</item>
         <item>BG</item>

@@ -21,19 +21,25 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/menu_add_tpp"
+        android:icon="@drawable/ic_add"
+        android:title="@string/add_tpp"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/load_directory"
         android:title="@string/load_from_server"
         app:showAsAction="never" />
+    <!--
+        <item
+            android:id="@+id/settings"
+            android:title="@string/preferences_title"
+            app:showAsAction="never" />
 
-    <item
-        android:id="@+id/settings"
-        android:title="@string/preferences_title"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/about_frag"
-        android:title="@string/about_menu_item"
-        app:showAsAction="never" />
+        <item
+            android:id="@+id/about_frag"
+            android:title="@string/about_menu_item"
+            app:showAsAction="never" />-->
 
     <!--
         <item

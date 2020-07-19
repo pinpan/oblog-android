@@ -9,4 +9,10 @@
         android:title="@string/menu_delete_tpp"
         app:showAsAction="always" />
 -->
+    <item
+        android:id="@+id/menu_refresh_tpp"
+        android:icon="@drawable/ic_refresh"
+        android:title="@string/refresh"
+        app:showAsAction="never" />
+
 </menu>

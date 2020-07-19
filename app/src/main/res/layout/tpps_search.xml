@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:paddingTop="0dp"
     android:paddingBottom="0dp"
-    android:background="@color/colorEULightBlue"
+    android:background="@color/colorEULightGrey"
     android:orientation="vertical">
 
     <LinearLayout
@@ -15,17 +15,14 @@
         android:orientation="vertical"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/header_padding"
-        android:paddingBottom="@dimen/header_padding"
         >
+        <!--
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <!--android:ems="10"-->
             <EditText
                 android:id="@+id/label_country"
                 android:layout_width="wrap_content"
@@ -38,11 +35,7 @@
                 android:textSize="8sp"
                 android:inputType="none"
                 android:text="@string/label_country" />
-
-            <!--android:ems="10"
-                android:layout_toRightOf="@id/label_country"
-            -->
-            <EditText
+         <EditText
                 android:id="@+id/label_psd2_role"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -55,17 +48,13 @@
                 android:inputType="textPersonName"
                 android:text="@string/label_role" />
         </LinearLayout>
-
+-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:weightSum="2">
 
-<!--
-            android:layout_below="@id/label_country"
-            android:layout_alignLeft="@id/label_country"
--->
             <Spinner
                 android:id="@+id/serarch_country"
                 android:layout_width="match_parent"
@@ -73,11 +62,6 @@
                 android:layout_weight="1"
                 android:textSize="8sp" />
 
-            <!--android:layout_below="@id/label_psd2_role"
-                android:layout_alignLeft="@id/label_psd2_role"
-                android:layout_toRightOf="@id/serarch_country"
-                android:layout_marginLeft="10dp"
-            -->
             <Spinner
                 android:id="@+id/search_role"
                 android:layout_width="match_parent"

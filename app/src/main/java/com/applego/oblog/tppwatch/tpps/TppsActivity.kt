@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -85,7 +86,11 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
         setContentView(com.applego.oblog.tppwatch.R.layout.tpps_act)
         setupNavigationDrawer()
-        setSupportActionBar(findViewById(com.applego.oblog.tppwatch.R.id.toolbar))
+
+        val toolbar: Toolbar = findViewById(com.applego.oblog.tppwatch.R.id.toolbar)
+        toolbar.subtitle = "Open Banking Log"
+        //toolbar.logo = "Open Banking Log"
+        setSupportActionBar(toolbar)
 
         val navController: NavController = findNavController(com.applego.oblog.tppwatch.R.id.nav_host_fragment)
         appBarConfiguration =

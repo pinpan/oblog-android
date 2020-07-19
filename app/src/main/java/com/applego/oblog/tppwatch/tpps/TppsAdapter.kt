@@ -29,7 +29,7 @@ class TppsAdapter(private val viewModel: TppsViewModel, ctx: Context, layoutId: 
         if (isrevoked) {
             Timber.d(item!!.getId() + " is revoked")
         }
-        holder.itemView.setBackgroundResource((if (isrevoked) R.color.colorEUOrange else R.color.colorEULightGrey))
+        //holder.itemView.setBackgroundResource((if (isrevoked) R.color.colorEUOrange else R.color.colorEULightGrey))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

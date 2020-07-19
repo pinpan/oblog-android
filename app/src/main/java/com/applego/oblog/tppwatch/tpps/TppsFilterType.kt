@@ -61,7 +61,6 @@ enum class TppsFilterType {
 
         init {
             allFilterTypes.add(TppsFilterType.ONLY_PSD2_FIs)
-            //allFilterTypes.add(TppsFilterType.PSD2_TPPS)
             allFilterTypes.add(TppsFilterType.USED_TPPs)
             allFilterTypes.add(TppsFilterType.FOLLOWED_TPPs)
             allFilterTypes.add(TppsFilterType.ONLY_PSD2_TPPs)

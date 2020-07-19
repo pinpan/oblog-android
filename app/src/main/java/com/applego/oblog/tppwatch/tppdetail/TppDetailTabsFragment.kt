@@ -147,4 +147,17 @@ class TppDetailTabsFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.tppdetail_fragment_menu, menu)
     }
+
+    override fun onOptionsItemSelected(item: MenuItem) =
+            when (item.itemId) {
+                R.id.refresh_tpp -> {
+                    refreshTppFromServer()
+                    true
+                }
+                else -> super.onOptionsItemSelected(item)
+            }
+
+    private fun refreshTppFromServer() {
+        viewModel.refresh()
+    }
 }

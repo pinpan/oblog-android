@@ -1,13 +1,7 @@
 package com.applego.oblog.tppwatch.tppdetail
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.SimpleExpandableListAdapter
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -33,7 +27,7 @@ class TppDetailFragment : Fragment() {
 
     private lateinit var listAdapter: TppDetailAdapter
 
-    private lateinit var expandableListAdapter: SimpleExpandableListAdapter
+    //private lateinit var expandableListAdapter: SimpleExpandableListAdapter
 
     private val viewModel by viewModels<TppDetailViewModel> { getViewModelFactory() }
 
@@ -42,13 +36,13 @@ class TppDetailFragment : Fragment() {
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
         setupListAdapter()
         setupFab()
-        setupRefresh()
+        //setupRefresh()
         view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
         setupNavigation()
 
-        //this.setupRefreshLayout(viewDataBinding.refreshLayout)
     }
 
+/*
     private fun setupRefresh() {
         activity?.findViewById<Button>(R.id.refresh_tpp)?.let {
             it.setOnClickListener {
@@ -56,6 +50,16 @@ class TppDetailFragment : Fragment() {
             }
         }
     }
+*/
+
+    override fun onOptionsItemSelected(item: MenuItem) =
+        when (item.itemId) {
+            R.id.refresh_tpp -> {
+                refreshTppFromServer()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
 
     private fun refreshTppFromServer() {
         viewModel.refresh()
@@ -111,6 +115,13 @@ class TppDetailFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        menu.findItem(R.id.refresh_tpp).setOnMenuItemClickListener {
+            viewModel.refresh()
+            true
+        }
+
         inflater.inflate(R.menu.tppdetail_fragment_menu, menu)
     }
 }

@@ -268,11 +268,11 @@ class TppsViewModel(
 
         var tppsToShow = filterTppsByUserInterest(allItems.value, _searchFilter)
 
-        if (!_searchFilter.countries.isNullOrBlank() && !_searchFilter.countries.equals("<ALL>")) {
+        if (!_searchFilter.countries.isNullOrBlank() && !_searchFilter.countries.equals("<All EU countries>")) {
             tppsToShow = filterTppsByCountry(tppsToShow, _searchFilter.countries)
         }
 
-        if (!_searchFilter.services.isNullOrBlank() && !_searchFilter.services.equals("<ALL>")) {
+        if (!_searchFilter.services.isNullOrBlank() && !_searchFilter.services.equals("<All PSD2 roles>")) {
             tppsToShow = filterTppsByService(tppsToShow, _searchFilter.services)
         }
 
@@ -341,10 +341,14 @@ class TppsViewModel(
         }
 
         var filteredTpps = ArrayList<Tpp>()
-        _searchFilter.countries.forEach {
-            inputTpps?.forEach {
-                if (it.getCountry().equals(country)) {
-                    filteredTpps.add(it)
+        if (country.isNullOrBlank() || country.equals("<All EU countries>")) {
+            filteredTpps.addAll(inputTpps)
+        } else {
+            _searchFilter.countries.forEach {
+                inputTpps?.forEach {
+                    if (it.getCountry().equals(country)) {
+                        filteredTpps.add(it)
+                    }
                 }
             }
         }
@@ -358,7 +362,7 @@ class TppsViewModel(
         }
 
         val filteredTpps = ArrayList<Tpp>()
-        if (service.isNullOrBlank() || service.equals("<ALL>")) {
+        if (service.isNullOrBlank() || service.equals("<All PSD2 roles>")) {
             filteredTpps.addAll(inputTpps)
         } else {
             val psdService = EbaService.findPsd2Service(service)
