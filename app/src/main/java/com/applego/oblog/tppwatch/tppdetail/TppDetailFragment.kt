@@ -54,7 +54,7 @@ class TppDetailFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
-            R.id.refresh_tpp -> {
+            R.id.menu_refresh_tpp -> {
                 refreshTppFromServer()
                 true
             }
@@ -117,7 +117,7 @@ class TppDetailFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
 
-        menu.findItem(R.id.refresh_tpp).setOnMenuItemClickListener {
+        menu.findItem(R.id.menu_refresh_tpp).setOnMenuItemClickListener {
             viewModel.refresh()
             true
         }

@@ -7,6 +7,6 @@
         android:id="@+id/menu_refresh_tpp"
         android:icon="@drawable/ic_refresh"
         android:title="@string/refresh"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
 
 </menu>
