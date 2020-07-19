@@ -1,9 +1,7 @@
 package com.applego.oblog.tppwatch.tppdetail
 
-import android.accessibilityservice.AccessibilityServiceInfo
 import android.os.Bundle
 import android.view.*
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -12,7 +10,6 @@ import androidx.viewpager.widget.ViewPager
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.addedittppapp.AddEditTppAppFragmentDirections
 import com.applego.oblog.tppwatch.databinding.TppDetailTabsFragmentBinding
-import com.applego.oblog.tppwatch.util.Event
 import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
@@ -44,7 +41,7 @@ class TppDetailTabsFragment : Fragment() {
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
         setupFab()
-        setupRefresh()
+        //setupRefresh()
         setupNavigation()
 
         view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
@@ -52,13 +49,13 @@ class TppDetailTabsFragment : Fragment() {
         //this.setupRefreshLayout(viewDataBinding.refreshLayout)
     }
 
-    private fun setupRefresh() {7
+    /*private fun setupRefresh() {7
         activity?.findViewById<Button>(R.id.refresh_tpp)?.let {
             it.setOnClickListener {
                 viewModel.refresh()
             }
         }
-    }
+    }*/
 
 
     private fun setupNavigation() {
@@ -145,19 +142,24 @@ class TppDetailTabsFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.tppdetail_fragment_menu, menu)
+        //super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.tpp_detail_tabs_fragment_menu, menu)
+        /*menu.findItem(R.id.menu_refresh_tpp).setOnMenuItemClickListener {
+            viewModel.refresh()
+            true
+        }*/
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
             when (item.itemId) {
-                R.id.refresh_tpp -> {
-                    refreshTppFromServer()
+                R.id.menu_refresh_tpp -> {
+                    viewModel.refresh() //refreshTppFromServer()
                     true
                 }
                 else -> super.onOptionsItemSelected(item)
             }
 
-    private fun refreshTppFromServer() {
+    /*private fun refreshTppFromServer() {
         viewModel.refresh()
-    }
+    }*/
 }
