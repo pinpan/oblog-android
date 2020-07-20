@@ -341,6 +341,7 @@ class TppsFragmentTest {
         onView(withText("No used TPPs selected!")).check(matches((isDisplayed())))
     }
 
+/*
     @Test
     fun clickAddTppButton_navigateToAddEditFragment() {
         // GIVEN - On the home screen
@@ -360,6 +361,7 @@ class TppsFragmentTest {
             )
         )
     }
+*/
 
     private fun launchTppsActivity(isFirstRun: Boolean): ActivityScenario<TppsActivity>? {
         val intent = Intent(getApplicationContext(), TppsActivity::class.java)
