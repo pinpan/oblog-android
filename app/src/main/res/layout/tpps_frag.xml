@@ -193,6 +193,7 @@
             </LinearLayout>
         </LinearLayout>
 
+<!--
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_tpp_fab"
             android:layout_width="wrap_content"
@@ -202,6 +203,7 @@
             app:fabSize="normal"
             app:layout_anchor="@id/refresh_layout"
             app:layout_anchorGravity="bottom|right|end" />
+-->
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
 

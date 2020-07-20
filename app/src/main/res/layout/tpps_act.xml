@@ -24,7 +24,11 @@
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="@style/Toolbar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar"
+                app:logo="@drawable/oblog_icon_144"
+                app:subtitleTextAppearance="@style/toolbar_subtitle"
+                app:titleTextAppearance="@style/toolbar_title"
+                />
         </com.google.android.material.appbar.AppBarLayout>
 
         <LinearLayout

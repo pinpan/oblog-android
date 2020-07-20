@@ -89,7 +89,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
         val toolbar: Toolbar = findViewById(com.applego.oblog.tppwatch.R.id.toolbar)
         toolbar.subtitle = "Open Banking Log"
-        //toolbar.logo = "Open Banking Log"
+        toolbar.setLogo(R.drawable.oblog_icon_144)
         setSupportActionBar(toolbar)
 
         val navController: NavController = findNavController(com.applego.oblog.tppwatch.R.id.nav_host_fragment)

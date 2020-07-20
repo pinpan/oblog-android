@@ -24,7 +24,7 @@
         android:id="@+id/menu_add_tpp"
         android:icon="@drawable/ic_add"
         android:title="@string/add_tpp"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/load_directory"

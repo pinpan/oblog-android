@@ -10,6 +10,7 @@ import androidx.viewpager.widget.ViewPager
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.addedittppapp.AddEditTppAppFragmentDirections
 import com.applego.oblog.tppwatch.databinding.TppDetailTabsFragmentBinding
+import com.applego.oblog.tppwatch.tpps.TppsFragmentDirections
 import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
@@ -156,8 +157,17 @@ class TppDetailTabsFragment : Fragment() {
                     viewModel.refresh() //refreshTppFromServer()
                     true
                 }
+                R.id.about_frag-> {
+                    openAbout()
+                    true
+                }
                 else -> super.onOptionsItemSelected(item)
             }
+
+    private fun openAbout() {
+        val action = TppDetailTabsFragmentDirections.actionTppDetailTabsFragmentToAboutFragment()
+        findNavController().navigate(action)
+    }
 
     /*private fun refreshTppFromServer() {
         viewModel.refresh()

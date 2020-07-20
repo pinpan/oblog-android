@@ -16,7 +16,6 @@ import com.applego.oblog.tppwatch.data.model.PspType
 import com.applego.oblog.tppwatch.databinding.TppsFragBinding
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
@@ -107,18 +106,6 @@ class TppsFragment : Fragment() {
                         }
                     })
         }
-
-        /*val item = menu.findItem(R.id.revokedSwitchForActionBar)
-        item.setActionView(R.layout.switch_item)
-
-        val mySwitch = item.actionView.findViewById(R.id.mySwitch) as Switch
-        mySwitch.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener{
-            override fun onCheckedChanged(p0: CompoundButton?, isChecked: Boolean) {
-                // do what you want with isChecked
-                viewModel.showRevokedOnly()
-            }
-        })
-        */
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
@@ -168,7 +155,7 @@ class TppsFragment : Fragment() {
         setupListAdapter()
         setupNavigation()
         setUpSearchForm();
-        setupFab()
+        //setupFab()
     }
 
     private fun setupSearchFilter(savedInstanceState: Bundle?) {
@@ -282,6 +269,7 @@ class TppsFragment : Fragment() {
         }
     }
 
+/*
     private fun setupFab() {
         activity?.findViewById<FloatingActionButton>(R.id.add_tpp_fab)?.let {
             it.setOnClickListener {
@@ -289,6 +277,7 @@ class TppsFragment : Fragment() {
             }
         }
     }
+*/
 
     private fun navigateToAddNewTpp() {
         val action = TppsFragmentDirections
