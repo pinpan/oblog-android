@@ -88,8 +88,6 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
         setupNavigationDrawer()
 
         val toolbar: Toolbar = findViewById(com.applego.oblog.tppwatch.R.id.toolbar)
-        toolbar.subtitle = "Open Banking Log"
-        toolbar.setLogo(R.drawable.oblog_icon_144)
         setSupportActionBar(toolbar)
 
         val navController: NavController = findNavController(com.applego.oblog.tppwatch.R.id.nav_host_fragment)
@@ -112,6 +110,12 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
         }
 
     //    getUserId()
+
+        toolbar.subtitle = "Open Banking Log"
+        toolbar.setLogo(R.drawable.oblog_icon_144)
+        toolbar.setTitleMargin(0, 10, 0, 10)
+        //toolbar.title = "Open Banking"
+        //supportActionBar?.setTitle(R.string.open_banking)
 
         setupSharedPreferences();
 

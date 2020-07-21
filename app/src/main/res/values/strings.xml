@@ -10,6 +10,10 @@
     <string name="edit_app">Edit APP</string>
 
     <string name="app_name">OBLOG</string>
+    <string name="open_banking">Open Banking</string>
+    <string name="open">Open</string>
+    <string name="banking">Banking</string>
+    <string name="log">Log</string>
     <string name="add_tpp">New TPP</string>
     <string name="edit_tpp">Edit TPP</string>
     <string name="tpp_marked_followed">TPP marked Followed</string>
