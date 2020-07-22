@@ -25,7 +25,7 @@
                 android:minHeight="?attr/actionBarSize"
                 android:theme="@style/Toolbar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar"
-                app:logo="@drawable/oblog_icon_144"
+                app:logo="@drawable/oblog_logo_48x52"
                 app:subtitleTextAppearance="@style/toolbar_subtitle"
                 app:titleTextAppearance="@style/toolbar_title"
                 />

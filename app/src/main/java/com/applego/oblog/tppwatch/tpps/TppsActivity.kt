@@ -90,6 +90,8 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
         val toolbar: Toolbar = findViewById(com.applego.oblog.tppwatch.R.id.toolbar)
         setSupportActionBar(toolbar)
 
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.oblog_icon_144)
+
         val navController: NavController = findNavController(com.applego.oblog.tppwatch.R.id.nav_host_fragment)
         appBarConfiguration =
             AppBarConfiguration.Builder(com.applego.oblog.tppwatch.R.id.tpps_fragment_dest, com.applego.oblog.tppwatch.R.id.statistics_fragment_dest)
@@ -111,8 +113,9 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
     //    getUserId()
 
-        toolbar.subtitle = "Open Banking Log"
-        toolbar.setLogo(R.drawable.oblog_icon_144)
+        toolbar.subtitle = ""
+        toolbar.title = ""
+        toolbar.setLogo(R.drawable.oblog_logo_48x52)
         toolbar.setTitleMargin(0, 10, 0, 10)
         //toolbar.title = "Open Banking"
         //supportActionBar?.setTitle(R.string.open_banking)
