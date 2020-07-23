@@ -4,6 +4,7 @@ import android.accounts.AccountManager
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
@@ -13,6 +14,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.res.ResourcesCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -84,13 +86,11 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
             })
         }
 
-        setContentView(com.applego.oblog.tppwatch.R.layout.tpps_act)
+        setContentView(R.layout.tpps_act)
         setupNavigationDrawer()
 
-        val toolbar: Toolbar = findViewById(com.applego.oblog.tppwatch.R.id.toolbar)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.oblog_icon_144)
 
         val navController: NavController = findNavController(com.applego.oblog.tppwatch.R.id.nav_host_fragment)
         appBarConfiguration =
@@ -113,12 +113,9 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
     //    getUserId()
 
-        toolbar.subtitle = ""
         toolbar.title = ""
-        toolbar.setLogo(R.drawable.oblog_logo_48x52)
-        toolbar.setTitleMargin(0, 10, 0, 10)
-        //toolbar.title = "Open Banking"
-        //supportActionBar?.setTitle(R.string.open_banking)
+        toolbar.subtitle = ""
+        //toolbar.setTitleMargin(0, 10, 0, 10)
 
         setupSharedPreferences();
 

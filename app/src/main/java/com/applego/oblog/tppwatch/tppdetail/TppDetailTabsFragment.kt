@@ -1,7 +1,10 @@
 package com.applego.oblog.tppwatch.tppdetail
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -27,6 +30,7 @@ class TppDetailTabsFragment : Fragment() {
 
     private lateinit var tppDetailTabsAdapter: TppDetailTabsAdapter
     private lateinit var viewPager: ViewPager
+    //private var toolbarIcon: Drawable? = null
 
     private lateinit var viewDataBinding: TppDetailTabsFragmentBinding
 
@@ -42,22 +46,11 @@ class TppDetailTabsFragment : Fragment() {
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
         setupFab()
-        //setupRefresh()
         setupNavigation()
 
         view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
-
-        //this.setupRefreshLayout(viewDataBinding.refreshLayout)
+        //toolbarIcon = ResourcesCompat.getDrawable(resources, R.drawable.oblog_logo_48x52, null)
     }
-
-    /*private fun setupRefresh() {7
-        activity?.findViewById<Button>(R.id.refresh_tpp)?.let {
-            it.setOnClickListener {
-                viewModel.refresh()
-            }
-        }
-    }*/
-
 
     private fun setupNavigation() {
         viewModel.tppUpdatedEvent.observe(this, EventObserver {
@@ -143,18 +136,13 @@ class TppDetailTabsFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        //super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.tpp_detail_tabs_fragment_menu, menu)
-        /*menu.findItem(R.id.menu_refresh_tpp).setOnMenuItemClickListener {
-            viewModel.refresh()
-            true
-        }*/
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
             when (item.itemId) {
                 R.id.menu_refresh_tpp -> {
-                    viewModel.refresh() //refreshTppFromServer()
+                    viewModel.refresh()
                     true
                 }
                 R.id.about_frag-> {
@@ -169,7 +157,9 @@ class TppDetailTabsFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-    /*private fun refreshTppFromServer() {
-        viewModel.refresh()
+    /*override fun onResume() {
+        super.onResume()
+        val toolbar: Toolbar?= activity?.findViewById(com.applego.oblog.tppwatch.R.id.toolbar)
+        toolbar?.setNavigationIcon(toolbarIcon)
     }*/
 }

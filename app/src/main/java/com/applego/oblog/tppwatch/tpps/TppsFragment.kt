@@ -2,10 +2,13 @@ package com.applego.oblog.tppwatch.tpps
 
 import android.app.SearchManager
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import android.widget.*
 import android.widget.ArrayAdapter
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -34,6 +37,7 @@ class TppsFragment : Fragment() {
 
     lateinit var countriesSpinner: Spinner
     lateinit var servicesSpinner: Spinner
+    private  var toolbarIcon: Drawable? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -137,6 +141,12 @@ class TppsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
+        val toolbar: Toolbar ?= activity?.findViewById(com.applego.oblog.tppwatch.R.id.toolbar)
+        /*toolbar?.post { */
+        val d: Drawable?= ResourcesCompat.getDrawable(resources, R.drawable.oblog_logo_48x52, null)
+        toolbar?.setNavigationIcon(d)
+        /*}*/
+
         viewModel.refresh()
     }
 
@@ -155,7 +165,8 @@ class TppsFragment : Fragment() {
         setupListAdapter()
         setupNavigation()
         setUpSearchForm();
-        //setupFab()
+
+        toolbarIcon = ResourcesCompat.getDrawable(resources, R.drawable.oblog_logo_48x52, null)
     }
 
     private fun setupSearchFilter(savedInstanceState: Bundle?) {
@@ -268,16 +279,6 @@ class TppsFragment : Fragment() {
             }
         }
     }
-
-/*
-    private fun setupFab() {
-        activity?.findViewById<FloatingActionButton>(R.id.add_tpp_fab)?.let {
-            it.setOnClickListener {
-                navigateToAddNewTpp()
-            }
-        }
-    }
-*/
 
     private fun navigateToAddNewTpp() {
         val action = TppsFragmentDirections

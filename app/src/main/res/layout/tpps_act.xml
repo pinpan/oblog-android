@@ -22,13 +22,15 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="10dp"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="@style/Toolbar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar"
-                app:logo="@drawable/oblog_logo_48x52"
                 app:subtitleTextAppearance="@style/toolbar_subtitle"
-                app:titleTextAppearance="@style/toolbar_title"
-                />
+                app:titleTextAppearance="@style/toolbar_title" /><!-- app:logo="@drawable/oblog_logo_48x52"-->
         </com.google.android.material.appbar.AppBarLayout>
 
         <LinearLayout
