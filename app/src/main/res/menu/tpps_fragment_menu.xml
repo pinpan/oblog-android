@@ -2,35 +2,43 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/search"
-        android:title="@string/search_title"
+    <item
+        android:id="@+id/search"
         android:icon="@drawable/ic_search_black_24dp"
-        app:showAsAction="always"
-        app:actionViewClass="com.applego.oblog.tppwatch.util.EmptySubmitSearchView" />
-
+        android:title="@string/search_title"
+        app:actionViewClass="com.applego.oblog.tppwatch.util.EmptySubmitSearchView"
+        app:showAsAction="always" />
     <item
         android:id="@+id/menu_filter"
-        android:title="@string/menu_filter"
         android:icon="@drawable/ic_filter_list"
+        android:title="@string/menu_filter"
         app:showAsAction="always" />
-
+<!--
     <item
-        android:id="@+id/menu_refresh"
-        android:icon="@drawable/ic_refresh"
-        android:title="@string/refresh"
-        app:showAsAction="always" />
+        android:id="@+id/menu_repository"
+        android:icon="@drawable/ic_filter_list"
+        android:title="@string/menu_filter"
+        app:showAsAction="never">
+-->
+        <item
+            android:id="@+id/menu_add_tpp"
+            android:icon="@drawable/ic_add"
+            android:title="@string/add_tpp"
+            app:showAsAction="ifRoom" />
+        <item
+            android:id="@+id/menu_refresh"
+            android:icon="@drawable/ic_refresh"
+            android:title="@string/refresh"
+            app:showAsAction="ifRoom" />
+        <item
+            android:id="@+id/load_directory"
+            android:title="@string/load_from_server"
+            app:showAsAction="ifRoom" />
+<!--
+    </item>
+-->
 
-    <item
-        android:id="@+id/menu_add_tpp"
-        android:icon="@drawable/ic_add"
-        android:title="@string/add_tpp"
-        app:showAsAction="always" />
-
-    <item
-        android:id="@+id/load_directory"
-        android:title="@string/load_from_server"
-        app:showAsAction="never" />
-    <!--
+   <!--
         <item
             android:id="@+id/settings"
             android:title="@string/preferences_title"

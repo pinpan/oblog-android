@@ -110,6 +110,21 @@
                             android:background="?android:attr/listDivider" />
 
                         <TextView
+                            android:id="@+id/stats_authorized_label"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="1dp"
+                            android:text="@{@string/statistics_authorized_label}"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textSize="12sp" />
+
+                        <View
+                            android:id="@+id/divider7"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?android:attr/listDivider" />
+
+                        <TextView
                             android:id="@+id/stats_this_year_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -153,7 +168,7 @@
                             android:layout_marginBottom="5dp"
                             android:background="?android:attr/listDivider" />
 
-<!--
+                        <!--
                         <TextView
                             android:id="@+id/stats_used_text"
                             android:layout_width="match_parent"
@@ -182,6 +197,11 @@
                     </LinearLayout>
                 </ScrollView>
 
+                <Spinner
+                    android:id="@+id/spinner_charttype"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
                 <LinearLayout
                     android:id="@+id/chart_layout"
                     android:layout_width="match_parent"
@@ -194,7 +214,7 @@
                         android:id="@+id/chart"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
-                </LinearLayout> <!--android:visibility="@{viewmodel.dataLoading ? View.GONE : View.VISIBLE}"-->
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </com.applego.oblog.tppwatch.util.ScrollChildSwipeRefreshLayout>

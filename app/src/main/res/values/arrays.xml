@@ -80,6 +80,22 @@
         <item>7)</item>
     </string-array>
 
+    <string-array name="chart_type_titles">
+        <item>Current per country</item>
+        <item>Current per service</item>
+        <item>Differencial per country</item>
+        <item>Differencial per service</item>
+    </string-array>
+
+    <string-array name="chart_type_values">
+        <item>Default</item>
+        <item>Country</item>
+        <item>Service</item>
+        <item>DifferencialPerCountry</item>
+        <item>DifferencialPerService</item>
+    </string-array>
+
+
     <string-array name="eu_countries">
         <item>&lt;All EU countries&gt;</item>
         <item>Austria</item>
