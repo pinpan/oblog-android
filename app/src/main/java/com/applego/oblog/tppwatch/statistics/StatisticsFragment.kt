@@ -137,7 +137,7 @@ class StatisticsFragment : Fragment() {
                         ChartType.PerCountry -> if (value.toInt() < allEUCountries.size) allEUCountries[value.toInt()].name else "N/A"
                         ChartType.PerInstitutionTypeChange,
                         ChartType.PerInstitutionType -> {
-                            if (value.toInt() < allEbaServies.size) allEntityTypes[value.toInt()]?.code else "N/A"
+                            if (value.toInt() < allEntityTypes.size) allEntityTypes[value.toInt()]?.code else "N/A"
                         }
                     }
                 }
