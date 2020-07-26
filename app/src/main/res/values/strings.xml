@@ -73,7 +73,7 @@
     <string name="statistics_no_tpps">You have no TPPs.</string>
     <string name="statistics_used_tpps">Used TPPs: %.1f%%</string>
     <string name="statistics_followed_tpps">Followed TPPs: %.1f%%</string>
-    <string name="statistics_total_tpps">Total number of TPPs: %1$d</string>
+    <string name="statistics_total_tpps">Total number of TPPs: %1$d, from which:</string>
     <string name="statistics_total_aisp">AISPs: %1$d</string>
     <string name="statistics_total_pisp">PISPs: %1$d</string>
     <string name="statistics_total_emi">EMIs: %1$d</string>
@@ -84,6 +84,7 @@
     <string name="statistics_last_week">Within last 7 days: %1$d</string>
     <string name="statistic_graphs">Tpps authorization statistic graphs (select from the combo bellow)</string>
     <string name="statistics_error">Error loading statistics.</string>
+    <string name="statistics_date">Statistics calculated on %1$td</string>  <!--based on EBA registry version %2$d-->
     <string name="no_data">No data</string>
     <string name="loading">LOADING</string>
 

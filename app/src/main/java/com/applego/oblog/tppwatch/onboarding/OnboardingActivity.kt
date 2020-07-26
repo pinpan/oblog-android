@@ -1,10 +1,14 @@
 package com.applego.oblog.tppwatch.onboarding
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.preference.PreferenceManager
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -13,6 +17,7 @@ import androidx.viewpager.widget.ViewPager
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.onboarding.ui.main.OnboardingViewModel
 import com.applego.oblog.tppwatch.onboarding.ui.main.SectionsPagerAdapter
+import com.applego.oblog.tppwatch.tpps.TppsActivity
 import com.applego.oblog.tppwatch.util.Event
 
 class OnboardingActivity : AppCompatActivity() {
@@ -26,53 +31,73 @@ class OnboardingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.onboarding_activity)
 
-        viewModel = ViewModelProviders.of(this).get(OnboardingViewModel::class.java)
+        val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
+        var isFirstRun = sharedPerfs.getBoolean("isFirstRun", true)
+        if (!isFirstRun) {
+            Handler().post/*Delayed*/(object : Runnable {
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
+                override fun run(): Unit {
+                    startActivity(Intent(this@OnboardingActivity, TppsActivity::class.java))
+                }
+            })
+        } else {
 
-        viewPager = findViewById(R.id.view_pager)
-        viewPager.adapter = sectionsPagerAdapter
-        viewPager.addOnPageChangeListener(object: ViewPager.SimpleOnPageChangeListener() {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                viewModel.setIndex(position)
+            //show sign up activity ?
+            Toast.makeText(this@OnboardingActivity, "Run only once", Toast.LENGTH_LONG).show()
+
+            val editor = sharedPerfs.edit()
+            editor.putBoolean("isFirstRun", false)
+            editor.commit()
+
+            setContentView(R.layout.onboarding_activity)
+
+            viewModel = ViewModelProviders.of(this).get(OnboardingViewModel::class.java)
+
+            val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
+
+            viewPager = findViewById(R.id.view_pager)
+            viewPager.adapter = sectionsPagerAdapter
+            viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                    viewModel.setIndex(position)
+                }
+            })
+
+            findViewById<ImageButton>(R.id.intro_btn_next)?.let {
+                it.setOnClickListener { view ->
+                    //viewModel.nextPage()
+                    viewPager.setCurrentItem(viewModel.index.value?.inc() ?: 0, true);
+                }
             }
-        })
 
-        findViewById<ImageButton>(R.id.intro_btn_next)?.let {
-            it.setOnClickListener { view ->
-                //viewModel.nextPage()
-                viewPager.setCurrentItem(viewModel.index.value?.inc() ?: 0, true);
+            findViewById<Button>(R.id.intro_btn_finish)?.let {
+                it.setOnClickListener { view ->
+                    viewModel.finishOnboarding()
+                }
             }
-        }
 
-        findViewById<Button>(R.id.intro_btn_finish)?.let {
-            it.setOnClickListener { view ->
-                viewModel.finishOnboarding()
+            findViewById<Button>(R.id.intro_btn_skip)?.let {
+                it.setOnClickListener { view ->
+                    viewModel.finishOnboarding()
+                }
             }
-        }
 
-        findViewById<Button>(R.id.intro_btn_skip)?.let {
-            it.setOnClickListener { view ->
-                viewModel.finishOnboarding()
+            val N: Int = ((viewPager.adapter?.count) ?: 0) - 1
+            for (n in 0..N) {
+                val indicator: ImageView = window.decorView.findViewWithTag(resources.getString(R.string.tag_intro_indicator) + n)
+                indicatorViewes.add(indicator)
             }
+            activeIndicator = indicatorViewes.get(viewModel.index.value ?: 0)
+
+            viewModel.index.observe(this, Observer<Int> {
+                onPageIndexChanged(it)
+            })
+
+            viewModel.onboardingFinishEvent.observe(this, Observer<Event<Unit>> {
+                finish()
+            })
         }
-
-        val N : Int = ((viewPager.adapter?.count) ?: 0)-1
-        for (n in 0..N) {
-            val indicator: ImageView = window.decorView.findViewWithTag(resources.getString(R.string.tag_intro_indicator) + n)
-            indicatorViewes.add(indicator)
-        }
-        activeIndicator = indicatorViewes.get(viewModel.index.value ?: 0)
-
-        viewModel.index.observe(this, Observer<Int> {
-            onPageIndexChanged(it)
-        })
-
-        viewModel.onboardingFinishEvent.observe(this, Observer<Event<Unit>> {
-            finish()
-        })
     }
 
     override fun onStart() {

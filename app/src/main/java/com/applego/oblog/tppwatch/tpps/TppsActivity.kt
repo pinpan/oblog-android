@@ -64,16 +64,12 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
         }
     */
 
+/*
         val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
         var isFirstRun = sharedPerfs.getBoolean("isFirstRun", true)
-/*
-        if (getIntent().getExtras()?.getBoolean("com.applego.oblog.tppwatch.isFirstRun", true) == true) {
-            isFirstRun = false
-        }
-*/
         if (isFirstRun) {
             //show sign up activity
-            Handler().post/*Delayed*/(object : Runnable {
+            Handler().post(object : Runnable {
 
                 override fun run(): Unit {
                     val editor = sharedPerfs.edit()
@@ -85,6 +81,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                 }
             })
         }
+*/
 
         setContentView(R.layout.tpps_act)
         setupNavigationDrawer()
