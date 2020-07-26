@@ -82,6 +82,7 @@
     <string name="statistics_last_year">Within last 365 days: %1$d</string>
     <string name="statistics_last_month">Within last 30 days: %1$d</string>
     <string name="statistics_last_week">Within last 7 days: %1$d</string>
+    <string name="statistic_graphs">Tpps authorization statistic graphs (select from the combo bellow)</string>
     <string name="statistics_error">Error loading statistics.</string>
     <string name="no_data">No data</string>
     <string name="loading">LOADING</string>

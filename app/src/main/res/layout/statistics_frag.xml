@@ -5,6 +5,9 @@
     <data>
 
         <import type="android.view.View" />
+        <variable
+            name="fragment"
+            type="com.applego.oblog.tppwatch.statistics.StatisticsFragment"/>
 
         <variable
             name="viewmodel"
@@ -197,11 +200,35 @@
                     </LinearLayout>
                 </ScrollView>
 
+                <TextView
+                    android:id="@+id/statistic_graphs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="1dp"
+                    android:text="@{@string/statistic_graphs}"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="12sp" />
+
                 <Spinner
                     android:id="@+id/spinner_charttype"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    />
 
+                <!--<CheckBox
+                    android:id="@+id/checkbox_psd2_only"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:checked="@{viewmodel.psd2Only}"
+                    android:gravity="left|center_vertical"
+                    android:onClick="@{() -> fragment.showPsd2Only()}"
+                    android:paddingTop="1dp"
+                    android:text="@string/label_used"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#006496" />
+-->
                 <LinearLayout
                     android:id="@+id/chart_layout"
                     android:layout_width="match_parent"

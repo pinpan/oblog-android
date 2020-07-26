@@ -128,6 +128,8 @@
                 </com.google.android.material.tabs.TabLayout>
             </androidx.viewpager.widget.ViewPager>
 
+<!-- Keep for an accidential need to remove a TPP with wrong data.
+TODO: Make accessible only for admins under apppropriate ACL
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/delete_tpp_fab"
                 android:layout_width="wrap_content"
@@ -137,6 +139,7 @@
                 android:onClick="@{(view) -> viewmodel.deleteTpp()}"
                 app:fabSize="normal"
                 app:layout_anchorGravity="bottom|right|end" />
+-->
 
         </RelativeLayout>
 

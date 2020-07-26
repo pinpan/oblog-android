@@ -67,7 +67,7 @@ class StatisticsFragment : Fragment() {
         val toolbar: Toolbar ?= activity?.findViewById(com.applego.oblog.tppwatch.R.id.toolbar)
         toolbar?.setNavigationIcon(toolbarIcon)
 
-        val chartTypeAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.chart_type_values, R.layout.spinner_item)
+        val chartTypeAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.chart_type_titles, R.layout.spinner_item)
         chartTypesSpinner = activity?.findViewById(R.id.spinner_charttype)!!
         chartTypesSpinner.setAdapter(chartTypeAdapter);
         chartTypesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
@@ -106,6 +106,8 @@ class StatisticsFragment : Fragment() {
             chartType = ChartType.PerCountry
         }
 
+        viewModel.setActualChartType(chartType)
+
         if (chart != null) {
             chart.setDrawValueAboveBar(true)
 
@@ -115,6 +117,7 @@ class StatisticsFragment : Fragment() {
                 ChartType.PerCountryChange -> viewModel.getTppsPerCountryChangeDataSet()
                 ChartType.PerInstitutionTypeChange -> viewModel.getTppsPerInstitutionTypeChangeDataSet()
             })
+            chart.data.setValueTextSize(10f)
 
             val desc = Description()
             desc.text = chartType.desc
@@ -137,7 +140,11 @@ class StatisticsFragment : Fragment() {
                         ChartType.PerCountry -> if (value.toInt() < allEUCountries.size) allEUCountries[value.toInt()].name else "N/A"
                         ChartType.PerInstitutionTypeChange,
                         ChartType.PerInstitutionType -> {
-                            if (value.toInt() < allEntityTypes.size) allEntityTypes[value.toInt()]?.code else "N/A"
+                            if (value.toInt() < allEntityTypes.size) {
+                                getEntityTypeShortCode(allEntityTypes[value.toInt()]?.code)
+                            } else {
+                                "N/A"
+                            }
                         }
                     }
                 }
@@ -151,4 +158,18 @@ class StatisticsFragment : Fragment() {
             chart.invalidate()
         }
     }
+
+    private fun getEntityTypeShortCode(code: String): String {
+        return if (code.startsWith("PSD_")) {
+            code.substring(4)
+        } else {
+            code
+        }
+    }
+
+    /*fun showPsd2Only() {
+        if (viewModel.psd2Only?.value ?: false) {
+            viewModel.setActualChartType()
+        }
+    }*/
 }

@@ -29,6 +29,9 @@ class StatisticsViewModel(
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
 
+    private val _psd2Only = MutableLiveData<Boolean>()
+    val psd2Only: LiveData<Boolean> = _psd2Only
+
     private val _error = MutableLiveData<Boolean>()
     val error: LiveData<Boolean> = _error
 
@@ -37,6 +40,9 @@ class StatisticsViewModel(
      */
     private val _empty = MutableLiveData<Boolean>()
     val empty: LiveData<Boolean> = _empty
+
+    private val _actualChartType = MutableLiveData<ChartType>()
+    val actualChartType: LiveData<ChartType> = _actualChartType
 
     private val _thisYearAuthorizedTpps = MutableLiveData<Int>()
     val thisYearAuthorizedTpps: LiveData<Int> = _thisYearAuthorizedTpps
@@ -94,6 +100,8 @@ class StatisticsViewModel(
             return
         }
         _dataLoading.value = true
+
+        _psd2Only.value = true
 
         wrapEspressoIdlingResource {
             runBlocking {
@@ -283,6 +291,9 @@ class StatisticsViewModel(
         return barDataSet1
     }
 
+    fun setActualChartType(chartType: ChartType) {
+        _actualChartType.value = chartType
+    }
 /*
     fun getXAxisValues(): ArrayList<String> {
         val valueSet1 = ArrayList<BarEntry>()
