@@ -128,6 +128,16 @@
                 </com.google.android.material.tabs.TabLayout>
             </androidx.viewpager.widget.ViewPager>
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/delete_tpp_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fab_margin"
+                android:src="@drawable/ic_edit"
+                android:onClick="@{(view) -> viewmodel.deleteTpp()}"
+                app:fabSize="normal"
+                app:layout_anchorGravity="bottom|right|end" />
+
         </RelativeLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

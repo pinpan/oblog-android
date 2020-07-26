@@ -1,4 +1,3 @@
-
 package com.applego.oblog.tppwatch.data.model
 
 import androidx.room.*

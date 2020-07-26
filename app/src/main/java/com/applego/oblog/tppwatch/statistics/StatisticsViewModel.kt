@@ -8,6 +8,7 @@ import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.model.EUCountry
 import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountries
 import com.applego.oblog.tppwatch.data.model.EbaEntityType
+import com.applego.oblog.tppwatch.data.model.EbaEntityType.Companion.allEntityTypes
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
@@ -49,8 +50,10 @@ class StatisticsViewModel(
     private val _lastWeekRegisteredTpps = MutableLiveData<Int>()
     val lastWeekRegisteredTpps: LiveData<Int> = _lastWeekRegisteredTpps
 
+/*
     private val _perServiceTppsMap = MutableLiveData<Map<String, Int>>()
     val perServiceTppsMap: MutableLiveData<Map<String, Int>> = _perServiceTppsMap
+*/
 
     private val _totalTpps = MutableLiveData<Int>()
     val totalTpps: LiveData<Int> = _totalTpps
@@ -70,11 +73,17 @@ class StatisticsViewModel(
     private val _followedTppsPercent = MutableLiveData<Float>()
     val followedTppsPercent: LiveData<Float> = _followedTppsPercent
 
-    private val _countriesTppsSet = MutableLiveData<ArrayList<BarEntry>>()
-    private val countriesTppsSet: LiveData<ArrayList<BarEntry>> = _countriesTppsSet
+    private val _tppsPerCountrySet = MutableLiveData<ArrayList<BarEntry>>()
+    private val tppsPerCountrySet: LiveData<ArrayList<BarEntry>> = _tppsPerCountrySet
 
-    private val _countriesTppsChange = MutableLiveData<ArrayList<BarEntry>>()
-    private val countriesTppsChange: LiveData<ArrayList<BarEntry>> = _countriesTppsChange
+    private val _tppsPerCountryChangeSet = MutableLiveData<ArrayList<BarEntry>>()
+    private val tppsPerCountryChangeSet: LiveData<ArrayList<BarEntry>> = _tppsPerCountryChangeSet
+
+    private val _tppsPerInstitutionTypeSet = MutableLiveData<ArrayList<BarEntry>>()
+    private val tppsPerInstitutionTypeSet: LiveData<ArrayList<BarEntry>> = _tppsPerInstitutionTypeSet
+
+    private val _tppsPerInstitutionTypeChangeSet = MutableLiveData<ArrayList<BarEntry>>()
+    private val tppsPerInstitutionTypeChangeSet: LiveData<ArrayList<BarEntry>> = _tppsPerInstitutionTypeChangeSet
 
     private var usedTpps = 0
 
@@ -157,13 +166,20 @@ class StatisticsViewModel(
 
         val tppsPerCountryArray = Array(allEUCountries.size) { 0 }
         val tppsPerCountryMonthlyChangeArray = Array(allEUCountries.size) { 0 }
+        val tppsPerInstitutionTypeArray = Array(allEntityTypes.size) { 0 }
+        val tppsPerInstitutionTypeChangeArray = Array(allEntityTypes.size) { 0 }
 
         tpps?.forEach {
             when (it.ebaEntity.entityType) {
                 EbaEntityType.PSD_AISP -> aispCounter++
                 EbaEntityType.PSD_PI -> pispCounter++
                 EbaEntityType.PSD_EMI -> emiCounter++
+                //EbaEntityType.PSD_PI -> tppsPerInstitutionTypeArray
             }
+            if (!EbaEntityType.NONE.equals(it.ebaEntity.entityType)) {
+                tppsPerInstitutionTypeArray[it.ebaEntity.entityType.order-1] = tppsPerInstitutionTypeArray[it.ebaEntity.entityType.order-1]+1
+            }
+
             val euCountry = it.getCountry()
             val authStart = it.ebaEntity.ebaProperties.authorizationStart
             if (!authStart.isNullOrBlank()) {
@@ -171,16 +187,21 @@ class StatisticsViewModel(
                 if (cal.time.after(anYearAgo) && cal.time.before(now)) {
                     anYearOldTpps++
                 }
+
                 if (cal.time.after(aMonthAgo) && cal.time.before(now)) {
                     aMonthOldTpps++
                     if (euCountry != null) {
                         tppsPerCountryMonthlyChangeArray[EUCountry.valueOf(euCountry).order] = tppsPerCountryArray[EUCountry.valueOf(euCountry).order]+1
                     }
-
+                    if (!EbaEntityType.NONE.equals(it.ebaEntity.entityType)) {
+                        tppsPerInstitutionTypeChangeArray[it.ebaEntity.entityType.order - 1] = tppsPerInstitutionTypeChangeArray[it.ebaEntity.entityType.order - 1] + 1
+                    }
                 }
+
                 if (cal.time.after(aWeekAgo) && cal.time.before(now)) {
                     aWeekOldTpps++
                 }
+
                 if (cal.time.after(thisYearStart) && cal.time.before(now)) {
                     thisYearAuthorizedTpps++
                 }
@@ -199,60 +220,68 @@ class StatisticsViewModel(
         _totalPISPTpps.value = pispCounter
         _totalEMITpps.value = emiCounter
 
-        _countriesTppsSet.value = ArrayList<BarEntry>()
         var num1 = 0
-        var num2 = 0
+        _tppsPerCountrySet.value = ArrayList<BarEntry>()
         allEUCountries.forEach {
             val be1 = BarEntry((num1++).toFloat(), tppsPerCountryArray[it.order].toFloat())
-            val be2 = BarEntry((num2++).toFloat(), tppsPerCountryMonthlyChangeArray[it.order].toFloat())
-            countriesTppsSet.value?.add(be1)
-            countriesTppsSet.value?.add(be2)
+            _tppsPerCountrySet.value?.add(be1)
+        }
+        num1 = 0
+        _tppsPerCountryChangeSet.value = ArrayList<BarEntry>()
+        allEUCountries.forEach {
+            val be1 = BarEntry((num1++).toFloat(), tppsPerCountryMonthlyChangeArray[it.order].toFloat())
+            _tppsPerCountryChangeSet.value?.add(be1)
+        }
+
+        num1 = 0
+        _tppsPerInstitutionTypeSet.value = ArrayList<BarEntry>()
+        allEntityTypes.forEach {
+            val be1 = BarEntry((num1++).toFloat(), tppsPerInstitutionTypeArray[it.order-1].toFloat())
+            _tppsPerInstitutionTypeSet.value?.add(be1)
+        }
+        num1 = 0
+        _tppsPerInstitutionTypeChangeSet.value = ArrayList<BarEntry>()
+        allEntityTypes.forEach {
+            val be1 = BarEntry((num1++).toFloat(), tppsPerInstitutionTypeChangeArray[it.order-1].toFloat())
+            _tppsPerInstitutionTypeChangeSet.value?.add(be1)
         }
     }
 
-    fun getPerCountryDataSet(): BarDataSet {
-        val barDataSet1 = BarDataSet(countriesTppsSet.value, "TPPs per EU country ")
+    fun getTppsPerCountryDataSet(): BarDataSet {
+        val barDataSet1 = BarDataSet(tppsPerCountrySet.value, "TPPs per EU country")
         barDataSet1.setValueTypeface(Typeface.SANS_SERIF);
         barDataSet1.setValueTextSize(4f)
-        //barDataSet1.color = Color.rgb(0, 155, 0)
         barDataSet1.setColors(*ColorTemplate.COLORFUL_COLORS, *ColorTemplate.JOYFUL_COLORS, *ColorTemplate.PASTEL_COLORS, *ColorTemplate.LIBERTY_COLORS, *ColorTemplate.MATERIAL_COLORS)
 
         return barDataSet1
     }
 
-    fun getPerServiceDataSet(): BarDataSet {
-        val barDataSet1 = BarDataSet(countriesTppsSet.value, "TPPs per EU country ")
+    fun getTppsPerInstitutionTypeDataSet(): BarDataSet {
+        val barDataSet1 = BarDataSet(tppsPerInstitutionTypeSet.value, "TPPs per institution type")
         barDataSet1.setValueTypeface(Typeface.SANS_SERIF);
         barDataSet1.setValueTextSize(4f)
-        //barDataSet1.color = Color.rgb(0, 155, 0)
         barDataSet1.setColors(*ColorTemplate.COLORFUL_COLORS, *ColorTemplate.JOYFUL_COLORS, *ColorTemplate.PASTEL_COLORS, *ColorTemplate.LIBERTY_COLORS, *ColorTemplate.MATERIAL_COLORS)
 
         return barDataSet1
     }
 
-    fun getDifferentialPerCountryDataSet(): BarDataSet {
-        val barDataSet1 = BarDataSet(countriesTppsSet.value, "TPPs per EU country ")
+    fun getTppsPerCountryChangeDataSet(): BarDataSet {
+        val barDataSet1 = BarDataSet(tppsPerCountryChangeSet.value, "TPPs per EU country change")
         barDataSet1.setValueTypeface(Typeface.SANS_SERIF);
         barDataSet1.setValueTextSize(4f)
-        //barDataSet1.color = Color.rgb(0, 155, 0)
         barDataSet1.setColors(*ColorTemplate.COLORFUL_COLORS, *ColorTemplate.JOYFUL_COLORS, *ColorTemplate.PASTEL_COLORS, *ColorTemplate.LIBERTY_COLORS, *ColorTemplate.MATERIAL_COLORS)
 
         return barDataSet1
     }
 
-    fun getDifferentialPerServiceDataSet(): BarDataSet {
-        val barDataSet1 = BarDataSet(countriesTppsSet.value, "TPPs per EU country ")
+    fun getTppsPerInstitutionTypeChangeDataSet(): BarDataSet {
+        val barDataSet1 = BarDataSet(tppsPerInstitutionTypeChangeSet.value, "TPPs per institution type change")
         barDataSet1.setValueTypeface(Typeface.SANS_SERIF);
         barDataSet1.setValueTextSize(4f)
-        //barDataSet1.color = Color.rgb(0, 155, 0)
         barDataSet1.setColors(*ColorTemplate.COLORFUL_COLORS, *ColorTemplate.JOYFUL_COLORS, *ColorTemplate.PASTEL_COLORS, *ColorTemplate.LIBERTY_COLORS, *ColorTemplate.MATERIAL_COLORS)
 
         return barDataSet1
     }
-
-    /*fun getCountryName(idx: Int): String? {
-        return allEUCountries[idx].name
-    }*/
 
 /*
     fun getXAxisValues(): ArrayList<String> {

@@ -1,20 +1,4 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.applego.oblog.tppwatch.statistics
-
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -31,8 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountries
+import com.applego.oblog.tppwatch.data.model.EbaEntityType.Companion.allEntityTypes
 import com.applego.oblog.tppwatch.data.model.EbaService.Companion.allEbaServies
-import com.applego.oblog.tppwatch.data.model.EbaService.Companion.allEbaServiesMap
 import com.applego.oblog.tppwatch.databinding.StatisticsFragBinding
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.github.mikephil.charting.charts.BarChart
@@ -113,47 +97,52 @@ class StatisticsFragment : Fragment() {
     }
 
     private fun setUpChart() {
-        setUpChart(ChartType.Country)
+        setUpChart(ChartType.PerCountry)
     }
 
     private fun setUpChart(ct: ChartType) {
         var chartType = ct
         if (chartType == null) {
-            chartType = ChartType.Country
+            chartType = ChartType.PerCountry
         }
 
         if (chart != null) {
             chart.setDrawValueAboveBar(true)
 
             chart.data = BarData(when (chartType) {
-                ChartType.Default,
-                ChartType.Country -> viewModel.getPerCountryDataSet()
-                ChartType.Service -> viewModel.getPerServiceDataSet()
-                ChartType.DifferencialPerCountry -> viewModel.getDifferentialPerCountryDataSet()
-                ChartType.DifferencialPerService -> viewModel.getDifferentialPerServiceDataSet()
+                ChartType.PerCountry -> viewModel.getTppsPerCountryDataSet()
+                ChartType.PerInstitutionType -> viewModel.getTppsPerInstitutionTypeDataSet()
+                ChartType.PerCountryChange -> viewModel.getTppsPerCountryChangeDataSet()
+                ChartType.PerInstitutionTypeChange -> viewModel.getTppsPerInstitutionTypeChangeDataSet()
             })
 
             val desc = Description()
-            desc.text = "Tpps per country"
+            desc.text = chartType.desc
             chart.setDescription(desc)
-            //countryChart.xAxis.labelRotationAngle = 45f
 
             val xAxis: XAxis = chart.getXAxis()
             xAxis.position = XAxisPosition.BOTH_SIDED
             xAxis.axisMinimum = 0f
             xAxis.granularity = 1f
-            xAxis.labelCount = allEUCountries.size
+            xAxis.labelCount = when (chartType) {
+                ChartType.PerCountryChange,
+                ChartType.PerCountry -> allEUCountries.size
+                ChartType.PerInstitutionTypeChange,
+                ChartType.PerInstitutionType -> allEbaServies.size
+            }
             xAxis.setValueFormatter(object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String? {
                     return when (chartType) {
-                        ChartType.Default,
-                        ChartType.DifferencialPerCountry,
-                        ChartType.Country -> if (value.toInt() < allEUCountries.size) allEUCountries[value.toInt()].name else allEUCountries[value.toInt()].country
-                        ChartType.DifferencialPerService,
-                        ChartType.Service -> if (value.toInt() < allEbaServies.size) allEbaServies[value.toInt()]?.psd2Code else allEbaServies[value.toInt()].name
+                        ChartType.PerCountryChange,
+                        ChartType.PerCountry -> if (value.toInt() < allEUCountries.size) allEUCountries[value.toInt()].name else "N/A"
+                        ChartType.PerInstitutionTypeChange,
+                        ChartType.PerInstitutionType -> {
+                            if (value.toInt() < allEbaServies.size) allEntityTypes[value.toInt()]?.code else "N/A"
+                        }
                     }
                 }
             })
+            //countryChart.xAxis.labelRotationAngle = 45f
 
             val l: Legend = chart.getLegend()
             l.setEnabled(false)

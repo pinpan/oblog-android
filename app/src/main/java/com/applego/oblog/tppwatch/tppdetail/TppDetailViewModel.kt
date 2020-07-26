@@ -147,4 +147,13 @@ open class TppDetailViewModel(
     public fun goBack() {
         _backToTppsListEvent.value = Event<String>("")
     }
+
+    private val _deleteTppEvent = MutableLiveData<Event<Unit>>()
+    val deleteTppEvent: LiveData<Event<Unit>> = _deleteTppEvent
+    fun deleteTpp() = viewModelScope.launch {
+        tppId?.let {
+            tppsRepository.deleteTpp(it)
+            _deleteTppEvent.value = Event(Unit)
+        }
+    }
 }

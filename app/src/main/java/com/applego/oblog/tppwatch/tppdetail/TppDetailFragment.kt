@@ -9,6 +9,7 @@ import androidx.navigation.fragment.navArgs
 import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.TppdetailFragBinding
+import com.applego.oblog.tppwatch.tpps.DELETE_RESULT_OK
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
@@ -76,6 +77,12 @@ class TppDetailFragment : Fragment() {
     }
 
     private fun setupNavigation() {
+       viewModel.deleteTppEvent.observe(this, EventObserver {
+       val action = TppDetailTabsFragmentDirections
+           .actionTppDetailTabsFragmentToTppsFragment()
+       findNavController().navigate(action)
+        })
+
         viewModel.editTppEvent.observe(this, EventObserver {
             val action = TppDetailTabsFragmentDirections
                     .actionTppDetailTabsFragmentToAddEditTppFragment(
