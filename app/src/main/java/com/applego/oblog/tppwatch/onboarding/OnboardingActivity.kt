@@ -13,11 +13,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.applego.oblog.tppwatch.R
+import com.applego.oblog.tppwatch.onboarding.ui.main.OnboardingFragmentDirections
 import com.applego.oblog.tppwatch.onboarding.ui.main.OnboardingViewModel
 import com.applego.oblog.tppwatch.onboarding.ui.main.SectionsPagerAdapter
 import com.applego.oblog.tppwatch.tpps.TppsActivity
+import com.applego.oblog.tppwatch.tpps.TppsFragmentDirections
 import com.applego.oblog.tppwatch.util.Event
 
 class OnboardingActivity : AppCompatActivity() {
@@ -32,27 +35,20 @@ class OnboardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        Toast.makeText(this@OnboardingActivity, "Run only once", Toast.LENGTH_LONG).show()
+        viewModel = ViewModelProviders.of(this).get(OnboardingViewModel::class.java)
+
         val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
         var isFirstRun = sharedPerfs.getBoolean("isFirstRun", true)
         if (!isFirstRun) {
-            Handler().post/*Delayed*/(object : Runnable {
+            Handler().post(object : Runnable {
 
                 override fun run(): Unit {
                     startActivity(Intent(this@OnboardingActivity, TppsActivity::class.java))
                 }
             })
         } else {
-
-            //show sign up activity ?
-            Toast.makeText(this@OnboardingActivity, "Run only once", Toast.LENGTH_LONG).show()
-
-            val editor = sharedPerfs.edit()
-            editor.putBoolean("isFirstRun", false)
-            editor.commit()
-
             setContentView(R.layout.onboarding_activity)
-
-            viewModel = ViewModelProviders.of(this).get(OnboardingViewModel::class.java)
 
             val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
 
@@ -66,7 +62,6 @@ class OnboardingActivity : AppCompatActivity() {
 
             findViewById<ImageButton>(R.id.intro_btn_next)?.let {
                 it.setOnClickListener { view ->
-                    //viewModel.nextPage()
                     viewPager.setCurrentItem(viewModel.index.value?.inc() ?: 0, true);
                 }
             }
@@ -96,8 +91,19 @@ class OnboardingActivity : AppCompatActivity() {
 
             viewModel.onboardingFinishEvent.observe(this, Observer<Event<Unit>> {
                 finish()
+                //viewModel.finishOnboarding()
             })
         }
+    }
+
+    override fun finish() {
+        super.finish()
+
+        val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
+
+        val editor = sharedPerfs.edit()
+        editor.putBoolean("isFirstRun", false)
+        editor.commit()
     }
 
     override fun onStart() {

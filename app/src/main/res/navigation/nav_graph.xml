@@ -18,6 +18,10 @@
             android:id="@+id/action_finishOnboarding"
             app:destination="@id/tpps_fragment_dest" />
 
+        <!--<action
+            android:id="@+id/action_tppDetailTabsFragment_to_AddTppAppFragment"
+            app:destination="@id/addedit_tppapp_fragment_dest" />-->
+
     </fragment>
 
     <fragment

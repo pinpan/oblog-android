@@ -68,14 +68,9 @@ class TppsFragment : Fragment() {
         searchView?.setIconifiedByDefault(true)
         searchView?.setQueryHint("Type text to filter listed TPPs")
 
-        /*searchView?.setOnQueryTextFocusChangeListener { v, hasFocus ->
-            //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            searchBy("")
-        }*/
         // perform set on query text listener event
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                //val theID = id
                 lastTppsSearchViewQuery = query
                 searchBy(query)
                 return true
@@ -97,7 +92,6 @@ class TppsFragment : Fragment() {
             }
         })
 
-        //var searchPlateId = searchView?.context?.resources?.getIdentifier("android:id/search_src_text", null, null)
         var searchPlateId = searchView?.context?.resources?.getIdentifier("android:id/search_close_button", null, null)
         if (searchPlateId != null) {
             val closeBtn = searchView?.findViewById<ImageButton>(searchPlateId)
