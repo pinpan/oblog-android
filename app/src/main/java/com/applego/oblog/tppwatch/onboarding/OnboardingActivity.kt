@@ -102,8 +102,10 @@ class OnboardingActivity : AppCompatActivity() {
         val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
 
         val editor = sharedPerfs.edit()
-        editor.putBoolean("isFirstRun", false)
+        editor.putBoolean("isFirstRun", true) // TODO: Change to false before commit
         editor.commit()
+
+        startActivity(Intent(this@OnboardingActivity, TppsActivity::class.java))
     }
 
     override fun onStart() {

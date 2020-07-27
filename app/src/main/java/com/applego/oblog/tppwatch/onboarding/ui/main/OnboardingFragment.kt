@@ -11,6 +11,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.tpps.TppsActivity
@@ -25,7 +28,7 @@ class OnboardingFragment : Fragment() {
     private lateinit var viewModel: OnboardingViewModel
 
     // var img: ImageView? = null
-    var bgs: IntArray = intArrayOf(R.drawable.ic_flight_24dp, R.drawable.oblog_onboarding_1, R.drawable.ic_explore_24dp)
+    var bgs: IntArray = intArrayOf(R.drawable.oblog_onboarding_1, R.drawable.oblog_onboarding_2, R.drawable.oblog_onboarding_3)
 
 /*
     var color1 = ContextCompat.getColor(this.activity, R.color.cyan)
@@ -36,9 +39,7 @@ class OnboardingFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this.activity!!).get(OnboardingViewModel::class.java)/*.apply {
-            setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 0)
-        }*/
+        viewModel = ViewModelProviders.of(this.activity!!).get(OnboardingViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -63,11 +64,13 @@ class OnboardingFragment : Fragment() {
     }
 
     fun finish() {
-        val action = OnboardingFragmentDirections
+        /*val action = OnboardingFragmentDirections
                 .actionFinishOnboarding(
                         null
-                )
-        findNavController().navigate(action)
+                )*/
+        this.activity?.startActivity(Intent(this.activity, TppsActivity::class.java))
+        //NavHostFragment.findNavController(this).navigate(action)
+        //Navigation.findNavController(this.activity!!, R.id.nav_host_fragment).navigate(action)
 
         /*Handler().post(object : Runnable {
             override fun run(): Unit {
