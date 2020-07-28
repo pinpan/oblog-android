@@ -1,8 +1,6 @@
 package com.applego.oblog.tppwatch.onboarding.ui.main
 
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +9,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.tpps.TppsActivity
+import com.applego.oblog.tppwatch.onboarding.OnboardingActivity
 import com.applego.oblog.tppwatch.util.Event
 
 
@@ -53,8 +47,10 @@ class OnboardingFragment : Fragment() {
             textView.text = it
         })
 
-        viewModel.onboardingFinishEvent.observe(this, Observer<Event<Unit>> {
-            finish()
+        viewModel.onboardingFinishEvent.observe(this, Observer<Event<Boolean>> {event ->
+            event.getContentIfNotHandled().let {
+                finish(it ?: true)
+            }
         })
 
         val img = root.findViewById(R.id.section_img) as ImageView
@@ -63,12 +59,13 @@ class OnboardingFragment : Fragment() {
         return root
     }
 
-    fun finish() {
+    fun finish(regularFinish: Boolean) {
+        (this.activity as OnboardingActivity)?.finish(regularFinish)
         /*val action = OnboardingFragmentDirections
                 .actionFinishOnboarding(
                         null
                 )*/
-        this.activity?.startActivity(Intent(this.activity, TppsActivity::class.java))
+        //this.activity?.startActivity(Intent(this.activity, TppsActivity::class.java))
         //NavHostFragment.findNavController(this).navigate(action)
         //Navigation.findNavController(this.activity!!, R.id.nav_host_fragment).navigate(action)
 

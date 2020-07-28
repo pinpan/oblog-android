@@ -1,5 +1,6 @@
 package com.applego.oblog.tppwatch.onboarding
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -40,14 +41,15 @@ class OnboardingActivity : AppCompatActivity() {
 
         val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
         var isFirstRun = sharedPerfs.getBoolean("isFirstRun", true)
-        if (!isFirstRun) {
-            Handler().post(object : Runnable {
+        var shouldShowIntro = sharedPerfs.getBoolean("show_intro", false)
+
+            /*Handler().post(object : Runnable {
 
                 override fun run(): Unit {
                     startActivity(Intent(this@OnboardingActivity, TppsActivity::class.java))
                 }
-            })
-        } else {
+            })*/
+        if (isFirstRun || shouldShowIntro) {
             setContentView(R.layout.onboarding_activity)
 
             val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
@@ -62,19 +64,19 @@ class OnboardingActivity : AppCompatActivity() {
 
             findViewById<ImageButton>(R.id.intro_btn_next)?.let {
                 it.setOnClickListener { view ->
-                    viewPager.setCurrentItem(viewModel.index.value?.inc() ?: 0, true);
+                    viewPager.setCurrentItem(viewModel.nextPage()/*index.value?.inc() ?: 0*/, true);
                 }
             }
 
             findViewById<Button>(R.id.intro_btn_finish)?.let {
                 it.setOnClickListener { view ->
-                    viewModel.finishOnboarding()
+                    viewModel.finishOnboarding(true)
                 }
             }
 
             findViewById<Button>(R.id.intro_btn_skip)?.let {
                 it.setOnClickListener { view ->
-                    viewModel.finishOnboarding()
+                    viewModel.finishOnboarding(false)
                 }
             }
 
@@ -89,23 +91,32 @@ class OnboardingActivity : AppCompatActivity() {
                 onPageIndexChanged(it)
             })
 
-            viewModel.onboardingFinishEvent.observe(this, Observer<Event<Unit>> {
+            viewModel.onboardingFinishEvent.observe(this, Observer {
                 finish()
-                //viewModel.finishOnboarding()
             })
+        } else {
+            finish()
         }
     }
 
+    fun finish(regularFinish: Boolean) {
+        finish()
+    }
+
     override fun finish() {
+        if (viewPager.currentItem == viewModel.pageCount) {
+            val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
+
+            val editor = sharedPerfs.edit()
+            editor.putBoolean("isFirstRun", true) // TODO: Change to false before commit
+            editor.commit()
+        }
+
+        val intent = Intent(this@OnboardingActivity, TppsActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent)
+
         super.finish()
-
-        val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
-
-        val editor = sharedPerfs.edit()
-        editor.putBoolean("isFirstRun", true) // TODO: Change to false before commit
-        editor.commit()
-
-        startActivity(Intent(this@OnboardingActivity, TppsActivity::class.java))
     }
 
     override fun onStart() {
@@ -147,7 +158,7 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (viewPager.currentItem == 0) {
+        if (viewPager?.currentItem == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
             // Back button. This calls finish() on this activity and pops the back stack.
             super.onBackPressed()
