@@ -1,9 +1,8 @@
 package com.applego.oblog.tppwatch.onboarding
 
-import android.app.Activity
+import android.annotation.TargetApi
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.preference.PreferenceManager
 import android.view.View
 import android.widget.Button
@@ -14,15 +13,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.onboarding.ui.main.OnboardingFragmentDirections
 import com.applego.oblog.tppwatch.onboarding.ui.main.OnboardingViewModel
 import com.applego.oblog.tppwatch.onboarding.ui.main.SectionsPagerAdapter
 import com.applego.oblog.tppwatch.tpps.TppsActivity
-import com.applego.oblog.tppwatch.tpps.TppsFragmentDirections
-import com.applego.oblog.tppwatch.util.Event
 
 class OnboardingActivity : AppCompatActivity() {
 
@@ -49,13 +44,13 @@ class OnboardingActivity : AppCompatActivity() {
                     startActivity(Intent(this@OnboardingActivity, TppsActivity::class.java))
                 }
             })*/
+        setContentView(R.layout.onboarding_activity)
+        viewPager = findViewById(R.id.view_pager)
+        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
+        viewPager.adapter = sectionsPagerAdapter
+
         if (isFirstRun || shouldShowIntro) {
-            setContentView(R.layout.onboarding_activity)
 
-            val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
-
-            viewPager = findViewById(R.id.view_pager)
-            viewPager.adapter = sectionsPagerAdapter
             viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                     viewModel.setIndex(position)
@@ -108,12 +103,14 @@ class OnboardingActivity : AppCompatActivity() {
             val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
 
             val editor = sharedPerfs.edit()
-            editor.putBoolean("isFirstRun", true) // TODO: Change to false before commit
+            editor.putBoolean("isFirstRun", false)
             editor.commit()
         }
 
+        // if (TargetApi >= 16)
+        //   finishAffinity()
         val intent = Intent(this@OnboardingActivity, TppsActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent)
 
         super.finish()

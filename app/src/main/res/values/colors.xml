@@ -10,6 +10,7 @@
     <color name="colorDarkGrey">#323232</color>
 
     <color name="colorEULightGrey">#ececec</color>
+    <color name="colorEUGrey">#a8a8a8</color>
     <color name="colorEUYellow">#ffd617</color>
     <color name="colorEUFlagBlue">#003399</color>
     <color name="colorEUFlagYellow">#FFCC00</color>

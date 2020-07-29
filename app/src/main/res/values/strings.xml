@@ -156,6 +156,14 @@
     <string name="label_onboarding_features">OBLOG features</string>
     <string name="label_onboarding_disclaimer">Disclaimer</string>
 
+    <string name="onboarding_label_1">Welcome to OBLOG!</string>
+    <string name="onboarding_label_2">Browse smart EBA FI directories</string>
+    <string name="onboarding_label_3">Start using</string>
+    <string name="onboarding_description_1">Open Banking LOG in your hands Finacial Institutions</string>
+    <string name="onboarding_description_2">Browse, Search, Filter, Get statistics - It is all in your hands</string>
+    <string name="onboarding_description_3">This application is provided to you by Applego free of charge. Use it at your own disposition and risk. No warranty of any kind is provided. All data displayed is collected from public sources.</string>
+
+
     <string name="tag_intro_indicator">intro_indicator_</string>
     <string name="indicator_image">Indicator image</string>
     <string name="label_onbording_start_using">Start using</string>

@@ -20,6 +20,10 @@ class OnboardingViewModel : ViewModel() {
         "Hello world from section: $it"
     }
 
+    val desc: LiveData<String> = Transformations.map(_index) {
+        "Hello world from section = more descriptive: $it"
+    }
+
     fun setIndex(index: Int) {
         _index.value = index
     }

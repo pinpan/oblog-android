@@ -5,49 +5,62 @@
     android:layout_height="match_parent"
     android:padding="@dimen/activity_horizontal_margin">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <!--192dp-->
-        <ImageView
-            android:id="@+id/section_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:adjustViewBounds="true"
-            android:alpha="0.30"
-            android:background="@drawable/oblog_onboarding_1"
-            android:scaleType="fitCenter" />
-    </FrameLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="bottom"
+        android:weightSum="2"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin">
-
-        <TextView
-            android:id="@+id/section_label"
-            style="@style/TextAppearance.AppCompat.Headline"
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            tools:text="Page One" />
+            android:layout_weight="1"
+            >
+            <!--192dp
+            android:alpha="0.30"
+            -->
+            <ImageView
+                android:id="@+id/section_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
 
-        <TextView
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="wrap_content"
+                android:background="@drawable/oblog_onboarding_1"
+                android:scaleType="fitCenter" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:alpha="0.7"
+            android:layout_gravity="top"
+            android:layout_weight="1"
             android:gravity="center"
-            android:text="Add a long description here about your app's important feature."
-            android:textColor="@android:color/white" />
+            android:orientation="vertical"
+            android:padding="@dimen/activity_vertical_margin">
 
+            <TextView
+                android:id="@+id/section_label"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                tools:text="Page One"
+                android:textColor="@color/colorEUDarkBlue" />
 
+            <TextView
+                android:id="@+id/section_description"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:alpha="0.7"
+                android:gravity="center"
+                android:text="Add a long description here about your app's important feature."
+                android:textColor="@color/colorEUGrey" />
+        </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>
