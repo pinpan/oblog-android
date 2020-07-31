@@ -21,17 +21,9 @@ class OnboardingFragment : Fragment() {
 
     private lateinit var viewModel: OnboardingViewModel
 
-    // var img: ImageView? = null
     var bgs: IntArray = intArrayOf(R.drawable.oblog_onboarding_1, R.drawable.oblog_onboarding_2, R.drawable.oblog_onboarding_3)
-    var lbls: IntArray = intArrayOf(R.string.onboarding_label_1, R.string.onboarding_label_2, R.string.onboarding_label_3)
+    var lbls: IntArray = intArrayOf(R.string.onboarding_label_1, R.string.onboarding_label_2, R.string.onboarding_label_3, /*R.string.onboarding_label_4*/"Blah")
     var dscs: IntArray = intArrayOf(R.string.onboarding_description_1, R.string.onboarding_description_2, R.string.onboarding_description_3)
-
-/*
-    var color1 = ContextCompat.getColor(this.activity, R.color.cyan)
-    var color2 = ContextCompat.getColor(this, R.color.orange)
-    var color3 = ContextCompat.getColor(this, R.color.green)
-    var colorList = intArrayOf(color1, color2, color3)
-*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
