@@ -1,6 +1,5 @@
 package com.applego.oblog.tppwatch.onboarding
 
-import android.annotation.TargetApi
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -59,7 +58,7 @@ class OnboardingActivity : AppCompatActivity() {
 
             findViewById<ImageButton>(R.id.intro_btn_next)?.let {
                 it.setOnClickListener { view ->
-                    viewPager.setCurrentItem(viewModel.nextPage()/*index.value?.inc() ?: 0*/, true);
+                    viewPager.setCurrentItem(viewModel.nextPage(), true);
                 }
             }
 
