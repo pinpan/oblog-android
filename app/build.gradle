@@ -111,7 +111,7 @@ dependencies {
     //implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.google.android.material:material:1.1.0'
-    annotationProcessor group: 'com.google.dagger', name: 'dagger-compiler', version: '2.21'
+    kapt group: 'com.google.dagger', name: 'dagger-compiler', version: '2.21'
     implementation 'com.google.android.gms:play-services:8.4.0'
 
     // App dependencies
@@ -131,7 +131,7 @@ dependencies {
     api "org.glassfish:javax.annotation:10.0-b28"
 
     api "android.arch.persistence.room:runtime:$roomVersion"
-    annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
+    kapt "android.arch.persistence.room:compiler:$roomVersion"
 
     // Architecture Components
     kapt "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
