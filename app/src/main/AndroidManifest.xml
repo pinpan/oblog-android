@@ -19,33 +19,33 @@
         >
         <!-- android:usesCleartextTraffic="true" : W Warning:(19, 9) Attribute `usesCleartextTraffic` is only used in API level 23 and higher (current min is 21) -->
         <activity
+            android:name=".onboarding.OnboardingActivity"
+            android:label="@string/title_activity_onboarding"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".tpps.TppsActivity"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".tpps.TppsActivity"
             android:label="TppWatch"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.OverlapSystemBar"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.SEARCH" />
-                <category android:name="android.intent.category.HOME"/>
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <!--<category android:name="android.intent.category.HOME"/>-->
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
             </intent-filter>
 
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
-        </activity>
-        <activity
-            android:name=".onboarding.OnboardingActivity"
-            android:label="@string/title_activity_onboarding"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".tpps.TppsActivity">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <!--<category android:name="android.intent.category.DEFAULT"/>-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            </intent-filter>
         </activity>
         <activity
             android:name=".preferences.OblogPreferencesActivity"

@@ -33,9 +33,11 @@ class OnboardingActivity : AppCompatActivity() {
         Toast.makeText(this@OnboardingActivity, "Run only once", Toast.LENGTH_LONG).show()
         viewModel = ViewModelProviders.of(this).get(OnboardingViewModel::class.java)
 
+/*
         val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
         var isFirstRun = sharedPerfs.getBoolean("isFirstRun", true)
         var shouldShowIntro = sharedPerfs.getBoolean("show_intro", false)
+*/
 
             /*Handler().post(object : Runnable {
 
@@ -48,8 +50,7 @@ class OnboardingActivity : AppCompatActivity() {
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
         viewPager.adapter = sectionsPagerAdapter
 
-        if (isFirstRun || shouldShowIntro) {
-
+//        if (isFirstRun || shouldShowIntro) {
             viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                     viewModel.setIndex(position)
@@ -88,9 +89,11 @@ class OnboardingActivity : AppCompatActivity() {
             viewModel.onboardingFinishEvent.observe(this, Observer {
                 finish()
             })
+/*
         } else {
             finish()
         }
+*/
     }
 
     fun finish(regularFinish: Boolean) {
@@ -98,13 +101,13 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     override fun finish() {
-        if (viewPager.currentItem == viewModel.pageCount) {
+        //if (viewPager.currentItem == viewModel.pageCount) {
             val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
 
             val editor = sharedPerfs.edit()
             editor.putBoolean("isFirstRun", false)
             editor.commit()
-        }
+        //}
 
         // if (TargetApi >= 16)
         //   finishAffinity()

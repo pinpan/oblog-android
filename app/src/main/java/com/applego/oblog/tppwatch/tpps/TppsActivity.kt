@@ -49,31 +49,32 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-    /*
-        val skipSplash = sharedPerfs.getBoolean("skipSplash", false)
-        if (!skipSplash) {
-            Handler().postDelayed(object : Runnable {
+        /*
+            val skipSplash = sharedPerfs.getBoolean("skipSplash", false)
+            if (!skipSplash) {
+                Handler().postDelayed(object : Runnable {
 
-                override fun run(): Unit {
-                    setContentView(R.layout.spalsh_screen)
+                    override fun run(): Unit {
+                        setContentView(R.layout.spalsh_screen)
 
-                    Toast.makeText(this@TppsActivity, "Run only once", Toast.LENGTH_LONG)
-                            .show()
-                }
-            }, 5000)
-        }
-    */
+                        Toast.makeText(this@TppsActivity, "Run only once", Toast.LENGTH_LONG)
+                                .show()
+                    }
+                }, 5000)
+            }
+        */
 
-/*
         val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
         var isFirstRun = sharedPerfs.getBoolean("isFirstRun", true)
-        if (isFirstRun) {
+        var shouldShowIntro = sharedPerfs.getBoolean("show_intro", false)
+        if (isFirstRun || shouldShowIntro) {
             //show sign up activity
             Handler().post(object : Runnable {
 
                 override fun run(): Unit {
                     val editor = sharedPerfs.edit()
                     editor.putBoolean("isFirstRun", false)
+                    editor.putBoolean("show_intro", false)
                     editor.commit()
 
                     startActivity(Intent(this@TppsActivity, OnboardingActivity::class.java))
@@ -81,7 +82,6 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                 }
             })
         }
-*/
 
         setContentView(R.layout.tpps_act)
         setupNavigationDrawer()
@@ -112,7 +112,6 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
         toolbar.title = ""
         toolbar.subtitle = ""
-        //toolbar.setTitleMargin(0, 10, 0, 10)
 
         setupSharedPreferences();
 
