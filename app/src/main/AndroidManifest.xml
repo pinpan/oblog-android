@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_oblog_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        >
+        <!-- android:usesCleartextTraffic="true" : W Warning:(19, 9) Attribute `usesCleartextTraffic` is only used in API level 23 and higher (current min is 21) -->
         <activity
             android:name=".tpps.TppsActivity"
             android:label="TppWatch"
@@ -37,11 +38,13 @@
         <activity
             android:name=".onboarding.OnboardingActivity"
             android:label="@string/title_activity_onboarding"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".tpps.TppsActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.LAUNCHER" />
+                <!--<category android:name="android.intent.category.DEFAULT"/>-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
             </intent-filter>
         </activity>
         <activity
