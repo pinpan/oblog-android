@@ -21,10 +21,6 @@ class OnboardingFragment : Fragment() {
 
     private lateinit var viewModel: OnboardingViewModel
 
-    var bgs: IntArray = intArrayOf(R.drawable.oblog_onboarding_1, R.drawable.oblog_onboarding_2, R.drawable.oblog_onboarding_3)
-    var lbls: IntArray = intArrayOf(R.string.onboarding_label_1, R.string.onboarding_label_2, R.string.onboarding_label_3, R.string.onboarding_label_4)
-    var dscs: IntArray = intArrayOf(R.string.onboarding_description_1, R.string.onboarding_description_2, R.string.onboarding_description_3)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.activity!!).get(OnboardingViewModel::class.java)
@@ -39,11 +35,11 @@ class OnboardingFragment : Fragment() {
         val descView: TextView = root.findViewById(R.id.section_description)
 
         viewModel.text.observe(this, Observer<String> {
-            textView.text = resources.getString(lbls.get(arguments!!.getInt(ARG_SECTION_NUMBER)))
+            textView.text = resources.getString(viewModel.lbls.get(arguments!!.getInt(ARG_SECTION_NUMBER)))
         })
 
         viewModel.desc.observe(this, Observer<String> {
-            descView.text = resources.getString(dscs.get(arguments!!.getInt(ARG_SECTION_NUMBER)))
+            descView.text = resources.getString(viewModel.dscs.get(arguments!!.getInt(ARG_SECTION_NUMBER)))
         })
 
         viewModel.onboardingFinishEvent.observe(this, Observer<Event<Boolean>> {event ->
@@ -53,7 +49,7 @@ class OnboardingFragment : Fragment() {
         })
 
         val img = root.findViewById(R.id.section_img) as ImageView
-        img.setBackgroundResource(bgs.get(arguments!!.getInt(ARG_SECTION_NUMBER)))
+        img.setBackgroundResource(viewModel.bgs.get(arguments!!.getInt(ARG_SECTION_NUMBER)))
 
         /*val sectionLabel = root.findViewById(R.id.section_label) as TextView
         sectionLabel.setText(lbls.get(arguments!!.getInt(ARG_SECTION_NUMBER)))

@@ -1,13 +1,17 @@
 package com.applego.oblog.tppwatch.statistics
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
@@ -26,6 +30,7 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.formatter.ValueFormatter
+import java.util.*
 
 
 /**
@@ -64,11 +69,45 @@ class StatisticsFragment : Fragment() {
         viewDataBinding.viewmodel = viewModel
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
-        val toolbar: Toolbar ?= activity?.findViewById(com.applego.oblog.tppwatch.R.id.toolbar)
+        val toolbar: Toolbar ?= activity?.findViewById(R.id.toolbar)
         toolbar?.setNavigationIcon(toolbarIcon)
 
-        val chartTypeAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.chart_type_titles, R.layout.spinner_item)
         chartTypesSpinner = activity?.findViewById(R.id.spinner_charttype)!!
+
+        val aChartTypeAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.chart_type_titles, R.layout.spinner_chart_types)
+
+        val strings = context!!.resources.getTextArray(R.array.chart_type_titles)
+        val chartTypeAdapter/*:ArrayAdapter<String> */= /*object: ArrayAdapter<String>(
+                context,
+                android.R.layout.simple_spinner_dropdown_item,
+                R.array.chart_type_titles
+        )*/ //object: ArrayAdapter<CharSequence>/*.createFromResource*/(getActivity(), R.array.chart_type_titles, R.layout.spinner_item) {
+            /*val theChartTypeAdapter = */
+            object: ArrayAdapter<CharSequence>(context, R.layout.spinner_chart_types, 0, strings) {
+            override fun getDropDownView(
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
+            ): View {
+                val view: TextView = super.getDropDownView(
+                        position,
+                        convertView,
+                        parent
+                ) as TextView
+                // set item text size
+                view.setTextSize(TypedValue.COMPLEX_UNIT_SP,12F)
+
+                // set selected item style
+                if (position == chartTypesSpinner.selectedItemPosition){
+                    view.background = ColorDrawable(Color.parseColor("#FFF600"))
+                    view.setTextColor(Color.parseColor("#2E2D88"))
+                }
+
+                return view
+            }
+        }
+
+        chartTypeAdapter.setDropDownViewResource(R.layout.spinner_chart_types)
         chartTypesSpinner.setAdapter(chartTypeAdapter);
         chartTypesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {

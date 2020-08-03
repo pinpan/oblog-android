@@ -82,7 +82,7 @@
     <string name="statistics_last_year">Within last 365 days: %1$d</string>
     <string name="statistics_last_month">Within last 30 days: %1$d</string>
     <string name="statistics_last_week">Within last 7 days: %1$d</string>
-    <string name="statistic_graphs">Select statistics graph type:</string>
+    <string name="statistic_graphs">Statistics graph type:</string>
     <string name="statistics_error">Error loading statistics.</string>
     <string name="statistics_date">Statistics calculated on %1$td</string>  <!--based on EBA registry version %2$d-->
     <string name="no_data">No data</string>
@@ -190,5 +190,6 @@
     <string name="country_sl">SL</string>
     <string name="country_uk">UK</string>
     <string name="label_entity_version">EBA entity version</string>
+    <string name="resource_not_found">RESOURCE_NOT_FOUND</string>
 
 </resources>

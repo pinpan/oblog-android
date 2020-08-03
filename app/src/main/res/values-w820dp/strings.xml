@@ -3,4 +3,5 @@
     <string name="about_header">About OBLOG</string>
     <string name="label_entity_version">EBA entity version</string>
     <string name="onboarding_label_4">abc4</string>
+    <string name="resource_not_found">RESOURCE_NOT_FOUND</string>
 </resources>

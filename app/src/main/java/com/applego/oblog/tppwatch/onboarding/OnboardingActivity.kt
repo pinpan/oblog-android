@@ -33,67 +33,49 @@ class OnboardingActivity : AppCompatActivity() {
         Toast.makeText(this@OnboardingActivity, "Run only once", Toast.LENGTH_LONG).show()
         viewModel = ViewModelProviders.of(this).get(OnboardingViewModel::class.java)
 
-/*
-        val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
-        var isFirstRun = sharedPerfs.getBoolean("isFirstRun", true)
-        var shouldShowIntro = sharedPerfs.getBoolean("show_intro", false)
-*/
-
-            /*Handler().post(object : Runnable {
-
-                override fun run(): Unit {
-                    startActivity(Intent(this@OnboardingActivity, TppsActivity::class.java))
-                }
-            })*/
         setContentView(R.layout.onboarding_activity)
         viewPager = findViewById(R.id.view_pager)
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
         viewPager.adapter = sectionsPagerAdapter
 
-//        if (isFirstRun || shouldShowIntro) {
-            viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                    viewModel.setIndex(position)
-                }
-            })
-
-            findViewById<ImageButton>(R.id.intro_btn_next)?.let {
-                it.setOnClickListener { view ->
-                    viewPager.setCurrentItem(viewModel.nextPage(), true);
-                }
+        viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                viewModel.setIndex(position)
             }
+        })
 
-            findViewById<Button>(R.id.intro_btn_finish)?.let {
-                it.setOnClickListener { view ->
-                    viewModel.finishOnboarding(true)
-                }
+        findViewById<ImageButton>(R.id.intro_btn_next)?.let {
+            it.setOnClickListener { view ->
+                viewPager.setCurrentItem(viewModel.nextPage(), true);
             }
-
-            findViewById<Button>(R.id.intro_btn_skip)?.let {
-                it.setOnClickListener { view ->
-                    viewModel.finishOnboarding(false)
-                }
-            }
-
-            val N: Int = ((viewPager.adapter?.count) ?: 0) - 1
-            for (n in 0..N) {
-                val indicator: ImageView = window.decorView.findViewWithTag(resources.getString(R.string.tag_intro_indicator) + n)
-                indicatorViewes.add(indicator)
-            }
-            activeIndicator = indicatorViewes.get(viewModel.index.value ?: 0)
-
-            viewModel.index.observe(this, Observer<Int> {
-                onPageIndexChanged(it)
-            })
-
-            viewModel.onboardingFinishEvent.observe(this, Observer {
-                finish()
-            })
-/*
-        } else {
-            finish()
         }
-*/
+
+        findViewById<Button>(R.id.intro_btn_finish)?.let {
+            it.setOnClickListener { view ->
+                viewModel.finishOnboarding(true)
+            }
+        }
+
+        findViewById<Button>(R.id.intro_btn_skip)?.let {
+            it.setOnClickListener { view ->
+                viewModel.finishOnboarding(false)
+            }
+        }
+
+        val N: Int = ((viewPager.adapter?.count) ?: 0) - 1
+        for (n in 0..N) {
+            val indicator: ImageView = window.decorView.findViewWithTag(resources.getString(R.string.tag_intro_indicator) + n)
+            indicatorViewes.add(indicator)
+        }
+        activeIndicator = indicatorViewes.get(viewModel.index.value ?: 0)
+
+        viewModel.index.observe(this, Observer<Int> {
+            onPageIndexChanged(it)
+        })
+
+        viewModel.onboardingFinishEvent.observe(this, Observer {
+            finish()
+        })
     }
 
     fun finish(regularFinish: Boolean) {
@@ -101,13 +83,11 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     override fun finish() {
-        //if (viewPager.currentItem == viewModel.pageCount) {
-            val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
+        val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
 
-            val editor = sharedPerfs.edit()
-            editor.putBoolean("isFirstRun", false)
-            editor.commit()
-        //}
+        val editor = sharedPerfs.edit()
+        editor.putBoolean("isFirstRun", false)
+        editor.commit()
 
         // if (TargetApi >= 16)
         //   finishAffinity()

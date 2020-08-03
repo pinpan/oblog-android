@@ -50,16 +50,28 @@
                 tools:text="Page One"
                 android:textColor="@color/colorEUDarkBlue" />
 
-            <TextView
-                android:id="@+id/section_description"
-                style="@style/TextAppearance.AppCompat.Subhead"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:alpha="0.7"
-                android:gravity="center"
-                android:text="Add a long description here about your app's important feature."
-                android:textColor="@color/colorEUGrey" />
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/section_description"
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:alpha="0.7"
+                        android:gravity="center"
+                        android:text="Add a long description here about your app's important feature."
+                        android:textColor="@color/colorEUGrey" />
+                </LinearLayout>
+            </ScrollView>
+
         </LinearLayout>
     </LinearLayout>
 

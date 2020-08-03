@@ -118,7 +118,7 @@
                             android:id="@+id/stats_authorized_label"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingTop="5dp"
+                            android:paddingTop="10dp"
                             android:text="@{@string/statistics_authorized_label}"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textStyle="bold"
@@ -193,14 +193,16 @@
                         android:layout_weight="1"
                         android:paddingTop="1dp"
                         android:text="@{@string/statistic_graphs}"
+                        android:textStyle="bold"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
                     <Spinner
                         android:id="@+id/spinner_charttype"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
+                        android:background="@color/colorEUGrey"
                         />
                 </LinearLayout>
 
