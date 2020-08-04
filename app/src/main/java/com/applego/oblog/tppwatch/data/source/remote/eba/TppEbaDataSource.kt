@@ -61,7 +61,7 @@ class TppEbaDataSource internal constructor (
         var response: Response<List<Tpp>>?
         try {
             response = call.execute()
-            var theTpp: Tpp? = null
+            var theTpp: Tpp?
             if (response.isSuccessful()) {
                 if (response.body().isNullOrEmpty()) {
                     return Result.Warn("HTTP response body is empty", "HTTP response code: $response.code(), response body: $response.body()")
@@ -85,7 +85,7 @@ class TppEbaDataSource internal constructor (
         }
 
 
-        return Result.Loading(Timeout().timeout(100, TimeUnit.MILLISECONDS));
+        //return Result.Loading(Timeout().timeout(100, TimeUnit.MILLISECONDS));
     }
 
 
@@ -128,7 +128,7 @@ class TppEbaDataSource internal constructor (
              //   override fun onResponse(call: Call<TppsListResponse>, response: Response<TppsListResponse>) {
             if (response.isSuccessful()) {
                 val tppsListResponse = response.body()
-                Timber.d("tppsList=" + tppsListResponse?.tppsList ?: "EMPTY")
+                Timber.d("tppsList=" + tppsListResponse?.tppsList)
                 tppsListResponse?.tppsList?.forEach { tpp ->
                     System.out.println("Insert/Update tpp: " + tpp.ebaEntity.getEntityName() + " into database")
 
@@ -147,7 +147,7 @@ class TppEbaDataSource internal constructor (
                     }
                 }
                 if (tppsListResponse?.paging != null) {
-                    return Result.Success(tppsListResponse?.paging)
+                    return Result.Success(tppsListResponse.paging)
                 } else  {
                     return Result.Error(Exception("Rest call returned no data"))
                 }

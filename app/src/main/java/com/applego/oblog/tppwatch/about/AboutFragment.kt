@@ -55,16 +55,14 @@ class AboutFragment : Fragment() {
         webSettings.cacheMode = /*if (isNetworkConnected())*/ WebSettings.LOAD_NO_CACHE /*else WebSettings.LOAD_CACHE_ONLY*/
 
         val url = "https://www.oblog.org"
-        if (myWebView != null) {
-            myWebView.clearCache(true)
-            myWebView.loadUrl(url)
-            myWebView.setWebViewClient(object : WebViewClient() {
-                override fun shouldOverrideUrlLoading(view: WebView, resourceRequest: WebResourceRequest): Boolean {
-                    view.loadUrl(resourceRequest.url.toString())
-                    return true
-                }
-            })
-        }
+        myWebView.clearCache(true)
+        myWebView.loadUrl(url)
+        myWebView.setWebViewClient(object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView, resourceRequest: WebResourceRequest): Boolean {
+                view.loadUrl(resourceRequest.url.toString())
+                return true
+            }
+        })
 
         return viewDataBinding.root
     }

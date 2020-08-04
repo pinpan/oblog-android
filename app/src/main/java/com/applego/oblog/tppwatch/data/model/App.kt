@@ -14,12 +14,9 @@ data class App @JvmOverloads constructor(
 )
 {
     fun update(anAppName: String, aDescription: String, aWebAddr: String?) {
-        if (anAppName != null) {
-            name = anAppName
-        }
-        if (aDescription != null) {
-            description = aDescription
-        }
+        name = anAppName
+        description = aDescription
+
         if (aWebAddr != null) {
             webAddr = aWebAddr
         }

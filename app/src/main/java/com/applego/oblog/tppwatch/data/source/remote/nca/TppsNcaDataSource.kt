@@ -85,7 +85,7 @@ class TppsNcaDataSource internal constructor (
         var response: Response<List<Tpp>>?
         try {
             response = call.execute()
-            var theTpp: Tpp? = null
+            var theTpp: Tpp?
             if (response.isSuccessful()) {
                 if (response.body().isNullOrEmpty()) {
                     return Result.Warn("HTTP response body is empty", "HTTP response code: $response.code(), response body: $response.body()")
@@ -134,7 +134,7 @@ class TppsNcaDataSource internal constructor (
         var response: Response<List<Tpp>>?
         try {
             response = call.execute()
-            var theTpp: Tpp? = null
+            var theTpp: Tpp?
 
             if (response.isSuccessful()) {
                 val tppList = response.body()!!

@@ -99,7 +99,7 @@ class TppsViewModel(
             val tpp = findTppInList(allItems.value!!, tppId)
             runBlocking {
                 if (tpp != null) {
-                    tppsRepository.refreshTpp(tpp!!)
+                    tppsRepository.refreshTpp(tpp)
                 }
             }
             loadTpps(false)
@@ -160,6 +160,12 @@ class TppsViewModel(
             TppsFilterType.REVOKED_TPPs -> {
                 setFilterStatusViews(
                         R.string.label_revoked, R.string.no_revoked_tpps,
+                        R.drawable.ic_verified_user_96dp, false
+                )
+            }
+            TppsFilterType.REVOKED_ONLY_TPPs -> {
+                setFilterStatusViews(
+                        R.string.label_revoked_only, R.string.no_revoked_tpps,
                         R.drawable.ic_verified_user_96dp, false
                 )
             }
@@ -345,7 +351,7 @@ class TppsViewModel(
             filteredTpps.addAll(inputTpps)
         } else {
             _searchFilter.countries.forEach {
-                inputTpps?.forEach {
+                inputTpps.forEach {
                     if (it.getCountry().equals(country)) {
                         filteredTpps.add(it)
                     }
@@ -366,13 +372,11 @@ class TppsViewModel(
             filteredTpps.addAll(inputTpps)
         } else {
             val psdService = EbaService.findPsd2Service(service)
-            inputTpps?.forEach lit@{ tpp ->
-                if (tpp.getEbaPassport() != null) {
-                    tpp.getEbaPassport().serviceMap.entries.forEach() {
-                        if (it.key.equals(psdService.code)) {
-                            filteredTpps.add(tpp)
-                            return@lit;
-                        }
+            inputTpps.forEach lit@{ tpp ->
+                tpp.getEbaPassport().serviceMap.entries.forEach() {
+                    if (it.key.equals(psdService.code)) {
+                        filteredTpps.add(tpp)
+                        return@lit;
                     }
                 }
             }
@@ -414,8 +418,8 @@ class TppsViewModel(
 
     fun setupSearchFilter(savedInstanceState: Bundle?) {
         if (savedInstanceState != null) {
-            _searchFilter.title = savedInstanceState?.getString("", "") ?: ""
-            _searchFilter.searchDescription = savedInstanceState?.getBoolean("searchDescription", false)
+            _searchFilter.title = savedInstanceState.getString("", "") ?: ""
+            _searchFilter.searchDescription = savedInstanceState.getBoolean("searchDescription", false)
             _searchFilter.countries = savedInstanceState.getString("countries", "") ?: ""
             _searchFilter.services = savedInstanceState.getString("services", "") ?: ""
         }

@@ -24,8 +24,8 @@ class FakeRemoteDataSource(var tppsListResponse: TppsListResponse? = TppsListRes
         )
     }
 
-    override suspend fun getTppByName(country: String, tppTitle: String): Result<Tpp> {
-        tppsListResponse?.tppsList?.firstOrNull { it.getEntityName() == tppTitle}?.let { return Success(it) }
+    override suspend fun getTppByName(country: String, tppName: String): Result<Tpp> {
+        tppsListResponse?.tppsList?.firstOrNull { it.getEntityName() == tppName}?.let { return Success(it) }
         return Error(
             Exception("Tpp not found")
         )

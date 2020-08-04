@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center"
-            android:text="Finish"
+            android:text="Start using OBLOG"
             android:textColor="@android:color/white"
             android:padding="@dimen/activity_horizontal_margin"
             android:visibility="gone" />

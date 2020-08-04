@@ -68,7 +68,7 @@ class Tpp : TppModel {
     override fun getTitleForList(): String = ebaEntity.getTitleForList()
 
     fun equals(other: Tpp) : Boolean {
-        return (other != null) && other.getId().equals(getId());
+        return other.getId().equals(getId());
     }
 
     // TODO#2: Consider Following fields

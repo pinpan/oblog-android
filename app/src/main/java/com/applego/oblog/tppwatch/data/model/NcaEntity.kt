@@ -54,7 +54,7 @@ data class NcaEntity @JvmOverloads constructor(
     fun getId() = _id
 
     fun getTitleForList(): String {
-        return (getEntityName()) ?: getDescription()
+        return getEntityName()
     }
 
 

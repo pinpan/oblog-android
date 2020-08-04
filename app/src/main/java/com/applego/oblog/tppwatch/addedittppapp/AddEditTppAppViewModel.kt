@@ -75,18 +75,16 @@ class AddEditTppAppViewModel(
 
     private fun onTppLoaded(aTpp: Tpp) {
          tpp =  aTpp
-        aTpp.appsPortfolio.appsList?.forEach({
-            if (appId == it.id ) {
+        aTpp.appsPortfolio.appsList.forEach({
+            if (appId == it.id) {
                 _app.value = it
             }
         })
 
-        if (app != null) {
-            appName.value = app?.value?.name ?: "app name"
-            description.value = app?.value?.description ?: "description"
-            webAddr.value = app?.value?.webAddr ?: "web address"
-            isDataLoaded = true
-        }
+        appName.value = app.value?.name ?: "app name"
+        description.value = app.value?.description ?: "description"
+        webAddr.value = app.value?.webAddr ?: "web address"
+        isDataLoaded = true
     }
 
     fun cancelAddApp() {
@@ -118,19 +116,15 @@ class AddEditTppAppViewModel(
     }
 
     private fun createApp(app: App) = viewModelScope.launch {
-        if (app != null) {
-            app.tppId = tpp?.getId() ?: "-1"
-            tppsRepository.saveApp(tpp!!, app)
-        }
+        app.tppId = tpp?.getId() ?: "-1"
+        tppsRepository.saveApp(tpp!!, app)
 
         _appUpdatedEvent.value = Event(Unit)
     }
 
     private fun updateApp(app: App) = viewModelScope.launch {
-        if (app != null) {
-            app.tppId = tpp?.getId() ?: "-1"
-            tppsRepository.updateApp(tpp!!, app)
-        }
+        app.tppId = tpp?.getId() ?: "-1"
+        tppsRepository.updateApp(tpp!!, app)
 
         _appUpdatedEvent.value = Event(Unit)
     }

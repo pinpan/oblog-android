@@ -181,10 +181,10 @@ class DefaultTppsRepository (
         }
     }
 
-    override suspend fun setTppFollowedFlag(tpp: Tpp, f: Boolean) {
+    override suspend fun setTppFollowedFlag(tpp: Tpp, followed: Boolean) {
         cacheAndPerform(tpp) {
             tpp.let {
-                it.ebaEntity.followed = f
+                it.ebaEntity.followed = followed
                 coroutineScope {
                     launch {
                         tppsLocalDataSource.updateFollowing(it, it.ebaEntity.isFollowed())
@@ -210,12 +210,12 @@ class DefaultTppsRepository (
         }
     }
 
-    override suspend fun setTppActivateFlag(tpp: Tpp, a: Boolean) = withContext(ioDispatcher) {
+    override suspend fun setTppActivateFlag(tpp: Tpp, used: Boolean) = withContext(ioDispatcher) {
         // Do in memory cache update to keep the app UI up to date
         cacheAndPerform(tpp) {
-            it.ebaEntity.used = a
+            it.ebaEntity.used = used
             coroutineScope {
-                launch { tppsLocalDataSource.setTppActivateFlag(it.ebaEntity.getId(), a) }
+                launch { tppsLocalDataSource.setTppActivateFlag(it.ebaEntity.getId(), used) }
             }
         }
     }

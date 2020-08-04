@@ -60,16 +60,15 @@ enum class EbaService (val code: String, val psd2Code: String, val shortDescript
         }
 
         fun findPsd2Service(inService: String): EbaService {
-            if (inService != null) {
-                val psd2Service = inService.toUpperCase()
-                for (serv in allEbaServiesMap) {
-                    if (!serv.value.psd2Code.isNullOrBlank()) {
-                        if (psd2Service.startsWith(serv.value.psd2Code.toUpperCase())) {
-                            return serv.value
-                        }
+            val psd2Service = inService.toUpperCase()
+            for (serv in allEbaServiesMap) {
+                if (!serv.value.psd2Code.isNullOrBlank()) {
+                    if (psd2Service.startsWith(serv.value.psd2Code.toUpperCase())) {
+                        return serv.value
                     }
                 }
             }
+
             return NONE
         }
 

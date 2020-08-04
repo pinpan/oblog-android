@@ -68,7 +68,7 @@ class OblogTypeConverters {
 
     @TypeConverter
     fun fromJsonElementToEbaPassport(json : JsonElement) : EbaPassport {
-        val aList: List<Map<String, Any /*List<Psd2Service>*/>> = gson.fromJson(json, ebaPassportMapListType)
+        val aList: List<Map<String, List<String>>> = gson.fromJson(json, ebaPassportMapListType)
 
         val ebaPassport = EbaPassport()
         //TODO-Transform: ebaPassport.serviceMaps = aList
@@ -80,8 +80,10 @@ class OblogTypeConverters {
         ebaPassport.serviceMap = serviceMap
 
         for (aMap in aList) {
+            // Warning: this cast will never succeed beause aMap is of type <String, List<String>>
+            //  ... but actually the Json in bad formed
             val countryCode: String = aMap.get("country") as String
-            val servicesList = aMap.get("list") as ArrayList<String>
+            val servicesList : List<String> = aMap.get("list") as List<String>
 
             val theServices = ArrayList<Psd2Service>()
             //countryMap.put(countryCode, theServices)

@@ -67,7 +67,7 @@ class TppsFragmentTest {
 
     @After
     fun cleanupDb() = runBlockingTest {
-        val job = CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             ServiceLocator.resetRestDataSource()
         }
     }

@@ -117,7 +117,7 @@ data class EbaEntity @JvmOverloads constructor(
     fun getStatus() = _status
 
     fun getTitleForList(): String {
-        return getEntityName() ?: getDescription()
+        return getEntityName()
     }
 
 /*
