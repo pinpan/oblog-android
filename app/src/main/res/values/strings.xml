@@ -156,8 +156,8 @@
     <string name="label_onboarding_features">OBLOG features</string>
     <string name="label_onboarding_disclaimer">Disclaimer</string>
 
-    <string name="onboarding_label_1">Welcome to OBLOG!</string>
-    <string name="onboarding_label_2">Browse smart EBA FI directories</string>
+    <string name="onboarding_label_1">Welcome to Open Banking LOG!</string>
+    <string name="onboarding_label_2">Browse EBA FI directories</string>
     <string name="onboarding_label_3">OBLOG</string>
     <string name="onboarding_label_4">Start using</string>
     <!--<string name="onboarding_label_4"></string>-->

@@ -70,7 +70,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
                 override fun run(): Unit {
                     val editor = sharedPerfs.edit()
-                    editor.putBoolean("isFirstRun", false)
+                    //editor.putBoolean("isFirstRun", false)
                     editor.putBoolean("show_intro", false)
                     editor.commit()
 

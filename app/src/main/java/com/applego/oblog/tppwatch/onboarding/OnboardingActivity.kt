@@ -83,12 +83,13 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     override fun finish() {
-        val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
+        //if (viewPager.currentItem == viewModel.pageCount) {
+            val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
 
-        val editor = sharedPerfs.edit()
-        editor.putBoolean("isFirstRun", false)
-        editor.commit()
-
+            val editor = sharedPerfs.edit()
+            editor.putBoolean("isFirstRun", false)
+            editor.commit()
+        //}
         // if (TargetApi >= 16)
         //   finishAffinity()
         val intent = Intent(this@OnboardingActivity, TppsActivity::class.java)
