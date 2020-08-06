@@ -31,7 +31,7 @@
         </activity>
         <activity
             android:name=".tpps.TppsActivity"
-            android:label="TppWatch"
+            android:label="OpenBanking LOG"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.OverlapSystemBar"
             android:windowSoftInputMode="adjustResize">

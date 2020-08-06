@@ -10,8 +10,8 @@ import com.applego.oblog.tppwatch.util.Event
 
 class OnboardingViewModel : ViewModel() {
 
-    var pageCount: Int = 3 // TODO: find out how to pass this to the model
-    var bgs: IntArray = intArrayOf(R.drawable.oblog_onboarding_1, R.drawable.oblog_onboarding_2, R.drawable.oblog_onboarding_3, R.drawable.oblog_onboarding_3)
+    var pageCount: Int = 4 // TODO: find out how to pass this to the model
+    var bgs: IntArray = intArrayOf(R.drawable.oblog_onboarding_1, R.drawable.oblog_onboarding_2, R.drawable.oblog_onboarding_3, R.drawable.oblog_onboarding_4)
     var lbls: IntArray = intArrayOf(R.string.onboarding_label_1, R.string.onboarding_label_2, R.string.onboarding_label_3, R.string.onboarding_label_4)
     var dscs: IntArray = intArrayOf(R.string.onboarding_description_1, R.string.onboarding_description_2, R.string.onboarding_description_3, R.string.onboarding_description_4)
 

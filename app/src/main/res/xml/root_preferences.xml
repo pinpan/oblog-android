@@ -28,7 +28,9 @@
             app:summaryOn="@string/allow_location_on"
             app:title="@string/anonymous_location"
         />
+    </PreferenceCategory>
 
+    <PreferenceCategory app:title= "@string/user_misc">
         <SwitchPreferenceCompat
             app:key="show_intro"
             app:title="@string/show_intro_on_next_run"
