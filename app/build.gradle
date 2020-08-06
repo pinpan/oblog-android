@@ -14,7 +14,7 @@ android {
     defaultConfig {
         applicationId "com.applego.oblog.tppwatch"
         minSdkVersion rootProject.minSdkVersion
-        targetSdkVersion rootProject.targetSdkVersion
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
@@ -106,6 +106,11 @@ android {
         //enabled = true
         enabledForTests = true
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildToolsVersion '29.0.3'
 }
 
 /*
