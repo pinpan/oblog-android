@@ -1,6 +1,7 @@
 package com.applego.oblog.tppwatch.addedittpp
 
 import android.content.Context
+import android.os.Build
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -33,6 +34,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
+import org.robolectric.annotation.Config
 import org.robolectric.annotation.LooperMode
 import org.robolectric.annotation.TextLayoutMode
 
@@ -44,6 +46,8 @@ import org.robolectric.annotation.TextLayoutMode
 @LooperMode(LooperMode.Mode.PAUSED)
 @TextLayoutMode(TextLayoutMode.Mode.REALISTIC)
 @ExperimentalCoroutinesApi
+// TODO: Elevate SDK version to 29 for tests
+@Config(sdk = [Build.VERSION_CODES.P])
 class AddEditTppFragmentTest {
     private lateinit var repository: TppsRepository
 

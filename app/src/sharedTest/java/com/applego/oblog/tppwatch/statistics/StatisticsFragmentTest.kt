@@ -1,6 +1,7 @@
 package com.applego.oblog.tppwatch.statistics
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
@@ -24,6 +25,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 /**
  * Integration test for the statistics screen.
@@ -31,6 +33,8 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 @MediumTest
 @ExperimentalCoroutinesApi
+// TODO: Elevate SDK version to 29 for tests
+@Config(sdk = [Build.VERSION_CODES.P])
 class StatisticsFragmentTest {
     private lateinit var repository: TppsRepository
 

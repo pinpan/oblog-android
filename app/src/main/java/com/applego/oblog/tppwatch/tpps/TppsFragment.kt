@@ -168,7 +168,7 @@ class TppsFragment : Fragment() {
     }
 
     private fun setUpSearchForm() {
-        val countryAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.eu_countries, R.layout.spinner_item)
+        val countryAdapter = ArrayAdapter.createFromResource(getActivity() as Context, R.array.eu_countries, R.layout.spinner_item)
 
         countriesSpinner = activity?.findViewById(R.id.serarch_country)!!
         countriesSpinner.setAdapter(countryAdapter);
@@ -185,7 +185,7 @@ class TppsFragment : Fragment() {
             }
         })
 
-        val psd2RolesAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.psd2_roles, R.layout.spinner_item)
+        val psd2RolesAdapter = ArrayAdapter.createFromResource(getActivity() as Context, R.array.psd2_roles, R.layout.spinner_item)
 
         servicesSpinner = activity?.findViewById(R.id.search_role)!!
         servicesSpinner.setAdapter(psd2RolesAdapter);

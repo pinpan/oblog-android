@@ -1,5 +1,6 @@
 package com.applego.oblog.tppwatch.statistics
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -74,7 +75,7 @@ class StatisticsFragment : Fragment() {
 
         chartTypesSpinner = activity?.findViewById(R.id.spinner_charttype)!!
 
-        val aChartTypeAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.chart_type_titles, R.layout.spinner_chart_types)
+        val aChartTypeAdapter = ArrayAdapter.createFromResource(getActivity() as Context, R.array.chart_type_titles, R.layout.spinner_chart_types)
 
         val strings = context!!.resources.getTextArray(R.array.chart_type_titles)
         val chartTypeAdapter/*:ArrayAdapter<String> */= /*object: ArrayAdapter<String>(
@@ -83,7 +84,7 @@ class StatisticsFragment : Fragment() {
                 R.array.chart_type_titles
         )*/ //object: ArrayAdapter<CharSequence>/*.createFromResource*/(getActivity(), R.array.chart_type_titles, R.layout.spinner_item) {
             /*val theChartTypeAdapter = */
-            object: ArrayAdapter<CharSequence>(context, R.layout.spinner_chart_types, 0, strings) {
+            object: ArrayAdapter<CharSequence>(getActivity() as Context, R.layout.spinner_chart_types, 0, strings) {
             override fun getDropDownView(
                     position: Int,
                     convertView: View?,

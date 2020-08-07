@@ -39,7 +39,7 @@ interface  OblogEbaService {
             val currentEnv = sharedPreferences.getString("environment", "TEST")
 
             val envsBaseUrls : Array<String> = context.applicationContext.resources.getStringArray(com.applego.oblog.tppwatch.R.array.env_base_url);
-            var baseUrl = OblogRestClient.getBaseUrl(currentEnv, envsBaseUrls)
+            var baseUrl = OblogRestClient.getBaseUrl(currentEnv!!, envsBaseUrls)
 
             val retrofit = OblogRestClient.createRetrofitChecking(baseUrl, HTTTP_CONTEXT)
             val oblogEbaService = retrofit.create(OblogEbaService::class.java)

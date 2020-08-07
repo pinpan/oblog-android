@@ -1,5 +1,6 @@
 package com.applego.oblog.tppwatch.data.source.local
 
+import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
@@ -24,6 +25,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 /**
  * Integration test for the [LocalTppDataSource].
@@ -31,6 +33,8 @@ import org.junit.runner.RunWith
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 @MediumTest
+// TODO: Elevate SDK version to 29 for tests
+@Config(sdk = [Build.VERSION_CODES.P])
 class TppsLocalDataSourceTest {
 
     private lateinit var localDataSource: TppsDaoDataSource

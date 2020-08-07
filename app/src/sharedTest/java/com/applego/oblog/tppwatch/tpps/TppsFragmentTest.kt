@@ -2,6 +2,7 @@ package com.applego.oblog.tppwatch.tpps
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.testing.FragmentScenario
@@ -43,6 +44,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
+import org.robolectric.annotation.Config
 import org.robolectric.annotation.LooperMode
 import org.robolectric.annotation.TextLayoutMode
 
@@ -55,6 +57,8 @@ import org.robolectric.annotation.TextLayoutMode
 @LooperMode(LooperMode.Mode.PAUSED)
 @TextLayoutMode(TextLayoutMode.Mode.REALISTIC)
 @ExperimentalCoroutinesApi
+// TODO: Elevate SDK version to 29 for tests
+@Config(sdk = [Build.VERSION_CODES.P])
 class TppsFragmentTest {
 
     private lateinit var repository: TppsRepository
