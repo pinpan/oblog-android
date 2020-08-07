@@ -34,12 +34,12 @@ class OnboardingFragment : Fragment() {
         val textView: TextView = root.findViewById(R.id.section_label)
         val descView: TextView = root.findViewById(R.id.section_description)
 
-        viewModel.text.observe(this, Observer<String> {
-            textView.text = resources.getString(viewModel.lbls.get(arguments!!.getInt(ARG_SECTION_NUMBER)))
+        viewModel.text.observe(this, Observer<Int> {
+            textView.text = resources.getString(viewModel.text.value ?: 0)
         })
 
-        viewModel.desc.observe(this, Observer<String> {
-            descView.text = resources.getString(viewModel.dscs.get(arguments!!.getInt(ARG_SECTION_NUMBER)))
+        viewModel.desc.observe(this, Observer<Int> {
+            descView.text = resources.getString(viewModel.desc.value ?: 0)
         })
 
         viewModel.onboardingFinishEvent.observe(this, Observer<Event<Boolean>> {event ->

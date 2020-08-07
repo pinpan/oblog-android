@@ -14,7 +14,7 @@ android {
     defaultConfig {
         applicationId "com.applego.oblog.tppwatch"
         minSdkVersion rootProject.minSdkVersion
-        targetSdkVersion 29
+        targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -37,7 +37,7 @@ android {
 
     buildFeatures {
         dataBinding true
-        //viewBinding = true brakes the build with error: "... TppsSearchBinding cannot be converted to ViewDataBinding"
+        //viewBinding = true -> brakes the build with error: "... TppsSearchBinding cannot be converted to ViewDataBinding"
     }
 
     android {

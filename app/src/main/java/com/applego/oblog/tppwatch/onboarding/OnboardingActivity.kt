@@ -35,7 +35,7 @@ class OnboardingActivity : AppCompatActivity() {
 
         setContentView(R.layout.onboarding_activity)
         viewPager = findViewById(R.id.view_pager)
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
+        val sectionsPagerAdapter = SectionsPagerAdapter(viewModel, this, supportFragmentManager)
         viewPager.adapter = sectionsPagerAdapter
 
         viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
