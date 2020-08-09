@@ -12,12 +12,10 @@ class OnboardingViewModel : SectionsPagingViewModel() {
     var dscs: IntArray = intArrayOf(R.string.onboarding_description_1, R.string.onboarding_description_2, R.string.onboarding_description_3, R.string.onboarding_description_4)
 
     val text: LiveData<Int> = Transformations.map(_index) {
-        //"Hello world from section: $it"
         lbls.get(_index?.value ?: R.string.resource_not_found)
     }
 
     val desc: LiveData<Int> = Transformations.map(_index) {
-        //"Hello world from section = more descriptive: $it"
         dscs.get(_index?.value ?: R.string.resource_not_found)
     }
 

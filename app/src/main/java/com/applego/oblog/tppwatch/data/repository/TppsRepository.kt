@@ -12,8 +12,6 @@ interface TppsRepository {
 
     suspend fun getAllTpps(forceUpdate: Boolean = false): Result<List<Tpp>>
 
-    suspend fun filterTpps(filter: TppsFilter, forceUpdate: Boolean = false): Result<List<Tpp>>
-
     suspend fun getTpp(tppId: String, forceUpdate: Boolean = false): Result<Tpp>
 
     suspend fun refreshTpp(tpp: Tpp)

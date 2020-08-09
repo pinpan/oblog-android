@@ -27,10 +27,10 @@ import java.util.concurrent.TimeUnit
  * data source fails. Remote is the source of truth.
  */
 class DefaultTppsRepository (
-        /*private */var tppsEbaDataSource: RemoteTppDataSource,
-        /*private */var tppsNcaDataSource: RemoteTppDataSource,
-                    var tppsLocalDataSource: LocalTppDataSource,
-                    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+        var tppsEbaDataSource: RemoteTppDataSource,
+        var tppsNcaDataSource: RemoteTppDataSource,
+        var tppsLocalDataSource: LocalTppDataSource,
+        val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
     ) : TppsRepository {
 
     private var cachedTpps: ConcurrentMap<String, Tpp> = ConcurrentHashMap()
@@ -38,21 +38,12 @@ class DefaultTppsRepository (
     val waitTwoSeconds : Timeout = Timeout()
 
     override suspend fun getAllTpps(forceUpdate: Boolean): Result<List<Tpp>> {
-        return filterTpps(TppsFilter(), forceUpdate)
-    }
-
-    override suspend fun filterTpps(filter: TppsFilter, forceUpdate: Boolean): Result<List<Tpp>> {
-
         wrapEspressoIdlingResource {
-
             return withContext(ioDispatcher) {
-
                 if (forceUpdate) {
                     fetchTppsFromRemoteDatasource()
                 }
-
-
-                return@withContext loadTppsFromLocalDatasource(filter)
+                return@withContext loadTppsFromLocalDatasource()
             }
         }
     }
@@ -72,9 +63,9 @@ class DefaultTppsRepository (
         }
     }
 
-    private suspend fun loadTppsFromLocalDatasource(filter: TppsFilter): Result<List<Tpp>> {
+    private suspend fun loadTppsFromLocalDatasource(): Result<List<Tpp>> {
 
-        val localTpps = tppsLocalDataSource.getTpps(filter)
+        val localTpps = tppsLocalDataSource.getTpps()
         if (localTpps is Success) {
             return localTpps
         } else if (localTpps is Loading) {

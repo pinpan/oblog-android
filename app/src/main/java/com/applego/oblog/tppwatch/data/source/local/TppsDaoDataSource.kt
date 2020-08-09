@@ -19,17 +19,13 @@ class TppsDaoDataSource internal constructor(
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : LocalTppDataSource {
 
-        override suspend fun getTpps(filter: TppsFilter): Result<List<Tpp>> = withContext(ioDispatcher) {
+        override suspend fun getTpps(): Result<List<Tpp>> = withContext(ioDispatcher) {
         var tpps = ArrayList<Tpp>()
         try {
-            var ebaEntities : List<EbaEntity>
-            if (isOnlyCountry(filter)) {
-                ebaEntities = tppsDao.getTppEntitiesByCountry(filter.country)
-            } else {
-                ebaEntities = tppsDao.getAllTppEntities()
-            }
+            var ebaEntities = tppsDao.getAllTppEntities()
             ebaEntities.forEach { ebaEntity ->
-                tpps.add(Tpp(ebaEntity))}
+                tpps.add(Tpp(ebaEntity))
+            }
         } catch (e: Exception) {
             Error(e)
         }

@@ -83,8 +83,8 @@
     <string-array name="chart_type_titles">
         <item>Tpps per country</item>
         <item>Per institution type</item>
-        <item>Per country change</item>
-        <item>Per institution type change</item>
+        <item>Per country last  month</item>
+        <item>Per institution type last month</item>
     </string-array>
 
     <string-array name="chart_type_values">

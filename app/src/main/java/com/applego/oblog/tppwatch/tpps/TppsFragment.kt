@@ -85,7 +85,6 @@ class TppsFragment : Fragment() {
             override fun onClose(): Boolean {
                 if (!lastTppsSearchViewQuery.isNullOrBlank()) {
                     lastTppsSearchViewQuery = ""
-                    //viewModel.loadTpps(false)
                     searchBy("")
                 }
                 return false

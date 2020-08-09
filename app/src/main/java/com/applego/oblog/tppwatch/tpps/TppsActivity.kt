@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigator
@@ -23,9 +24,13 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.applego.oblog.tppwatch.BuildConfig
 import com.applego.oblog.tppwatch.R
+import com.applego.oblog.tppwatch.TppWatchApplication
 import com.applego.oblog.tppwatch.onboarding.OnboardingActivity
 import com.applego.oblog.tppwatch.preferences.OblogPreferencesActivity
 import com.applego.oblog.tppwatch.tppdetail.TppDetailTabsFragment
+import com.applego.oblog.tppwatch.util.ServiceLocator
+import com.applego.oblog.tppwatch.util.ViewModelFactory
+import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.common.AccountPicker
 import com.google.android.material.navigation.NavigationView
@@ -43,6 +48,8 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
     private var selectedTppId: String ?=null
 
+    private var viewModel : TppsViewModel? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,7 +57,6 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
             val skipSplash = sharedPerfs.getBoolean("skipSplash", false)
             if (!skipSplash) {
                 Handler().postDelayed(object : Runnable {
-
                     override fun run(): Unit {
                         setContentView(R.layout.spalsh_screen)
 
@@ -60,17 +66,19 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                 }, 5000)
             }
         */
-
-        val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
-        var isFirstRun = sharedPerfs.getBoolean("isFirstRun", true)
-        var shouldShowIntro = sharedPerfs.getBoolean("show_intro", false)
+        ServiceLocator.resetTppsRepository(this)
+        viewModel = ViewModelFactory(ServiceLocator.tppsRepository!!).create(TppsViewModel::class.java)//by viewModels<TppsViewModel> { getViewModelFactory() }
+        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
+        sharedPrefs.registerOnSharedPreferenceChangeListener(this)
+        var isFirstRun = sharedPrefs.getBoolean("isFirstRun", true)
+        var shouldShowIntro = sharedPrefs.getBoolean("show_intro", false)
         if (isFirstRun || shouldShowIntro) {
             //show sign up activity
+            viewModel!!.loadEbaDirectory()
             Handler().post(object : Runnable {
 
                 override fun run(): Unit {
-                    val editor = sharedPerfs.edit()
-                    //editor.putBoolean("isFirstRun", false)
+                    val editor = sharedPrefs.edit()
                     editor.putBoolean("show_intro", false)
                     editor.commit()
 
@@ -85,21 +93,21 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+        toolbar.title = ""
+        toolbar.subtitle = ""
 
-        val navController: NavController = findNavController(com.applego.oblog.tppwatch.R.id.nav_host_fragment)
-        appBarConfiguration =
-            AppBarConfiguration.Builder(com.applego.oblog.tppwatch.R.id.tpps_fragment_dest, com.applego.oblog.tppwatch.R.id.statistics_fragment_dest)
+        val navController: NavController = findNavController(R.id.nav_host_fragment)
+        appBarConfiguration = AppBarConfiguration.Builder(R.id.tpps_fragment_dest, R.id.statistics_fragment_dest)
                 .setDrawerLayout(drawerLayout)
                 .build()
         setupActionBarWithNavController(navController, appBarConfiguration)
-        findViewById<NavigationView>(com.applego.oblog.tppwatch.R.id.nav_view).setupWithNavController(navController)
+        findViewById<NavigationView>(R.id.nav_view).setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { navController, destination, arguments ->
-
             Timber.i("onDestinationChanged: "+ destination.label);
             if ((destination as FragmentNavigator.Destination).className.equals(TppDetailTabsFragment::class.java.canonicalName)) {
                 selectedTppId = arguments!!.getString("tppId")
-            } else if ((destination as FragmentNavigator.Destination).className.equals(TppsFragment::class.java.canonicalName)) {
+            } else if (destination.className.equals(TppsFragment::class.java.canonicalName)) {
                 arguments!!.putString("tppId", selectedTppId.toString())
                 selectedTppId = null
             }
@@ -107,21 +115,11 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
     //    getUserId()
 
-        toolbar.title = ""
-        toolbar.subtitle = ""
-
-        setupSharedPreferences();
-
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         if (BuildConfig.DEBUG){
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
-    }
-
-    private fun setupSharedPreferences() {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
@@ -188,7 +186,6 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                 setStatusBarBackground(R.color.colorPrimaryDark)
             }
     }
-
 
     fun pickUserAccount() {
         val googlePicker = AccountPicker.newChooseAccountIntent(null, null, arrayOf(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE), true, null, null, null, null)
