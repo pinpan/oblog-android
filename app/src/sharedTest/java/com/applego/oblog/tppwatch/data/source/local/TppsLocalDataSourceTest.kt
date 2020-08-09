@@ -8,7 +8,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.applego.oblog.tppwatch.MainCoroutineRule
 import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.model.EbaEntity
 import com.applego.oblog.tppwatch.data.model.EbaEntityType
 import com.applego.oblog.tppwatch.data.model.NcaEntity
@@ -165,7 +164,7 @@ class TppsLocalDataSourceTest {
         localDataSource.deleteAllTpps()
 
         // Then the retrieved tpps is an empty list
-        val result = localDataSource.getTpps(TppsFilter()) as Success
+        val result = localDataSource.getTpps() as Success
         assertThat(result.data.isEmpty(), `is`(true))
 
     }
@@ -179,7 +178,7 @@ class TppsLocalDataSourceTest {
         localDataSource.saveTpp(Tpp(newTppEntity1, NcaEntity()))
         localDataSource.saveTpp(Tpp(newTppEntity2, NcaEntity()))
         // Then the tpps can be retrieved from the persistent repository
-        val results = localDataSource.getTpps(TppsFilter()) as Success<List<Tpp>>
+        val results = localDataSource.getTpps() as Success<List<Tpp>>
         val tpps = results.data
         assertThat(tpps.size, `is`(2))
     }

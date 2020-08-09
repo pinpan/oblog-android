@@ -93,14 +93,14 @@ class TppEbaDataSource internal constructor (
         val ebaEntity = ebaTpp.ebaEntity
         val dbEntity = tppsDao.getTppEntityByCode(ebaEntity.getEntityCode(), ebaEntity.ebaProperties.codeType)
         if (dbEntity == null) {
-            tppsDao.insertorUpdateEbaEntity(ebaEntity)
+            tppsDao.insertEbaEntity(ebaEntity)
         } else {
             dbEntity._description = ebaEntity._description
             dbEntity._entityName = ebaEntity._entityName
             dbEntity._ebaEntityVersion = ebaEntity._ebaEntityVersion
             dbEntity._ebaPassport = ebaEntity._ebaPassport
             dbEntity._status = ebaEntity._status
-            tppsDao.updateTppEntity(dbEntity)
+            tppsDao.updateEbaEntity(dbEntity)
         }
 
         return ebaTpp
@@ -133,17 +133,15 @@ class TppEbaDataSource internal constructor (
                     System.out.println("Insert/Update tpp: " + tpp.ebaEntity.getEntityName() + " into database")
 
                     runBlocking<Unit> {
-                        //val foundEntity = tppsDao.getTppEntityByCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType)
-                        //if (foundEntity == null) {
-                            tppsDao.insertorUpdateEbaEntity(tpp.ebaEntity)
-                        /*} else {
-                            val updatedNumber = tppsDao.updateTppEntity(tpp.ebaEntity)
+                        val foundEntity = tppsDao.getTppEntityByCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType)
+                        if (foundEntity == null) {
+                            tppsDao.insertEbaEntity(tpp.ebaEntity)
+                        } else {
+                            val updatedNumber = tppsDao.updateEbaEntity(tpp.ebaEntity)
                             if (updatedNumber != 1) {
                                 Timber.w("Update of TPP with ID %s was not successfull.", tpp.getEntityId())
                             }
                         }
-
-                         */
                     }
                 }
                 if (tppsListResponse?.paging != null) {

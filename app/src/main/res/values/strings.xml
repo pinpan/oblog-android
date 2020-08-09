@@ -158,12 +158,12 @@
     <string name="label_onboarding_start_using">Start using</string>
 
     <string name="onboarding_label_1">Welcome to Open Banking LOG!</string>
-    <string name="onboarding_label_2">Browse EBA FI directories</string>
+    <string name="onboarding_label_2">Browse European FI registries</string>
     <string name="onboarding_label_3">Analyze statistics</string>
     <string name="onboarding_label_4">OBLOG</string>
 
     <string name="onboarding_description_1">OBLOG - Know Your Financial Services Provider</string>
-    <string name="onboarding_description_2">Browse, Search, Filter EBA registry, Get TPP details - all your hand</string>
+    <string name="onboarding_description_2">Browse, Search, Filter European FI registries, Get TPP details...</string>
     <string name="onboarding_description_3">Get statistics, analyze data - anywhere, anytime</string>
     <string name="onboarding_description_4">OBLOG SOFTWARE IS PROVIDED BY THE AUTHOR FREE OF CHARGE, \`\`AS IS\'\' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. ALL DATA DISPLAYED IS COLLECTED FROM PUBLICLY AVAILABLE SOURCES.</string>
 

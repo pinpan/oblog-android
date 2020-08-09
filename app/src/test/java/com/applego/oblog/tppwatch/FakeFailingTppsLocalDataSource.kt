@@ -1,7 +1,6 @@
 package com.applego.oblog.tppwatch
 
 import com.applego.oblog.tppwatch.data.Result
-import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
@@ -11,7 +10,7 @@ object FakeFailingTppsLocalDataSource : LocalTppDataSource {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun getTpps(filter: TppsFilter): Result<List<Tpp>> {
+    override suspend fun getTpps(): Result<List<Tpp>> {
         return Result.Error(Exception("Test"))
     }
 

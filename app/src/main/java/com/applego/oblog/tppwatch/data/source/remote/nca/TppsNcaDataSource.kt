@@ -62,9 +62,9 @@ class TppsNcaDataSource internal constructor (
 
                     runBlocking<Unit> {
                         if (tppsDao.getTppEntityByCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType) == null) {
-                            tppsDao.insertorUpdateEbaEntity(tpp.ebaEntity)
+                            tppsDao.insertEbaEntity(tpp.ebaEntity)
                         } else {
-                            tppsDao.updateTppEntity(tpp.ebaEntity)
+                            tppsDao.updateEbaEntity(tpp.ebaEntity)
                         }
                     }
                 }
@@ -113,14 +113,14 @@ class TppsNcaDataSource internal constructor (
         val ncaEntity = ncaTpp.ebaEntity
         val dbEntity = tppsDao.getTppEntityByCode(ncaEntity.getEntityCode(), ncaEntity.ebaProperties.codeType)
         if (dbEntity == null) {
-            tppsDao.insertorUpdateEbaEntity(ncaEntity)
+            tppsDao.insertEbaEntity(ncaEntity)
         } else {
             dbEntity._description = ncaEntity._description
             dbEntity._entityName = ncaEntity._entityName
             dbEntity._ebaEntityVersion = ncaEntity._ebaEntityVersion
             dbEntity._ebaPassport = ncaEntity._ebaPassport
             dbEntity._status = ncaEntity._status
-            tppsDao.updateTppEntity(dbEntity)
+            tppsDao.updateEbaEntity(dbEntity)
         }
 
         return ncaTpp
@@ -142,9 +142,9 @@ class TppsNcaDataSource internal constructor (
                 val tppEntity = theTpp.ebaEntity
                 Timber.d("tppsList=" + tppEntity)
                 if (tppsDao.getTppEntityByCode(tppEntity.getEntityCode(), tppEntity.ebaProperties.codeType) == null) {
-                    tppsDao.insertorUpdateEbaEntity(tppEntity)
+                    tppsDao.insertEbaEntity(tppEntity)
                 } else {
-                    tppsDao.updateTppEntity(tppEntity)
+                    tppsDao.updateEbaEntity(tppEntity)
                 }
                 return Result.Success(theTpp)
             } else {

@@ -5,9 +5,7 @@ import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.replaceText
-import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.hasSibling
@@ -19,7 +17,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.R.string
 import com.applego.oblog.tppwatch.util.ServiceLocator
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
@@ -107,6 +104,7 @@ class TppsActivityTest {
         onView(withText("TITLE1")).check(doesNotExist())
     }
 
+/*
     @Test
     fun createOneTpp_deleteTpp() {
 
@@ -115,7 +113,7 @@ class TppsActivityTest {
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
         // Add used tpp
-        onView(withId(R.id.add_tpp_fab)).perform(click())
+        onView(withId(R.id.add_app_fab)).perform(click())
         onView(withId(R.id.add_tpp_title_edit_text))
             .perform(typeText("TITLE1"), closeSoftKeyboard())
         onView(withId(R.id.add_tpp_description_edit_text)).perform(typeText("DESCRIPTION"))
@@ -132,7 +130,7 @@ class TppsActivityTest {
         onView(withText("TITLE1")).check(doesNotExist())
     }
 
-    //@Test
+    @Test
     fun createTwoTpps_deleteOneTpp() {
         repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "CZ", entityType = EbaEntityType.NONE), NcaEntity()))
         repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "CZ", entityType = EbaEntityType.NONE), NcaEntity()))
@@ -152,6 +150,7 @@ class TppsActivityTest {
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withText("TITLE2")).check(doesNotExist())
     }
+*/
 
     @Test
     fun markTppAsFollowedOnDetailScreen_tppIsFollowInList() {
@@ -266,6 +265,7 @@ class TppsActivityTest {
             .check(matches(isChecked()))
     }
 
+/*
     @Test
     fun createTpp() {
         // start up Tpps screen
@@ -282,4 +282,5 @@ class TppsActivityTest {
         // Then verify tpp is displayed on screen
         onView(withText("entityName")).check(matches(isDisplayed()))
     }
+*/
 }

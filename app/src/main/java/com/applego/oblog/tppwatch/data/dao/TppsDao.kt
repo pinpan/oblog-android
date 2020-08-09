@@ -64,7 +64,7 @@ interface TppsDao {
      * @param ebaEntity the EbaEntity to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertorUpdateEbaEntity(ebaEntity: EbaEntity)
+    suspend fun insertEbaEntity(ebaEntity: EbaEntity)
 
     /**
      * Update an EbaEntity.
@@ -73,7 +73,7 @@ interface TppsDao {
      * @return the number of EbaEntity-s updated. This should always be 1.
      */
     @Update
-    suspend fun updateTppEntity(ebaEntity: EbaEntity): Int
+    suspend fun updateEbaEntity(ebaEntity: EbaEntity): Int
 
     /**
      * Update the followed status of a tpp
@@ -115,8 +115,8 @@ interface TppsDao {
     @Query("DELETE FROM Tpps WHERE followed = 1")
     suspend fun deleteFollowedTppsEntities(): Int
 
-    @Query("SELECT * FROM Tpps WHERE country = :country")
-    fun getTppEntitiesByCountry(country: String): List<EbaEntity>
+    /*@Query("SELECT * FROM Tpps WHERE country = :country")
+    fun getTppEntitiesByCountry(country: String): List<EbaEntity>*/
 
 
 

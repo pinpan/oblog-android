@@ -10,7 +10,7 @@ import com.applego.oblog.tppwatch.data.model.App
  */
 interface LocalTppDataSource {
 
-    suspend fun getTpps(filter: TppsFilter): Result<List<Tpp>>
+    suspend fun getTpps(): Result<List<Tpp>>
 
     /*suspend */fun getTpp(tppId: String): Result<Tpp>
 

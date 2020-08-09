@@ -35,9 +35,6 @@ class TppsViewModel(
     private val _statusLine = MutableLiveData<String>("")
     val statusLine: LiveData<String> = _statusLine
 
-    private val _isFiltered = MutableLiveData<Boolean>(isFiltered())
-    val isFiltered: LiveData<Boolean> = _isFiltered
-
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
 
@@ -58,17 +55,11 @@ class TppsViewModel(
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
 
-    // Not used at the moment
-    //private val isDataLoadingError = MutableLiveData<Boolean>()
-
     private val _openTppEvent = MutableLiveData<Event<String>>()
     val openTppEvent: LiveData<Event<String>> = _openTppEvent
 
     private val _newTppEvent = MutableLiveData<Event<Unit>>()
     val newTppEvent: LiveData<Event<Unit>> = _newTppEvent
-
-    //private val _refreshEvent = MutableLiveData<Event<Unit>>()
-    //val refreshEvent: LiveData<Event<Unit>> = _refreshEvent
 
     private val _aboutEvent = MutableLiveData<Event<Unit>>()
     val aboutEvent: LiveData<Event<Unit>> = _aboutEvent
@@ -90,7 +81,7 @@ class TppsViewModel(
         loadTpps(false)
     }
 
-    private fun isFiltered() : Boolean {
+    fun isFiltered() : Boolean {
         return (_allItems.value?.size != _items.value?.size)
     }
 
@@ -232,16 +223,11 @@ class TppsViewModel(
 
                 if (tppsResult is Success) {
                     _allItems.value = tppsResult.data
-
                     _items.value = getTppsByGlobalFilter()
-                    _isFiltered.value = isFiltered()
 
                     // TODO: Get it from fetched EBA / OBLOG data
                     _statusLine.value = "Last EBA version: " + Random().nextLong()
-
-                    //isDataLoadingError.value = false
                 } else {
-                    //isDataLoadingError.value = true
                     _items.value = emptyList()
                     showSnackbarMessage(R.string.loading_tpps_error)
                 }

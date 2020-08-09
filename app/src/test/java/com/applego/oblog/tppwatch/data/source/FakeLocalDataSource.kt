@@ -4,7 +4,6 @@ package com.applego.oblog.tppwatch.data.source
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
@@ -15,7 +14,7 @@ class FakeLocalDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : Local
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun getTpps(filter: TppsFilter): Result<List<Tpp>> {
+    override suspend fun getTpps(): Result<List<Tpp>> {
         tpps?.let { return Success(Lists.newArrayList(it)) }
         return Error(
             Exception("Tpps not found")
