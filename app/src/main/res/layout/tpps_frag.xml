@@ -124,7 +124,7 @@
                                 android:id="@+id/tpps_list"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:items="@{viewmodel.items}"
+                                app:items="@{viewmodel.displayedItems}"
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
                         </LinearLayout>
 
@@ -147,7 +147,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:padding="2dp"
-                                android:text="@{viewmodel.isFiltered ? @string/tpps_registered_filtered_number(viewmodel.items.size, viewmodel.allItems.size) : @string/tpps_registered_all_number(viewmodel.items.size)}" />
+                                android:text="@{viewmodel.isFiltered ? @string/tpps_registered_filtered_number(viewmodel.displayedItems.size, viewmodel.allItems.size) : @string/tpps_registered_all_number(viewmodel.displayedItems.size)}" />
 
                             <TextView
                                 android:id="@+id/status_line"

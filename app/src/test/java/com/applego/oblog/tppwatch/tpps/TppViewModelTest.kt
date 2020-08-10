@@ -73,11 +73,11 @@ class TppsViewModelTest {
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading)).isFalse()
 
         // And data correctly loaded
-        assertThat(LiveDataTestUtil.getValue(tppsViewModel.items)).hasSize(3)
+        assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).hasSize(3)
 
         // Given an initialized TppsViewModel with initialized tpps
         // When loading of Tpps is requested
-        val aTpp = tppsViewModel.items.value?.get(0)
+        val aTpp = tppsViewModel.displayedItems.value?.get(0)
         if (aTpp != null) {
             aTpp.ebaEntity.used = true
             tppsRepository.saveTppBlocking(aTpp)
@@ -88,12 +88,12 @@ class TppsViewModelTest {
 
         //tppsViewModel.setFiltering(TppsFilterType.USED_TPPS)
         tppsViewModel.loadTpps(false)
-        assertThat(LiveDataTestUtil.getValue(tppsViewModel.items)).hasSize(1)
+        assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).hasSize(1)
 
         tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.USED_TPPs)
         tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.ONLY_PSD2_TPPs)
         tppsViewModel.loadTpps(false)
-        assertThat(LiveDataTestUtil.getValue(tppsViewModel.items)).hasSize(0)
+        assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).hasSize(0)
     }
 
     @Ignore
@@ -110,7 +110,7 @@ class TppsViewModelTest {
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading)).isFalse()
 
         // And data correctly loaded
-        assertThat(LiveDataTestUtil.getValue(tppsViewModel.items)).hasSize(3)
+        assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).hasSize(3)
     }
 
     @Test
@@ -128,7 +128,7 @@ class TppsViewModelTest {
         // Then progress indicator is hidden
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading)).isFalse()
 
-        val allTpps = tppsViewModel.items.value
+        val allTpps = tppsViewModel.displayedItems.value
         val followedTpps = allTpps?.filter { it.isFollowed()}
         assertThat(followedTpps?.size == 1)
 
@@ -147,8 +147,10 @@ class TppsViewModelTest {
         // Then progress indicator is hidden
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading)).isFalse()
 
-        // And the list of tppsList is empty
-        assertThat(LiveDataTestUtil.getValue(tppsViewModel.items)).isEmpty()
+        // And the list of tppsList is the old one
+        assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).isNotEmpty()
+        assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems).size).isEqualTo(3)
+        assertThat(LiveDataTestUtil.getValue(tppsViewModel.snackbarText).hasBeenHandled)
 
         // And the snackbar updated
         assertSnackbarMessage(tppsViewModel.snackbarText, R.string.loading_tpps_error)

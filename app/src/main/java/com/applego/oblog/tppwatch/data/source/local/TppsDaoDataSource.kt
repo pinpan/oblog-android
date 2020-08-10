@@ -22,7 +22,8 @@ class TppsDaoDataSource internal constructor(
         override suspend fun getTpps(): Result<List<Tpp>> = withContext(ioDispatcher) {
         var tpps = ArrayList<Tpp>()
         try {
-            var ebaEntities = tppsDao.getAllTppEntities()
+            val allTppEntities = tppsDao.getAllTppEntities()
+            var ebaEntities = allTppEntities
             ebaEntities.forEach { ebaEntity ->
                 tpps.add(Tpp(ebaEntity))}
         } catch (e: Exception) {

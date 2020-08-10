@@ -29,8 +29,8 @@ class TppsViewModel(
     val allItems: LiveData<List<Tpp>> = _allItems
 
     // TODO: rename to displayedItems
-    private val _items = MutableLiveData<List<Tpp>>().apply { value = allItems.value }
-    val items: LiveData<List<Tpp>> = _items
+    private val _displayedItems = MutableLiveData<List<Tpp>>().apply { value = allItems.value }
+    val displayedItems: LiveData<List<Tpp>> = _displayedItems
 
     private val _statusLine = MutableLiveData<String>("")
     val statusLine: LiveData<String> = _statusLine
@@ -65,7 +65,7 @@ class TppsViewModel(
     val aboutEvent: LiveData<Event<Unit>> = _aboutEvent
 
     // This LiveData depends on another so we can use a transformation.
-    val empty: LiveData<Boolean> = Transformations.map(_items) {
+    val empty: LiveData<Boolean> = Transformations.map(_displayedItems) {
         it.isEmpty()
     }
 
@@ -82,7 +82,7 @@ class TppsViewModel(
     }
 
     fun isFiltered() : Boolean {
-        return (_allItems.value?.size != _items.value?.size)
+        return (_allItems.value?.size != _displayedItems.value?.size)
     }
 
     fun refreshTpp(tppId : String?) {
@@ -127,37 +127,37 @@ class TppsViewModel(
             TppsFilterType.USED_TPPs -> {
                 setFilterStatusViews(
                         R.string.label_used, R.string.no_tpps_used,
-                        R.drawable.ic_check_circle_96dp, true
+                        R.drawable.oblog_logo, true
                 )
             }
             TppsFilterType.FOLLOWED_TPPs -> {
                 setFilterStatusViews(
                         R.string.label_followed, R.string.no_tpps_followed,
-                        R.drawable.ic_verified_user_96dp, true
+                        R.drawable.oblog_logo, true
                 )
             }
             TppsFilterType.ONLY_PSD2_FIs -> {
                 setFilterStatusViews(
                         R.string.label_fis, R.string.no_fis_tpps,
-                        R.drawable.ic_verified_user_96dp, true
+                        R.drawable.oblog_logo, true
                 )
             }
             TppsFilterType.ONLY_PSD2_TPPs -> {
                 setFilterStatusViews(
                         R.string.label_psd2_only, R.string.psd2_services_only,
-                        R.drawable.ic_verified_user_96dp, true
+                        R.drawable.oblog_logo, true
                 )
             }
             TppsFilterType.REVOKED_TPPs -> {
                 setFilterStatusViews(
                         R.string.label_revoked, R.string.no_revoked_tpps,
-                        R.drawable.ic_verified_user_96dp, false
+                        R.drawable.oblog_logo, false
                 )
             }
             TppsFilterType.REVOKED_ONLY_TPPs -> {
                 setFilterStatusViews(
                         R.string.label_revoked_only, R.string.no_revoked_tpps,
-                        R.drawable.ic_verified_user_96dp, false
+                        R.drawable.oblog_logo, false
                 )
             }
         }
@@ -175,7 +175,6 @@ class TppsViewModel(
 
     fun loadEbaDirectory() {
         viewModelScope.launch {
-            showSnackbarMessage(R.string.loading)
             // Load from OBLOG API
             loadTpps(true)
         }
@@ -192,7 +191,6 @@ class TppsViewModel(
         viewModelScope.launch {
             tppsRepository.setTppActivateFlag(tpp, used)
             showSnackbarMessage(R.string.tpp_marked_used)
-
         }
     }
 
@@ -215,23 +213,24 @@ class TppsViewModel(
      */
     fun loadTpps(forceUpdate: Boolean) {
         _dataLoading.value = true
-
+        _displayedItems.value = emptyList()
         wrapEspressoIdlingResource {
-
+            showSnackbarMessage(R.string.loading)
             viewModelScope.launch {
-                val tppsResult = tppsRepository.getAllTpps(forceUpdate)
 
+                val tppsResult = tppsRepository.getAllTpps(forceUpdate)
                 if (tppsResult is Success) {
                     _allItems.value = tppsResult.data
-                    _items.value = getTppsByGlobalFilter()
+                    _displayedItems.value = getTppsByGlobalFilter()
 
                     // TODO: Get it from fetched EBA / OBLOG data
                     _statusLine.value = "Last EBA version: " + Random().nextLong()
                 } else {
-                    _items.value = emptyList()
+                    // TODO: Set warning message than "Data is old" to be displayed,
+                    //  until refresh succeeds next time. May be for Remote updates only?
+                    _displayedItems.value = getTppsByGlobalFilter()
                     showSnackbarMessage(R.string.loading_tpps_error)
                 }
-
                 _dataLoading.value = false
             }
         }
@@ -244,7 +243,7 @@ class TppsViewModel(
 
             viewModelScope.launch {
                 val tppsToShow = getTppsByGlobalFilter()
-                _items.value = tppsToShow
+                _displayedItems.value = tppsToShow
 
                 _dataLoading.value = false
             }
@@ -374,13 +373,13 @@ class TppsViewModel(
     fun filterTppsByCountry(country: String) {
         _searchFilter.countries = country
 
-        _items.value = getTppsByGlobalFilter()
+        _displayedItems.value = getTppsByGlobalFilter()
     }
 
     fun filterTppsByService(service: String) {
         _searchFilter.services = service
 
-        _items.value = getTppsByGlobalFilter()
+        _displayedItems.value = getTppsByGlobalFilter()
     }
 
     fun showEditResultMessage(result: Int) {
