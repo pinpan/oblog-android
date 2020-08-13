@@ -18,31 +18,63 @@ class ViewModelFactory constructor(
     private val tppsRepository: TppsRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
+    private val models = HashMap<String, ViewModel>()
+
+    fun <T : ViewModel> get(modelClass: Class<T>) =
+        with(modelClass) {
+            var model = models.get(modelClass.name)
+            if (model == null) {
+                model = create(modelClass)
+            }
+            model
+        }
+
     override fun <T : ViewModel> create(modelClass: Class<T>) =
         with(modelClass) {
+            var model : ViewModel
             when {
-               isAssignableFrom(StatisticsViewModel::class.java) ->
-                    StatisticsViewModel(tppsRepository)
-                isAssignableFrom(TppDetailViewModel::class.java) ->
-                    TppDetailViewModel(tppsRepository)
-                isAssignableFrom(AppsViewModel::class.java) ->
-                    AppsViewModel(tppsRepository)
-                /*isAssignableFrom(TppDetailEbaViewModel::class.java) ->
-                    TppDetailEbaViewModel(tppsRepository)*/
-                /*isAssignableFrom(TppDetailNcaViewModel::class.java) ->
-                    TppDetailNcaViewModel(tppsRepository)*/
-                /*isAssignableFrom(AppsViewModel::class.java) ->
-                    AppsViewModel(tppsRepository)*/
-                isAssignableFrom(AddEditTppViewModel::class.java) ->
-                    AddEditTppViewModel(tppsRepository)
-                isAssignableFrom(AddEditTppAppViewModel::class.java) ->
-                    AddEditTppAppViewModel(tppsRepository)
-                isAssignableFrom(TppsViewModel::class.java) ->
-                    TppsViewModel(tppsRepository)
-                isAssignableFrom(AboutViewModel::class.java) ->
-                    AboutViewModel()
-                else ->
+                isAssignableFrom(StatisticsViewModel::class.java) -> {
+                    model = StatisticsViewModel(tppsRepository)
+                    models.put(StatisticsViewModel::class.java.name, model)
+                    model
+                }
+                isAssignableFrom(TppDetailViewModel::class.java) -> {
+                    model = TppDetailViewModel(tppsRepository)
+                    models.put(TppDetailViewModel::class.java.name, model)
+                    model
+                }
+                isAssignableFrom(AppsViewModel::class.java) -> {
+                    model = AppsViewModel(tppsRepository)
+                    models.put(AppsViewModel::class.java.name, model)
+                    model
+                }
+                isAssignableFrom(AddEditTppViewModel::class.java) -> {
+                    model = AddEditTppViewModel(tppsRepository)
+                    models.put(AddEditTppViewModel::class.java.name, model)
+                    model
+                }
+               isAssignableFrom(AddEditTppAppViewModel::class.java) -> {
+                   model = AddEditTppAppViewModel(tppsRepository)
+                   models.put(AddEditTppAppViewModel::class.java.name, model)
+                   model
+               }
+               isAssignableFrom(TppsViewModel::class.java) -> {
+                   model = TppsViewModel(tppsRepository)
+                   models.put(TppsViewModel::class.java.name, model)
+                   model
+               }
+               isAssignableFrom(AboutViewModel::class.java) -> {
+                   model = AboutViewModel()
+                   models.put(AboutViewModel::class.java.name, model)
+                   model
+               }
+               else -> {
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
+                }
             }
         } as T
+
+    companion object {
+        val viewModelFactory = ViewModelFactory(ServiceLocator.tppsRepository!!)
+    }
 }
