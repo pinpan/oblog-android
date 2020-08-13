@@ -72,7 +72,7 @@ interface TppsDao {
      * @param ebaEntity an EbaEntity to be updated
      * @return the number of EbaEntity-s updated. This should always be 1.
      */
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateEbaEntity(ebaEntity: EbaEntity): Int
 
     /**
