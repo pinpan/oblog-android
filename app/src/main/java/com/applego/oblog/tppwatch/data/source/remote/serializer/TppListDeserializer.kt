@@ -26,7 +26,7 @@ class TppListDeserializer : JsonDeserializer<List<Tpp>> {
         return items
     }
 
-    fun convertFrom(jsonObject: JsonObject?) : List<Tpp> {
+    fun convertFrom(jsonObject: JsonObject?) : ArrayList<Tpp> {
         var items : ArrayList<Tpp> = arrayListOf()
 
         if (jsonObject != null) {
