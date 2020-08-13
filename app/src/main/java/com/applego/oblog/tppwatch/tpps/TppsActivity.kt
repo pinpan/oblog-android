@@ -27,7 +27,7 @@ import com.applego.oblog.tppwatch.onboarding.OnboardingActivity
 import com.applego.oblog.tppwatch.preferences.OblogPreferencesActivity
 import com.applego.oblog.tppwatch.tppdetail.TppDetailTabsFragment
 import com.applego.oblog.tppwatch.util.ServiceLocator
-import com.applego.oblog.tppwatch.util.ViewModelFactory
+import com.applego.oblog.tppwatch.util.ViewModelFactory.Companion.viewModelFactory
 import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.common.AccountPicker
 import com.google.android.material.navigation.NavigationView
@@ -77,7 +77,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                     ServiceLocator.resetTppsRepository(this.applicationContext)
                 }
 
-                viewModel = ViewModelFactory.viewModelFactory.get(TppsViewModel::class.java) as TppsViewModel
+                viewModel = viewModelFactory.get(TppsViewModel::class.java) as TppsViewModel
                 viewModel!!.loadEbaDirectory()
             }
 
