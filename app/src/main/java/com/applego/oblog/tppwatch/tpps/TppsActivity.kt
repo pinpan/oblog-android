@@ -27,7 +27,7 @@ import com.applego.oblog.tppwatch.onboarding.OnboardingActivity
 import com.applego.oblog.tppwatch.preferences.OblogPreferencesActivity
 import com.applego.oblog.tppwatch.tppdetail.TppDetailTabsFragment
 import com.applego.oblog.tppwatch.util.ServiceLocator
-import com.applego.oblog.tppwatch.util.ViewModelFactory
+import com.applego.oblog.tppwatch.util.ViewModelFactory.Companion.viewModelFactory
 import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.common.AccountPicker
 import com.google.android.material.navigation.NavigationView
@@ -74,10 +74,10 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
             if (isFirstRun) {
                 if (ServiceLocator.tppsRepository == null) {
-                    ServiceLocator.resetTppsRepository(this)
+                    ServiceLocator.resetTppsRepository(this.applicationContext)
                 }
 
-                viewModel = ViewModelFactory(ServiceLocator.tppsRepository!!).create(TppsViewModel::class.java)
+                viewModel = viewModelFactory.get(TppsViewModel::class.java) as TppsViewModel
                 viewModel!!.loadEbaDirectory()
             }
 
@@ -128,8 +128,8 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (key.equals("environment")) {
-            actualEnvironment = sharedPreferences?.getString("environment","")
+        if (key.equals("RUNTIME_ENV")) {
+            actualEnvironment = sharedPreferences?.getString("RUNTIME_ENV","")
             val envsArray = getResources().getStringArray(R.array.environments);
             for (i in envsArray.indices.reversed()) {
                 val env = envsArray[i]
