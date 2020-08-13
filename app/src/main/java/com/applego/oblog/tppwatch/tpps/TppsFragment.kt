@@ -17,14 +17,23 @@ import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.model.PspType
 import com.applego.oblog.tppwatch.databinding.TppsFragBinding
+<<<<<<< HEAD
 import com.applego.oblog.tppwatch.util.ViewModelFactory
+=======
+import com.applego.oblog.tppwatch.util.ViewModelFactory.Companion.viewModelFactory
+import com.applego.oblog.tppwatch.util.getViewModelFactory
+>>>>>>> Use viewModelFactory to obtain tppsViewModel
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
 class TppsFragment : Fragment() {
 
+<<<<<<< HEAD
     private val viewModel = ViewModelFactory.viewModelFactory.get(TppsViewModel::class.java) as TppsViewModel
+=======
+    private val viewModel = viewModelFactory.get(TppsViewModel::class.java) as TppsViewModel
+>>>>>>> Use viewModelFactory to obtain tppsViewModel
 
     private val args: TppsFragmentArgs by navArgs()
 
