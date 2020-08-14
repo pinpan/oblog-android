@@ -174,10 +174,10 @@ class TppsViewModel(
     }
 
     fun loadEbaDirectory() {
-        viewModelScope.launch {
+        //viewModelScope.launch {
             // Load from OBLOG API
             loadTpps(true)
-        }
+        //}
     }
 
     fun followTpp(tpp: Tpp, followed: Boolean) = viewModelScope.launch {
@@ -212,25 +212,45 @@ class TppsViewModel(
      * @param forceUpdate   Pass in true to refresh the data in the [LocalTppDataSource]
      */
     fun loadTpps(forceUpdate: Boolean) {
-        _dataLoading.value = true
-        _displayedItems.value = emptyList()
-        wrapEspressoIdlingResource {
-            showSnackbarMessage(R.string.loading)
-            viewModelScope.launch {
+        if (forceUpdate) {
 
-                val tppsResult = tppsRepository.getAllTpps(forceUpdate)
-                if (tppsResult is Success) {
-                    _allItems.value = tppsResult.data
-                    _displayedItems.value = getTppsByGlobalFilter()
+            if (!(_dataLoading.value?.equals(true) ?: false)) {
+                _dataLoading.value = true
+                _displayedItems.value = emptyList()
 
-                    // TODO: Get it from fetched EBA / OBLOG data
-                    _statusLine.value = "Last EBA version: " + Random().nextLong()
-                } else {
-                    // TODO: Set warning message than "Data is old" to be displayed,
-                    //  until refresh succeeds next time. May be for Remote updates only?
-                    _displayedItems.value = getTppsByGlobalFilter()
-                    showSnackbarMessage(R.string.loading_tpps_error)
+                showSnackbarMessage(R.string.loading)
+                wrapEspressoIdlingResource {
+                    viewModelScope.launch {
+                        //val tppsResult = tppsRepository.getAllTpps(forceUpdate)
+                        val tppsResult = tppsRepository.fetchTppsFromRemoteDatasourcePaging()
+                        if (tppsResult is Success) {
+                            _allItems.value = tppsResult.data
+
+                            // TODO: Get it from fetched EBA / OBLOG data
+                            _statusLine.value = "Last EBA version: " + Random().nextLong()
+                        } else {
+                            // TODO: Set warning message than "Data is old" to be displayed,
+                            //  until refresh succeeds next time. May be for Remote updates only?
+                            _displayedItems.value = getTppsByGlobalFilter()
+                            showSnackbarMessage(R.string.loading_tpps_error)
+                        }
+                        _dataLoading.value = false
+                    }
                 }
+            }
+        } else {
+            _dataLoading.value = true
+            viewModelScope.launch {
+                val tppsResult = tppsRepository.loadTppsFromLocalDatasource()
+                if (tppsResult is Success) {
+                        _allItems.value = tppsResult.data
+                        _displayedItems.value = getTppsByGlobalFilter()
+                    } else {
+                        //is Result.Idle -> TODO()
+                        //is Result.Error -> TODO()
+                        //is Result.Warn -> TODO()
+                        //is Result.Loading -> TODO()
+                    }
                 _dataLoading.value = false
             }
         }

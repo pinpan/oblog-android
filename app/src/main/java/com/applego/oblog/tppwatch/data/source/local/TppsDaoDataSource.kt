@@ -60,12 +60,27 @@ class TppsDaoDataSource internal constructor(
         val apps = tpp.appsPortfolio.appsList
         for (app in apps) {
             try {
-                tppsDao.insertApp(app)
+                if (app.id != null) {
+                    tppsDao.updateApp(app)
+                } else {
+                    tppsDao.insertApp(app)
+                }
+                //tppsDao.insertApp(app)
             } catch (e: Exception) {
                 Timber.e(e)
             }
         }
-        tppsDao.insertEbaEntity(tpp.ebaEntity)
+
+        //tppsDao.insertEbaEntity(tpp.ebaEntity)
+        val foundEntity = tppsDao.getTppEntityByCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType)
+        if (foundEntity == null) {
+            tppsDao.insertEbaEntity(tpp.ebaEntity)
+        } else {
+            val updatedNumber = tppsDao.updateEbaEntity(tpp.ebaEntity)
+            if (updatedNumber != 1) {
+                Timber.w("Update of TPP with ID %s was not successfull.", tpp.getEntityId())
+            }
+        }
     }
 
     override suspend fun saveАpp(аpp: App) {

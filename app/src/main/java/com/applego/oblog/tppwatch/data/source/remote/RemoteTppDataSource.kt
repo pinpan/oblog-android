@@ -3,10 +3,13 @@ package com.applego.oblog.tppwatch.data.source.remote
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.TppFilter
 import com.applego.oblog.tppwatch.data.model.Tpp
+import kotlinx.coroutines.withContext
 
 interface RemoteTppDataSource {
 
     suspend fun getAllTpps(): Result<TppsListResponse>
+
+    suspend fun getTpps(paging : Paging): Result<TppsListResponse>
 
     suspend fun filterTpps(filter: TppFilter): Result<TppsListResponse>
 

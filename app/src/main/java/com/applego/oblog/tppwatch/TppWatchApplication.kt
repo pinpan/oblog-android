@@ -20,10 +20,11 @@ import kotlin.reflect.KProperty
 class TppWatchApplication : Application() , SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        ServiceLocator.resetTppsRepository(this)
-        tppRepository = ServiceLocator.tppsRepository!!
+        if ("RUNTIME_ENV".equals(key)) {
+            ServiceLocator.resetTppsRepository(this)
+            tppRepository = ServiceLocator.tppsRepository!!
+        }
     }
-
 
     class ProvideTppsRepository {
         operator fun getValue(thisRef: Context, property: KProperty<*>) : TppsRepository {
@@ -42,9 +43,9 @@ class TppWatchApplication : Application() , SharedPreferences.OnSharedPreference
         if (BuildConfig.DEBUG) Timber.plant(DebugTree())
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val currentEnv = sharedPreferences.getString("environment", null)
+        val currentEnv = sharedPreferences.getString("RUNTIME_ENV", null)
         if (currentEnv == null) {
-            sharedPreferences.edit().putString("environment", "PRODUCTION")
+            sharedPreferences.edit().putString("RUNTIME_ENV", "PRODUCTION")
         }
 
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)

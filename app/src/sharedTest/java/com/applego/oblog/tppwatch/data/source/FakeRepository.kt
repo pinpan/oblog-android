@@ -47,6 +47,20 @@ class FakeRepository : TppsRepository {
         // Void
     }
 
+    override suspend fun fetchTppsFromRemoteDatasourcePaging(): Result<List<Tpp>> {
+        if (shouldReturnError) {
+            return Error(Exception("Test exception"))
+        }
+        return Success(tppsServiceData.values.toList())
+    }
+
+    override suspend fun loadTppsFromLocalDatasource(): Result<List<Tpp>> {
+        if (shouldReturnError) {
+            return Error(Exception("Test exception"))
+        }
+        return Success(tppsServiceData.values.toList())
+    }
+
     override suspend fun getAllTpps(forceUpdate: Boolean): Result<List<Tpp>> {
         if (shouldReturnError) {
             return Error(Exception("Test exception"))

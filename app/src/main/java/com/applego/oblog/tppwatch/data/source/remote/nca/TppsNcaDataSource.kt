@@ -48,6 +48,10 @@ class TppsNcaDataSource internal constructor (
         return@withContext Result.Loading(Timeout())
     }
 
+    override suspend fun getTpps(paging: Paging): Result<TppsListResponse> {
+        TODO("Not yet implemented")
+    }
+
     private fun loadTppsPage(country: String, tppName: String, paging: Paging): Result<Paging> {
         val call = tppsService.listTpps(theApiKey.apiKey, country, tppName, paging.page, paging.size, paging.sortBy)
         var response: Response<TppsListResponse>?

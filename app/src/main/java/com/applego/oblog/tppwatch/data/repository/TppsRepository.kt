@@ -1,7 +1,6 @@
 package com.applego.oblog.tppwatch.data.repository
 
 import com.applego.oblog.tppwatch.data.Result
-import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.Tpp
 
@@ -9,6 +8,10 @@ import com.applego.oblog.tppwatch.data.model.Tpp
  * Interface to the data layer.
  */
 interface TppsRepository {
+
+    suspend fun fetchTppsFromRemoteDatasourcePaging(): Result<List<Tpp>>
+
+    suspend fun loadTppsFromLocalDatasource(): Result<List<Tpp>>
 
     suspend fun getAllTpps(forceUpdate: Boolean = false): Result<List<Tpp>>
 

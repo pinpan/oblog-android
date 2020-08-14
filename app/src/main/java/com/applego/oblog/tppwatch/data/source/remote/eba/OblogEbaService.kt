@@ -17,8 +17,8 @@ interface  OblogEbaService {
     companion object EbaService : SharedPreferences.OnSharedPreferenceChangeListener {
 
         override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-            if (key.equals("environment")) {
-                var actualEnvironment = sharedPreferences?.getString("environment","")
+            if (key.equals("RUNTIME_ENV")) {
+                var actualEnvironment = sharedPreferences?.getString("RUNTIME_ENV","")
                 if (actualEnvironment == "Test") {
                     actualEnvironment = "Dev"
                 }
@@ -36,7 +36,7 @@ interface  OblogEbaService {
         fun create(context: Context): OblogEbaService {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context) //Environment.getDataDirectory()
 
-            val currentEnv = sharedPreferences.getString("environment", "TEST")
+            val currentEnv = sharedPreferences.getString("RUNTIME_ENV", "TEST")
 
             val envsBaseUrls : Array<String> = context.applicationContext.resources.getStringArray(com.applego.oblog.tppwatch.R.array.env_base_url);
             var baseUrl = OblogRestClient.getBaseUrl(currentEnv!!, envsBaseUrls)

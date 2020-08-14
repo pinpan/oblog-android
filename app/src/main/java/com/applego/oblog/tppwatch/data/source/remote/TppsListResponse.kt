@@ -4,8 +4,8 @@ import com.applego.oblog.tppwatch.data.model.Tpp
 
 class TppsListResponse {
 
-    var tppsList: List<Tpp>?
-    lateinit var paging: Paging
+    var tppsList = emptyList<Tpp>()
+    var paging = Paging()
 
     constructor() {
         tppsList = ArrayList<Tpp>()

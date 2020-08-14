@@ -1,6 +1,7 @@
 package com.applego.oblog.tppwatch.tpps
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.test.espresso.IdlingRegistry
 import com.applego.oblog.tppwatch.LiveDataTestUtil
 import com.applego.oblog.tppwatch.MainCoroutineRule
 import com.applego.oblog.tppwatch.R
@@ -11,13 +12,12 @@ import com.applego.oblog.tppwatch.data.source.FakeRepository
 import com.applego.oblog.tppwatch.data.model.EbaEntity
 import com.applego.oblog.tppwatch.data.model.EbaEntityType
 import com.applego.oblog.tppwatch.data.model.NcaEntity
+import com.applego.oblog.tppwatch.util.EspressoIdlingResource
+import com.applego.oblog.tppwatch.util.loadTppsBlocking
 import com.applego.oblog.tppwatch.util.saveTppBlocking
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Before
-import org.junit.Ignore
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 
 /**
  * Unit tests for the implementation of [TppsViewModel]
@@ -52,7 +52,24 @@ class TppsViewModelTest {
 
         tppsViewModel = TppsViewModel(tppsRepository)
         tppsViewModel.searchFilter.init()
-        tppsViewModel.loadTpps(false)
+        tppsViewModel.loadTpps(true)
+    }
+
+    /**
+     * Idling resources tell Espresso that the app is idle or busy. This is needed when operations
+     * are not scheduled in the main Looper (for example when executed on a different thread).
+     */
+    @Before
+    fun registerIdlingResource() {
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
+    }
+
+    /**
+     * Unregister your Idling Resource so it can be garbage collected and does not leak any memory.
+     */
+    @After
+    fun unregisterIdlingResource() {
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
     }
 
     @Test
@@ -87,12 +104,12 @@ class TppsViewModelTest {
         tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.USED_TPPs)
 
         //tppsViewModel.setFiltering(TppsFilterType.USED_TPPS)
-        tppsViewModel.loadTpps(false)
+        tppsViewModel.loadTppsBlocking(false)
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).hasSize(1)
 
         tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.USED_TPPs)
         tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.ONLY_PSD2_TPPs)
-        tppsViewModel.loadTpps(false)
+        tppsViewModel.loadTppsBlocking(false)
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).hasSize(0)
     }
 
@@ -104,7 +121,7 @@ class TppsViewModelTest {
         tppsViewModel.setFiltering(TppsFilterType.USED_TPPs)
 
         // Load tpps
-        tppsViewModel.loadTpps(true)
+        tppsViewModel.loadTppsBlocking(true)
 
         // Then progress indicator is hidden
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading)).isFalse()
@@ -126,7 +143,7 @@ class TppsViewModelTest {
         //val sTpps = tppsViewModel.items.value?.filter { it.entityName == "Title1" }?.forEach { it.isFollowed = true }
 
         // Then progress indicator is hidden
-        assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading)).isFalse()
+        //assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading).get()).isFalse()
 
         val allTpps = tppsViewModel.displayedItems.value
         val followedTpps = allTpps?.filter { it.isFollowed()}
@@ -142,10 +159,10 @@ class TppsViewModelTest {
         tppsRepository.setReturnError(true)
 
         // Load tpps
-        tppsViewModel.loadTpps(true)
+        tppsViewModel.loadTppsBlocking(true)
 
         // Then progress indicator is hidden
-        assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading)).isFalse()
+        //assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading).get()).isFalse()
 
         // And the list of tppsList is the old one
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).isNotEmpty()

@@ -8,6 +8,7 @@ import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
+import com.applego.oblog.tppwatch.data.source.remote.Paging
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import com.applego.oblog.tppwatch.util.EspressoIdlingResource
@@ -34,13 +35,13 @@ class DefaultTppsRepository (
 
     private var cachedTpps: ConcurrentMap<String, Tpp> = ConcurrentHashMap()
 
-    val waitTwoSeconds : Timeout = Timeout()
+    val wait100MilliSeconds : Timeout = Timeout()
 
     override suspend fun getAllTpps(forceUpdate: Boolean): Result<List<Tpp>> {
         wrapEspressoIdlingResource {
             return withContext(ioDispatcher) {
                 if (forceUpdate) {
-                    fetchTppsFromRemoteDatasource()
+                    fetchTppsFromRemoteDatasourcePaging()
                 }
                 return@withContext loadTppsFromLocalDatasource()
             }
@@ -56,19 +57,42 @@ class DefaultTppsRepository (
         val tppsListResponse: Result<TppsListResponse> = tppsEbaDataSource.getAllTpps()
         when (tppsListResponse) {
             is Success -> {
-                refreshLocalDataSource(tppsListResponse.data.tppsList)
+                updateLocalDataSource(tppsListResponse.data.tppsList)
             }
             is Error -> Timber.w("Remote data source fetch failed: %s", tppsListResponse.exception)
         }
     }
 
-    private suspend fun loadTppsFromLocalDatasource(): Result<List<Tpp>> {
+    override suspend fun fetchTppsFromRemoteDatasourcePaging(): Result<List<Tpp>> {
+        // If forced to update -> Get remotes now, otherwise call
+        var paging = Paging(100, 1, 0, true)
+        //val allFetchedTpps = List<Tpp>
+        var allFetchedTpps = ArrayList<Tpp>()
+
+        while (!paging.last) {
+            val tppsListResponse: Result<TppsListResponse> = tppsEbaDataSource.getTpps(paging)
+            when (tppsListResponse) {
+                is Success -> {
+                    allFetchedTpps.addAll(tppsListResponse.data.tppsList)
+                    paging = tppsListResponse.data.paging
+                    updateLocalDataSource(tppsListResponse.data.tppsList)
+                }
+                is Error -> {
+                    Timber.w("Remote data source fetch failed: %s", tppsListResponse.exception)
+                    paging.last = true
+                }
+            }
+        }
+        return Success(allFetchedTpps)
+    }
+
+    override suspend fun loadTppsFromLocalDatasource(): Result<List<Tpp>> {
 
         val localTpps = tppsLocalDataSource.getTpps()
         if (localTpps is Success) {
             return localTpps
         } else if (localTpps is Loading) {
-            return Loading(waitTwoSeconds.timeout(2000, TimeUnit.MILLISECONDS));
+            return Loading(wait100MilliSeconds.timeout(100, TimeUnit.MILLISECONDS));
         } else {
             return Error(Exception("Error loading Tpps from local datasource: " + localTpps))
         }
@@ -145,7 +169,7 @@ class DefaultTppsRepository (
                 }
 
                 if (ebaUpdate || ncaUpdate) {
-                    refreshLocalDataSource(tpp)
+                    updateLocalDataSource(tpp)
                 }
             }
             return tppResult
@@ -230,15 +254,15 @@ class DefaultTppsRepository (
         }
     }
 
-    private suspend fun refreshLocalDataSource(tpps: List<Tpp>?) {
+    private suspend fun updateLocalDataSource(tpps: List<Tpp>?) {
         if (tpps != null) {
             for (tpp in tpps) {
-                tppsLocalDataSource.saveTpp(tpp)
+                updateLocalDataSource(tpp)
             }
         }
     }
 
-    private suspend fun refreshLocalDataSource(tpp: Tpp) {
+    private suspend fun updateLocalDataSource(tpp: Tpp) {
         tppsLocalDataSource.saveTpp(tpp)
     }
 

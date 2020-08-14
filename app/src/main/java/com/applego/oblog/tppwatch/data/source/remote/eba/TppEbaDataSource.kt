@@ -39,7 +39,7 @@ class TppEbaDataSource internal constructor (
                 var result = loadTppsPage(paging)
                 when (result) {
                     is Result.Success -> {
-                        paging = result.data
+                        paging = result.data.paging
                         paging.page +=1
                     }
                     is Result.Error -> {
@@ -51,6 +51,28 @@ class TppEbaDataSource internal constructor (
         }
 
         return@withContext Result.Loading(Timeout())
+    }
+
+    override suspend fun getTpps(paging : Paging): Result<TppsListResponse> = withContext(ioDispatcher) {
+         //var paging = Paging(100, 1, 0, true)
+
+        /*launch {
+            while (!paging.last) {
+        */        //
+                var result = loadTppsPage(paging)
+                when (result) {
+                    is Result.Success -> {
+                        result.data.paging.page +=1
+                    }
+                    is Result.Error -> {
+                        // TODO: IMplement proper Error handing. For now, jump out
+                        paging.last = true
+                    }
+                }
+          /*  }
+        }*/
+
+        return@withContext result //Result.Loading(Timeout())
     }
 
     // TODO: Refactor to single implementation <- This implementatiomn is exactly the same as for NcaDataSource
@@ -117,35 +139,35 @@ class TppEbaDataSource internal constructor (
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun loadTppsPage(paging: Paging): Result<Paging> {
+    private fun loadTppsPage(paging: Paging): Result<TppsListResponse> {
         val call = tppsService.listTppsByName(theApiKey.apiKey,"", paging.page, paging.size, paging.sortBy)
         var response: Response<TppsListResponse>?
         try {
             response = call.execute()
 
-            //enqueue(object: Callback<TppsListResponse> {
-
-             //   override fun onResponse(call: Call<TppsListResponse>, response: Response<TppsListResponse>) {
             if (response.isSuccessful()) {
                 val tppsListResponse = response.body()
                 Timber.d("tppsList=" + tppsListResponse?.tppsList)
-                tppsListResponse?.tppsList?.forEach { tpp ->
-                    System.out.println("Insert/Update tpp: " + tpp.ebaEntity.getEntityName() + " into database")
+                /*tppsListResponse?.tppsList?.forEach { tpp ->
 
                     runBlocking<Unit> {
                         val foundEntity = tppsDao.getTppEntityByCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType)
                         if (foundEntity == null) {
+                            //System.out.println("Insert tpp: " + tpp.ebaEntity.getEntityName() + " into database")
+                            Timber.w("Insert TPP %s into local database.", tpp.getEntityName())
                             tppsDao.insertEbaEntity(tpp.ebaEntity)
                         } else {
+                            //System.out.println("Update tpp: " + tpp.ebaEntity.getEntityName() + " into database")
+                            Timber.w("Update TPP %s in local database.", tpp.getEntityName())
                             val updatedNumber = tppsDao.updateEbaEntity(tpp.ebaEntity)
                             if (updatedNumber != 1) {
-                                Timber.w("Update of TPP with ID %s was not successfull.", tpp.getEntityId())
+                                Timber.w("Update of TPP %s with ID %s was not successfull.", tpp.getEntityName(), tpp.getEntityId())
                             }
                         }
                     }
-                }
+                }*/
                 if (tppsListResponse?.paging != null) {
-                    return Result.Success(tppsListResponse.paging)
+                    return Result.Success(tppsListResponse)
                 } else  {
                     return Result.Error(Exception("Rest call returned no data"))
                 }
