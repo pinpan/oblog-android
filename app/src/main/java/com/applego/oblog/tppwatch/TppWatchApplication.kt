@@ -42,10 +42,12 @@ class TppWatchApplication : Application() , SharedPreferences.OnSharedPreference
         super.onCreate()
         if (BuildConfig.DEBUG) Timber.plant(DebugTree())
 
+        ServiceLocator.resetTppsRepository(this)
+
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val currentEnv = sharedPreferences.getString("RUNTIME_ENV", null)
         if (currentEnv == null) {
-            sharedPreferences.edit().putString("RUNTIME_ENV", "PRODUCTION")
+            sharedPreferences.edit().putString("RUNTIME_ENV", "PRODUCTION").commit()
         }
 
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)

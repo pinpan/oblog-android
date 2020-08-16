@@ -3,11 +3,7 @@ package com.applego.oblog.tppwatch.tpps
 import android.os.Bundle
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.applego.oblog.tppwatch.util.Event
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.Result.Success
@@ -35,8 +31,11 @@ class TppsViewModel(
     private val _statusLine = MutableLiveData<String>("")
     val statusLine: LiveData<String> = _statusLine
 
-    private val _dataLoading = MutableLiveData<Boolean>()
-    val dataLoading: LiveData<Boolean> = _dataLoading
+    private val _dataLoadingLocalDB = MutableLiveData<Boolean>()
+    val dataLoadingLocalDB: LiveData<Boolean> = _dataLoadingLocalDB
+
+    private val _dataLoadingRemoteEBA = MutableLiveData<Boolean>()
+    val dataLoadingRemoteEBA: LiveData<Boolean> = _dataLoadingRemoteEBA
 
     private var _searchFilter = SearchFilter()
     val  searchFilter = _searchFilter
@@ -69,10 +68,19 @@ class TppsViewModel(
         it.isEmpty()
     }
 
+    val dataLoading = MediatorLiveData<Boolean>();
+
+    /*val dataLoading: LiveData<Boolean> = Transformations.map(_displayedItems) {
+        it.isEmpty()
+    }*/
+
     init {
         searchFilter.init()
 
         setFiltering(TppsFilterType.ALL_TPPs)
+
+        dataLoading.addSource(_dataLoadingLocalDB, {value -> dataLoading.setValue(value)});
+        dataLoading.addSource(dataLoadingRemoteEBA, {value -> dataLoading.setValue(value)});
 
         //refresh()
     }
@@ -213,9 +221,8 @@ class TppsViewModel(
      */
     fun loadTpps(forceUpdate: Boolean) {
         if (forceUpdate) {
-
-            if (!(_dataLoading.value?.equals(true) ?: false)) {
-                _dataLoading.value = true
+            if (!(_dataLoadingRemoteEBA.value?.equals(true) ?: false)) {
+                _dataLoadingRemoteEBA.value = true
                 _displayedItems.value = emptyList()
 
                 showSnackbarMessage(R.string.loading)
@@ -234,12 +241,12 @@ class TppsViewModel(
                             _displayedItems.value = getTppsByGlobalFilter()
                             showSnackbarMessage(R.string.loading_tpps_error)
                         }
-                        _dataLoading.value = false
+                        _dataLoadingRemoteEBA.value = false
                     }
                 }
             }
         } else {
-            _dataLoading.value = true
+            _dataLoadingLocalDB.value = true
             viewModelScope.launch {
                 val tppsResult = tppsRepository.loadTppsFromLocalDatasource()
                 if (tppsResult is Success) {
@@ -251,7 +258,7 @@ class TppsViewModel(
                         //is Result.Warn -> TODO()
                         //is Result.Loading -> TODO()
                     }
-                _dataLoading.value = false
+                _dataLoadingLocalDB.value = false
             }
         }
     }
@@ -265,13 +272,13 @@ class TppsViewModel(
                 val tppsToShow = getTppsByGlobalFilter()
                 _displayedItems.value = tppsToShow
 
-                _dataLoading.value = false
+                _dataLoadingLocalDB.value = false
             }
         }
     }
 
     fun getTppsByGlobalFilter(): List<Tpp> {
-        _dataLoading.value = true
+        _dataLoadingLocalDB.value = true
 
         if (allItems.value.isNullOrEmpty()) {
             return listOf<Tpp>()
@@ -289,7 +296,7 @@ class TppsViewModel(
 
         tppsToShow = filterTppsByName(tppsToShow)
 
-        _dataLoading.value = false
+        _dataLoadingLocalDB.value = false
 
         return tppsToShow
     }

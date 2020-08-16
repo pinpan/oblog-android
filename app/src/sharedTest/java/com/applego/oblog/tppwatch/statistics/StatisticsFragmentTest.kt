@@ -1,6 +1,7 @@
 package com.applego.oblog.tppwatch.statistics
 
 import android.content.Context
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.testing.launchFragmentInContainer
@@ -49,7 +50,7 @@ class StatisticsFragmentTest {
 
     @After
     fun cleanupDb() = runBlockingTest {
-        ServiceLocator.resetRestDataSource()
+        AsyncTask.execute( {ServiceLocator.resetRestDataSource()})
     }
 
     /**

@@ -74,10 +74,10 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
             if (isFirstRun) {
                 if (ServiceLocator.tppsRepository == null) {
-                    ServiceLocator.resetTppsRepository(this)
+                    ServiceLocator.resetTppsRepository(this.applicationContext)
                 }
 
-                viewModel = ViewModelFactory(ServiceLocator.tppsRepository!!).create(TppsViewModel::class.java)
+                viewModel = ViewModelFactory.viewModelFactory.get(TppsViewModel::class.java) as TppsViewModel
                 viewModel!!.loadEbaDirectory()
             }
 
@@ -86,6 +86,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                 override fun run(): Unit {
                     val editor = sharedPrefs.edit()
                     editor.putBoolean("show_intro", false)
+                    editor.putString("RUNTIME_ENV", "TEST")
                     editor.commit()
 
                     startActivity(Intent(this@TppsActivity, OnboardingActivity::class.java))
@@ -128,8 +129,8 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (key.equals("environment")) {
-            actualEnvironment = sharedPreferences?.getString("environment","")
+        if (key.equals("RUNTIME_ENV")) {
+            actualEnvironment = sharedPreferences?.getString("RUNTIME_ENV","")
             val envsArray = getResources().getStringArray(R.array.environments);
             for (i in envsArray.indices.reversed()) {
                 val env = envsArray[i]

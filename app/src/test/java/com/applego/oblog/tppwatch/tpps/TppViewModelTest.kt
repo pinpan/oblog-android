@@ -81,13 +81,13 @@ class TppsViewModelTest {
         tppsViewModel.loadTpps(false)
 
         // Then progress indicator is shown
-        assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading)).isTrue()
+        assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoadingLocalDB)).isTrue()
 
         // Execute pending coroutines actions
         mainCoroutineRule.resumeDispatcher()
 
         // Then progress indicator is hidden
-        assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading)).isFalse()
+        assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoadingLocalDB)).isFalse()
 
         // And data correctly loaded
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).hasSize(3)
@@ -124,7 +124,7 @@ class TppsViewModelTest {
         tppsViewModel.loadTppsBlocking(true)
 
         // Then progress indicator is hidden
-        assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading)).isFalse()
+        assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoadingLocalDB)).isFalse()
 
         // And data correctly loaded
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).hasSize(3)
