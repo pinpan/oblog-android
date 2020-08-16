@@ -70,10 +70,6 @@ class TppsViewModel(
 
     val dataLoading = MediatorLiveData<Boolean>();
 
-    /*val dataLoading: LiveData<Boolean> = Transformations.map(_displayedItems) {
-        it.isEmpty()
-    }*/
-
     init {
         searchFilter.init()
 
@@ -94,7 +90,7 @@ class TppsViewModel(
     }
 
     fun refreshTpp(tppId : String?) {
-        if (allItems.value.isNullOrEmpty() && !tppId.isNullOrBlank() && !tppId.equals("0")) {
+        if (!allItems.value.isNullOrEmpty() && !tppId.isNullOrBlank() && !tppId.equals("0")) {
             val tpp = findTppInList(allItems.value!!, tppId)
             runBlocking {
                 if (tpp != null) {
@@ -232,6 +228,7 @@ class TppsViewModel(
                         val tppsResult = tppsRepository.fetchTppsFromRemoteDatasourcePaging()
                         if (tppsResult is Success) {
                             _allItems.value = tppsResult.data
+                            _displayedItems.value = getTppsByGlobalFilter()
 
                             // TODO: Get it from fetched EBA / OBLOG data
                             _statusLine.value = "Last EBA version: " + Random().nextLong()
