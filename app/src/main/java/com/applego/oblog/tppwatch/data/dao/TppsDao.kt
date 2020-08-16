@@ -47,7 +47,7 @@ interface TppsDao {
      * @return the tpp with entityCode.
      */
     @Query("SELECT * FROM Tpps WHERE entityCode = :entityCode and codeType = :entityCodeType")
-    /*suspend */fun getTppEntityByCode(entityCode: String, entityCodeType: String): EbaEntity?
+    suspend fun getTppEntityByCode(entityCode: String, entityCodeType: String): EbaEntity?
 
     /**
      * Select a tpp by NCA entityId (provided by OBLOG backend).

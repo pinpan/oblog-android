@@ -74,7 +74,7 @@ class TppsViewModel(
 
         setFiltering(TppsFilterType.ALL_TPPs)
 
-        refresh()
+        //refresh()
     }
 
     fun refresh() {

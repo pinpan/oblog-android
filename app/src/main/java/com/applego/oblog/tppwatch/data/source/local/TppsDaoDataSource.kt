@@ -75,10 +75,14 @@ class TppsDaoDataSource internal constructor(
         val foundEntity = tppsDao.getTppEntityByCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType)
         if (foundEntity == null) {
             tppsDao.insertEbaEntity(tpp.ebaEntity)
+            Timber.d("TPP with Eba Code %s was inserted in local DB.", tpp.getEntityCode())
         } else {
+            tpp.ebaEntity._db_id = foundEntity._db_id
             val updatedNumber = tppsDao.updateEbaEntity(tpp.ebaEntity)
             if (updatedNumber != 1) {
                 Timber.w("Update of TPP with ID %s was not successfull.", tpp.getEntityId())
+            } else {
+                Timber.d("TPP with Eba Code %s was updated.", tpp.getEntityCode())
             }
         }
     }
