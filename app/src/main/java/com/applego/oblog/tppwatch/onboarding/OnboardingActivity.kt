@@ -30,7 +30,7 @@ class OnboardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Toast.makeText(this@OnboardingActivity, "Run only once", Toast.LENGTH_LONG).show()
+        //Toast.makeText(this@OnboardingActivity, "Run only once", Toast.LENGTH_LONG).show()
         viewModel = ViewModelProviders.of(this).get(OnboardingViewModel::class.java)
 
         setContentView(R.layout.onboarding_activity)

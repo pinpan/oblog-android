@@ -359,13 +359,13 @@ class TppsViewModel(
         if (country.isNullOrBlank() || country.equals("<All EU countries>")) {
             filteredTpps.addAll(inputTpps)
         } else {
-            _searchFilter.countries.forEach {
+            //_searchFilter.countries.forEach {
                 inputTpps.forEach {
                     if (it.getCountry().equals(country)) {
                         filteredTpps.add(it)
                     }
                 }
-            }
+            //}
         }
 
         return filteredTpps
