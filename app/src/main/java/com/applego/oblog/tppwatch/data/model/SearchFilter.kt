@@ -19,29 +19,37 @@ data class SearchFilter @JvmOverloads constructor(
 ) {
 
     @Embedded
-    var pspType: PspType = PspType.ALL_PSD2 //MutableMap<TppsFilterType, Boolean> = HashMap<TppsFilterType, Boolean>()
-    var showFollowedOnly = false //MutableMap<TppsFilterType, Boolean> = HashMap<TppsFilterType, Boolean>()
-    var showUsedOnly = false //MutableMap<TppsFilterType, Boolean> = HashMap<TppsFilterType, Boolean>()
-    var showRevoked = false //MutableMap<TppsFilterType, Boolean> = HashMap<TppsFilterType, Boolean>()
-    var showRevokedOnly = false //MutableMap<TppsFilterType, Boolean> = HashMap<TppsFilterType, Boolean>()
+    var pspType: PspType = PspType.ALL_PSD2
+    var showFollowedOnly = false
+    var showUsedOnly = false
+    var showRevoked = false
+    var showRevokedOnly = false
 
     fun updateUserSelection(requestType: TppsFilterType) {
         when (requestType) {
             TppsFilterType.ALL_TPPs -> {
                 pspType = PspType.ALL_PSD2
             }
-            TppsFilterType.ONLY_PSD2_FIs -> {
-                pspType = PspType.ONLY_ASPSPs
+            TppsFilterType.PSD2_TPPs -> {
+                pspType = PspType.PSD2_TPPs
             }
-            TppsFilterType.ONLY_PSD2_TPPs -> {
-                pspType = PspType.ONLY_PSD2_TPPs
+            TppsFilterType.E_MONEY_INSTs -> {
+                pspType = PspType.EMIs
             }
+            TppsFilterType.NON_PSD2_TPPs -> {
+                pspType = PspType.NON_PSD2_TPPs
+            }
+            TppsFilterType.CREDIT_INSTs -> {
+                pspType = PspType.CIs
+            }
+
             TppsFilterType.FOLLOWED_TPPs -> {
                 showFollowedOnly = !showFollowedOnly
             }
             TppsFilterType.USED_TPPs -> {
                 showUsedOnly = !showUsedOnly
             }
+
             TppsFilterType.REVOKED_TPPs -> {
                 showRevoked = !showRevoked
             }

@@ -19,9 +19,15 @@ interface TppModel  {
 
     fun getDescription(): String
 
+    fun isEMI(): Boolean
+
     fun isASPSP(): Boolean
 
-    fun isPsd2Tpp(): Boolean
+    fun isPSD2(): Boolean
+
+    fun isCI(): Boolean
+
+    fun isNonPsd2Sp(): Boolean
 
     fun isUsed(): Boolean
 

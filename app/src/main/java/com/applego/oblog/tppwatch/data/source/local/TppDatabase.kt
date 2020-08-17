@@ -16,7 +16,7 @@ import com.applego.oblog.tppwatch.data.model.Role
  *
  * Note that exportSchema should be true in production databases.
  */
-@Database(entities = [EbaEntity::class, Psd2Service::class, Role::class, App::class], version = 35, exportSchema = true)
+@Database(entities = [EbaEntity::class, Psd2Service::class, Role::class, App::class], version = 36, exportSchema = true)
 @TypeConverters(OblogTypeConverters::class)
 abstract class TppDatabase : RoomDatabase() {
 

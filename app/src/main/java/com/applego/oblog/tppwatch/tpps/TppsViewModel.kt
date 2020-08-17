@@ -140,15 +140,15 @@ class TppsViewModel(
                         R.drawable.oblog_logo, true
                 )
             }
-            TppsFilterType.ONLY_PSD2_FIs -> {
+            TppsFilterType.E_MONEY_INSTs -> {
                 setFilterStatusViews(
-                        R.string.label_fis, R.string.no_fis_tpps,
+                        R.string.inst_type_e_money_institutions, R.string.no_fis_tpps,
                         R.drawable.oblog_logo, true
                 )
             }
-            TppsFilterType.ONLY_PSD2_TPPs -> {
+            TppsFilterType.PSD2_TPPs -> {
                 setFilterStatusViews(
-                        R.string.label_psd2_only, R.string.psd2_services_only,
+                        R.string.label_psd2_only, R.string.inst_type_psd2_tpps,
                         R.drawable.oblog_logo, true
                 )
             }
@@ -319,8 +319,10 @@ class TppsViewModel(
 
         inputTpps?.forEach { tpp ->
             var addIt : Boolean = when (searchFilter.pspType) {
-                PspType.ONLY_PSD2_TPPs -> tpp.isPsd2Tpp()
-                PspType.ONLY_ASPSPs -> tpp.isASPSP()
+                PspType.PSD2_TPPs -> tpp.isPSD2()
+                PspType.EMIs -> tpp.isEMI()
+                PspType.NON_PSD2_TPPs -> tpp.isNonPsd2Sp()
+                PspType.CIs -> tpp.isASPSP()
                 else -> true
             }
 
@@ -359,13 +361,11 @@ class TppsViewModel(
         if (country.isNullOrBlank() || country.equals("<All EU countries>")) {
             filteredTpps.addAll(inputTpps)
         } else {
-            //_searchFilter.countries.forEach {
-                inputTpps.forEach {
-                    if (it.getCountry().equals(country)) {
-                        filteredTpps.add(it)
-                    }
+            inputTpps.forEach {
+                if (it.getCountry().equals(country)) {
+                    filteredTpps.add(it)
                 }
-            //}
+            }
         }
 
         return filteredTpps

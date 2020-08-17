@@ -118,8 +118,19 @@
     <string name="user_misc">Misc</string>
 
     <string name="user_signature">Your signature</string>
-    <string name="psd2_services_only">PSD2 TPPs only</string>
-    <string name="banks_as_psd2">Banks as PSD2 PSPs</string>
+
+    <string name="inst_type_psd2_tpps">PSD2 TPPs</string>
+    <string name="inst_type_psd2_ais">AIS TPPs</string>
+    <string name="inst_type_psd2_pis">PIS TPPs</string>
+    <string name="inst_type_psd2_epis">Exempted PIS TPPs</string>
+
+    <string name="inst_type_e_money_institutions">Electronic Money Institutions</string>
+    <string name="inst_type_emi">Electronic Money Institutions</string>
+    <string name="inst_type_eemi">Exempted Electronic Money Institutions</string>
+
+    <string name="inst_type_non_psd2_tpps">TPPs Exempted from PSD2 scope</string>
+
+    <string name="inst_type_credit_institutions">Credit institutions</string>
 
     <string name="user_id_title">User ID</string>
     <string name="actual_env_title">Actual environment</string>
@@ -138,7 +149,6 @@
     <string name="settings_used_tpps">Used TPPs</string>
     <string name="environments">Environments</string>
     <string name="user_account">Account</string>
-    <string name="label_fis">FIs (banks, MI) only</string>
     <string name="no_fis_tpps">No financial institutions</string>
     <string name="label_psd2_only">TPPs with PSD2 only</string>
     <string name="no_psd2_only">No TPPs with PSD2 license only</string>

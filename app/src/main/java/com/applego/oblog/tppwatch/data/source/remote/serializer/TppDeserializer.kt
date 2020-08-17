@@ -35,6 +35,9 @@ class TppDeserializer : JsonDeserializer<Tpp> {
 
         val entityCode: String  = jsonObject?.get("entityCode")?.asString ?: ""
         val entityType: String  = jsonObject?.get("entityType")?.asString ?: ""
+        if (entityType.isNullOrBlank()) {
+            Timber.w("Importing from registry an EBA TPP with empty entityType! It will not occur in type related statistics.")
+        }
         var entityId: String   =  jsonObject.get("entityId")?.asString ?: entityCode
         if (!entityId.isNullOrBlank()) {
             entityId = getEntityId(entityId)

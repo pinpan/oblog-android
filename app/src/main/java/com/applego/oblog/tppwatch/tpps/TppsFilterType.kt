@@ -36,14 +36,25 @@ enum class TppsFilterType {
     USED_TPPs,
 
     /**
-     * Select tpps, which have PSD2 licence, including FIS.
+     * Select PSD2 licensed TPPs - Payment Institutions (including Exempted PIS) and
+     *  Account Information Services Providers.
      */
-    ONLY_PSD2_TPPs,
+    PSD2_TPPs,
 
     /**
-     * Select FIS.
+     * Select E-Money institutions including Exempted E-Money institutions.
      */
-    ONLY_PSD2_FIs,
+    E_MONEY_INSTs,
+
+    /**
+     * Select TPPs,Exempted from PSD2 scope.
+     */
+    NON_PSD2_TPPs,
+
+    /**
+     * Select Credit institutions - Banks aka ASPSPs.
+     */
+    CREDIT_INSTs,
 
     /**
      * Select revoked only Tpps.
@@ -60,10 +71,12 @@ enum class TppsFilterType {
         val allFilterTypes = mutableListOf<TppsFilterType>()
 
         init {
-            allFilterTypes.add(TppsFilterType.ONLY_PSD2_FIs)
+            allFilterTypes.add(TppsFilterType.PSD2_TPPs)
+            allFilterTypes.add(TppsFilterType.E_MONEY_INSTs)
+            allFilterTypes.add(TppsFilterType.NON_PSD2_TPPs)
+            allFilterTypes.add(TppsFilterType.CREDIT_INSTs)
             allFilterTypes.add(TppsFilterType.USED_TPPs)
             allFilterTypes.add(TppsFilterType.FOLLOWED_TPPs)
-            allFilterTypes.add(TppsFilterType.ONLY_PSD2_TPPs)
         }
     }
 }

@@ -108,7 +108,7 @@ class TppsViewModelTest {
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).hasSize(1)
 
         tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.USED_TPPs)
-        tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.ONLY_PSD2_TPPs)
+        tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.PSD2_TPPs)
         tppsViewModel.loadTppsBlocking(false)
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).hasSize(0)
     }
@@ -271,7 +271,7 @@ class TppsViewModelTest {
     @Test
     fun getTppsAddViewVisible() {
         // When the filter type is ALL_TPPS
-        tppsViewModel.setFiltering(TppsFilterType.ONLY_PSD2_TPPs)
+        tppsViewModel.setFiltering(TppsFilterType.PSD2_TPPs)
 
         // Then the "Add ebaEntity" action is visible
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.tppsAddViewVisible)).isTrue()

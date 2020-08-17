@@ -31,14 +31,25 @@ enum class PspType {
     ALL_PSD2,
 
     /**
-     * Filter tpps, which have PSD2 licence, including FIS.
+     * Filter licence PSD2 TPPs.
      */
-    ONLY_PSD2_TPPs,
+    PSD2_TPPs,
 
     /**
-     * Filter FIS.
+     * Filter Electroic Money Institutions including exempted EMIs.
      */
-    ONLY_ASPSPs;
+    EMIs,
+
+
+    /**
+     * Filter TPPs exempted from PSD2 scope.
+     */
+    NON_PSD2_TPPs,
+
+    /**
+     * Filter CIs.
+     */
+    CIs;
 
     companion object {
         //var allFilterTypes: MutableList<TppsFilterType> = ArrayList<TppsFilterType>()
@@ -46,8 +57,8 @@ enum class PspType {
 
         init {
             allPspTypes.add(ALL_PSD2)
-            allPspTypes.add(ONLY_PSD2_TPPs)
-            allPspTypes.add(ONLY_ASPSPs)
+            allPspTypes.add(PSD2_TPPs)
+            allPspTypes.add(CIs)
         }
     }
 }

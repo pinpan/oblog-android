@@ -65,10 +65,11 @@
 
     <string-array name="eba_institutions">
         <item>&lt;ALL&gt;</item>
-        <item>EMS</item>
+
+        <item>PSD2</item>
+        <item>EMI</item>
+        <item>NON_PSD2</item>
         <item>CI</item>
-        <item>PSP</item>
-        <item>BLAH</item>
     </string-array>
 
     <string-array name="eba_psd2_services">

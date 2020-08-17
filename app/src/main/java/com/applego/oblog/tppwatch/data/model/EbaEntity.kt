@@ -60,19 +60,22 @@ data class EbaEntity @JvmOverloads constructor(
     @Embedded
     var ebaProperties = EbaEntityProperties()
 
+/*
+
     @ColumnInfo(name = "psd2")
     var psd2: Boolean = (entityType.equals(EbaEntityType.PSD_PI)
-                      || entityType.equals(EbaEntityType.PSD_EMI)
+                      || entityType.equals(EbaEntityType.PSD_EPI)
                       || entityType.equals(EbaEntityType.PSD_AISP)
                       || entityType.equals(EbaEntityType.PSD_AG)
                       || entityType.equals(EbaEntityType.PSD_BR)
-                      || entityType.equals(EbaEntityType.PSD_EPI)
-                      || entityType.equals(EbaEntityType.PSD_EEMI)
             )
+*/
 
+/*
     @ColumnInfo(name = "fis")
     var fis: Boolean = !psd2
 
+*/
     @ColumnInfo(name = "followed")
     var followed: Boolean = false
 
@@ -101,17 +104,26 @@ data class EbaEntity @JvmOverloads constructor(
                             && !"N/A".contentEquals(ebaProperties.authorizationEnd)
 
     @Ignore
-    fun isFis(): Boolean = !isPsd2()//fis
+    fun isCI(): Boolean = !(isPSD2() || isNonPSD2Sp() || isEMI())
+
+
+    fun isEMI(): Boolean = (
+           entityType.equals(EbaEntityType.PSD_EMI)
+        || entityType.equals(EbaEntityType.PSD_EEMI)
+    )
+
+    fun isNonPSD2Sp(): Boolean = (
+           entityType.equals(EbaEntityType.PSD_EXC)
+    )
 
     @Ignore
-    fun isPsd2(): Boolean = (entityType.equals(EbaEntityType.PSD_PI)
-            || entityType.equals(EbaEntityType.PSD_EMI)
-            || entityType.equals(EbaEntityType.PSD_AISP)
+    fun isPSD2(): Boolean = (
+               entityType.equals(EbaEntityType.PSD_AISP)
+            || entityType.equals(EbaEntityType.PSD_PI)
+            || entityType.equals(EbaEntityType.PSD_EPI)
             || entityType.equals(EbaEntityType.PSD_BR)
             || entityType.equals(EbaEntityType.PSD_AG)
-            || entityType.equals(EbaEntityType.PSD_EPI)
-            || entityType.equals(EbaEntityType.PSD_EEMI)
-            )//psd2
+            )
 
     @Ignore
     fun getStatus() = _status
@@ -119,62 +131,4 @@ data class EbaEntity @JvmOverloads constructor(
     fun getTitleForList(): String {
         return getEntityName()
     }
-
-/*
-    @ColumnInfo(name="ENT_NAM")
-    var ebaEntityName: String = "Payver Limited"
-
-    @ColumnInfo(name="ENT_COD_TYP")
-    var ebaEntityCodeType:String = "NON_LEI"
-
-    @ColumnInfo(name="ENT_COU_RES")
-    var ebaEntityCountryOfRES: String = "GB"
-
-    @ColumnInfo(name="ENT_NAT_REF_COD")
-    var ebaEntityNationalReferenceCode: String = "901016"
-
-    @ColumnInfo(name="ENT_NAM_COM")
-    var ebaEntityNameCOM:String = "Payver Limited"
-
-    @ColumnInfo(name="ENT_ADD")
-    var ebaEntityAddress = ""
-    //[
-    //    "Enfield",
-    //    "134 Percival Road",
-    //    "Middlesex"
-    // ]
-
-    @ColumnInfo(name="ENT_TOW_CIT_RES")
-    var ebaEntityTownCityRES: String = "London"
-
-    @ColumnInfo(name="ENT_POS_COD")
-    var ebaEntitiyPostalCode: String = "EN1 1QU"
-
-    @ColumnInfo(name="EBA_ENT_AUTH")
-    var dateAuth: Date = Date()
-
-*/
-
-    //  tppRoles, - CZ has, Eba hasn't
-
-/* Sample record
-    "ebaProperties":{
-        "ENT_NAM":"Payver Limited",
-        "ENT_COD_TYP":"NON_LEI",
-        "ENT_COU_RES":"GB",
-        "ENT_NAT_REF_COD":"901016",
-        "ENT_NAM_COM":"Payver Limited",
-        "ENT_ADD":[
-        "Enfield",
-        "134 Percival Road",
-        "Middlesex"
-        ],
-        "ENT_TOW_CIT_RES":"London",
-        "ENT_POS_COD":"EN1 1QU",
-        "ENT_AUT":[
-        "2020-02-20"
-        ]
-    }
-*/
-
 }

@@ -3,12 +3,6 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--<item
-        android:id="@+id/all"
-        android:checkable="true"
-        android:title="@string/nav_all"
-    />
--->
     <group
         android:id="@+id/group_tpp_types"
         android:checkableBehavior="single">
@@ -16,13 +10,43 @@
             android:id="@+id/allPSD2"
             android:checked="true"
             android:title="@string/label_all" />
+
         <item
-            android:id="@+id/tppOnly"
-            android:title="@string/psd2_services_only" />
+            android:id="@+id/psd2_tpps"
+            android:title="@string/inst_type_psd2_tpps" />
+        <!--
         <item
-            android:id="@+id/aspspOnly"
-            android:title="@string/label_fis" />
+            android:id="@+id/ais"
+            android:title="@string/inst_type_psd2_ais" />
+        <item
+            android:id="@+id/pis"
+            android:title="@string/inst_type_psd2_pis" />
+        <item
+            android:id="@+id/epis"
+            android:title="@string/inst_type_psd2_epis" />
+        -->
+
+        <item
+            android:id="@+id/emoney_inst"
+            android:title="@string/inst_type_e_money_institutions" />
+        <!--
+        <item
+            android:id="@+id/emis"
+            android:title="@string/inst_type_emi" />
+        <item
+            android:id="@+id/eemis"
+            android:title="@string/inst_type_eemi" />
+        -->
+
+        <item
+            android:id="@+id/non_psd2_inst"
+            android:title="@string/inst_type_non_psd2_tpps" />
+        <item
+            android:id="@+id/credit_inst"
+            android:enabled="false"
+            android:title="@string/inst_type_credit_institutions" />
     </group>
+
     <group
         android:id="@+id/group_watching"
         android:checkableBehavior="all">
@@ -38,19 +62,20 @@
             android:title="@string/nav_used_only" />
     </group>
 
-    <item
-        android:id="@+id/revoked"
-        android:checkable="true"
-        android:checked="false"
-        android:enabled="true"
-        android:title="@string/label_revoked"
-        android:visible="true" />
 
-    <item
-        android:id="@+id/revoked_only"
-        android:checkable="true"
-        android:checked="false"
-        android:enabled="true"
-        android:title="@string/label_revoked_only"
-        android:visible="true" />
+    <group
+        android:id="@+id/group_revokation"
+        android:checkableBehavior="all">
+        <item
+            android:id="@+id/revoked"
+            android:checkable="true"
+            android:checked="false"
+            android:title="@string/label_revoked" />
+
+        <item
+            android:id="@+id/revoked_only"
+            android:checkable="true"
+            android:checked="false"
+            android:title="@string/label_revoked_only" />
+    </group>
 </menu>
