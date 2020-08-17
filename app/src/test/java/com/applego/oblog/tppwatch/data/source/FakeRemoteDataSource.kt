@@ -41,8 +41,4 @@ class FakeRemoteDataSource(var tppsListResponse: TppsListResponse = TppsListResp
             Exception("Tpp not found")
         )
     }
-
-    override suspend fun filterTpps(filter: TppFilter): Result<TppsListResponse> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 }

@@ -135,10 +135,8 @@ class TppsFragment : Fragment() {
         super.onResume()
 
         val toolbar: Toolbar ?= activity?.findViewById(com.applego.oblog.tppwatch.R.id.toolbar)
-        /*toolbar?.post { */
         val d: Drawable?= ResourcesCompat.getDrawable(resources, R.drawable.oblog_logo_48x52, null)
         toolbar?.setNavigationIcon(d)
-        /*}*/
 
         viewModel.refresh()
     }

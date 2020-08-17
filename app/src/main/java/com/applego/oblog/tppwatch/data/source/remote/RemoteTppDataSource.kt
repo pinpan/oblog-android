@@ -11,8 +11,6 @@ interface RemoteTppDataSource {
 
     suspend fun getTpps(paging : Paging): Result<TppsListResponse>
 
-    suspend fun filterTpps(filter: TppFilter): Result<TppsListResponse>
-
     suspend fun getTppByName(country: String, tppName: String): Result<Tpp>
 
     suspend fun getTppById(country: String, tppId: String): Result<Tpp>

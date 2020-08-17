@@ -4,7 +4,6 @@ package com.applego.oblog.tppwatch.data.source.remote.eba
 import com.applego.oblog.apikey.ApiKey
 import com.applego.oblog.tppwatch.data.source.remote.Paging
 import com.applego.oblog.tppwatch.data.Result
-import com.applego.oblog.tppwatch.data.TppFilter
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.dao.TppsDao
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
@@ -54,25 +53,18 @@ class TppEbaDataSource internal constructor (
     }
 
     override suspend fun getTpps(paging : Paging): Result<TppsListResponse> = withContext(ioDispatcher) {
-         //var paging = Paging(100, 1, 0, true)
+        var result = loadTppsPage(paging)
+        when (result) {
+            is Result.Success -> {
+                result.data.paging.page +=1
+            }
+            is Result.Error -> {
+                // TODO: IMplement proper Error handing. For now, jump out
+                paging.last = true
+            }
+        }
 
-        /*launch {
-            while (!paging.last) {
-        */        //
-                var result = loadTppsPage(paging)
-                when (result) {
-                    is Result.Success -> {
-                        result.data.paging.page +=1
-                    }
-                    is Result.Error -> {
-                        // TODO: IMplement proper Error handing. For now, jump out
-                        paging.last = true
-                    }
-                }
-          /*  }
-        }*/
-
-        return@withContext result //Result.Loading(Timeout())
+        return@withContext result
     }
 
     // TODO: Refactor to single implementation <- This implementatiomn is exactly the same as for NcaDataSource
@@ -105,9 +97,6 @@ class TppEbaDataSource internal constructor (
             Timber.e(ioe, "IOException caught: %s", ioe.message)
             return Result.Error(ioe)
         }
-
-
-        //return Result.Loading(Timeout().timeout(100, TimeUnit.MILLISECONDS));
     }
 
 
@@ -135,10 +124,6 @@ class TppEbaDataSource internal constructor (
         return Result.Loading(Timeout().timeout(100, TimeUnit.MILLISECONDS));
     }
 
-    override suspend fun filterTpps(filter: TppFilter): Result<TppsListResponse> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     private fun loadTppsPage(paging: Paging): Result<TppsListResponse> {
         val call = tppsService.listTppsByName(theApiKey.apiKey,"", paging.page, paging.size, paging.sortBy)
         var response: Response<TppsListResponse>?
@@ -148,24 +133,7 @@ class TppEbaDataSource internal constructor (
             if (response.isSuccessful()) {
                 val tppsListResponse = response.body()
                 Timber.d("tppsList=" + tppsListResponse?.tppsList)
-                /*tppsListResponse?.tppsList?.forEach { tpp ->
 
-                    runBlocking<Unit> {
-                        val foundEntity = tppsDao.getTppEntityByCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType)
-                        if (foundEntity == null) {
-                            //System.out.println("Insert tpp: " + tpp.ebaEntity.getEntityName() + " into database")
-                            Timber.w("Insert TPP %s into local database.", tpp.getEntityName())
-                            tppsDao.insertEbaEntity(tpp.ebaEntity)
-                        } else {
-                            //System.out.println("Update tpp: " + tpp.ebaEntity.getEntityName() + " into database")
-                            Timber.w("Update TPP %s in local database.", tpp.getEntityName())
-                            val updatedNumber = tppsDao.updateEbaEntity(tpp.ebaEntity)
-                            if (updatedNumber != 1) {
-                                Timber.w("Update of TPP %s with ID %s was not successfull.", tpp.getEntityName(), tpp.getEntityId())
-                            }
-                        }
-                    }
-                }*/
                 if (tppsListResponse?.paging != null) {
                     return Result.Success(tppsListResponse)
                 } else  {

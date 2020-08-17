@@ -23,8 +23,4 @@ object FakeFailingTppsRemoteDataSource : RemoteTppDataSource {
     override suspend fun getTppByName(country: String, tppName: String): Result<Tpp> {
         return Result.Error(Exception("Test"))
     }
-
-    override suspend fun filterTpps(filter: TppFilter): Result<TppsListResponse> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 }

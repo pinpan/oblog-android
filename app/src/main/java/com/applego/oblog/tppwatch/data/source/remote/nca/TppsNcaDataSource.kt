@@ -159,8 +159,4 @@ class TppsNcaDataSource internal constructor (
             return Result.Error(ioe)
         }
     }
-
-    override suspend fun filterTpps(filter: TppFilter): Result<TppsListResponse> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 }
