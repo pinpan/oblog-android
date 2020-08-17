@@ -57,15 +57,16 @@
     <!-- Sync Preferences -->
     <string-array name="psd2_roles">
         <item>&lt;All PSD2 roles&gt;</item>
-        <item>ASPSP</item>
-        <item>AISP</item>
-        <item>PISP</item>
-        <item>CIIP</item>
+        <item>AIS</item>
+        <item>PIS</item>
+        <item>EPIS</item>
+        <item>EMI</item>
+        <item>EEMI</item>
+        <!--<item>CII</item>-->
     </string-array>
 
     <string-array name="eba_institutions">
         <item>&lt;ALL&gt;</item>
-
         <item>PSD2</item>
         <item>EMI</item>
         <item>NON_PSD2</item>
