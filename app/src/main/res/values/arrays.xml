@@ -55,14 +55,21 @@
     </string-array>
 
     <!-- Sync Preferences -->
-    <string-array name="psd2_roles">
-        <item>&lt;All PSD2 roles&gt;</item>
+    <string-array name="eba_service_codes">
+        <item>&lt;All services&gt;</item>
         <item>AIS</item>
         <item>PIS</item>
-        <item>EPIS</item>
-        <item>EMI</item>
-        <item>EEMI</item>
-        <!--<item>CII</item>-->
+        <item>PIIS</item>
+        <item>EMS</item>
+    </string-array>
+
+    <!-- Sync Preferences -->
+    <string-array name="eba_services">
+        <item> All services </item>
+        <item>Account Information</item>
+        <item>Payment Initiation</item>
+        <item>Payment Instrument Issuing</item>
+        <item>Electronic Money Services</item>
     </string-array>
 
     <string-array name="eba_institutions">

@@ -1,0 +1,27 @@
+
+An e-money institution (EMI) is authorized to issue electronic money as a digital equivalent of cash, stored on a financial platform or on electronic devices such as a prepaid card or NFC cards. One common type of e-money is the eWallet, where users store amounts of money to use for making payments. E-money can also be stored on (and used via) mobile phones or in a payment account on the Internet.
+In addition to being able to offer the same services as a traditional payment service provider/ payment institution, the holder of an E-money licence/ Electronic Money Institution license can also provide the following services:
+
+1. ES_010 Issuing electronic money.
+*2. Distribution / redemption of electronic money.
+3. PS_010 Services enabling cash to be placed on a payment account as well as all the operations required for operating a payment account.
+4. PS_020 Services enabling cash withdrawals from a payment account as well as all the operations required for operating a payment account.
+5. PS_03(A,B,C) Execution of payment transactions, including transfers of funds on a payment account with the payment service provider of the payment service user or with another payment service provider: execution of direct debits, including one-off direct debits, execution of payment transactions through a payment card or a similar device and/or execution of credit transfers, including standing orders.
+6. PS_04(A,B,C) Execution of payment transactions where the funds are covered by a credit line for a payment service user: execution of direct debits, including one-off direct debits, execution of payment transactions through a payment card or a similar device and/or execution of credit transfers, including standing orders
+7. PS_05(A,B?) Issuing and/or acquiring of payment instruments.
+8. PS_060 Money remittance.
+9. * Execution of payment transactions where the consent of the payer to execute a payment transaction is given by means of any telecommunication, digital or IT device and the payment is made to the telecommunication, IT system or network operator, acting only as an intermediary between the payment service user and the supplier of the goods or service.
+
+Difference Between A Bank And An EMI:
+
+Placing your money with a traditional bank is taking a credit risk – i.e. the bank will take your money and lend it to someone else. The ability of this “someone else” to pay back this money is referred to as the credit risk.
+
+By not taking credit risks, this ensures that that your money is safe with the EMI. The EMI will only place money deposits from our users on a trusted account – safe for their protection.
+
+There are three major differences between traditional banking and e-money institutions
+
+EMIs do not “sell” advice about banking products.
+EMIs do not “sell” investment products.
+EMIs are NOT allowed to take credit risk.
+
+

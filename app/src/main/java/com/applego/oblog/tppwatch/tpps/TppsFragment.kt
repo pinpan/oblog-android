@@ -182,7 +182,7 @@ class TppsFragment : Fragment() {
             }
         })
 
-        val psd2RolesAdapter = ArrayAdapter.createFromResource(getActivity() as Context, R.array.psd2_roles, R.layout.spinner_item)
+        val psd2RolesAdapter = ArrayAdapter.createFromResource(getActivity() as Context, R.array.eba_services, R.layout.spinner_item)
 
         servicesSpinner = activity?.findViewById(R.id.search_role)!!
         servicesSpinner.setAdapter(psd2RolesAdapter);
@@ -190,7 +190,8 @@ class TppsFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 // An item was selected. You can retrieve the selected item using
                 val service = parent.getItemAtPosition(pos).toString()
-                viewModel.filterTppsByService(service)
+                val serviceCode = resources.getStringArray(R.array.eba_service_codes)[pos];
+                viewModel.filterTppsByService(serviceCode)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {

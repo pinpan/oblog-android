@@ -71,8 +71,7 @@ class TppsDaoDataSource internal constructor(
             }
         }
 
-        //tppsDao.insertEbaEntity(tpp.ebaEntity)
-        val foundEntity = tppsDao.getTppEntityByCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType)
+        val foundEntity = tppsDao.getActiveOrRevokedTppEntityByCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType, tpp.isRevoked())
         if (foundEntity == null) {
             tppsDao.insertEbaEntity(tpp.ebaEntity)
             Timber.d("TPP with Eba Code %s was inserted in local DB.", tpp.getEntityCode())

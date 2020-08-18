@@ -49,9 +49,9 @@ class StatisticsFragmentTest {
     }
 
     @After
-    fun cleanupDb() = runBlockingTest {
+    fun cleanupDb() = /*runBlockingTest {*/
         AsyncTask.execute( {ServiceLocator.resetRestDataSource()})
-    }
+    /*}*/
 
     /**
      * Idling resources tell Espresso that the app is idle or busy. This is needed when operations

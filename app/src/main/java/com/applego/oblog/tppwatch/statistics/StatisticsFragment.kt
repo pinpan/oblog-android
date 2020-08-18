@@ -75,16 +75,9 @@ class StatisticsFragment : Fragment() {
 
         chartTypesSpinner = activity?.findViewById(R.id.spinner_charttype)!!
 
-        val aChartTypeAdapter = ArrayAdapter.createFromResource(getActivity() as Context, R.array.chart_type_titles, R.layout.spinner_chart_types)
-
         val strings = context!!.resources.getTextArray(R.array.chart_type_titles)
-        val chartTypeAdapter/*:ArrayAdapter<String> */= /*object: ArrayAdapter<String>(
-                context,
-                android.R.layout.simple_spinner_dropdown_item,
-                R.array.chart_type_titles
-        )*/ //object: ArrayAdapter<CharSequence>/*.createFromResource*/(getActivity(), R.array.chart_type_titles, R.layout.spinner_item) {
-            /*val theChartTypeAdapter = */
-            object: ArrayAdapter<CharSequence>(getActivity() as Context, R.layout.spinner_chart_types, 0, strings) {
+        //val aChartTypeAdapter = ArrayAdapter.createFromResource(getActivity() as Context, R.array.chart_type_titles, R.layout.spinner_chart_types)
+        val chartTypeAdapter = object: ArrayAdapter<CharSequence>(getActivity() as Context, R.layout.spinner_chart_types, 0, strings) {
             override fun getDropDownView(
                     position: Int,
                     convertView: View?,
@@ -95,8 +88,9 @@ class StatisticsFragment : Fragment() {
                         convertView,
                         parent
                 ) as TextView
+
                 // set item text size
-                view.setTextSize(TypedValue.COMPLEX_UNIT_SP,12F)
+                view.setTextSize(TypedValue.COMPLEX_UNIT_SP,11F)
 
                 // set selected item style
                 if (position == chartTypesSpinner.selectedItemPosition){
@@ -130,10 +124,8 @@ class StatisticsFragment : Fragment() {
         setUpChart()
 
         val toolbar: Toolbar?= activity?.findViewById(com.applego.oblog.tppwatch.R.id.toolbar)
-        /*toolbar?.post { */
         val d: Drawable?= ResourcesCompat.getDrawable(resources, R.drawable.oblog_logo_48x52, null)
         toolbar?.setNavigationIcon(d)
-        /*}*/
     }
 
     private fun setUpChart() {

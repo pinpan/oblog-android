@@ -50,6 +50,15 @@ interface TppsDao {
     suspend fun getTppEntityByCode(entityCode: String, entityCodeType: String): EbaEntity?
 
     /**
+     * Select a tpp by EBA entityCode (provided by OBLOG backend).
+     *
+     * @param entityCode the EBA  tpp entityCode.
+     * @return the tpp with entityCode.
+     */
+    @Query("SELECT * FROM Tpps WHERE entityCode = :entityCode and codeType = :entityCodeType and revoked = :isRevoked")
+    suspend fun getActiveOrRevokedTppEntityByCode(entityCode: String, entityCodeType: String, isRevoked: Boolean = false): EbaEntity?
+
+    /**
      * Select a tpp by NCA entityId (provided by OBLOG backend).
      *
      * @param entityId the NCA tpp entityId.

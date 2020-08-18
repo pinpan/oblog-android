@@ -77,8 +77,6 @@ class TppsViewModel(
 
         dataLoading.addSource(_dataLoadingLocalDB, {value -> dataLoading.setValue(value)});
         dataLoading.addSource(dataLoadingRemoteEBA, {value -> dataLoading.setValue(value)});
-
-        //refresh()
     }
 
     fun refresh() {
@@ -178,10 +176,8 @@ class TppsViewModel(
     }
 
     fun loadEbaDirectory() {
-        //viewModelScope.launch {
-            // Load from OBLOG API
-            loadTpps(true)
-        //}
+        // Load from OBLOG API
+        loadTpps(true)
     }
 
     fun followTpp(tpp: Tpp, followed: Boolean) = viewModelScope.launch {
@@ -224,7 +220,6 @@ class TppsViewModel(
                 showSnackbarMessage(R.string.loading)
                 wrapEspressoIdlingResource {
                     viewModelScope.launch {
-                        //val tppsResult = tppsRepository.getAllTpps(forceUpdate)
                         val tppsResult = tppsRepository.fetchTppsFromRemoteDatasourcePaging()
                         if (tppsResult is Success) {
                             _allItems.value = tppsResult.data
@@ -287,7 +282,7 @@ class TppsViewModel(
             tppsToShow = filterTppsByCountry(tppsToShow, _searchFilter.countries)
         }
 
-        if (!_searchFilter.services.isNullOrBlank() && !_searchFilter.services.equals("<All PSD2 roles>")) {
+        if (!_searchFilter.services.isNullOrBlank() && !_searchFilter.services.equals("<All services>")) {
             tppsToShow = filterTppsByService(tppsToShow, _searchFilter.services)
         }
 
@@ -377,7 +372,7 @@ class TppsViewModel(
         }
 
         val filteredTpps = ArrayList<Tpp>()
-        if (service.isNullOrBlank() || service.equals("<All PSD2 roles>")) {
+        if (service.isNullOrBlank() || service.equals("<All services>")) {
             filteredTpps.addAll(inputTpps)
         } else {
             val psdService = EbaService.findPsd2Service(service)
