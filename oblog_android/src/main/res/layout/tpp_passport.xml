@@ -28,7 +28,7 @@
 
         <TextView
             android:id="@+id/visa_country"
-            android:layout_width="120dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@{serviceVisa.service}"
             android:textSize="10sp"
