@@ -273,8 +273,8 @@ class DefaultTppsRepository (
     }
 
     override suspend fun saveApp(tpp: Tpp, app: App) {
+        app.tppId = tpp.getId()
         tpp.appsPortfolio.addApp(app)
-        tpp.ebaEntity._description += " app"
 
         coroutineScope {
             tppsLocalDataSource.saveАpp(app)
@@ -282,8 +282,9 @@ class DefaultTppsRepository (
         }
     }
 
-    override suspend fun deleteApp(tpp: Tpp, app: App) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun deleteApp(app: App) {
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        tppsLocalDataSource.deleteАpp(app)
     }
 
     override suspend fun updateApp(tpp: Tpp, app: App) {

@@ -15,26 +15,25 @@ class TppDetailTabsAdapter(private val viewModel: TppDetailViewModel, private va
         var fragment: Fragment? = null
         if (position == 0) {
             fragment = TppDetailEbaFragment(viewModel, (viewModel.tpp.value?.getId()) ?: "")
-        } /*else if (position == 1) {
+        } else if (position == 1) {
             fragment = TppDetailNcaFragment(viewModel, (viewModel.tpp.value?.getId()) ?: "")
-        } */else { //if (position == 2) {
-            //val appsViewModel = create(modelClass: Class<T>)
-            fragment = TppDetailAppsFragment(appsViewModel/*, (viewModel.tpp.value?.getId()) ?: ""*/)
+        } else { //if (position == 2) {
+            fragment = TppDetailAppsFragment(appsViewModel)
         }
         return fragment
     }
 
     override fun getCount(): Int {
-        return 2
+        return 3
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
         var title: String? = null
         if (position == 0) {
             title = "EBA"
-        } /*else if (position == 1) {
+        } else if (position == 1) {
             title = "NCA (" + (viewModel.tpp.value?.getCountry() ?: "N/A") + ")"
-        } */else /*if (position == 2)*/ {
+        } else /*if (position == 2)*/ {
             title = "APPs"
         }
         return title

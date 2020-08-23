@@ -31,7 +31,7 @@ interface TppsRepository {
 
     suspend fun saveApp(tpp: Tpp, app: App)
 
-    suspend fun deleteApp(tpp: Tpp, app: App)
+    suspend fun deleteApp(app: App)
 
     suspend fun updateApp(tpp: Tpp, app: App)
 

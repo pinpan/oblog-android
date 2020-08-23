@@ -17,7 +17,7 @@ class FakeRepository : TppsRepository {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun deleteApp(tpp: Tpp, app: App) {
+    override suspend fun deleteApp(app: App) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

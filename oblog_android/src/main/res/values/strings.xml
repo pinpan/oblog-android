@@ -45,7 +45,8 @@
     <string name="label_description">Description</string>
     <string name="label_services">Services</string>
     <string name="label_app_name">Application name</string>
-    <string name="label_app_description">OBLog TppWatch mobile app is a tool for monitoring TPP\'s authorization status as maintained by corresponding NCA and provided by EBA TPP registry.</string>
+    <string name="label_app_description">Tpp app description</string>
+    <string name="oblog_app_description">OBLog TppWatch mobile app is a tool for monitoring TPP\'s authorization status as maintained by corresponding NCA and provided by EBA TPP registry.</string>
     <string name="label_app_flags">Flags</string>
     <string name="label_app_psd2">PSD2</string>
     <string name="label_app_home">Web home</string>

@@ -77,8 +77,8 @@ class Tpp : TppModel {
         return other.getId().equals(getId());
     }
 
-    // TODO#2: Consider Following fields
-    //  details aka properties from EBA
-    //  apps,
-    //  tppRoles, - CZ has, Eba hasn't
+    // TODO#:
+    //   Consider exposing following fields
+    //     - details aka properties from EbaEntityProperties
+    //     - tppRoles, - CZ has, Eba hasn't
 }

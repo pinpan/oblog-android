@@ -1,10 +1,7 @@
 package com.applego.oblog.tppwatch.tppdetail
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.widget.Toolbar
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,7 +10,6 @@ import androidx.viewpager.widget.ViewPager
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.addedittppapp.AddEditTppAppFragmentDirections
 import com.applego.oblog.tppwatch.databinding.TppDetailTabsFragmentBinding
-import com.applego.oblog.tppwatch.tpps.TppsFragmentDirections
 import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar

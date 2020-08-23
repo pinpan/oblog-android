@@ -10,8 +10,13 @@ import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.google.common.collect.Lists
 
 class FakeLocalDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : LocalTppDataSource {
+
     override suspend fun saveАpp(аpp: App) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun deleteАpp(аpp: App) {
+        TODO("Not yet implemented")
     }
 
     override suspend fun getTpps(): Result<List<Tpp>> {

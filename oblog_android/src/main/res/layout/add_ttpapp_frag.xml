@@ -117,19 +117,6 @@
                             android:hint="@string/label_app_name"
                             />
 
-<!--
-                        <EditText
-                            android:id="@+id/label_app_desc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/app_name"
-                            android:clickable="false"
-                            android:enabled="false"
-                            android:inputType="textPersonName"
-                            android:text="@string/label_app_description"
-                            android:textSize="12sp" />
--->
-
                         <EditText
                             android:id="@+id/app_desc"
                             android:layout_width="369dp"

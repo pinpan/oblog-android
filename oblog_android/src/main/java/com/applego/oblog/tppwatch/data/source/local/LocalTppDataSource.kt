@@ -26,4 +26,5 @@ interface LocalTppDataSource {
 
     suspend fun saveАpp(аpp: App)
 
+    suspend fun deleteАpp(аpp: App)
 }

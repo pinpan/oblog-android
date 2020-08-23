@@ -10,7 +10,7 @@
     <application
         android:name=".TppWatchApplication"
         android:label="@string/app_name"
-        android:description="@string/label_app_description"
+        android:description="@string/oblog_app_description"
         android:allowBackup="false"
         android:icon="@mipmap/ic_oblog_logo"
         android:roundIcon="@mipmap/ic_oblog_icon"

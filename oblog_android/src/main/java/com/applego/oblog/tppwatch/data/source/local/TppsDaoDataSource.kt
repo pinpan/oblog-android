@@ -65,7 +65,6 @@ class TppsDaoDataSource internal constructor(
                 } else {
                     tppsDao.insertApp(app)
                 }
-                //tppsDao.insertApp(app)
             } catch (e: Exception) {
                 Timber.e(e)
             }
@@ -86,9 +85,17 @@ class TppsDaoDataSource internal constructor(
         }
     }
 
+    override suspend fun deleteАpp(аpp: App) {
+        tppsDao.deleteApp(аpp)
+    }
+
     override suspend fun saveАpp(аpp: App) {
-        if (аpp.id != null) {
-            tppsDao.updateApp(аpp)
+        val foundApp = tppsDao.getAppByName(аpp.name, аpp.tppId)
+        if (foundApp != null) {
+            аpp.id = foundApp.id
+            if (1 != tppsDao.updateApp(аpp) ) {
+                Timber.w("Couldn't update aplication: %s from TPP: %s", аpp.id, аpp.tppId)
+            }
         } else {
             tppsDao.insertApp(аpp)
         }
