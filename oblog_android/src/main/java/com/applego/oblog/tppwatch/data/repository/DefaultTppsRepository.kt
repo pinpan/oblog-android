@@ -117,6 +117,24 @@ class DefaultTppsRepository (
         }
     }
 
+
+    override suspend fun getTppBlocking(tppId: String, forceUpdate: Boolean): Result<Tpp> {
+
+//        wrapEspressoIdlingResource {
+
+            return withContext(ioDispatcher) {
+                // Respond immediately with cache if available
+                getTppWithId(tppId)?.let {
+                    EspressoIdlingResource.decrement() // Set app as idle.
+                    return@withContext Success(it)
+                }
+
+                return@withContext fetchTppFromLocalOrRemote(tppId, forceUpdate)
+            }
+//        }
+    }
+
+
     private suspend fun fetchTppFromLocalOrRemote (
         tppId: String,
         forceUpdate: Boolean

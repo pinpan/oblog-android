@@ -117,7 +117,9 @@
                         android:id="@+id/nca_details_tab"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="NCA" />
+                        android:clickable="false"
+                        android:text="NCA"
+                        android:visibility="visible" />
 
                     <com.google.android.material.tabs.TabItem
                         android:id="@+id/apps_details_tab"

@@ -92,6 +92,8 @@
     <string name="nav_all">All</string>
     <string name="nav_used_only">Used only</string>
     <string name="nav_followed">Followed</string>
+    <string name="show_branches">Show branches</string>
+    <string name="show_agents">Show agents</string>
 
     <string name="no_tpps_all">No TPPs available!</string>
     <string name="no_tpps_used">No used TPPs selected!</string>

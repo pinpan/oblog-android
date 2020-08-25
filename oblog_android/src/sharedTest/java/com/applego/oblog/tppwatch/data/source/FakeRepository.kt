@@ -43,6 +43,11 @@ class FakeRepository : TppsRepository {
         return Error(Exception("Could not find tpp"))
     }
 
+    override suspend fun getTppBlocking(tppId: String, forceUpdate: Boolean): Result<Tpp> {
+        // Void
+        return Error(Exception("Could not find tpp"))
+    }
+
     override suspend fun refreshTpp(tpp: Tpp) {
         // Void
     }

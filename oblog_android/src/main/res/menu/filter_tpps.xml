@@ -10,34 +10,22 @@
             android:id="@+id/allPSD2"
             android:checked="true"
             android:title="@string/label_all" />
-
         <item
             android:id="@+id/psd2_tpps"
             android:title="@string/inst_type_psd2_tpps" />
-        <!--
-        <item
-            android:id="@+id/ais"
-            android:title="@string/inst_type_psd2_ais" />
-        <item
-            android:id="@+id/pis"
-            android:title="@string/inst_type_psd2_pis" />
-        <item
-            android:id="@+id/epis"
-            android:title="@string/inst_type_psd2_epis" />
-        -->
-
         <item
             android:id="@+id/emoney_inst"
             android:title="@string/inst_type_e_money_institutions" />
-        <!--
         <item
-            android:id="@+id/emis"
-            android:title="@string/inst_type_emi" />
+            android:id="@+id/show_branches"
+            android:checkable="true"
+            android:checked="false"
+            android:title="@string/show_agents" />
         <item
-            android:id="@+id/eemis"
-            android:title="@string/inst_type_eemi" />
-        -->
-
+            android:id="@+id/show_agents"
+            android:checkable="true"
+            android:checked="false"
+            android:title="@string/show_agents" />
         <item
             android:id="@+id/non_psd2_inst"
             android:title="@string/inst_type_non_psd2_tpps" />

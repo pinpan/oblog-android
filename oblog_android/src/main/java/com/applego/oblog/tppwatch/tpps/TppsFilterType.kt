@@ -62,9 +62,19 @@ enum class TppsFilterType {
     REVOKED_TPPs,
 
     /**
-     * select only revoked TPPs
+     * Select only revoked TPPs
      */
-    REVOKED_ONLY_TPPs;
+    REVOKED_ONLY_TPPs,
+
+    /**
+     *  Denotes TPP's branches
+     */
+    TPP_BRANCHES,
+
+    /**
+     * Denotes Tpp's agents
+     */
+    TPP_AGENTS;
 
 
     companion object {

@@ -125,6 +125,7 @@
         <item>Luxembourg</item>
         <item>Malta</item>
         <item>Netherlands</item>
+        <item>Norway</item>
         <item>Poland</item>
         <item>Portugal</item>
         <item>Romania</item>
@@ -132,6 +133,7 @@
         <item>Slovenia</item>
         <item>Spain</item>
         <item>Sweden</item>
+        <item>United Kingdom</item>
     </string-array>
 
     <string-array name="eu_countries_iso">
@@ -156,6 +158,7 @@
         <item>LU</item>
         <item>MT</item>
         <item>NL</item>
+        <item>NO</item>
         <item>PL</item>
         <item>PT</item>
         <item>RO</item>
@@ -163,6 +166,7 @@
         <item>SI</item>
         <item>ES</item>
         <item>SE</item>
+        <item>GB</item>
     </string-array>
 
     <string-array name="Introduction_titles">

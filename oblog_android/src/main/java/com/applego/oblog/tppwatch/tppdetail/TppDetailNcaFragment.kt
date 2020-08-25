@@ -60,7 +60,6 @@ class TppDetailNcaFragment(private val viewModel: TppDetailViewModel, @Nullable 
     ): View? {
 
         val view = inflater.inflate(R.layout.tppdetail_nca_frag, container, false)
-
         viewDataBinding = TppdetailNcaFragBinding.bind(view).apply {
             viewmodel = viewModel
         }

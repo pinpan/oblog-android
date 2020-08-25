@@ -207,7 +207,7 @@ class TppsFragment : Fragment() {
     }
 
     fun searchBy(query: String) {
-        viewModel.filterByTitle(query)
+        viewModel.applyFilterByTitle(query)
     }
 
     private fun setupNavigation() {
@@ -243,6 +243,9 @@ class TppsFragment : Fragment() {
                     PspType.CIs -> menu.findItem(R.id.credit_inst).isChecked = true
                 }
 
+                menu.findItem(R.id.show_branches).isChecked = viewModel.searchFilter.showBranches
+                menu.findItem(R.id.show_agents).isChecked = viewModel.searchFilter.showAgents
+
                 menu.findItem(R.id.followed).isChecked = viewModel.searchFilter.showFollowedOnly
                 menu.findItem(R.id.used).isChecked = viewModel.searchFilter.showUsedOnly
 
@@ -263,6 +266,9 @@ class TppsFragment : Fragment() {
                                 R.id.emoney_inst -> TppsFilterType.E_MONEY_INSTs
                                 R.id.non_psd2_inst -> TppsFilterType.NON_PSD2_TPPs
                                 R.id.credit_inst -> TppsFilterType.CREDIT_INSTs
+
+                                R.id.show_branches -> TppsFilterType.TPP_BRANCHES
+                                R.id.show_agents -> TppsFilterType.TPP_AGENTS
 
                                 R.id.followed -> TppsFilterType.FOLLOWED_TPPs
                                 R.id.used -> TppsFilterType.USED_TPPs

@@ -24,6 +24,8 @@ data class SearchFilter @JvmOverloads constructor(
     var showUsedOnly = false
     var showRevoked = false
     var showRevokedOnly = false
+    var showBranches = false
+    var showAgents = false
 
     fun updateUserSelection(requestType: TppsFilterType) {
         when (requestType) {
@@ -43,6 +45,13 @@ data class SearchFilter @JvmOverloads constructor(
                 pspType = PspType.CIs
             }
 
+            TppsFilterType.TPP_BRANCHES -> {
+                showBranches = !showBranches
+            }
+            TppsFilterType.TPP_AGENTS -> {
+                showAgents = !showAgents
+            }
+
             TppsFilterType.FOLLOWED_TPPs -> {
                 showFollowedOnly = !showFollowedOnly
             }
@@ -52,9 +61,15 @@ data class SearchFilter @JvmOverloads constructor(
 
             TppsFilterType.REVOKED_TPPs -> {
                 showRevoked = !showRevoked
+                if (!showRevoked) {
+                    showRevokedOnly = false
+                }
             }
             TppsFilterType.REVOKED_ONLY_TPPs -> {
                 showRevokedOnly = !showRevokedOnly
+                if (showRevokedOnly) {
+                    showRevoked = true
+                }
             }
         }
     }
@@ -65,5 +80,7 @@ data class SearchFilter @JvmOverloads constructor(
         showUsedOnly = false
         showRevoked = false
         showRevokedOnly = false
+        showBranches = false
+        showAgents = false
     }
 }

@@ -126,6 +126,18 @@ class TppsViewModel(
                     R.drawable.oblog_logo, true
                 )
             }
+            TppsFilterType.TPP_BRANCHES -> {
+                setFilterStatusViews(
+                        R.string.show_branches, R.string.no_data,
+                        R.drawable.oblog_logo, true
+                )
+            }
+            TppsFilterType.TPP_AGENTS -> {
+                setFilterStatusViews(
+                        R.string.show_agents, R.string.no_data,
+                        R.drawable.oblog_logo, true
+                )
+            }
             TppsFilterType.USED_TPPs -> {
                 setFilterStatusViews(
                         R.string.label_used, R.string.no_tpps_used,
@@ -255,7 +267,7 @@ class TppsViewModel(
         }
     }
 
-    fun filterByTitle(searchString: String) {
+    fun applyFilterByTitle(searchString: String) {
         _searchFilter.title = searchString
 
         wrapEspressoIdlingResource {
@@ -322,6 +334,13 @@ class TppsViewModel(
             }
 
             if (addIt) {
+                if (!searchFilter.showBranches) {
+                    addIt = !tpp.ebaEntity.isBranch()
+                }
+                if (!searchFilter.showAgents) {
+                    addIt = !tpp.ebaEntity.isAgent()
+                }
+
                 if (!searchFilter.showRevoked) {
                     addIt = !tpp.ebaEntity.isRevoked()
                 }
@@ -329,17 +348,17 @@ class TppsViewModel(
                 if (searchFilter.showRevokedOnly) {
                     addIt = tpp.ebaEntity.isRevoked()
                 }
+            }
+
+            if (addIt) {
+                if (searchFilter.showUsedOnly) {
+                    addIt = tpp.isUsed()
+                } else if (searchFilter.showFollowedOnly) {
+                    addIt = tpp.isFollowed() || tpp.isUsed()
+                }
 
                 if (addIt) {
-                    if (searchFilter.showUsedOnly) {
-                        addIt = tpp.isUsed()
-                    } else if (searchFilter.showFollowedOnly) {
-                        addIt = tpp.isFollowed() || tpp.isUsed()
-                    }
-
-                    if (addIt) {
-                        filteredTpps.add(tpp)
-                    }
+                    filteredTpps.add(tpp)
                 }
             }
         }

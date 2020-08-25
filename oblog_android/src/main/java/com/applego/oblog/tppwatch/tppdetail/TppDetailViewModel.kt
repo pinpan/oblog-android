@@ -96,11 +96,11 @@ open class TppDetailViewModel(
         // Show loading indicator
         _dataLoading.value = true
 
-        wrapEspressoIdlingResource {
-            //runBlocking {
+        //wrapEspressoIdlingResource {
                 if (tppId != null) {
                     try {
-                        CoroutineScope(Dispatchers.Main).launch {
+                        //CoroutineScope(Dispatchers.Main).launch {
+                        runBlocking {
                             tppsRepository.getTpp(tppId, forceRefresh).let { result ->
                                 if (result is Success) {
                                     onTppLoaded(result.data)
@@ -109,13 +109,13 @@ open class TppDetailViewModel(
                                 }
                             }
                         }
+                        //}
                     } catch (t: Throwable) {
                         Timber.e(t)
                     }
                 }
                 _dataLoading.value = false
-            //}
-        }
+        //}
     }
 
     private fun setTpp(tpp: Tpp?) {

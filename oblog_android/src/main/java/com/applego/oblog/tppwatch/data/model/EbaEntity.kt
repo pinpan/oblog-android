@@ -60,6 +60,22 @@ data class EbaEntity @JvmOverloads constructor(
     @Embedded
     var ebaProperties = EbaEntityProperties()
 
+/*
+
+    @ColumnInfo(name = "psd2")
+    var psd2: Boolean = (entityType.equals(EbaEntityType.PSD_PI)
+                      || entityType.equals(EbaEntityType.PSD_EPI)
+                      || entityType.equals(EbaEntityType.PSD_AISP)
+                      || entityType.equals(EbaEntityType.PSD_AG)
+                      || entityType.equals(EbaEntityType.PSD_BR)
+            )
+*/
+
+/*
+    @ColumnInfo(name = "fis")
+    var fis: Boolean = !psd2
+
+*/
     @ColumnInfo(name = "followed")
     var followed: Boolean = false
 
@@ -104,9 +120,9 @@ data class EbaEntity @JvmOverloads constructor(
     fun isPSD2(): Boolean = (
                entityType.equals(EbaEntityType.PSD_AISP)
             || entityType.equals(EbaEntityType.PSD_PI)
-            || entityType.equals(EbaEntityType.PSD_EPI)
-            || entityType.equals(EbaEntityType.PSD_BR)
-            || entityType.equals(EbaEntityType.PSD_AG)
+            //|| entityType.equals(EbaEntityType.PSD_EPI)
+            //|| entityType.equals(EbaEntityType.PSD_BR)
+            //|| entityType.equals(EbaEntityType.PSD_AG)
             )
 
     @Ignore
@@ -115,4 +131,12 @@ data class EbaEntity @JvmOverloads constructor(
     fun getTitleForList(): String {
         return getEntityName()
     }
+
+    fun isBranch(): Boolean = (
+        entityType.equals(EbaEntityType.PSD_BR)
+    )
+
+    fun isAgent(): Boolean = (
+        entityType.equals(EbaEntityType.PSD_AG)
+    )
 }

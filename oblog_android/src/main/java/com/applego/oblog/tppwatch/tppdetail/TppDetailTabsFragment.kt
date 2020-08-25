@@ -2,6 +2,7 @@ package com.applego.oblog.tppwatch.tppdetail
 
 import android.os.Bundle
 import android.view.*
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -18,6 +19,8 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+
 
 /**
  * Main UI for the tpp detail screen.
@@ -46,6 +49,7 @@ class TppDetailTabsFragment : Fragment() {
 
         view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
         //toolbarIcon = ResourcesCompat.getDrawable(resources, R.drawable.oblog_logo_48x52, null)
+
     }
 
     private fun setupNavigation() {
@@ -107,7 +111,7 @@ class TppDetailTabsFragment : Fragment() {
             viewModel.start(args.tppId)
         }
 
-        CoroutineScope(Dispatchers.Main).launch {
+        runBlocking {
             appsViewModel.start(args.tppId)
         }
 
@@ -119,6 +123,21 @@ class TppDetailTabsFragment : Fragment() {
 
         val tabLayout = view.findViewById(R.id.detail_tabs) as TabLayout
         tabLayout.setupWithViewPager(viewPager)
+
+        (tabLayout.getChildAt(0) as ViewGroup).getChildAt(1).isEnabled = false
+        (tabLayout.getChildAt(0) as ViewGroup).getChildAt(1).isClickable = false
+
+/*
+
+        val tabStrip = tabLayout.getChildAt(0) as LinearLayout
+        val view0 = tabStrip.getChildAt(1)
+        view0.isClickable = false
+
+        val view1 = tabLayout.getTabAt(1)?.view
+        if (view1 != null) {
+            view1.setClickable(false)
+        }
+*/
 
         viewDataBinding = TppDetailTabsFragmentBinding.bind(view).apply {
             viewmodel = viewModel
