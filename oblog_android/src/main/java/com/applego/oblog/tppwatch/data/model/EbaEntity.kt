@@ -110,7 +110,7 @@ data class EbaEntity @JvmOverloads constructor(
                     || entityType.equals(EbaEntityType.PSD_EPI)
                     || entityType.equals(EbaEntityType.PSD_EMI)
                     || entityType.equals(EbaEntityType.PSD_EEMI)
-                    || entityType.equals(EbaEntityType.NON_PSD_SP)
+                    || entityType.equals(EbaEntityType.PSD_EXC)
                     || entityType.equals(EbaEntityType.PSD_BR)
                     || entityType.equals(EbaEntityType.PSD_AG)
             )

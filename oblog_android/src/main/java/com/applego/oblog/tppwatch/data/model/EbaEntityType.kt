@@ -21,16 +21,15 @@ enum class EbaEntityType(val code: String, val description: String, val order: I
     NONE("NONE", "No entity type specified initially.", 0),
 
     PSD_PI("PSD_PI", "Payment Institution.", 1),
+    PSD_AISP("PSD_AISP", "Account Information Services Provider.", 5),
     PSD_EPI("PSD_EPI", "Exempted Payment Institution.", 2),
     PSD_EMI("PSD_EMI", "Electronic Money Institution.", 3),
     PSD_EEMI("PSD_EEMI", "Exempted Electronic Money Institution.", 4),
-    PSD_AISP("PSD_AISP", "Account Information Services Provider.", 5),
     PSD_EXC("PSD_EXC", "Service provider excluded from the scope of PSD2.", 6),
     PSD_ENL("PSD_ENL", "Institution referred to in points (4) to (23) of Article 2(5) of Directive 2013/36/EU that is entitled under national law to provide payment services", 7),
+
     PSD_BR("PSD_BR", "Branch of a payment institution, electronic money institution or account information service provider.", 8),
     PSD_AG("PSD_AG", "‘Agents' as legally defined in Article 4(38) of PSD2.", 9),
-
-    NON_PSD_SP("NON_PSD_SP", "Service providers excluded from the scope of PSD2 under points (i) and (ii) of point (k) and point (l) of Article 3 of PSD2.", 10),
     CREDIT_INSTITUTION("CI", "No entity type specified initially.", 11);
 
     companion object {
@@ -43,16 +42,14 @@ enum class EbaEntityType(val code: String, val description: String, val order: I
             allEntityTypes.add(PSD_EEMI)
             allEntityTypes.add(PSD_AISP)
             allEntityTypes.add(PSD_EXC)
-            allEntityTypes.add(PSD_ENL)
             allEntityTypes.add(PSD_BR)
             allEntityTypes.add(PSD_AG)
-            allEntityTypes.add(NON_PSD_SP)
+            allEntityTypes.add(PSD_ENL)
             allEntityTypes.add(CREDIT_INSTITUTION)
 
             allEntityTypes.forEach {
                 allEntityTypesMap.put(it.name, it)
             }
-
         }
     }
 }
