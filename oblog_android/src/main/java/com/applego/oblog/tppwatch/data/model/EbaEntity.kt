@@ -104,26 +104,52 @@ data class EbaEntity @JvmOverloads constructor(
                             && !"N/A".contentEquals(ebaProperties.authorizationEnd)
 
     @Ignore
-    fun isCI(): Boolean = !(isPSD2() || isNonPSD2Sp() || isEMI())
+    fun isAllPSD2(): Boolean = (
+            entityType.equals(EbaEntityType.PSD_PI)
+                    || entityType.equals(EbaEntityType.PSD_AISP)
+                    || entityType.equals(EbaEntityType.PSD_EPI)
+                    || entityType.equals(EbaEntityType.PSD_EMI)
+                    || entityType.equals(EbaEntityType.PSD_EEMI)
+                    || entityType.equals(EbaEntityType.NON_PSD_SP)
+                    || entityType.equals(EbaEntityType.PSD_BR)
+                    || entityType.equals(EbaEntityType.PSD_AG)
+            )
+
+    @Ignore
+    fun isPI(): Boolean = (
+            entityType.equals(EbaEntityType.PSD_PI)
+            )
+
+    @Ignore
+    fun isAI(): Boolean = (
+            entityType.equals(EbaEntityType.PSD_AISP)
+            )
+
+    @Ignore
+    fun isPIAI(): Boolean = (
+            isPI() || isAI()
+            )
+
+    @Ignore
+    fun isEPI(): Boolean = (
+            entityType.equals(EbaEntityType.PSD_EPI)
+            )
+
+    @Ignore
+    fun isCI(): Boolean = !isAllPSD2()
 
 
     fun isEMI(): Boolean = (
            entityType.equals(EbaEntityType.PSD_EMI)
-        || entityType.equals(EbaEntityType.PSD_EEMI)
+    )
+
+    fun isE_EMI(): Boolean = (
+        entityType.equals(EbaEntityType.PSD_EEMI)
     )
 
     fun isNonPSD2Sp(): Boolean = (
            entityType.equals(EbaEntityType.PSD_EXC)
     )
-
-    @Ignore
-    fun isPSD2(): Boolean = (
-               entityType.equals(EbaEntityType.PSD_AISP)
-            || entityType.equals(EbaEntityType.PSD_PI)
-            //|| entityType.equals(EbaEntityType.PSD_EPI)
-            //|| entityType.equals(EbaEntityType.PSD_BR)
-            //|| entityType.equals(EbaEntityType.PSD_AG)
-            )
 
     @Ignore
     fun getStatus() = _status

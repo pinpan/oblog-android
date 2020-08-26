@@ -19,7 +19,7 @@ data class SearchFilter @JvmOverloads constructor(
 ) {
 
     @Embedded
-    var pspType: PspType = PspType.ALL_PSD2
+    var instType = InstType.INST_PIAI
     var showFollowedOnly = false
     var showUsedOnly = false
     var showRevoked = false
@@ -29,43 +29,55 @@ data class SearchFilter @JvmOverloads constructor(
 
     fun updateUserSelection(requestType: TppsFilterType) {
         when (requestType) {
-            TppsFilterType.ALL_TPPs -> {
-                pspType = PspType.ALL_PSD2
+            TppsFilterType.ALL_INST -> {
+                instType = InstType.ALL
             }
-            TppsFilterType.PSD2_TPPs -> {
-                pspType = PspType.PSD2_TPPs
+            TppsFilterType.PI_INST -> {
+                instType = InstType.INST_PI
             }
-            TppsFilterType.E_MONEY_INSTs -> {
-                pspType = PspType.EMIs
+            TppsFilterType.AI_INST -> {
+                instType = InstType.INST_AI
             }
-            TppsFilterType.NON_PSD2_TPPs -> {
-                pspType = PspType.NON_PSD2_TPPs
+            TppsFilterType.PIAI_INST -> {
+                instType = InstType.INST_PIAI
             }
-            TppsFilterType.CREDIT_INSTs -> {
-                pspType = PspType.CIs
+            TppsFilterType.E_PI_INST -> {
+                instType = InstType.INST_EPI
+            }
+            TppsFilterType.EMONEY_INST -> {
+                instType = InstType.INST_EMI
+            }
+            TppsFilterType.E_EMONEY_INST -> {
+                instType = InstType.INST_EEMI
+            }
+            TppsFilterType.NON_PSD2_INST -> {
+                instType = InstType.NON_PSD2_INST
+            }
+            TppsFilterType.CREDIT_INST -> {
+                instType = InstType.CIs
             }
 
-            TppsFilterType.TPP_BRANCHES -> {
+            TppsFilterType.BRANCHES -> {
                 showBranches = !showBranches
             }
-            TppsFilterType.TPP_AGENTS -> {
+            TppsFilterType.AGENTS -> {
                 showAgents = !showAgents
             }
 
-            TppsFilterType.FOLLOWED_TPPs -> {
+            TppsFilterType.FOLLOWED -> {
                 showFollowedOnly = !showFollowedOnly
             }
-            TppsFilterType.USED_TPPs -> {
+            TppsFilterType.USED -> {
                 showUsedOnly = !showUsedOnly
             }
 
-            TppsFilterType.REVOKED_TPPs -> {
+            TppsFilterType.REVOKED -> {
                 showRevoked = !showRevoked
                 if (!showRevoked) {
                     showRevokedOnly = false
                 }
             }
-            TppsFilterType.REVOKED_ONLY_TPPs -> {
+            TppsFilterType.REVOKED_ONLY -> {
                 showRevokedOnly = !showRevokedOnly
                 if (showRevokedOnly) {
                     showRevoked = true
@@ -75,7 +87,7 @@ data class SearchFilter @JvmOverloads constructor(
     }
 
     fun init() {
-        pspType = PspType.ALL_PSD2
+        instType = InstType.ALL
         showFollowedOnly = false
         showUsedOnly = false
         showRevoked = false

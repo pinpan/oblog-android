@@ -73,7 +73,7 @@ class TppsViewModel(
     init {
         searchFilter.init()
 
-        setFiltering(TppsFilterType.ALL_TPPs)
+        setFiltering(TppsFilterType.ALL_INST)
 
         dataLoading.addSource(_dataLoadingLocalDB, {value -> dataLoading.setValue(value)});
         dataLoading.addSource(dataLoadingRemoteEBA, {value -> dataLoading.setValue(value)});
@@ -114,64 +114,98 @@ class TppsViewModel(
      *    When filter criteria changes, fitler status view must be set otherwise tests and app brake
      *    with missing resource exception!
      *
-     * @param requestType Can be [TppsFilterType.FOLLOWED_TPPs], or [TppsFilterType.USED_TPPs]
+     * @param requestType Can be [TppsFilterType.FOLLOWED], or [TppsFilterType.USED]
      */
     fun setFiltering(requestType: TppsFilterType) {
         _searchFilter.updateUserSelection(requestType)
 
         when (requestType) {
-            TppsFilterType.ALL_TPPs -> {
+            TppsFilterType.ALL_INST -> {
                 setFilterStatusViews(
                     R.string.label_all, R.string.no_tpps_all,
                     R.drawable.oblog_logo, true
                 )
             }
-            TppsFilterType.TPP_BRANCHES -> {
+            TppsFilterType.PI_INST -> {
+                setFilterStatusViews(
+                        R.string.label_psd2_only, R.string.inst_type_psd2_pis,
+                        R.drawable.oblog_logo, true
+                )
+            }
+            TppsFilterType.AI_INST -> {
+                setFilterStatusViews(
+                        R.string.label_psd2_only, R.string.inst_type_psd2_ais,
+                        R.drawable.oblog_logo, true
+                )
+            }
+            TppsFilterType.PIAI_INST -> {
+                setFilterStatusViews(
+                        R.string.label_psd2_only, R.string.inst_type_psd2_piai,
+                        R.drawable.oblog_logo, true
+                )
+            }
+            TppsFilterType.E_PI_INST -> {
+                setFilterStatusViews(
+                        R.string.label_psd2_only, R.string.inst_type_psd2_epis,
+                        R.drawable.oblog_logo, true
+                )
+            }
+
+            TppsFilterType.EMONEY_INST -> {
+                setFilterStatusViews( // TODO: Define label for epi inst
+                        R.string.label_psd2_only, R.string.inst_type_emi,
+                        R.drawable.oblog_logo, true
+                )
+            }
+            TppsFilterType.E_EMONEY_INST -> {
+                setFilterStatusViews(
+                        R.string.label_psd2_only, R.string.inst_type_eemi,
+                        R.drawable.oblog_logo, true
+                )
+            }
+
+            TppsFilterType.NON_PSD2_INST -> {
+                setFilterStatusViews( // TODO: Define label for e_emoney inst
+                        R.string.label_psd2_only, R.string.inst_type_non_psd2_tpps,
+                        R.drawable.oblog_logo, true
+                )
+            }
+
+            TppsFilterType.BRANCHES -> {
                 setFilterStatusViews(
                         R.string.show_branches, R.string.no_data,
                         R.drawable.oblog_logo, true
                 )
             }
-            TppsFilterType.TPP_AGENTS -> {
+            TppsFilterType.AGENTS -> {
                 setFilterStatusViews(
                         R.string.show_agents, R.string.no_data,
                         R.drawable.oblog_logo, true
                 )
             }
-            TppsFilterType.USED_TPPs -> {
-                setFilterStatusViews(
-                        R.string.label_used, R.string.no_tpps_used,
-                        R.drawable.oblog_logo, true
-                )
-            }
-            TppsFilterType.FOLLOWED_TPPs -> {
-                setFilterStatusViews(
-                        R.string.label_followed, R.string.no_tpps_followed,
-                        R.drawable.oblog_logo, true
-                )
-            }
-            TppsFilterType.E_MONEY_INSTs -> {
-                setFilterStatusViews(
-                        R.string.inst_type_e_money_institutions, R.string.no_fis_tpps,
-                        R.drawable.oblog_logo, true
-                )
-            }
-            TppsFilterType.PSD2_TPPs -> {
-                setFilterStatusViews(
-                        R.string.label_psd2_only, R.string.inst_type_psd2_tpps,
-                        R.drawable.oblog_logo, true
-                )
-            }
-            TppsFilterType.REVOKED_TPPs -> {
+
+            TppsFilterType.REVOKED -> {
                 setFilterStatusViews(
                         R.string.label_revoked, R.string.no_revoked_tpps,
                         R.drawable.oblog_logo, false
                 )
             }
-            TppsFilterType.REVOKED_ONLY_TPPs -> {
+            TppsFilterType.REVOKED_ONLY -> {
                 setFilterStatusViews(
                         R.string.label_revoked_only, R.string.no_revoked_tpps,
                         R.drawable.oblog_logo, false
+                )
+            }
+            TppsFilterType.USED -> {
+                setFilterStatusViews(
+                        R.string.label_used, R.string.no_tpps_used,
+                        R.drawable.oblog_logo, true
+                )
+            }
+            TppsFilterType.FOLLOWED -> {
+                setFilterStatusViews(
+                        R.string.label_followed, R.string.no_tpps_followed,
+                        R.drawable.oblog_logo, true
                 )
             }
         }
@@ -325,11 +359,16 @@ class TppsViewModel(
         val filteredTpps = ArrayList<Tpp>()
 
         inputTpps?.forEach { tpp ->
-            var addIt : Boolean = when (searchFilter.pspType) {
-                PspType.PSD2_TPPs -> tpp.isPSD2()
-                PspType.EMIs -> tpp.isEMI()
-                PspType.NON_PSD2_TPPs -> tpp.isNonPsd2Sp()
-                PspType.CIs -> tpp.isASPSP()
+            var addIt : Boolean = when (searchFilter.instType) {
+                InstType.ALL -> tpp.isPSD2()
+                InstType.INST_PI -> tpp.isPI()
+                InstType.INST_AI -> tpp.isAI()
+                InstType.INST_PIAI -> tpp.isPIAI()
+                InstType.INST_EPI -> tpp.isEPI()
+                InstType.INST_EMI -> tpp.isEMI()
+                InstType.INST_EEMI -> tpp.isE_EMI()
+                InstType.NON_PSD2_INST -> tpp.isNonPsd2Sp()
+                InstType.CIs -> tpp.isASPSP()
                 else -> true
             }
 

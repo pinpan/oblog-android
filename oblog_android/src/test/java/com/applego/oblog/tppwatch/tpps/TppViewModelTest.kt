@@ -101,14 +101,14 @@ class TppsViewModelTest {
         }
 
         tppsViewModel.searchFilter.init()
-        tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.USED_TPPs)
+        tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.USED)
 
         //tppsViewModel.setFiltering(TppsFilterType.USED_TPPS)
         tppsViewModel.loadTppsBlocking(false)
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).hasSize(1)
 
-        tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.USED_TPPs)
-        tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.PSD2_TPPs)
+        tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.USED)
+        tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.PIAI_INST)
         tppsViewModel.loadTppsBlocking(false)
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).hasSize(0)
     }
@@ -118,7 +118,7 @@ class TppsViewModelTest {
     fun loadUsedTppsFromRepositoryAndLoadIntoView() {
         // Given an initialized TppsViewModel with initialized tpps
         // When loading of Tpps is requested
-        tppsViewModel.setFiltering(TppsFilterType.USED_TPPs)
+        tppsViewModel.setFiltering(TppsFilterType.USED)
 
         // Load tpps
         tppsViewModel.loadTppsBlocking(true)
@@ -138,7 +138,7 @@ class TppsViewModelTest {
         tppsViewModel.loadTpps(true)
 
         // When loading of Tpps is requested
-        tppsViewModel.setFiltering(TppsFilterType.FOLLOWED_TPPs)
+        tppsViewModel.setFiltering(TppsFilterType.FOLLOWED)
 
         //val sTpps = tppsViewModel.items.value?.filter { it.entityName == "Title1" }?.forEach { it.isFollowed = true }
 
@@ -271,7 +271,7 @@ class TppsViewModelTest {
     @Test
     fun getTppsAddViewVisible() {
         // When the filter type is ALL_TPPS
-        tppsViewModel.setFiltering(TppsFilterType.PSD2_TPPs)
+        tppsViewModel.setFiltering(TppsFilterType.PIAI_INST)
 
         // Then the "Add ebaEntity" action is visible
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.tppsAddViewVisible)).isTrue()

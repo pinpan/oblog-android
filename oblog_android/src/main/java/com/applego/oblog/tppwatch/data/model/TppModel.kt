@@ -20,6 +20,11 @@ interface TppModel  {
     fun getDescription(): String
 
     fun isEMI(): Boolean
+    fun isPI(): Boolean
+    fun isAI(): Boolean
+    fun isPIAI(): Boolean
+    fun isEPI(): Boolean
+    fun isE_EMI(): Boolean
 
     fun isASPSP(): Boolean
 

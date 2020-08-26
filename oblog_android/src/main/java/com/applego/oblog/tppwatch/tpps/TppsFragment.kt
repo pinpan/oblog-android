@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.data.model.PspType
+import com.applego.oblog.tppwatch.data.model.InstType
 import com.applego.oblog.tppwatch.databinding.TppsFragBinding
 import com.applego.oblog.tppwatch.util.ViewModelFactory.Companion.viewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
@@ -235,12 +235,15 @@ class TppsFragment : Fragment() {
             PopupMenu(requireContext(), view).run {
                 menuInflater.inflate(R.menu.filter_tpps, menu)
 
-                when (viewModel.searchFilter.pspType) {
-                    PspType.ALL_PSD2 -> menu.findItem(R.id.allPSD2).isChecked = true
-                    PspType.PSD2_TPPs -> menu.findItem(R.id.psd2_tpps).isChecked = true
-                    PspType.EMIs -> menu.findItem(R.id.emoney_inst).isChecked = true
-                    PspType.NON_PSD2_TPPs -> menu.findItem(R.id.non_psd2_inst).isChecked = true
-                    PspType.CIs -> menu.findItem(R.id.credit_inst).isChecked = true
+                when (viewModel.searchFilter.instType) {
+                    InstType.INST_PI -> menu.findItem(R.id.inst_psd2_pi).isChecked = true
+                    InstType.INST_AI -> menu.findItem(R.id.inst_psd2_ai).isChecked = true
+                    InstType.INST_PIAI -> menu.findItem(R.id.inst_psd2_piai).isChecked = true
+                    InstType.INST_EPI -> menu.findItem(R.id.inst_psd2_epi).isChecked = true
+                    InstType.INST_EMI -> menu.findItem(R.id.inst_emi).isChecked = true
+                    InstType.INST_EEMI -> menu.findItem(R.id.inst_e_emi).isChecked = true
+                    InstType.NON_PSD2_INST -> menu.findItem(R.id.non_psd2_inst).isChecked = true
+                    InstType.CIs -> menu.findItem(R.id.credit_inst).isChecked = true
                 }
 
                 menu.findItem(R.id.show_branches).isChecked = viewModel.searchFilter.showBranches
@@ -248,7 +251,6 @@ class TppsFragment : Fragment() {
 
                 menu.findItem(R.id.followed).isChecked = viewModel.searchFilter.showFollowedOnly
                 menu.findItem(R.id.used).isChecked = viewModel.searchFilter.showUsedOnly
-
                 menu.findItem(R.id.revoked_only).isChecked = viewModel.searchFilter.showRevokedOnly
                 if (menu.findItem(R.id.revoked_only).isChecked) {
                     viewModel.searchFilter.showRevoked = true
@@ -260,22 +262,26 @@ class TppsFragment : Fragment() {
                 setOnMenuItemClickListener {
                     viewModel.setFiltering(
                             when (it.itemId) {
-                                R.id.allPSD2 -> TppsFilterType.ALL_TPPs
+                                R.id.allPSD2 -> TppsFilterType.ALL_INST
 
-                                R.id.psd2_tpps-> TppsFilterType.PSD2_TPPs
-                                R.id.emoney_inst -> TppsFilterType.E_MONEY_INSTs
-                                R.id.non_psd2_inst -> TppsFilterType.NON_PSD2_TPPs
-                                R.id.credit_inst -> TppsFilterType.CREDIT_INSTs
+                                R.id.inst_psd2_pi-> TppsFilterType.PI_INST
+                                R.id.inst_psd2_ai-> TppsFilterType.AI_INST
+                                R.id.inst_psd2_piai-> TppsFilterType.PIAI_INST
+                                R.id.inst_psd2_epi-> TppsFilterType.E_PI_INST
+                                R.id.inst_emi -> TppsFilterType.EMONEY_INST
+                                R.id.inst_e_emi -> TppsFilterType.E_EMONEY_INST
+                                R.id.non_psd2_inst -> TppsFilterType.NON_PSD2_INST
 
-                                R.id.show_branches -> TppsFilterType.TPP_BRANCHES
-                                R.id.show_agents -> TppsFilterType.TPP_AGENTS
+                                R.id.show_branches -> TppsFilterType.BRANCHES
+                                R.id.show_agents -> TppsFilterType.AGENTS
+                                R.id.credit_inst -> TppsFilterType.CREDIT_INST
 
-                                R.id.followed -> TppsFilterType.FOLLOWED_TPPs
-                                R.id.used -> TppsFilterType.USED_TPPs
+                                R.id.followed -> TppsFilterType.FOLLOWED
+                                R.id.used -> TppsFilterType.USED
+                                R.id.revoked-> TppsFilterType.REVOKED
+                                R.id.revoked_only-> TppsFilterType.REVOKED_ONLY
 
-                                R.id.revoked-> TppsFilterType.REVOKED_TPPs
-                                R.id.revoked_only-> TppsFilterType.REVOKED_ONLY_TPPs
-                                else -> TppsFilterType.PSD2_TPPs
+                                else -> TppsFilterType.ALL_INST
                             }
                     )
                     viewModel.loadTpps(false)

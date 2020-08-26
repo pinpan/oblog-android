@@ -91,7 +91,7 @@
 
     <string name="nav_all">All</string>
     <string name="nav_used_only">Used only</string>
-    <string name="nav_followed">Followed</string>
+    <string name="nav_followed">Followed only</string>
     <string name="show_branches">Show branches</string>
     <string name="show_agents">Show agents</string>
 
@@ -122,17 +122,14 @@
 
     <string name="user_signature">Your signature</string>
 
-    <string name="inst_type_psd2_tpps">PSD2 TPPs</string>
-    <string name="inst_type_psd2_ais">AIS TPPs</string>
-    <string name="inst_type_psd2_pis">PIS TPPs</string>
-    <string name="inst_type_psd2_epis">Exempted PIS TPPs</string>
-
-    <string name="inst_type_e_money_institutions">Electronic Money Institutions</string>
-    <string name="inst_type_emi">Electronic Money Institutions</string>
-    <string name="inst_type_eemi">Exempted Electronic Money Institutions</string>
-
-    <string name="inst_type_non_psd2_tpps">TPPs Exempted from PSD2 scope</string>
-
+    <string name="inst_type_all">All PSD2 institutions</string>
+    <string name="inst_type_psd2_pis">PI (Payment Initiation)</string>
+    <string name="inst_type_psd2_ais">AI (Account Information)</string>
+    <string name="inst_type_psd2_piai">PI + AI</string>
+    <string name="inst_type_psd2_epis">Exempted PI</string>
+    <string name="inst_type_emi">EMI (Electronic Money)</string>
+    <string name="inst_type_eemi">Exempted EMI</string>
+    <string name="inst_type_non_psd2_tpps">Institutions Exempted from PSD2 scope</string>
     <string name="inst_type_credit_institutions">Credit institutions</string>
 
     <string name="user_id_title">User ID</string>
