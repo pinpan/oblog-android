@@ -13,6 +13,7 @@ import okio.Timeout
 import retrofit2.Response
 import timber.log.Timber
 import java.io.IOException
+import java.util.ArrayList
 import java.util.concurrent.TimeUnit
 
 
@@ -29,17 +30,21 @@ class TppEbaDataSource internal constructor (
     // Old key MyhCyIKQ0IlIG5dFVk6sjXcG2aHhFbj0
     var theApiKey : ApiKey = ApiKey("T11NOL41x0L7Cn4OAc1FNQogHAcpWvQA") //"2Dvgcj0W7sinv0mqtwm2CSQuYYsW79xb")
 
-    override suspend fun getAllTpps(): Result<TppsListResponse> = withContext(ioDispatcher) {
-         var paging = Paging(100, 1, 0, true)
+    override suspend fun getAllTpps(): Result<TppsListResponse> /*= withContext(ioDispatcher)*/ {
+        var allFetchedTpps = ArrayList<Tpp>()
+        runBlocking {
+            var paging = Paging(100, 1, 0, true)
 
-        launch {
             while (!paging.last) {
-                //
                 var result = loadTppsPage(paging)
                 when (result) {
                     is Result.Success -> {
+                        allFetchedTpps.addAll(result.data.tppsList)
                         paging = result.data.paging
                         paging.page +=1
+                        if (paging.totalPages == paging.page) {
+                            paging.last = true
+                        }
                     }
                     is Result.Error -> {
                         // TODO: IMplement proper Error handing. For now, jump out
@@ -49,7 +54,7 @@ class TppEbaDataSource internal constructor (
             }
         }
 
-        return@withContext Result.Loading(Timeout())
+        return/*@withContext*/ Result.Success(TppsListResponse(allFetchedTpps))
     }
 
     override suspend fun getTpps(paging : Paging): Result<TppsListResponse> = withContext(ioDispatcher) {
@@ -57,7 +62,11 @@ class TppEbaDataSource internal constructor (
         when (result) {
             is Result.Success -> {
                 result.data.paging.page +=1
+                if (paging.totalPages == paging.page) {
+                    paging.last = true
+                }
             }
+
             is Result.Error -> {
                 // TODO: IMplement proper Error handing. For now, jump out
                 paging.last = true

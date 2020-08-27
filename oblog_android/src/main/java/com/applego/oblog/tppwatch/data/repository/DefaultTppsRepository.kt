@@ -16,6 +16,7 @@ import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 import okio.Timeout
 import timber.log.Timber
+import java.util.ArrayList
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 import java.util.concurrent.TimeUnit
@@ -41,7 +42,24 @@ class DefaultTppsRepository (
         wrapEspressoIdlingResource {
             return withContext(ioDispatcher) {
                 if (forceUpdate) {
-                    fetchTppsFromRemoteDatasourcePaging()
+                    var paging = Paging(100, 1, 0, true)
+                    //var allFetchedTpps = ArrayList<Tpp>()
+
+                    while (!paging.last) {
+                        val tppsListResponse = fetchTppsPageFromRemoteDatasource(paging)
+                        when (tppsListResponse) {
+                            is Success -> {
+                                //allFetchedTpps.addAll(tppsListResponse.data.tppsList)
+                                updateLocalDataSource(tppsListResponse.data.tppsList)
+
+                                paging = tppsListResponse.data.paging
+                            }
+                            is Error -> {
+                                Timber.w("Remote data source fetch error: %s", tppsListResponse.exception)
+                                paging.last = true
+                            }
+                        }
+                    }
                 }
                 return@withContext loadTppsFromLocalDatasource()
             }
@@ -52,7 +70,7 @@ class DefaultTppsRepository (
      * This method ensures we have Up-To-Date repository version, according to set freshness requirements.
      * If @param forced is true, Do full refresh from remote source
      */
-    private suspend fun fetchTppsFromRemoteDatasource() {
+    private suspend fun fetchAllTppsFromRemoteDatasource() {
         // If forced to update -> Get remotes now, otherwise call
         val tppsListResponse: Result<TppsListResponse> = tppsEbaDataSource.getAllTpps()
         when (tppsListResponse) {
@@ -63,27 +81,20 @@ class DefaultTppsRepository (
         }
     }
 
-    override suspend fun fetchTppsFromRemoteDatasourcePaging(): Result<List<Tpp>> {
-        // If forced to update -> Get remotes now, otherwise call
-        var paging = Paging(100, 1, 0, true)
-        //val allFetchedTpps = List<Tpp>
-        var allFetchedTpps = ArrayList<Tpp>()
-
-        while (!paging.last) {
-            val tppsListResponse: Result<TppsListResponse> = tppsEbaDataSource.getTpps(paging)
-            when (tppsListResponse) {
-                is Success -> {
-                    allFetchedTpps.addAll(tppsListResponse.data.tppsList)
-                    paging = tppsListResponse.data.paging
-                    updateLocalDataSource(tppsListResponse.data.tppsList)
-                }
-                is Error -> {
-                    Timber.w("Remote data source fetch failed: %s", tppsListResponse.exception)
-                    paging.last = true
-                }
+    override suspend fun fetchTppsPageFromRemoteDatasource(paging: Paging): Result<TppsListResponse> {
+        val tppsListResponse: Result<TppsListResponse> = tppsEbaDataSource.getTpps(paging)
+        when (tppsListResponse) {
+            is Success -> {
+                //allFetchedTpps.addAll(tppsListResponse.data.tppsList)
+                //paging = tppsListResponse.data.paging
+                updateLocalDataSource(tppsListResponse.data.tppsList)
+            }
+            is Error -> {
+                Timber.w("Remote data source fetch failed: %s", tppsListResponse.exception)
+                paging.last = true
             }
         }
-        return Success(allFetchedTpps)
+        return tppsListResponse
     }
 
     override suspend fun loadTppsFromLocalDatasource(): Result<List<Tpp>> {
@@ -119,19 +130,15 @@ class DefaultTppsRepository (
 
 
     override suspend fun getTppBlocking(tppId: String, forceUpdate: Boolean): Result<Tpp> {
-
-//        wrapEspressoIdlingResource {
-
-            return withContext(ioDispatcher) {
-                // Respond immediately with cache if available
-                getTppWithId(tppId)?.let {
-                    EspressoIdlingResource.decrement() // Set app as idle.
-                    return@withContext Success(it)
-                }
-
-                return@withContext fetchTppFromLocalOrRemote(tppId, forceUpdate)
+        return withContext(ioDispatcher) {
+            // Respond immediately with cache if available
+            getTppWithId(tppId)?.let {
+                EspressoIdlingResource.decrement() // Set app as idle.
+                return@withContext Success(it)
             }
-//        }
+
+            return@withContext fetchTppFromLocalOrRemote(tppId, forceUpdate)
+        }
     }
 
 

@@ -34,7 +34,9 @@ class FakeLocalDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : Local
     }
 
     override suspend fun saveTpp(tpp: Tpp) {
-        tpps?.add(tpp)
+        if (findTpp(tpp) == null) {
+            tpps?.add(tpp)
+        }
     }
 
     override suspend fun updateFollowing(tpp: Tpp, follow: Boolean) {
@@ -51,5 +53,15 @@ class FakeLocalDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : Local
 
     override suspend fun deleteTpp(tppId: String) {
         tpps?.removeIf { it.getId() == tppId }
+    }
+
+    private fun findTpp(tpp: Tpp) : Tpp? {
+        //var tpp: Tpp? = null
+        tpps?.forEach {aTpp ->
+            if (aTpp.equals(tpp)) {
+                return tpp
+            }
+        }
+        return null
     }
 }

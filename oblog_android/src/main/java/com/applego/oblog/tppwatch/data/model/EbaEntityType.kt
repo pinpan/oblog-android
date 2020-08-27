@@ -21,16 +21,16 @@ enum class EbaEntityType(val code: String, val description: String, val order: I
     NONE("NONE", "No entity type specified initially.", 0),
 
     PSD_PI("PSD_PI", "Payment Institution.", 1),
-    PSD_AISP("PSD_AISP", "Account Information Services Provider.", 5),
-    PSD_EPI("PSD_EPI", "Exempted Payment Institution.", 2),
-    PSD_EMI("PSD_EMI", "Electronic Money Institution.", 3),
-    PSD_EEMI("PSD_EEMI", "Exempted Electronic Money Institution.", 4),
+    PSD_AISP("PSD_AISP", "Account Information Services Provider.", 2),
+    PSD_EPI("PSD_EPI", "Exempted Payment Institution.", 3),
+    PSD_EMI("PSD_EMI", "Electronic Money Institution.", 4),
+    PSD_EEMI("PSD_EEMI", "Exempted Electronic Money Institution.", 5),
     PSD_EXC("PSD_EXC", "Service provider excluded from the scope of PSD2.", 6),
     PSD_ENL("PSD_ENL", "Institution referred to in points (4) to (23) of Article 2(5) of Directive 2013/36/EU that is entitled under national law to provide payment services", 7),
 
     PSD_BR("PSD_BR", "Branch of a payment institution, electronic money institution or account information service provider.", 8),
     PSD_AG("PSD_AG", "‘Agents' as legally defined in Article 4(38) of PSD2.", 9),
-    CREDIT_INSTITUTION("CI", "No entity type specified initially.", 11);
+    CREDIT_INSTITUTION("CI", "No entity type specified initially.", 10);
 
     companion object {
         val allEntityTypesMap = HashMap<String, EbaEntityType>()

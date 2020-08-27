@@ -93,38 +93,40 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                     Toast.makeText(this@TppsActivity, "Run only once", Toast.LENGTH_LONG).show()
                 }
             })
-        }
+        } else {
+            setContentView(R.layout.tpps_act)
+            setupNavigationDrawer()
 
-        setContentView(R.layout.tpps_act)
-        setupNavigationDrawer()
+            val toolbar: Toolbar = findViewById(R.id.toolbar)
+            toolbar.title = ""
+            toolbar.subtitle = ""
+            setSupportActionBar(toolbar)
 
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        toolbar.title = ""
-        toolbar.subtitle = ""
-        setSupportActionBar(toolbar)
-
-        val navController: NavController = findNavController(R.id.nav_host_fragment)
-        appBarConfiguration = AppBarConfiguration.Builder(R.id.tpps_fragment_dest, R.id.statistics_fragment_dest)
-                .setDrawerLayout(drawerLayout)
-                .build()
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        findViewById<NavigationView>(R.id.nav_view).setupWithNavController(navController)
-        navController.addOnDestinationChangedListener { navController, destination, arguments ->
-            Timber.i("onDestinationChanged: "+ destination.label);
-            if ((destination as FragmentNavigator.Destination).className.equals(TppDetailTabsFragment::class.java.canonicalName)) {
-                selectedTppId = arguments!!.getString("tppId")
-            } else if (destination.className.equals(TppsFragment::class.java.canonicalName)) {
-                arguments!!.putString("tppId", selectedTppId.toString())
-                selectedTppId = null
+            val navController: NavController = findNavController(R.id.nav_host_fragment)
+            appBarConfiguration = AppBarConfiguration.Builder(R.id.tpps_fragment_dest, R.id.statistics_fragment_dest)
+                    .setDrawerLayout(drawerLayout)
+                    .build()
+            setupActionBarWithNavController(navController, appBarConfiguration)
+            findViewById<NavigationView>(R.id.nav_view).setupWithNavController(navController)
+            navController.addOnDestinationChangedListener { navController, destination, arguments ->
+                Timber.i("onDestinationChanged: " + destination.label);
+                if ((destination as FragmentNavigator.Destination).className.equals(TppDetailTabsFragment::class.java.canonicalName)) {
+                    selectedTppId = arguments!!.getString("tppId")
+                } else if (destination.className.equals(TppsFragment::class.java.canonicalName)) {
+                    arguments!!.putString("tppId", selectedTppId.toString())
+                    selectedTppId = null
+                }
             }
-        }
 
-    //    getUserId()
+            //    getUserId()
+            viewModel = viewModelFactory.get(TppsViewModel::class.java) as TppsViewModel
+            viewModel!!.loadTpps(false)
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-        if (BuildConfig.DEBUG){
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            if (BuildConfig.DEBUG) {
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            }
         }
     }
 

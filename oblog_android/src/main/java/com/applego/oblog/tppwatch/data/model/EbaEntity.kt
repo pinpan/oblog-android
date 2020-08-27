@@ -105,14 +105,15 @@ data class EbaEntity @JvmOverloads constructor(
 
     @Ignore
     fun isAllPSD2(): Boolean = (
-            entityType.equals(EbaEntityType.PSD_PI)
-                    || entityType.equals(EbaEntityType.PSD_AISP)
-                    || entityType.equals(EbaEntityType.PSD_EPI)
-                    || entityType.equals(EbaEntityType.PSD_EMI)
-                    || entityType.equals(EbaEntityType.PSD_EEMI)
-                    || entityType.equals(EbaEntityType.PSD_EXC)
-                    || entityType.equals(EbaEntityType.PSD_BR)
-                    || entityType.equals(EbaEntityType.PSD_AG)
+           entityType.equals(EbaEntityType.PSD_PI)
+        || entityType.equals(EbaEntityType.PSD_AISP)
+        || entityType.equals(EbaEntityType.PSD_EPI)
+        || entityType.equals(EbaEntityType.PSD_EMI)
+        || entityType.equals(EbaEntityType.PSD_EEMI)
+        || entityType.equals(EbaEntityType.PSD_EXC)
+        || entityType.equals(EbaEntityType.PSD_ENL)
+        //|| entityType.equals(EbaEntityType.PSD_BR)
+        //|| entityType.equals(EbaEntityType.PSD_AG)
             )
 
     @Ignore

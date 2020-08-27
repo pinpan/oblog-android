@@ -19,7 +19,7 @@ class TppsDaoDataSource internal constructor(
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : LocalTppDataSource {
 
-        override suspend fun getTpps(): Result<List<Tpp>> = withContext(ioDispatcher) {
+    override suspend fun getTpps(): Result<List<Tpp>> = withContext(ioDispatcher) {
         var tpps = ArrayList<Tpp>()
         try {
             val allTppEntities = tppsDao.getAllTppEntities()

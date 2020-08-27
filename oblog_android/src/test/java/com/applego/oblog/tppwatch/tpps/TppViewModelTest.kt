@@ -31,7 +31,7 @@ class TppsViewModelTest {
     // Use a fake repository to be injected into the viewmodel
     private lateinit var tppsRepository: FakeRepository
 
-    val tppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "CZ", entityType = EbaEntityType.NONE)
+    val tppEntity1 = EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "Title1", _description = "Description1", _globalUrn = "", _ebaEntityVersion = "", _country = "CZ", entityType = EbaEntityType.PSD_AISP)
     val tppEntity2 = EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "Title2", _description = "Description2", _globalUrn = "", _ebaEntityVersion = "", _country = "CZ", entityType = EbaEntityType.NONE)
     val tppEntity3 = EbaEntity(_entityId = "28173283", _entityCode = "Entity_CZ28173283", _entityName = "Title3", _description = "Description3", _globalUrn = "", _ebaEntityVersion = "", _country = "CZ", entityType = EbaEntityType.NONE)
 
@@ -90,7 +90,7 @@ class TppsViewModelTest {
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoadingLocalDB)).isFalse()
 
         // And data correctly loaded
-        assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).hasSize(3)
+        assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).hasSize(1)
 
         // Given an initialized TppsViewModel with initialized tpps
         // When loading of Tpps is requested
@@ -108,7 +108,7 @@ class TppsViewModelTest {
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).hasSize(1)
 
         tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.USED)
-        tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.PIAI_INST)
+        tppsViewModel.searchFilter.updateUserSelection(TppsFilterType.PI_INST)
         tppsViewModel.loadTppsBlocking(false)
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).hasSize(0)
     }
@@ -161,12 +161,9 @@ class TppsViewModelTest {
         // Load tpps
         tppsViewModel.loadTppsBlocking(true)
 
-        // Then progress indicator is hidden
-        //assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoading).get()).isFalse()
-
         // And the list of tppsList is the old one
-        assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).isNotEmpty()
-        assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems).size).isEqualTo(3)
+        assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems)).isEmpty()
+        assertThat(LiveDataTestUtil.getValue(tppsViewModel.displayedItems).size).isEqualTo(0)
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.snackbarText).hasBeenHandled)
 
         // And the snackbar updated
