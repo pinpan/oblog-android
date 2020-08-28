@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -30,7 +29,6 @@ class OnboardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //Toast.makeText(this@OnboardingActivity, "Run only once", Toast.LENGTH_LONG).show()
         viewModel = ViewModelProviders.of(this).get(OnboardingViewModel::class.java)
 
         setContentView(R.layout.onboarding_activity)
@@ -114,12 +112,15 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     fun onPageIndexChanged(pageNo: Int) {
+        var thePageNo = pageNo
+        if (thePageNo > (viewPager.adapter?.count ?: 1) - 1) {
+            thePageNo = (viewPager.adapter?.count ?: 1) - 1
+        }
+        val isLastPage = thePageNo == (viewPager.adapter?.count ?: 1) - 1
 
         activeIndicator.background = ContextCompat.getDrawable(this, R.color.colorGrey)
-        activeIndicator = indicatorViewes.get(pageNo)
+        activeIndicator = indicatorViewes.get(thePageNo)
         activeIndicator.background = ContextCompat.getDrawable(this, R.color.colorDarkGrey)
-
-        val isLastPage = !(pageNo < (viewPager.adapter?.count ?: 0) - 1)
 
         val btnSkip = findViewById<Button>(R.id.intro_btn_skip)
         if (btnSkip != null) {

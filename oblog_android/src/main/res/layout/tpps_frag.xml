@@ -5,8 +5,8 @@
     <data>
 
         <import type="android.view.View" />
-
         <import type="androidx.core.content.ContextCompat" />
+        <import type="android.widget.CompoundButton" />
 
         <variable
             name="viewmodel"
@@ -26,7 +26,72 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/tpps_search" />
+            <!--<include layout="@layout/tpps_search" />-->
+            <FrameLayout
+                android:id="@+id/tpps_advanced_search_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:background="@color/colorEUGrey"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/show_revoked_checkbox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/label_revoked"
+                            android:textSize="10sp"
+                            android:checked="@{viewmodel.showRevoked}"
+                            android:onClick="@{(view) -> viewmodel.filterRevoked(((CompoundButton)view).isChecked())}" />
+
+                        <CheckBox
+                            android:id="@+id/show_revoked_only_checkbox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/label_revoked_only"
+                            android:textSize="10sp"
+                            android:checked="@{viewmodel.showRevokedOnly}"
+                            android:onClick="@{(view) -> viewmodel.filterRevokedOnly(((CompoundButton)view).isChecked())}" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <Spinner
+                            android:id="@+id/serarch_country"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="10sp" />
+
+                        <Spinner
+                            android:id="@+id/search_role"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="10sp"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,6 +109,7 @@
                     android:background="@color/colorEULightGrey"
                     android:weightSum="10">
 
+<!--
                     <TextView
                         android:id="@+id/follow_checkbox_label"
                         android:layout_width="wrap_content"
@@ -73,6 +139,30 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textSize="11sp"
                         android:textStyle="bold" />
+-->
+                    <CheckBox
+                        android:id="@+id/show_followed_only_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+
+                        android:text="@string/F"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:onClick="@{(view) -> viewmodel.filterFollowed(((CompoundButton)view).isChecked())}" />
+                    <!--
+                    android:checked="@{viewmodel.followedOnly}"
+                    android:checked="@{viewmodel._searchFilter.showUsedOnly}"
+                    -->
+                    <CheckBox
+                        android:id="@+id/show_used_only_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/U"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:onClick="@{(view) -> viewmodel.filterUsed(((CompoundButton)view).isChecked())}" />
 
                     <TextView
                         android:id="@+id/tpp_name"
@@ -90,7 +180,7 @@
                 <View
                     android:id="@+id/divider1"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="2dp"
                     android:layout_margin="1dp"
                     android:background="?android:attr/listDivider"
                 />
@@ -131,7 +221,7 @@
                         <View
                             android:id="@+id/divider2"
                             android:layout_width="match_parent"
-                            android:layout_height="1dp"
+                            android:layout_height="2dp"
                             android:layout_margin="1dp"
                             android:background="?android:attr/listDivider"
                             />
@@ -139,7 +229,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/colorEULightBlue"
+                            android:background="@color/colorEUGrey"
                             android:orientation="vertical">
 
                             <TextView

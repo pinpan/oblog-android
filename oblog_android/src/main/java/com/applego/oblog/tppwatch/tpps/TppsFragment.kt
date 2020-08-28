@@ -249,6 +249,7 @@ class TppsFragment : Fragment() {
                 menu.findItem(R.id.show_branches).isChecked = viewModel.searchFilter.showBranches
                 menu.findItem(R.id.show_agents).isChecked = viewModel.searchFilter.showAgents
 
+/*
                 menu.findItem(R.id.followed).isChecked = viewModel.searchFilter.showFollowedOnly
                 menu.findItem(R.id.used).isChecked = viewModel.searchFilter.showUsedOnly
                 menu.findItem(R.id.revoked_only).isChecked = viewModel.searchFilter.showRevokedOnly
@@ -258,6 +259,7 @@ class TppsFragment : Fragment() {
                 } else {
                     menu.findItem(R.id.revoked).isChecked = viewModel.searchFilter.showRevoked
                 }
+*/
 
                 setOnMenuItemClickListener {
                     viewModel.setFiltering(
@@ -276,10 +278,12 @@ class TppsFragment : Fragment() {
                                 R.id.show_agents -> TppsFilterType.AGENTS
                                 R.id.credit_inst -> TppsFilterType.CREDIT_INST
 
+/*
                                 R.id.followed -> TppsFilterType.FOLLOWED
                                 R.id.used -> TppsFilterType.USED
                                 R.id.revoked-> TppsFilterType.REVOKED
                                 R.id.revoked_only-> TppsFilterType.REVOKED_ONLY
+*/
 
                                 else -> TppsFilterType.ALL_INST
                             }

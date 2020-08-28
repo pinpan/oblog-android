@@ -100,7 +100,7 @@ class TppsFragmentTest {
         repository.saveTppBlocking(Tpp(tppEntity, NcaEntity()))
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_followed)).perform(click())
+        onView(withText(R.string.nav_followed_only)).perform(click())
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
     }
 
@@ -115,11 +115,11 @@ class TppsFragmentTest {
         onView(withText("TITLE1")).check(matches(isDisplayed()))
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_followed)).perform(click())
+        onView(withText(R.string.nav_followed_only)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_followed)).perform(click())
+        onView(withText(R.string.nav_followed_only)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
     }
 
@@ -179,11 +179,11 @@ class TppsFragmentTest {
         onView(checkboxFollowed()).perform(click())
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_followed)).perform(click())
+        onView(withText(R.string.nav_followed_only)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_followed)).perform(click())
+        onView(withText(R.string.nav_followed_only)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
     }
 
@@ -225,13 +225,13 @@ class TppsFragmentTest {
 
         // Verify that both of our tpps are shown
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_followed)).perform(click())
+        onView(withText(R.string.nav_followed_only)).perform(click())
         onView(withText("TITLE1")).check(matches(not(isDisplayed())))
         onView(withText("TITLE2")).check(matches(not(isDisplayed())))
 
         // Verify that both of our tpps are shown
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_followed)).perform(click())
+        onView(withText(R.string.nav_followed_only)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withText("TITLE2")).check(matches(isDisplayed()))
     }
@@ -292,13 +292,13 @@ class TppsFragmentTest {
 
         // Verify that the followed tpps (but not the used tpp) are shown
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_followed)).perform(click())
+        onView(withText(R.string.nav_followed_only)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withText("TITLE2")).check(matches(isDisplayed()))
         onView(withText("TITLE3")).check(matches(isDisplayed()))
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_followed)).perform(click())
+        onView(withText(R.string.nav_followed_only)).perform(click())
         onView(withText("TITLE1")).check(matches(isDisplayed()))
         onView(withText("TITLE2")).check(matches(isDisplayed()))
         onView(withText("TITLE3")).check(matches(isDisplayed()))
@@ -309,7 +309,7 @@ class TppsFragmentTest {
         launchTppsActivity(false)
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_followed)).perform(click())
+        onView(withText(R.string.nav_followed_only)).perform(click())
 
         // Verify the "You have no tpps!" text is shown
         onView(withText("You have no followed TPPs!")).check(matches(isDisplayed()))
@@ -320,7 +320,7 @@ class TppsFragmentTest {
         launchTppsActivity(false)
 
         onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(R.string.nav_followed)).perform(click())
+        onView(withText(R.string.nav_followed_only)).perform(click())
 
         // Verify the "You have no followed tpps!" text is shown
         onView(withText("You have no followed TPPs!")).check(matches((isDisplayed())))

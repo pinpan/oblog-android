@@ -51,7 +51,7 @@
     <string-array name="list_tpps_array">
         <item>@string/nav_all</item>
         <item>@string/nav_used_only</item>
-        <item>@string/nav_followed</item>
+        <item>@string/nav_followed_only</item>
     </string-array>
 
     <!-- Sync Preferences -->

@@ -69,6 +69,10 @@ class TppsViewModel(
         it.isEmpty()
     }
 
+    val showRevoked : LiveData<Boolean> = MutableLiveData(_searchFilter.showRevoked)
+    val showRevokedOnly : LiveData<Boolean> = MutableLiveData(_searchFilter.showRevokedOnly)
+
+
     val dataLoading = MediatorLiveData<Boolean>();
 
     init {
@@ -115,7 +119,7 @@ class TppsViewModel(
      *    When filter criteria changes, fitler status view must be set otherwise tests and app brake
      *    with missing resource exception!
      *
-     * @param requestType Can be [TppsFilterType.FOLLOWED], or [TppsFilterType.USED]
+     * @param requestType Can be one of the [TppsFilterType], or [TppsFilterType.USED]
      */
     fun setFiltering(requestType: TppsFilterType) {
         _searchFilter.updateUserSelection(requestType)
@@ -276,15 +280,12 @@ class TppsViewModel(
                                 paging = tppsResult.data.paging
                                 allFetchedTpps.addAll(tppsResult.data.tppsList)
 
-                                //_allItems.value = allFetchedTpps
-                                //_displayedItems.value = getTppsByGlobalFilter()
                                 refresh()
                                 // TODO: Get it from fetched EBA / OBLOG data
                                 _statusLine.value = "Last EBA version: " + Random().nextLong()
                             } else {
                                 // TODO: Set warning message than "Data is old" to be displayed,
                                 //  until refresh succeeds next time. May be for Remote updates only?
-                                //_displayedItems.value = getTppsByGlobalFilter()
                                 showSnackbarMessage(R.string.loading_tpps_error)
                             }
                         }
@@ -331,7 +332,9 @@ class TppsViewModel(
             return listOf<Tpp>()
         }
 
-        var tppsToShow = filterTppsByUserInterest(allItems.value, _searchFilter)
+        var tppsToShow = filterFollowedAndUsedOnly(allItems.value)
+
+        tppsToShow = filterTppsByUserInterest(tppsToShow, _searchFilter)
 
         if (!_searchFilter.countries.isNullOrBlank() && !_searchFilter.countries.equals("<All EU countries>")) {
             tppsToShow = filterTppsByCountry(tppsToShow, _searchFilter.countries)
@@ -346,6 +349,25 @@ class TppsViewModel(
         _dataLoadingLocalDB.value = false
 
         return tppsToShow
+    }
+
+    private fun filterFollowedAndUsedOnly(inTpps: List<Tpp>?): List<Tpp>? {
+        if (!(searchFilter.showFollowedOnly || searchFilter.showUsedOnly)) {
+            return inTpps
+        }
+
+        val filteredTpps = ArrayList<Tpp>()
+        inTpps?.forEach {aTpp ->
+            if (searchFilter.showUsedOnly && aTpp.isUsed()) {
+                filteredTpps.add(aTpp)
+            } else {
+                if (searchFilter.showFollowedOnly && (aTpp.isFollowed() || aTpp.isUsed())) {
+                    filteredTpps.add(aTpp)
+                }
+            }
+        }
+
+        return filteredTpps
     }
 
     private fun filterTppsByName(inputTpps: List<Tpp>): MutableList<Tpp> {
@@ -381,33 +403,35 @@ class TppsViewModel(
                 else -> true
             }
 
-            if (addIt) {
-                if (!searchFilter.showBranches) {
-                    addIt = !tpp.ebaEntity.isBranch()
-                }
-                if (!searchFilter.showAgents) {
-                    addIt = !tpp.ebaEntity.isAgent()
-                }
+            if (addIt && !searchFilter.showBranches) {
+                addIt = !tpp.ebaEntity.isBranch()
+            }
 
+            if (addIt && !searchFilter.showAgents) {
+                addIt = !tpp.ebaEntity.isAgent()
+            }
+
+            if (addIt) {
                 if (!searchFilter.showRevoked) {
                     addIt = !tpp.ebaEntity.isRevoked()
                 }
-
+            }
+            if (addIt) {
                 if (searchFilter.showRevokedOnly) {
                     addIt = tpp.ebaEntity.isRevoked()
                 }
             }
 
             if (addIt) {
-                if (searchFilter.showUsedOnly) {
+                if (searchFilter.showFollowedOnly) {
                     addIt = tpp.isUsed()
-                } else if (searchFilter.showFollowedOnly) {
+                } else if (searchFilter.showUsedOnly) {
                     addIt = tpp.isFollowed() || tpp.isUsed()
                 }
+            }
 
-                if (addIt) {
-                    filteredTpps.add(tpp)
-                }
+            if (addIt) {
+                filteredTpps.add(tpp)
             }
         }
 
@@ -458,6 +482,36 @@ class TppsViewModel(
 
     fun filterTppsByCountry(country: String) {
         _searchFilter.countries = country
+
+        _displayedItems.value = getTppsByGlobalFilter()
+    }
+
+    fun filterFollowed(only: Boolean) {
+        setFiltering(TppsFilterType.FOLLOWED)
+
+        _displayedItems.value = getTppsByGlobalFilter()
+    }
+
+    fun filterUsed(only: Boolean) {
+        setFiltering(TppsFilterType.USED)
+
+        _displayedItems.value = getTppsByGlobalFilter()
+    }
+
+    fun filterRevoked(dofilter: Boolean) {
+        setFiltering(TppsFilterType.REVOKED)
+        /*if (!_searchFilter.showRevoked) {
+            _searchFilter.showRevokedOnly = false
+        }*/
+
+        _displayedItems.value = getTppsByGlobalFilter()
+    }
+
+    fun filterRevokedOnly(only: Boolean) {
+        setFiltering(TppsFilterType.REVOKED_ONLY)
+        /*if (_searchFilter.showRevokedOnly) {
+            _searchFilter.showRevokedOnly = true
+        }*/
 
         _displayedItems.value = getTppsByGlobalFilter()
     }

@@ -1,41 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tpps_advanced_search_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="0dp"
-    android:paddingBottom="0dp"
-    android:background="@color/colorEULightGrey"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <data>
+        <import type="android.widget.CompoundButton" />
+        <variable
+            name="viewmodel"
+            type="com.applego.oblog.tppwatch.tpps.TppsViewModel" />
+    </data>
+
+    <FrameLayout
+        android:id="@+id/tpps_advanced_search_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        >
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:background="@color/colorEULightGrey"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
 
-            <Spinner
-                android:id="@+id/serarch_country"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="10sp" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <Spinner
-                android:id="@+id/search_role"
+                <CheckBox
+                    android:id="@+id/show_revoked_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/label_revoked"
+                    android:textSize="10sp"
+                    android:onClick="@{(view) -> viewmodel.filterRevoked(((CompoundButton)view).isChecked())}" />
+
+                <CheckBox
+                    android:id="@+id/show_revoked_only_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/label_revoked_only"
+                    android:textSize="10sp"
+                    android:onClick="@{(view) -> viewmodel.filterRevokedOnly(((CompoundButton)view).isChecked())}" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="10sp"
-                android:layout_weight="1" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Spinner
+                    android:id="@+id/serarch_country"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="10sp" />
+
+                <Spinner
+                    android:id="@+id/search_role"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="10sp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
         </LinearLayout>
-    </LinearLayout>
-</FrameLayout>
-
+    </FrameLayout>
+</layout>

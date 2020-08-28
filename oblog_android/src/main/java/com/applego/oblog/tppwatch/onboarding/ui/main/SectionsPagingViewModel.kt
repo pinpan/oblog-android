@@ -29,9 +29,9 @@ open abstract class SectionsPagingViewModel : ViewModel() {
         if (_index.value == null) {
             _index.value = 0
         } else {
-            if (_index.value!! < pageCount) {
+            if (_index.value!! < pageCount-1) {
                 _index.value = _index.value!!.inc()
-            } else if (_index.value!! == pageCount) {
+            } else if (_index.value!! == pageCount-1) {
                 finishOnboarding(true)
             }
         }
