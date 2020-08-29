@@ -69,9 +69,8 @@ class TppsViewModel(
         it.isEmpty()
     }
 
-    val showRevoked : LiveData<Boolean> = MutableLiveData(_searchFilter.showRevoked)
-    val showRevokedOnly : LiveData<Boolean> = MutableLiveData(_searchFilter.showRevokedOnly)
-
+    val showRevoked = MutableLiveData<Boolean>()
+    val showRevokedOnly = MutableLiveData<Boolean>()
 
     val dataLoading = MediatorLiveData<Boolean>();
 
@@ -194,24 +193,39 @@ class TppsViewModel(
                         R.string.label_revoked, R.string.no_revoked_tpps,
                         R.drawable.oblog_logo, false
                 )
+                _searchFilter.showRevoked = !_searchFilter.showRevoked
+                if (!_searchFilter.showRevoked) {
+                    _searchFilter.showRevokedOnly = false
+                }
+                showRevoked.value = _searchFilter.showRevoked
+                showRevokedOnly.value = _searchFilter.showRevokedOnly
             }
             TppsFilterType.REVOKED_ONLY -> {
                 setFilterStatusViews(
                         R.string.label_revoked_only, R.string.no_revoked_tpps,
                         R.drawable.oblog_logo, false
                 )
+                _searchFilter.showRevokedOnly = !_searchFilter.showRevokedOnly
+                if (_searchFilter.showRevokedOnly) {
+                    _searchFilter.showRevoked = true
+                }
+                showRevokedOnly.value = _searchFilter.showRevokedOnly
+                showRevoked.value = _searchFilter.showRevoked
             }
+
             TppsFilterType.USED -> {
                 setFilterStatusViews(
                         R.string.label_used, R.string.no_tpps_used,
                         R.drawable.oblog_logo, true
                 )
+                _searchFilter.showUsedOnly = !_searchFilter.showUsedOnly
             }
             TppsFilterType.FOLLOWED -> {
                 setFilterStatusViews(
                         R.string.label_followed, R.string.no_tpps_followed,
                         R.drawable.oblog_logo, true
                 )
+                _searchFilter.showFollowedOnly = !_searchFilter.showFollowedOnly
             }
         }
     }
@@ -422,13 +436,13 @@ class TppsViewModel(
                 }
             }
 
-            if (addIt) {
+            /*if (addIt) {
                 if (searchFilter.showFollowedOnly) {
                     addIt = tpp.isUsed()
                 } else if (searchFilter.showUsedOnly) {
                     addIt = tpp.isFollowed() || tpp.isUsed()
                 }
-            }
+            }*/
 
             if (addIt) {
                 filteredTpps.add(tpp)

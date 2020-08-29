@@ -2,7 +2,6 @@ package com.applego.oblog.tppwatch.tppdetail
 
 import android.os.Bundle
 import android.view.*
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -126,18 +125,6 @@ class TppDetailTabsFragment : Fragment() {
 
         (tabLayout.getChildAt(0) as ViewGroup).getChildAt(1).isEnabled = false
         (tabLayout.getChildAt(0) as ViewGroup).getChildAt(1).isClickable = false
-
-/*
-
-        val tabStrip = tabLayout.getChildAt(0) as LinearLayout
-        val view0 = tabStrip.getChildAt(1)
-        view0.isClickable = false
-
-        val view1 = tabLayout.getTabAt(1)?.view
-        if (view1 != null) {
-            view1.setClickable(false)
-        }
-*/
 
         viewDataBinding = TppDetailTabsFragmentBinding.bind(view).apply {
             viewmodel = viewModel

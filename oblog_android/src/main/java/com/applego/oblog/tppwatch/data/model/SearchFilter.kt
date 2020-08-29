@@ -64,6 +64,7 @@ data class SearchFilter @JvmOverloads constructor(
                 showAgents = !showAgents
             }
 
+/*
             TppsFilterType.FOLLOWED -> {
                 showFollowedOnly = !showFollowedOnly
             }
@@ -83,6 +84,7 @@ data class SearchFilter @JvmOverloads constructor(
                     showRevoked = true
                 }
             }
+*/
         }
     }
 

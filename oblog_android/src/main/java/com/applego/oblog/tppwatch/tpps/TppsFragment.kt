@@ -2,8 +2,11 @@ package com.applego.oblog.tppwatch.tpps
 
 import android.app.SearchManager
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.*
 import android.widget.*
 import android.widget.ArrayAdapter
@@ -165,10 +168,36 @@ class TppsFragment : Fragment() {
     }
 
     private fun setUpSearchForm() {
-        val countryAdapter = ArrayAdapter.createFromResource(getActivity() as Context, R.array.eu_countries, R.layout.spinner_item)
-
+        //val countryAdapter = ArrayAdapter.createFromResource(getActivity() as Context, R.array.eu_countries, R.layout.spinner_item) {
         countriesSpinner = activity?.findViewById(R.id.serarch_country)!!
+        val countries = context!!.resources.getTextArray(R.array.eu_countries)
+        val countryAdapter                        = object: ArrayAdapter<CharSequence>(getActivity() as Context, R.layout.custom_spinner, 0, countries) {
+        //val countryAdapter = object: ArrayAdapter<CharSequence>(getActivity() as Context, R.array.eu_countries, R.layout.spinner_item) {
+            override fun getDropDownView(
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
+            ): View {
+                val view: TextView = super.getDropDownView(
+                        position,
+                        convertView,
+                        parent
+                ) as TextView
+
+                // set item text size
+                //view.setTextSize(TypedValue.COMPLEX_UNIT_SP,11F)
+
+                // set selected item style
+                if (position == countriesSpinner.selectedItemPosition){
+                    view.background = ColorDrawable(resources.getColor(R.color.colorEULightGrey))
+                    view.setTextColor(resources.getColor(R.color.colorEUFlagYellow)) //Color.parseColor("#2E2D88"))
+                }
+
+                return view
+            }
+        }
         countriesSpinner.setAdapter(countryAdapter);
+        //countryAdapter.setDropDownViewResource(R.layout.custom_spinner)
         countriesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 // An item was selected. You can retrieve the selected item using
@@ -182,10 +211,39 @@ class TppsFragment : Fragment() {
             }
         })
 
-        val psd2RolesAdapter = ArrayAdapter.createFromResource(getActivity() as Context, R.array.eba_services, R.layout.spinner_item)
+
+        //val psd2RolesAdapter = ArrayAdapter.createFromResource(getActivity() as Context, R.array.eba_services, R.layout.spinner_item)
 
         servicesSpinner = activity?.findViewById(R.id.search_role)!!
-        servicesSpinner.setAdapter(psd2RolesAdapter);
+
+        val services = context!!.resources.getTextArray(R.array.eba_services)
+        val servicesAdapter = object: ArrayAdapter<CharSequence>(getActivity() as Context, R.layout.custom_spinner, 0, services) {
+            //val countryAdapter = object: ArrayAdapter<CharSequence>(getActivity() as Context, R.array.eu_countries, R.layout.spinner_item) {
+            override fun getDropDownView(
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
+            ): View {
+                val view: TextView = super.getDropDownView(
+                        position,
+                        convertView,
+                        parent
+                ) as TextView
+
+                // set item text size
+                //view.setTextSize(TypedValue.COMPLEX_UNIT_SP,11F)
+
+                // set selected item style
+                if (position == countriesSpinner.selectedItemPosition){
+                    view.background = ColorDrawable(resources.getColor(R.color.colorEULightGrey))
+                    view.setTextColor(resources.getColor(R.color.colorEUYellow)) //Color.parseColor("#2E2D88"))
+                }
+
+                return view
+            }
+        }
+
+        servicesSpinner.setAdapter(servicesAdapter);
         servicesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 // An item was selected. You can retrieve the selected item using
