@@ -2,11 +2,9 @@ package com.applego.oblog.tppwatch.tpps
 
 import android.app.SearchManager
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.*
 import android.widget.*
 import android.widget.ArrayAdapter
@@ -15,6 +13,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
 import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.model.InstType
@@ -87,7 +86,6 @@ class TppsFragment : Fragment() {
             override fun onClose(): Boolean {
                 if (!lastTppsSearchViewQuery.isNullOrBlank()) {
                     lastTppsSearchViewQuery = ""
-                    //viewModel.loadTpps(false)
                     searchBy("")
                 }
                 return false
@@ -209,14 +207,9 @@ class TppsFragment : Fragment() {
             }
         })
 
-
-        //val psd2RolesAdapter = ArrayAdapter.createFromResource(getActivity() as Context, R.array.eba_services, R.layout.spinner_item)
-
         servicesSpinner = activity?.findViewById(R.id.search_role)!!
-
         val services = context!!.resources.getTextArray(R.array.eba_services)
         val servicesAdapter = object: ArrayAdapter<CharSequence>(getActivity() as Context, R.layout.custom_spinner, 0, services) {
-            //val countryAdapter = object: ArrayAdapter<CharSequence>(getActivity() as Context, R.array.eu_countries, R.layout.spinner_item) {
             override fun getDropDownView(
                     position: Int,
                     convertView: View?,
@@ -228,13 +221,10 @@ class TppsFragment : Fragment() {
                         parent
                 ) as TextView
 
-                // set item text size
-                //view.setTextSize(TypedValue.COMPLEX_UNIT_SP,11F)
-
                 // set selected item style
                 if (position == countriesSpinner.selectedItemPosition){
                     view.background = ColorDrawable(resources.getColor(R.color.colorEULightGrey))
-                    view.setTextColor(resources.getColor(R.color.colorEUYellow)) //Color.parseColor("#2E2D88"))
+                    view.setTextColor(resources.getColor(R.color.colorEUYellow))
                 }
 
                 return view
@@ -245,7 +235,6 @@ class TppsFragment : Fragment() {
         servicesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 // An item was selected. You can retrieve the selected item using
-                val service = parent.getItemAtPosition(pos).toString()
                 val serviceCode = resources.getStringArray(R.array.eba_service_codes)[pos];
                 viewModel.filterTppsByService(serviceCode)
             }
@@ -254,6 +243,17 @@ class TppsFragment : Fragment() {
                 // Another interface callback
             }
         })
+
+        val recyclerView: RecyclerView = activity?.findViewById(R.id.tpps_list)!!
+        val btnFirst:ImageButton = activity?.findViewById(R.id.btn_first)!!
+        btnFirst.setOnClickListener{
+            recyclerView.scrollToPosition(0);
+        }
+
+        val btnLast:ImageButton = activity?.findViewById(R.id.btn_last)!!
+        btnLast.setOnClickListener{
+            recyclerView.scrollToPosition( (viewModel.displayedItems.value?.size ?:1) -1);
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -301,21 +301,8 @@ class TppsFragment : Fragment() {
                     InstType.NON_PSD2_INST -> menu.findItem(R.id.non_psd2_inst).isChecked = true
                     InstType.CIs -> menu.findItem(R.id.credit_inst).isChecked = true
                 }
-
                 menu.findItem(R.id.show_branches).isChecked = viewModel.searchFilter.showBranches
                 menu.findItem(R.id.show_agents).isChecked = viewModel.searchFilter.showAgents
-
-/*
-                menu.findItem(R.id.followed).isChecked = viewModel.searchFilter.showFollowedOnly
-                menu.findItem(R.id.used).isChecked = viewModel.searchFilter.showUsedOnly
-                menu.findItem(R.id.revoked_only).isChecked = viewModel.searchFilter.showRevokedOnly
-                if (menu.findItem(R.id.revoked_only).isChecked) {
-                    viewModel.searchFilter.showRevoked = true
-                    menu.findItem(R.id.revoked).isChecked = true
-                } else {
-                    menu.findItem(R.id.revoked).isChecked = viewModel.searchFilter.showRevoked
-                }
-*/
 
                 setOnMenuItemClickListener {
                     viewModel.setFiltering(
@@ -333,13 +320,6 @@ class TppsFragment : Fragment() {
                                 R.id.show_branches -> TppsFilterType.BRANCHES
                                 R.id.show_agents -> TppsFilterType.AGENTS
                                 R.id.credit_inst -> TppsFilterType.CREDIT_INST
-
-/*
-                                R.id.followed -> TppsFilterType.FOLLOWED
-                                R.id.used -> TppsFilterType.USED
-                                R.id.revoked-> TppsFilterType.REVOKED
-                                R.id.revoked_only-> TppsFilterType.REVOKED_ONLY
-*/
 
                                 else -> TppsFilterType.ALL_INST
                             }
