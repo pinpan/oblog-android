@@ -100,8 +100,8 @@ data class EbaEntity @JvmOverloads constructor(
     fun isUsed() : Boolean = used
 
     @Ignore
-    fun isRevoked(): Boolean = !ebaProperties.authorizationEnd.isNullOrBlank()
-                            && !"N/A".contentEquals(ebaProperties.authorizationEnd)
+    fun isRevoked(): Boolean = revoked //!ebaProperties.authorizationEnd.isNullOrBlank()
+                            //&& !"N/A".contentEquals(ebaProperties.authorizationEnd)
 
     @Ignore
     fun isAllPSD2(): Boolean = (

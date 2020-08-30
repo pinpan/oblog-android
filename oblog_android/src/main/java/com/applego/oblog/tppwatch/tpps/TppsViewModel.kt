@@ -286,13 +286,13 @@ class TppsViewModel(
                 wrapEspressoIdlingResource {
                     viewModelScope.launch {
                         var paging = Paging(100, 1, 0, true)
-                        var allFetchedTpps = ArrayList<Tpp>()
+                        //var allFetchedTpps = ArrayList<Tpp>()
 
                         while (!paging.last) {
                             val tppsResult = tppsRepository.fetchTppsPageFromRemoteDatasource(paging)
                             if (tppsResult is Success) {
                                 paging = tppsResult.data.paging
-                                allFetchedTpps.addAll(tppsResult.data.tppsList)
+                                //allFetchedTpps.addAll(tppsResult.data.tppsList)
 
                                 refresh()
                                 // TODO: Get it from fetched EBA / OBLOG data

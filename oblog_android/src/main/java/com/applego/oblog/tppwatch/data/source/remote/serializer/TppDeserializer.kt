@@ -52,6 +52,8 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         if (entAuthStart_End?.size()!! > 1) {
             entAuthEnd = entAuthStart_End?.get(1)?.asString ?: "N/A"
         }
+        val revoked = !entAuthEnd.isNullOrBlank()
+                            && !"N/A".contentEquals(entAuthEnd)
 
         val nameJson = jsonObject.get("entityName")
         val entityName = if (nameJson is JsonArray) getStringFromJsonArray(nameJson.asJsonArray) else nameJson.asString
@@ -107,7 +109,9 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         val description: String = jsonObject.get("description")?.asString ?: ""
 
         val ebaEntity = EbaEntity(_entityId = entityId, _entityCode = entityCode, _entityName = entityName, _description = description, _globalUrn = globalUrn, _ebaEntityVersion = ebaEntityVersion, _country = country, entityType = EbaEntityType.valueOf(entityType))
+        ebaEntity.revoked = revoked
         ebaEntity.ebaProperties = ebaProperties
+
         var tpp = Tpp(ebaEntity, NcaEntity())
 
         val services = jsonObject.get("services")
