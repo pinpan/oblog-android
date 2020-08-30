@@ -168,11 +168,9 @@ class TppsFragment : Fragment() {
     }
 
     private fun setUpSearchForm() {
-        //val countryAdapter = ArrayAdapter.createFromResource(getActivity() as Context, R.array.eu_countries, R.layout.spinner_item) {
         countriesSpinner = activity?.findViewById(R.id.serarch_country)!!
         val countries = context!!.resources.getTextArray(R.array.eu_countries)
         val countryAdapter                        = object: ArrayAdapter<CharSequence>(getActivity() as Context, R.layout.custom_spinner, 0, countries) {
-        //val countryAdapter = object: ArrayAdapter<CharSequence>(getActivity() as Context, R.array.eu_countries, R.layout.spinner_item) {
             override fun getDropDownView(
                     position: Int,
                     convertView: View?,
@@ -190,7 +188,7 @@ class TppsFragment : Fragment() {
                 // set selected item style
                 if (position == countriesSpinner.selectedItemPosition){
                     view.background = ColorDrawable(resources.getColor(R.color.colorEULightGrey))
-                    view.setTextColor(resources.getColor(R.color.colorEUFlagYellow)) //Color.parseColor("#2E2D88"))
+                    view.setTextColor(resources.getColor(R.color.colorEUFlagYellow))
                 }
 
                 return view

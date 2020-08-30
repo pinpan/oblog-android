@@ -74,18 +74,19 @@
     <string name="statistics_no_tpps">You have no TPPs.</string>
     <string name="statistics_used_tpps">Used TPPs: %.1f%%</string>
     <string name="statistics_followed_tpps">Followed TPPs: %.1f%%</string>
-    <string name="statistics_total_tpps">Total number of TPPs: %1$d, from which:</string>
+    <string name="statistics_psd2_institutions">PSD2 authorizations:</string>
+    <string name="statistics_total_tpps">All inst. types: %1$d:</string>
     <string name="statistics_total_aisp">AISPs: %1$d</string>
     <string name="statistics_total_pisp">PISPs: %1$d</string>
     <string name="statistics_total_emi">EMIs: %1$d</string>
-    <string name="statistics_authorized_label">Authorized:</string>
+    <string name="statistics_authorized_label">Authorized within:</string>
     <string name="statistics_this_year">This calendar year: %1$d</string>
     <string name="statistics_last_year">Within last 365 days: %1$d</string>
     <string name="statistics_last_month">Within last 30 days: %1$d</string>
     <string name="statistics_last_week">Within last 7 days: %1$d</string>
     <string name="statistic_graphs">Statistics graph type:</string>
     <string name="statistics_error">Error loading statistics.</string>
-    <string name="statistics_date">Statistics calculated on %1$td</string>
+    <string name="statistics_date">Statistics calculated on %1$tY-%1$tm-%1$td %1$tH:%1$tM</string>
     <string name="no_data">No data</string>
     <string name="loading">LOADING</string>
 

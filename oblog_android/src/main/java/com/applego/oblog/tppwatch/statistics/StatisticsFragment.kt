@@ -76,8 +76,7 @@ class StatisticsFragment : Fragment() {
         chartTypesSpinner = activity?.findViewById(R.id.spinner_charttype)!!
 
         val strings = context!!.resources.getTextArray(R.array.chart_type_titles)
-        //val aChartTypeAdapter = ArrayAdapter.createFromResource(getActivity() as Context, R.array.chart_type_titles, R.layout.spinner_chart_types)
-        val chartTypeAdapter = object: ArrayAdapter<CharSequence>(getActivity() as Context, R.layout.spinner_chart_types, 0, strings) {
+        val chartTypeAdapter = object: ArrayAdapter<CharSequence>(getActivity() as Context, R.layout.spinner_item, 0, strings) {
             override fun getDropDownView(
                     position: Int,
                     convertView: View?,
@@ -94,15 +93,15 @@ class StatisticsFragment : Fragment() {
 
                 // set selected item style
                 if (position == chartTypesSpinner.selectedItemPosition){
-                    view.background = ColorDrawable(Color.parseColor("#FFF600"))
-                    view.setTextColor(Color.parseColor("#2E2D88"))
+                    view.background = ColorDrawable(resources.getColor(R.color.colorEULightGrey))
+                    view.setTextColor(resources.getColor(R.color.colorEUFlagYellow))
                 }
 
                 return view
             }
         }
 
-        chartTypeAdapter.setDropDownViewResource(R.layout.spinner_chart_types)
+        chartTypeAdapter.setDropDownViewResource(R.layout.spinner_item)
         chartTypesSpinner.setAdapter(chartTypeAdapter);
         chartTypesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
