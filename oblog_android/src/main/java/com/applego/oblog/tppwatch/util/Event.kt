@@ -7,6 +7,15 @@ import androidx.lifecycle.Observer
  */
 open class Event<out T>(private val content: T) {
 
+    var contentArgs: List<Any>? = null
+    constructor(content: T, args: List<Any>) : this(content) {
+        contentArgs = args
+    }
+
+    fun getContent() : T {
+        return content
+    }
+
     @Suppress("MemberVisibilityCanBePrivate")
     var hasBeenHandled = false
         private set // Allow external read but not write

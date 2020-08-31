@@ -8,5 +8,9 @@ import kotlinx.coroutines.runBlocking
  * explicitly add <code>runBlocking { ... }</code> in our tests
  */
 fun TppsViewModel.loadTppsBlocking(forceUpdate: Boolean) = runBlocking {
-    this@loadTppsBlocking.loadTpps(forceUpdate)
+    if (forceUpdate) {
+        this@loadTppsBlocking.loadEbaDirectory()
+    } else {
+        this@loadTppsBlocking.loadTpps()
+    }
 }

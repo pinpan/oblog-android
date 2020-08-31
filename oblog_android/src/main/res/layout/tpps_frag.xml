@@ -154,12 +154,16 @@
                     android:layout_margin="1dp"
                     android:background="?android:attr/listDivider"
                 />
+<!--
+                app:refreshing="@{viewmodel.dataLoadingLocalDB}"
+-->
+
                 <com.applego.oblog.tppwatch.util.ScrollChildSwipeRefreshLayout
                     android:id="@+id/refresh_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:onRefreshListener="@{viewmodel::refresh}"
-                    app:refreshing="@{viewmodel.dataLoadingLocalDB}">
+                    >
                     <LinearLayout
                         android:id="@+id/tpps_container_layout"
                         android:layout_width="match_parent"
@@ -195,6 +199,15 @@
                             android:layout_height="wrap_content"
                             android:background="@color/colorEUGrey"
                             android:orientation="vertical">
+
+                            <ProgressBar
+                                android:id="@+id/progress_bar"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:progressTint="@color/colorEUFlagYellow"
+                                android:visibility="invisible" />
+
                             <TextView
                                 android:id="@+id/tpps_registered"
                                 android:layout_width="match_parent"
@@ -202,6 +215,7 @@
                                 android:padding="2dp"
                                 android:text="@{viewmodel.isFiltered ? @string/tpps_registered_filtered_number(viewmodel.displayedItems.size, viewmodel.allItems.size) : @string/tpps_registered_all_number(viewmodel.displayedItems.size)}"
                                 android:textColor="@color/colorEUDarkBlue" />
+
                             <TextView
                                 android:id="@+id/status_line"
                                 android:layout_width="match_parent"

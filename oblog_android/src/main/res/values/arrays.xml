@@ -18,25 +18,25 @@
     </string-array>
 
     <string-array name="env_DEV">
-        <item>Dev</item>
+        <item>DEV</item>
         <item>\"http://192.168.0.194:27010\""</item>
         <item>SomethingElse-Dev</item>
     </string-array>
 
     <string-array name="env_TEST">
-        <item>Test</item>
+        <item>TEST</item>
         <item>\"https://api.oblog.org:443\""</item>
         <item>SomethingElse-Dev</item>
     </string-array>
 
     <string-array name="env_STAGING">
-        <item>Staging</item>
+        <item>STAGING</item>
         <item>\"https://api.oblog.org:443\""</item>
         <item>SomethingElse-Dev</item>
     </string-array>
 
     <string-array name="env_PRODUCTION">
-        <item>Production</item>
+        <item>PRODUCTION</item>
         <item>\"https://api.oblog.org:443\""</item>
         <item>SomethingElse-Dev</item>
     </string-array>

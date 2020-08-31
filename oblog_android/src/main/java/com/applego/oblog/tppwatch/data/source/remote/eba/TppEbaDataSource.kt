@@ -133,7 +133,7 @@ class TppEbaDataSource internal constructor (
     private fun loadTppsPage(paging: Paging): Result<TppsListResponse> {
         val call = tppsService.listTppsByName(theApiKey.apiKey,"", paging.page, paging.size, paging.sortBy)
         var response: Response<TppsListResponse>?
-        try { 
+        try {
             response = call.execute()
 
             if (response.isSuccessful()) {

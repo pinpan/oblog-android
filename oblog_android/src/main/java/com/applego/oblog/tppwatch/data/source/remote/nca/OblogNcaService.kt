@@ -18,7 +18,6 @@ interface OblogNcaService {
     // #TODO@PZA: Refactor to make it common for all Services
     companion object EbaService : SharedPreferences.OnSharedPreferenceChangeListener {
         val HTTP_CONTEXT = "/api/nca-registry/"
-        var currentEnv = "TEST"
 
         fun create(context: Context): OblogNcaService {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)

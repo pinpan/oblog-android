@@ -63,6 +63,15 @@ class TppsViewModel(
     private val _aboutEvent = MutableLiveData<Event<Unit>>()
     val aboutEvent: LiveData<Event<Unit>> = _aboutEvent
 
+    private val _loadProgress = MutableLiveData<Event<Paging>>()
+    val loadProgress: LiveData<Event<Paging>> = _loadProgress
+
+    private val _loadProgressStart = MutableLiveData<Event<Int>>()
+    val loadProgressStart: LiveData<Event<Int>> = _loadProgressStart
+
+    private val _loadProgressEnd = MutableLiveData<Event<Int>>()
+    val loadProgressEnd: LiveData<Event<Int>> = _loadProgressEnd
+
     // This LiveData depends on another so we can use a transformation.
     val empty: LiveData<Boolean> = Transformations.map(_displayedItems) {
         it.isEmpty()
@@ -76,14 +85,14 @@ class TppsViewModel(
     init {
         searchFilter.init()
 
-        setFiltering(TppsFilterType.ALL_INST)
+         setFiltering(TppsFilterType.ALL_INST)
 
         dataLoading.addSource(_dataLoadingLocalDB, {value -> dataLoading.setValue(value)});
         dataLoading.addSource(dataLoadingRemoteEBA, {value -> dataLoading.setValue(value)});
     }
 
     fun refresh() {
-        loadTpps(false)
+        loadTpps()
     }
 
     fun isFiltered() : Boolean {
@@ -98,7 +107,7 @@ class TppsViewModel(
                     tppsRepository.refreshTpp(tpp)
                 }
             }
-            loadTpps(false)
+            loadTpps()
         }
     }
 
@@ -239,9 +248,46 @@ class TppsViewModel(
         _tppsAddViewVisible.value = tppsAddVisible
     }
 
+    /**
+      *  (RE)Loads EBA directory/repository from OBLOG API
+      */
+    // TODO: Set warning message than "Data is old" to be displayed,
+    //  until refresh succeeds next time. May be for Remote updates only?
     fun loadEbaDirectory() {
-        // Load from OBLOG API
-        loadTpps(true)
+        if (!(_dataLoadingRemoteEBA.value?.equals(true) ?: false)) {
+            _dataLoadingRemoteEBA.value = true
+            _displayedItems.value = emptyList()
+
+            showSnackbarMessage(R.string.loading)
+            wrapEspressoIdlingResource {
+                viewModelScope.launch {
+                    var paging = Paging(100, 1, 0, true)
+                    while (!paging.last) {
+
+                        val tppsResult = tppsRepository.fetchTppsPageFromRemoteDatasource(paging)
+                        if (tppsResult is Success) {
+                            if (paging.page == 1) {
+                                _loadProgressStart.value = Event(tppsResult.data.paging.totalPages)
+                            }
+
+                            _loadProgress.value = Event(paging)
+
+                            paging = tppsResult.data.paging
+
+                            refresh()
+                        } else {
+                            showSnackbarMessage(R.string.loading_tpps_error)
+                        }
+                    }
+                    if (paging.page == paging.totalPages) {
+                        showSnackbarMessage(R.string.loading_finished)
+                    }
+                    _loadProgressEnd.value = Event(paging.page)
+                    _statusLine.value = "Successfully loaded #" + paging.totalPages + "pages of TPPs."
+                    _dataLoadingRemoteEBA.value = false
+                }
+            }
+        }
     }
 
     fun followTpp(tpp: Tpp, followed: Boolean) = viewModelScope.launch {
@@ -259,66 +305,36 @@ class TppsViewModel(
     }
 
     /**
-     * Called by the Data Binding library and the FAB's click listener.
-     */
+      * Called by the Data Binding library and the FAB's click listener.
+      */
     fun addNewTpp() {
         _newTppEvent.value = Event(Unit)
     }
 
     /**
-     * Called by Data Binding.
-     */
+      * Called by Data Binding.
+      */
     fun openTpp(tppId: String) {
         _openTppEvent.value = Event(tppId)
     }
 
     /**
-     * @param forceUpdate   Pass in true to refresh the data in the [LocalTppDataSource]
-     */
-    fun loadTpps(forceUpdate: Boolean) {
-        if (forceUpdate) {
-            if (!(_dataLoadingRemoteEBA.value?.equals(true) ?: false)) {
-                _dataLoadingRemoteEBA.value = true
-                _displayedItems.value = emptyList()
-
-                showSnackbarMessage(R.string.loading)
-                wrapEspressoIdlingResource {
-                    viewModelScope.launch {
-                        var paging = Paging(100, 1, 0, true)
-
-                        while (!paging.last) {
-                            val tppsResult = tppsRepository.fetchTppsPageFromRemoteDatasource(paging)
-                            if (tppsResult is Success) {
-                                paging = tppsResult.data.paging
-
-                                refresh()
-
-                                _statusLine.value = "Successfully loaded TPPs page #" + paging.page
-                            } else {
-                                // TODO: Set warning message than "Data is old" to be displayed,
-                                //  until refresh succeeds next time. May be for Remote updates only?
-                                showSnackbarMessage(R.string.loading_tpps_error)
-                            }
-                        }
-                        _dataLoadingRemoteEBA.value = false
-                    }
+      * @param forceUpdate   Pass in true to refresh the data in the [LocalTppDataSource]
+      */
+    fun loadTpps() {
+        _dataLoadingLocalDB.value = true
+        viewModelScope.launch {
+            val tppsResult = tppsRepository.loadTppsFromLocalDatasource()
+            if (tppsResult is Success) {
+                    _allItems.value = tppsResult.data
+                    _displayedItems.value = getTppsByGlobalFilter()
+                } else {
+                    //is Result.Idle -> TODO()
+                    //is Result.Error -> TODO()
+                    //is Result.Warn -> TODO()
+                    //is Result.Loading -> TODO()
                 }
-            }
-        } else {
-            _dataLoadingLocalDB.value = true
-            viewModelScope.launch {
-                val tppsResult = tppsRepository.loadTppsFromLocalDatasource()
-                if (tppsResult is Success) {
-                        _allItems.value = tppsResult.data
-                        _displayedItems.value = getTppsByGlobalFilter()
-                    } else {
-                        //is Resu lt.Idle -> TODO()
-                        //is Result.Error -> TODO()
-                        //is Result.Warn -> TODO()
-                        //is Result.Loading -> TODO()
-                    }
-                _dataLoadingLocalDB.value = false
-            }
+            _dataLoadingLocalDB.value = false
         }
     }
 

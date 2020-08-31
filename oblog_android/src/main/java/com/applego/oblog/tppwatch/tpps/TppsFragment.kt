@@ -38,6 +38,9 @@ class TppsFragment : Fragment() {
 
     lateinit var countriesSpinner: Spinner
     lateinit var servicesSpinner: Spinner
+
+    var progressBar:ProgressBar? = null
+
     private  var toolbarIcon: Drawable? = null
 
     override fun onCreateView(
@@ -98,7 +101,7 @@ class TppsFragment : Fragment() {
             closeBtn?.setOnClickListener(object: View.OnClickListener {
                         override fun onClick(v: View) {
                             if (!lastTppsSearchViewQuery.isNullOrBlank()) {
-                                viewModel.loadTpps(false)
+                                viewModel.loadTpps()
                                 lastTppsSearchViewQuery = ""
                             }
                         }
@@ -121,7 +124,7 @@ class TppsFragment : Fragment() {
                 true
             }
             R.id.menu_refresh -> {
-                viewModel.loadTpps(false)
+                viewModel.loadTpps()
                 true
             }
             R.id.menu_add_tpp -> {
@@ -139,6 +142,22 @@ class TppsFragment : Fragment() {
         val d: Drawable?= ResourcesCompat.getDrawable(resources, R.drawable.oblog_logo_48x52, null)
         toolbar?.setNavigationIcon(d)
 
+        progressBar = activity?.findViewById(R.id.progress_bar)!!
+
+        viewModel.loadProgressStart.observe(this, EventObserver {
+            progressBar?.max = it
+            progressBar?.visibility = View.VISIBLE
+        })
+        viewModel.loadProgressEnd.observe(this, EventObserver {
+            progressBar?.visibility = View.GONE
+        })
+        viewModel.loadProgress.observe(this, EventObserver {
+            if ((progressBar?.progress ?: 0).compareTo(it.page-1) < 0) {
+                progressBar?.visibility = View.VISIBLE
+                progressBar?.max = it.totalPages
+            }
+            progressBar?.progress = it.page
+        })
         viewModel.refresh()
     }
 
@@ -179,9 +198,6 @@ class TppsFragment : Fragment() {
                         convertView,
                         parent
                 ) as TextView
-
-                // set item text size
-                //view.setTextSize(TypedValue.COMPLEX_UNIT_SP,11F)
 
                 // set selected item style
                 if (position == countriesSpinner.selectedItemPosition){
@@ -258,7 +274,7 @@ class TppsFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         viewModel.saveSearchFilter(outState)
-
+        progressBar?.visibility = View.INVISIBLE
         super.onSaveInstanceState(outState)
     }
 
@@ -324,7 +340,7 @@ class TppsFragment : Fragment() {
                                 else -> TppsFilterType.ALL_INST
                             }
                     )
-                    viewModel.loadTpps(false)
+                    viewModel.loadTpps()
                     true
                 }
                 show()

@@ -52,7 +52,7 @@ class TppsViewModelTest {
 
         tppsViewModel = TppsViewModel(tppsRepository)
         tppsViewModel.searchFilter.init()
-        tppsViewModel.loadTpps(true)
+        tppsViewModel.loadEbaDirectory()
     }
 
     /**
@@ -78,7 +78,7 @@ class TppsViewModelTest {
         mainCoroutineRule.pauseDispatcher()
 
         // Trigger loading of tpps
-        tppsViewModel.loadTpps(false)
+        tppsViewModel.loadTpps()
 
         // Then progress indicator is shown
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoadingLocalDB)).isTrue()
@@ -135,7 +135,7 @@ class TppsViewModelTest {
         // Given an initialized TppsViewModel with initialized tpps
 
         // Load tpps
-        tppsViewModel.loadTpps(true)
+        tppsViewModel.loadEbaDirectory()
 
         // When loading of Tpps is requested
         tppsViewModel.setFiltering(TppsFilterType.FOLLOWED)

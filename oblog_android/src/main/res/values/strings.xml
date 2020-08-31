@@ -57,6 +57,7 @@
     <string name="tpp_marked_used">TPP marked used</string>
     <string name="tpp_marked_unused">TPP marked unused</string>
     <string name="loading_tpps_error">Error while loading TPPs. Data structure may be altered in registry.</string>
+    <string name="loading_finished">Loading TPPs from EBA directory finished. %1$d pages were successfully loaded.</string>
     <string name="followed_tpps_cleared">Followed TPPs cleared</string>
     <string name="menu_filter">Filter</string>
     <string name="load_from_server">Reload from server</string>

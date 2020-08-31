@@ -13,6 +13,8 @@ import retrofit2.http.*
 
 
 interface  OblogEbaService {
+    //var BASE_URL = "http://192.168.0.15:8585/eba-registry/" //api.oblog.org:8443  10.0.2.2
+    //var API_KEY = "2e65127e909e178d0af311a81f39948c"
 
     companion object EbaService : SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -23,13 +25,7 @@ interface  OblogEbaService {
                     actualEnvironment = "Dev"
                 }
             }
-
-            else if (key.equals("psd2")) {
-
-            }
         }
-        //var BASE_URL = "http://192.168.0.15:8585/eba-registry/" //api.oblog.org:8443  10.0.2.2
-        //var API_KEY = "2e65127e909e178d0af311a81f39948c"
 
         val HTTTP_CONTEXT = "/api/eba-registry/"
 

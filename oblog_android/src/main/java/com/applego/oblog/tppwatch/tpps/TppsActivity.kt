@@ -4,6 +4,7 @@ import android.accounts.AccountManager
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.TypedArray
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
@@ -38,8 +39,9 @@ import timber.log.Timber
  */
 class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppCompatActivity() {
 
-    private var selectedEnv: String ?= ""
-    private var actualEnvironment : String ?= ""
+    private var actualEnvironment: Array<String> = emptyArray()
+    private var selectedEnvironmentName : String = ""
+
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -105,7 +107,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
             //    getUserId()
             viewModel = viewModelFactory.get(TppsViewModel::class.java) as TppsViewModel
-            viewModel!!.loadTpps(false)
+            viewModel!!.loadTpps()
 
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
@@ -117,15 +119,22 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (key.equals("RUNTIME_ENV")) {
-            actualEnvironment = sharedPreferences?.getString("RUNTIME_ENV","")
-            val envsArray = getResources().getStringArray(R.array.environments);
-            for (i in envsArray.indices.reversed()) {
-                val env = envsArray[i]
+            selectedEnvironmentName = sharedPreferences?.getString("RUNTIME_ENV","") ?: "TEST"
 
-                if (env == "Dev") {
-                    selectedEnv = env
+            val ta: TypedArray = resources.obtainTypedArray(R.array.environments)
+            val envsArray: Array<Array<String>?> = arrayOfNulls<Array<String>>(ta.length())
+            for (i in 0 until ta.length()) {
+                val id: Int = ta.getResourceId(i, 0)
+                if (id > 0) {
+                    envsArray[i] = resources.getStringArray(id)
+                    if (selectedEnvironmentName.equals(envsArray[i]?.get(0))) {
+                        actualEnvironment = envsArray[i]!!
+                    }
+                } else {
+                    Timber.w("Negative ID for resource array signals that there is something wrong with the resources XML")
                 }
             }
+            ta.recycle() // Important!
         }
     }
 
