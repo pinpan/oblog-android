@@ -50,21 +50,6 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        /*
-            val skipSplash = sharedPerfs.getBoolean("skipSplash", false)
-            if (!skipSplash) {
-                Handler().postDelayed(object : Runnable {
-
-                    override fun run(): Unit {
-                        setContentView(R.layout.spalsh_screen)
-
-                        Toast.makeText(this@TppsActivity, "Run only once", Toast.LENGTH_LONG)
-                                .show()
-                    }
-                }, 5000)
-            }
-        */
-
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
         sharedPrefs.registerOnSharedPreferenceChangeListener(this)
 
@@ -233,15 +218,3 @@ const val ADD_EDIT_RESULT_OK = Activity.RESULT_FIRST_USER + 1
 const val DELETE_RESULT_OK = Activity.RESULT_FIRST_USER + 2
 const val EDIT_RESULT_OK = Activity.RESULT_FIRST_USER + 3
 
-// This is for passing arguments to a destination fragment when changing whole screen
-//    - call it master fragment change.
-// When using tabview we have multiple fragments which does not occur in the navigation flow.
-// We need to pass data in a different way - inject or pass on creation.
-/*navController.addOnDestinationChangedListener { controller, destination, arguments ->
-    when(destination.id) {
-        R.id.addedit_tppapp_fragment_dest -> {
-            val argument = NavArgument.Builder().setDefaultValue(6).build()
-            destination.addArgument("Argument", argument)
-        }
-    }
-}*/

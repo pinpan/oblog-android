@@ -1,4 +1,3 @@
-
 package com.applego.oblog.tppwatch.data.source.remote.eba
 
 import com.applego.oblog.apikey.ApiKey
@@ -27,10 +26,9 @@ class TppEbaDataSource internal constructor (
 ) : RemoteTppDataSource {
 
     // TODO: Get the String from config per Base URL
-    // Old key MyhCyIKQ0IlIG5dFVk6sjXcG2aHhFbj0
-    var theApiKey : ApiKey = ApiKey("T11NOL41x0L7Cn4OAc1FNQogHAcpWvQA") //"2Dvgcj0W7sinv0mqtwm2CSQuYYsW79xb")
+    var theApiKey : ApiKey = ApiKey("T11NOL41x0L7Cn4OAc1FNQogHAcpWvQA") // Old key "MyhCyIKQ0IlIG5dFVk6sjXcG2aHhFbj0", "2Dvgcj0W7sinv0mqtwm2CSQuYYsW79xb", "GaW42ue9mRsgvlL0eIrrD6biU1tlpr8Y"
 
-    override suspend fun getAllTpps(): Result<TppsListResponse> /*= withContext(ioDispatcher)*/ {
+    override suspend fun getAllTpps(): Result<TppsListResponse> {
         var allFetchedTpps = ArrayList<Tpp>()
         runBlocking {
             var paging = Paging(100, 1, 0, true)
@@ -54,7 +52,7 @@ class TppEbaDataSource internal constructor (
             }
         }
 
-        return/*@withContext*/ Result.Success(TppsListResponse(allFetchedTpps))
+        return Result.Success(TppsListResponse(allFetchedTpps))
     }
 
     override suspend fun getTpps(paging : Paging): Result<TppsListResponse> = withContext(ioDispatcher) {
@@ -108,7 +106,6 @@ class TppEbaDataSource internal constructor (
         }
     }
 
-
     suspend fun updateTppEntity(ebaTpp: Tpp) : Tpp {
         val ebaEntity = ebaTpp.ebaEntity
         val dbEntity = tppsDao.getTppEntityByCode(ebaEntity.getEntityCode(), ebaEntity.ebaProperties.codeType)
@@ -136,7 +133,7 @@ class TppEbaDataSource internal constructor (
     private fun loadTppsPage(paging: Paging): Result<TppsListResponse> {
         val call = tppsService.listTppsByName(theApiKey.apiKey,"", paging.page, paging.size, paging.sortBy)
         var response: Response<TppsListResponse>?
-        try {
+        try { 
             response = call.execute()
 
             if (response.isSuccessful()) {

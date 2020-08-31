@@ -5,7 +5,6 @@ import com.applego.oblog.tppwatch.data.model.*
 import com.google.gson.*
 import java.lang.reflect.Type
 import timber.log.Timber
-import java.util.*
 
 class TppDeserializer : JsonDeserializer<Tpp> {
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Tpp? {
@@ -30,7 +29,7 @@ class TppDeserializer : JsonDeserializer<Tpp> {
 
     fun convertFrom(jsonObject: JsonObject?) : Tpp? {
         if (jsonObject == null) {
-            return null //Tpp()
+            return null
         }
 
         val entityCode: String  = jsonObject?.get("entityCode")?.asString ?: ""
@@ -93,7 +92,7 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         val ebaProperties = EbaEntityProperties(
                   ebaPropertiesJson.get("ENT_COD_TYP")?.asString ?: ""
                 , ebaPropertiesJson.get("ENT_NAT_REF_COD")?.asString ?: ""
-                , entityName //ebaPropertiesJson?.get("ENT_NAM")?.asString ?: ""
+                , entityName
                 , enityAddress
                 , entityTowCitRes
                 , entityPosCod
@@ -105,7 +104,6 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         val globalUrn = jsonObject.get("globalUrn")?.asString ?:""
         val country: String = ebaProperties.countryOfResidence
         val ebaEntityVersion: String = jsonObject.get("entityVersion")?.asString ?: ""
-        // val status: String = jsonObject?.get("status")?.asString ?: ""
         val description: String = jsonObject.get("description")?.asString ?: ""
 
         val ebaEntity = EbaEntity(_entityId = entityId, _entityCode = entityCode, _entityName = entityName, _description = description, _globalUrn = globalUrn, _ebaEntityVersion = ebaEntityVersion, _country = country, entityType = EbaEntityType.valueOf(entityType))
@@ -116,7 +114,6 @@ class TppDeserializer : JsonDeserializer<Tpp> {
 
         val services = jsonObject.get("services")
         try {
-            //val servicesJsonArray = services?.asJsonArray ?: JsonArray()
             if (services != null) {
                 val serviceJson = if ((services != null) && services.isJsonArray) services.asJsonArray else JsonArray()
                 val passportedServices = __oblogTypeConverters.fromJsonElementToEbaPassport(serviceJson)

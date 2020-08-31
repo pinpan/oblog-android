@@ -25,7 +25,6 @@ class TppsViewModel(
     private val _allItems: MutableLiveData<List<Tpp>> = MutableLiveData(listOf<Tpp>())
     val allItems: LiveData<List<Tpp>> = _allItems
 
-    // TODO: rename to displayedItems
     private val _displayedItems = MutableLiveData<List<Tpp>>().apply { value = allItems.value }
     val displayedItems: LiveData<List<Tpp>> = _displayedItems
 
@@ -286,17 +285,15 @@ class TppsViewModel(
                 wrapEspressoIdlingResource {
                     viewModelScope.launch {
                         var paging = Paging(100, 1, 0, true)
-                        //var allFetchedTpps = ArrayList<Tpp>()
 
                         while (!paging.last) {
                             val tppsResult = tppsRepository.fetchTppsPageFromRemoteDatasource(paging)
                             if (tppsResult is Success) {
                                 paging = tppsResult.data.paging
-                                //allFetchedTpps.addAll(tppsResult.data.tppsList)
 
                                 refresh()
-                                // TODO: Get it from fetched EBA / OBLOG data
-                                _statusLine.value = "Last EBA version: " + Random().nextLong()
+
+                                _statusLine.value = "Successfully loaded TPPs page #" + paging.page
                             } else {
                                 // TODO: Set warning message than "Data is old" to be displayed,
                                 //  until refresh succeeds next time. May be for Remote updates only?
@@ -315,7 +312,7 @@ class TppsViewModel(
                         _allItems.value = tppsResult.data
                         _displayedItems.value = getTppsByGlobalFilter()
                     } else {
-                        //is Result.Idle -> TODO()
+                        //is Resu lt.Idle -> TODO()
                         //is Result.Error -> TODO()
                         //is Result.Warn -> TODO()
                         //is Result.Loading -> TODO()
