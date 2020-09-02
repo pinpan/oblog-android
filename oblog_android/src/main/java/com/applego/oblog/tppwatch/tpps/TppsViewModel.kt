@@ -38,8 +38,6 @@ class TppsViewModel(
     private var _searchFilter = SearchFilter()
     val  searchFilter = _searchFilter
 
-    //private val _currentFilteringLabel = MutableLiveData<Int>()
-
     private val _noTppsLabel = MutableLiveData<Int>()
     val noTppsLabel: LiveData<Int> = _noTppsLabel
 
@@ -155,16 +153,6 @@ class TppsViewModel(
         }
     }
 
-    /*private fun setFilterStatusViews(
-            *//*@StringRes filteringLabelString: Int, *//*@StringRes noTppsLabelString: Int,
-            @DrawableRes noTppIconDrawable: Int*//*, tppsAddVisible: Boolean*//*
-    ) {
-        //_currentFilteringLabel.value = filteringLabelString
-        _noTppsLabel.value = noTppsLabelString
-        _noTppIconRes.value = noTppIconDrawable
-        //_tppsAddViewVisible.value = tppsAddVisible
-    }
-*/
     /**
       *  (RE)Loads EBA directory/repository from OBLOG API
       */
@@ -366,14 +354,6 @@ class TppsViewModel(
                 }
             }
 
-            /*if (addIt) {
-                if (searchFilter.showFollowedOnly) {
-                    addIt = tpp.isUsed()
-                } else if (searchFilter.showUsedOnly) {
-                    addIt = tpp.isFollowed() || tpp.isUsed()
-                }
-            }*/
-
             if (addIt) {
                 filteredTpps.add(tpp)
             }
@@ -444,18 +424,12 @@ class TppsViewModel(
 
     fun filterRevoked(dofilter: Boolean) {
         setFiltering(TppsFilterType.REVOKED)
-        /*if (!_searchFilter.showRevoked) {
-            _searchFilter.showRevokedOnly = false
-        }*/
 
         _displayedItems.value = getTppsByGlobalFilter()
     }
 
     fun filterRevokedOnly(only: Boolean) {
         setFiltering(TppsFilterType.REVOKED_ONLY)
-        /*if (_searchFilter.showRevokedOnly) {
-            _searchFilter.showRevokedOnly = true
-        }*/
 
         _displayedItems.value = getTppsByGlobalFilter()
     }

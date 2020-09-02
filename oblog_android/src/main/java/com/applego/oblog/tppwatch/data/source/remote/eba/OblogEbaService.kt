@@ -16,16 +16,7 @@ interface  OblogEbaService {
     //var BASE_URL = "http://192.168.0.15:8585/eba-registry/" //api.oblog.org:8443  10.0.2.2
     //var API_KEY = "2e65127e909e178d0af311a81f39948c"
 
-    companion object EbaService {/*: SharedPreferences.OnSharedPreferenceChangeListener {
-
-        override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-            if (key.equals("RUNTIME_ENV")) {
-                var actualEnvironment = sharedPreferences?.getString("RUNTIME_ENV","")
-                if (actualEnvironment == "Test") {
-                    actualEnvironment = "Dev"
-                }
-            }
-        }*/
+    companion object EbaService {
 
         val HTTTP_CONTEXT = "/api/eba-registry/"
 
@@ -35,13 +26,9 @@ interface  OblogEbaService {
 
             val actualEnvironment = ResourcesUtils.getActualEnvironmentForActivity(context, selectedEnvironmentName)
 
-            //val currentEnv = sharedPreferences.getString("RUNTIME_ENV", "TEST")
-            //val envsBaseUrls : Array<String> = context.applicationContext.resources.getStringArray(com.applego.oblog.tppwatch.R.array.env_base_url);
-
             var baseUrl = OblogRestClient.getBaseUrl(actualEnvironment[1])
             val retrofit = OblogRestClient.createRetrofitChecking(baseUrl, HTTTP_CONTEXT)
             val oblogService = retrofit.create(OblogEbaService::class.java)
-            //sharedPreferences.registerOnSharedPreferenceChangeListener(this)
 
             return oblogService
         }

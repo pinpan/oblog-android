@@ -16,17 +16,10 @@ import retrofit2.http.Query
 interface OblogNcaService {
 
     // #TODO@PZA: Refactor to make it common for all Services
-    companion object EbaService {/*} : SharedPreferences.OnSharedPreferenceChangeListener {*/
+    companion object EbaService {
         val HTTP_CONTEXT = "/api/nca-registry/"
 
         fun create(context: Context): OblogNcaService {
-/*
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-            val currentEnv = sharedPreferences.getString("RUNTIME_ENV", "TEST")
-            val envsBaseUrls : Array<String> = context.applicationContext.resources.getStringArray(com.applego.oblog.tppwatch.R.array.env_base_url);
-            var baseUrl = OblogRestClient.getBaseUrl(currentEnv!!, envsBaseUrls)
-*/
-
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context) //Environment.getDataDirectory()
             val selectedEnvironmentName = sharedPreferences?.getString("RUNTIME_ENV","TEST") ?: "TEST"
             val actualEnvironment = ResourcesUtils.getActualEnvironmentForActivity(context, selectedEnvironmentName)
@@ -35,31 +28,8 @@ interface OblogNcaService {
             val retrofit = OblogRestClient.createRetrofitChecking(baseUrl, OblogNcaService.HTTP_CONTEXT)
             val oblogService = retrofit.create(OblogNcaService::class.java)
 
-/*
-            val retrofit = OblogRestClient.createRetrofit(baseUrl, HTTP_CONTEXT)
-            val oblogService = retrofit.create(OblogNcaService::class.java)
-
-            sharedPreferences.registerOnSharedPreferenceChangeListener(this)
-*/
-
             return oblogService
         }
-
-/*
-        override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-            if (key.equals("RUNTIME_ENV")) {
-                var actualEnvironment = sharedPreferences?.getString("RUNTIME_ENV","")
-                if (actualEnvironment == "Test") {
-                    actualEnvironment = "Dev"
-                }
-            }
-
-            else if (key.equals("psd2")) {
-
-            }
-        }
-*/
-
     }
 
     @GET("{country}/{entityId}")

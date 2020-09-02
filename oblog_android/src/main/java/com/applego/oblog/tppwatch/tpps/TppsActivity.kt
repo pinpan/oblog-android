@@ -122,26 +122,6 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
             actualEnvironment = ResourcesUtils.getActualEnvironmentForActivity(this, selectedEnvironmentName)
         }
     }
-/*
-    fun getActualEnvironment(envName: String) : Array<String> {
-        val ta: TypedArray = resources.obtainTypedArray(R.array.environments)
-        val envsArray: Array<Array<String>?> = arrayOfNulls<Array<String>>(ta.length())
-        for (i in 0 until ta.length()) {
-            val id: Int = ta.getResourceId(i, 0)
-            if (id > 0) {
-                envsArray[i] = resources.getStringArray(id)
-                if (selectedEnvironmentName.equals(envsArray[i]?.get(0))) {
-                    //actualEnvironment = envsArray[i]!!
-                    return envsArray[i]!!
-                }
-            } else {
-                Timber.w("Negative ID for resource array signals that there is something wrong with the resources XML")
-            }
-        }
-        ta.recycle() // Important!
-
-        return emptyArray()
-    }*/
 
     override fun onDestroy() {
         super.onDestroy()
