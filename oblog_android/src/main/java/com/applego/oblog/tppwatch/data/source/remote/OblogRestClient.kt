@@ -24,6 +24,11 @@ object OblogRestClient {
 
     private val okHttpClient by lazy { OkHttpClient() }
 
+    fun getBaseUrl(baseUrlFromConfig: String) : String {
+        val result = baseUrlFromConfig.removePrefix("\"").removeSuffix("\"")
+        return result
+    }
+
     fun getBaseUrl(currentEnv: String, envsBaseUrls: Array<String>) : String {
 
         // HACK-HACK-HACK - because the statement above returns the preference ID instead if the value ... some times

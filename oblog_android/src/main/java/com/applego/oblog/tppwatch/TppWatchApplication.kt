@@ -45,9 +45,9 @@ class TppWatchApplication : Application() , SharedPreferences.OnSharedPreference
         ServiceLocator.resetTppsRepository(this)
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val currentEnv = sharedPreferences.getString("RUNTIME_ENV", null)
+        val currentEnv = sharedPreferences.getString("RUNTIME_ENV", "TEST")
         if (currentEnv == null) {
-            sharedPreferences.edit().putString("RUNTIME_ENV", "PRODUCTION").commit()
+            sharedPreferences.edit().putString("RUNTIME_ENV", "TEST").commit()
         }
 
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)

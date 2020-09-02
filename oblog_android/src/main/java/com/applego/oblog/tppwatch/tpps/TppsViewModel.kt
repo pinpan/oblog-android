@@ -1,8 +1,6 @@
 package com.applego.oblog.tppwatch.tpps
 
 import android.os.Bundle
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.lifecycle.*
 import com.applego.oblog.tppwatch.util.Event
 import com.applego.oblog.tppwatch.R
@@ -40,7 +38,7 @@ class TppsViewModel(
     private var _searchFilter = SearchFilter()
     val  searchFilter = _searchFilter
 
-    private val _currentFilteringLabel = MutableLiveData<Int>()
+    //private val _currentFilteringLabel = MutableLiveData<Int>()
 
     private val _noTppsLabel = MutableLiveData<Int>()
     val noTppsLabel: LiveData<Int> = _noTppsLabel
@@ -49,7 +47,6 @@ class TppsViewModel(
     val noTppIconRes: LiveData<Int> = _noTppIconRes
 
     private val _tppsAddViewVisible = MutableLiveData<Boolean>()
-    val tppsAddViewVisible: LiveData<Boolean> = _tppsAddViewVisible
 
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
@@ -132,75 +129,7 @@ class TppsViewModel(
         _searchFilter.updateUserSelection(requestType)
 
         when (requestType) {
-            TppsFilterType.ALL_INST -> {
-                setFilterStatusViews(
-                    R.string.label_all, R.string.no_tpps_all,
-                    R.drawable.oblog_logo, true
-                )
-            }
-            TppsFilterType.PI_INST -> {
-                setFilterStatusViews(
-                        R.string.label_psd2_only, R.string.inst_type_psd2_pis,
-                        R.drawable.oblog_logo, true
-                )
-            }
-            TppsFilterType.AI_INST -> {
-                setFilterStatusViews(
-                        R.string.label_psd2_only, R.string.inst_type_psd2_ais,
-                        R.drawable.oblog_logo, true
-                )
-            }
-            TppsFilterType.PIAI_INST -> {
-                setFilterStatusViews(
-                        R.string.label_psd2_only, R.string.inst_type_psd2_piai,
-                        R.drawable.oblog_logo, true
-                )
-            }
-            TppsFilterType.E_PI_INST -> {
-                setFilterStatusViews(
-                        R.string.label_psd2_only, R.string.inst_type_psd2_epis,
-                        R.drawable.oblog_logo, true
-                )
-            }
-
-            TppsFilterType.EMONEY_INST -> {
-                setFilterStatusViews( // TODO: Define label for epi inst
-                        R.string.label_psd2_only, R.string.inst_type_emi,
-                        R.drawable.oblog_logo, true
-                )
-            }
-            TppsFilterType.E_EMONEY_INST -> {
-                setFilterStatusViews(
-                        R.string.label_psd2_only, R.string.inst_type_eemi,
-                        R.drawable.oblog_logo, true
-                )
-            }
-
-            TppsFilterType.NON_PSD2_INST -> {
-                setFilterStatusViews( // TODO: Define label for e_emoney inst
-                        R.string.label_psd2_only, R.string.inst_type_non_psd2_tpps,
-                        R.drawable.oblog_logo, true
-                )
-            }
-
-            TppsFilterType.BRANCHES -> {
-                setFilterStatusViews(
-                        R.string.show_branches, R.string.no_data,
-                        R.drawable.oblog_logo, true
-                )
-            }
-            TppsFilterType.AGENTS -> {
-                setFilterStatusViews(
-                        R.string.show_agents, R.string.no_data,
-                        R.drawable.oblog_logo, true
-                )
-            }
-
             TppsFilterType.REVOKED -> {
-                setFilterStatusViews(
-                        R.string.label_revoked, R.string.no_revoked_tpps,
-                        R.drawable.oblog_logo, false
-                )
                 _searchFilter.showRevoked = !_searchFilter.showRevoked
                 if (!_searchFilter.showRevoked) {
                     _searchFilter.showRevokedOnly = false
@@ -209,10 +138,6 @@ class TppsViewModel(
                 showRevokedOnly.value = _searchFilter.showRevokedOnly
             }
             TppsFilterType.REVOKED_ONLY -> {
-                setFilterStatusViews(
-                        R.string.label_revoked_only, R.string.no_revoked_tpps,
-                        R.drawable.oblog_logo, false
-                )
                 _searchFilter.showRevokedOnly = !_searchFilter.showRevokedOnly
                 if (_searchFilter.showRevokedOnly) {
                     _searchFilter.showRevoked = true
@@ -222,32 +147,24 @@ class TppsViewModel(
             }
 
             TppsFilterType.USED -> {
-                setFilterStatusViews(
-                        R.string.label_used, R.string.no_tpps_used,
-                        R.drawable.oblog_logo, true
-                )
                 _searchFilter.showUsedOnly = !_searchFilter.showUsedOnly
             }
             TppsFilterType.FOLLOWED -> {
-                setFilterStatusViews(
-                        R.string.label_followed, R.string.no_tpps_followed,
-                        R.drawable.oblog_logo, true
-                )
                 _searchFilter.showFollowedOnly = !_searchFilter.showFollowedOnly
             }
         }
     }
 
-    private fun setFilterStatusViews(
-            @StringRes filteringLabelString: Int, @StringRes noTppsLabelString: Int,
-            @DrawableRes noTppIconDrawable: Int, tppsAddVisible: Boolean
+    /*private fun setFilterStatusViews(
+            *//*@StringRes filteringLabelString: Int, *//*@StringRes noTppsLabelString: Int,
+            @DrawableRes noTppIconDrawable: Int*//*, tppsAddVisible: Boolean*//*
     ) {
-        _currentFilteringLabel.value = filteringLabelString
+        //_currentFilteringLabel.value = filteringLabelString
         _noTppsLabel.value = noTppsLabelString
         _noTppIconRes.value = noTppIconDrawable
-        _tppsAddViewVisible.value = tppsAddVisible
+        //_tppsAddViewVisible.value = tppsAddVisible
     }
-
+*/
     /**
       *  (RE)Loads EBA directory/repository from OBLOG API
       */

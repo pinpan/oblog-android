@@ -238,13 +238,13 @@
                                 android:layout_height="96dp"
                                 android:layout_gravity="center"
                                 android:contentDescription="@string/no_tpps_image_content_description"
-                                android:src="@{ContextCompat.getDrawable(context, viewmodel.noTppIconRes)}" />
+                                android:src="@drawable/oblog_logo" /><!--@{ContextCompat.getDrawable(context, viewmodel.noTppIconRes)}-->
                             <TextView
                                 android:id="@+id/no_tpps_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="@{context.getString(viewmodel.noTppsLabel)}" />
+                                android:text="@string/settings_no_tpps"/> <!--@{context.getString(viewmodel.noTppsLabel)}" -->
                         </LinearLayout>
                     </LinearLayout>
                 </com.applego.oblog.tppwatch.util.ScrollChildSwipeRefreshLayout>

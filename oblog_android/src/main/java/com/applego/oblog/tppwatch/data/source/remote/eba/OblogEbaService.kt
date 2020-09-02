@@ -1,12 +1,12 @@
 package com.applego.oblog.tppwatch.data.source.remote.eba;
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import com.applego.oblog.tppwatch.data.source.remote.OblogRestClient
+import com.applego.oblog.tppwatch.tpps.ResourcesUtils
 
 import retrofit2.Call;
 import retrofit2.http.*
@@ -16,7 +16,7 @@ interface  OblogEbaService {
     //var BASE_URL = "http://192.168.0.15:8585/eba-registry/" //api.oblog.org:8443  10.0.2.2
     //var API_KEY = "2e65127e909e178d0af311a81f39948c"
 
-    companion object EbaService : SharedPreferences.OnSharedPreferenceChangeListener {
+    companion object EbaService {/*: SharedPreferences.OnSharedPreferenceChangeListener {
 
         override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
             if (key.equals("RUNTIME_ENV")) {
@@ -25,24 +25,25 @@ interface  OblogEbaService {
                     actualEnvironment = "Dev"
                 }
             }
-        }
+        }*/
 
         val HTTTP_CONTEXT = "/api/eba-registry/"
 
         fun create(context: Context): OblogEbaService {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context) //Environment.getDataDirectory()
+            val selectedEnvironmentName = sharedPreferences?.getString("RUNTIME_ENV","TEST") ?: "TEST"
 
-            val currentEnv = sharedPreferences.getString("RUNTIME_ENV", "TEST")
+            val actualEnvironment = ResourcesUtils.getActualEnvironmentForActivity(context, selectedEnvironmentName)
 
-            val envsBaseUrls : Array<String> = context.applicationContext.resources.getStringArray(com.applego.oblog.tppwatch.R.array.env_base_url);
-            var baseUrl = OblogRestClient.getBaseUrl(currentEnv!!, envsBaseUrls)
+            //val currentEnv = sharedPreferences.getString("RUNTIME_ENV", "TEST")
+            //val envsBaseUrls : Array<String> = context.applicationContext.resources.getStringArray(com.applego.oblog.tppwatch.R.array.env_base_url);
 
+            var baseUrl = OblogRestClient.getBaseUrl(actualEnvironment[1])
             val retrofit = OblogRestClient.createRetrofitChecking(baseUrl, HTTTP_CONTEXT)
-            val oblogEbaService = retrofit.create(OblogEbaService::class.java)
+            val oblogService = retrofit.create(OblogEbaService::class.java)
+            //sharedPreferences.registerOnSharedPreferenceChangeListener(this)
 
-            sharedPreferences.registerOnSharedPreferenceChangeListener(this)
-
-            return oblogEbaService
+            return oblogService
         }
     }
 

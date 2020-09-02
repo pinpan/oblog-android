@@ -264,13 +264,4 @@ class TppsViewModelTest {
 
         tppsRepository.addTpps(Tpp(tppEntity1, NcaEntity()))
     }
-
-    @Test
-    fun getTppsAddViewVisible() {
-        // When the filter type is ALL_TPPS
-        tppsViewModel.setFiltering(TppsFilterType.PIAI_INST)
-
-        // Then the "Add ebaEntity" action is visible
-        assertThat(LiveDataTestUtil.getValue(tppsViewModel.tppsAddViewVisible)).isTrue()
-    }
 }
