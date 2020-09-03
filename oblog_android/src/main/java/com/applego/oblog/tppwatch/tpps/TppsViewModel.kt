@@ -7,7 +7,6 @@ import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.model.*
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
-import com.applego.oblog.tppwatch.data.source.local.*
 import com.applego.oblog.tppwatch.data.source.remote.Paging
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
@@ -26,9 +25,6 @@ class TppsViewModel(
     private val _displayedItems = MutableLiveData<List<Tpp>>().apply { value = allItems.value }
     val displayedItems: LiveData<List<Tpp>> = _displayedItems
 
-    private val _statusLine = MutableLiveData<String>("")
-    val statusLine: LiveData<String> = _statusLine
-
     private val _dataLoadingLocalDB = MutableLiveData<Boolean>()
     val dataLoadingLocalDB: LiveData<Boolean> = _dataLoadingLocalDB
 
@@ -37,14 +33,6 @@ class TppsViewModel(
 
     private var _searchFilter = SearchFilter()
     val  searchFilter = _searchFilter
-
-    private val _noTppsLabel = MutableLiveData<Int>()
-    val noTppsLabel: LiveData<Int> = _noTppsLabel
-
-    private val _noTppIconRes = MutableLiveData<Int>()
-    val noTppIconRes: LiveData<Int> = _noTppIconRes
-
-    private val _tppsAddViewVisible = MutableLiveData<Boolean>()
 
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
@@ -83,7 +71,7 @@ class TppsViewModel(
          setFiltering(TppsFilterType.ALL_INST)
 
         dataLoading.addSource(_dataLoadingLocalDB, {value -> dataLoading.setValue(value)});
-        dataLoading.addSource(dataLoadingRemoteEBA, {value -> dataLoading.setValue(value)});
+        //dataLoading.addSource(dataLoadingRemoteEBA, {value -> dataLoading.setValue(value)});
     }
 
     fun refresh() {
@@ -224,10 +212,9 @@ class TppsViewModel(
     }
 
     /**
-      * @param forceUpdate   Pass in true to refresh the data in the [LocalTppDataSource]
       */
     fun loadTpps() {
-        _dataLoadingLocalDB.value = true
+        //_dataLoadingLocalDB.value = true
         viewModelScope.launch {
             val tppsResult = tppsRepository.loadTppsFromLocalDatasource()
             if (tppsResult is Success) {
@@ -239,7 +226,7 @@ class TppsViewModel(
                     //is Result.Warn -> TODO()
                     //is Result.Loading -> TODO()
                 }
-            _dataLoadingLocalDB.value = false
+           // _dataLoadingLocalDB.value = false
         }
     }
 
