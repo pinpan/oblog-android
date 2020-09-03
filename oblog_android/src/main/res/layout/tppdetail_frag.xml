@@ -91,7 +91,7 @@
                     android:layout_alignBottom="@id/follow_used"
                     android:layout_marginEnd="5dp"
                     android:text="refresh"
-                    android:textSize="10sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 -->
 
@@ -166,7 +166,7 @@
                     android:text="@{viewmodel.tpp.ebaEntity.country}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="#006496"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -191,7 +191,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="#006496"
                     android:textIsSelectable="true"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <View
@@ -214,7 +214,7 @@
                     android:focusable="false"
                     android:inputType="none"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     tools:text="@string/label_passports" />
 
                 <LinearLayout
@@ -243,7 +243,7 @@
                             android:enabled="false"
                             android:inputType="none|textPersonName"
                             android:text="@string/label_country"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/label_visa_psd2_roles"
@@ -257,7 +257,7 @@
                             android:enabled="false"
                             android:inputType="textPersonName"
                             android:text="@string/label_roles"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
 
                     </LinearLayout>
 

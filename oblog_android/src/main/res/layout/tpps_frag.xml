@@ -54,7 +54,7 @@
                             android:onClick="@{(view) -> viewmodel.filterRevoked(((CompoundButton)view).isChecked())}"
                             android:text="@string/label_revoked"
                             android:textColor="@color/colorEUDarkBlue"
-                            android:textSize="10sp" />
+                            android:textSize="11sp" />
                         <CheckBox
                             android:id="@+id/show_revoked_only_checkbox"
                             android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
                             android:onClick="@{(view) -> viewmodel.filterRevokedOnly(((CompoundButton)view).isChecked())}"
                             android:text="@string/label_revoked_only"
                             android:textColor="@color/colorEUDarkBlue"
-                            android:textSize="10sp" />
+                            android:textSize="11sp" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -77,12 +77,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textSize="10sp" />
+                            android:textSize="11sp" />
                         <Spinner
                             android:id="@+id/search_role"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="10sp"
+                            android:textSize="11sp"
                             android:layout_weight="1" />
                     </LinearLayout>
                 </LinearLayout>
@@ -108,7 +108,7 @@
                         android:onClick="@{(view) -> viewmodel.filterFollowed(((CompoundButton)view).isChecked())}"
                         android:text="@string/F"
                         android:textColor="@color/colorEUDarkBlue"
-                        android:textSize="11sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
                     <CheckBox
                         android:id="@+id/show_used_only_checkbox"
@@ -118,7 +118,7 @@
                         android:onClick="@{(view) -> viewmodel.filterUsed(((CompoundButton)view).isChecked())}"
                         android:text="@string/U"
                         android:textColor="@color/colorEUDarkBlue"
-                        android:textSize="11sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/tpp_name"
@@ -130,7 +130,7 @@
                         android:text="@string/label_name"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textColor="@color/colorEUDarkBlue"
-                        android:textSize="11sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
 
                     <ImageButton
@@ -203,7 +203,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:progressTint="@color/colorEUFlagYellow"
-                                android:visibility="invisible" />
+                                android:visibility="gone" />
 
                             <TextView
                                 android:id="@+id/tpps_registered"
@@ -213,13 +213,13 @@
                                 android:text="@{viewmodel.isFiltered ? @string/tpps_registered_filtered_number(viewmodel.displayedItems.size, viewmodel.allItems.size) : @string/tpps_registered_all_number(viewmodel.displayedItems.size)}"
                                 android:textColor="@color/colorEUDarkBlue" />
 
-                            <TextView
+                            <!--<TextView
                                 android:id="@+id/status_line"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:padding="2dp"
                                 android:text="@{viewmodel.statusLine}"
-                                android:textColor="@color/colorEUDarkBlue" />
+                                android:textColor="@color/colorEUDarkBlue" />-->
                         </LinearLayout>
                         <LinearLayout
                             android:id="@+id/no_tpps_layout"

@@ -52,7 +52,7 @@
                 android:text="@{viewmodel.tpp.ebaEntity.country}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#006496"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -76,7 +76,7 @@
                 android:text="@{viewmodel.tpp.ebaEntity.entityCode}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#006496"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <View
@@ -99,7 +99,7 @@
                 android:focusable="false"
                 android:inputType="none"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 tools:text="@string/label_passports" />
 
             <LinearLayout
@@ -128,7 +128,7 @@
                         android:enabled="false"
                         android:inputType="none|textPersonName"
                         android:text="@string/label_country"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
 
                     <EditText
                         android:id="@+id/label_visa_psd2_roles"
@@ -142,7 +142,7 @@
                         android:enabled="false"
                         android:inputType="textPersonName"
                         android:text="@string/label_roles"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 

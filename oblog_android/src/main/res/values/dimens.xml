@@ -25,4 +25,8 @@
 
     <dimen name="statistics_chart_width">300dp</dimen>
     <dimen name="statistics_chart_height">500dp</dimen>
+
+    <dimen name="font_size_small">10sp</dimen>
+    <dimen name="font_size_medium">20sp</dimen>
+    <dimen name="font_size_large">30sp</dimen>
 </resources>

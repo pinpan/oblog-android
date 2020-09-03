@@ -97,7 +97,7 @@
                             android:enabled="false"
                             android:inputType="none|textPersonName"
                             android:text="@string/label_app_name"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             />
                             android:layout_below="@id/label_app_name"
 -->
@@ -112,7 +112,7 @@
                             android:enabled="true"
                             android:inputType="textPersonName"
                             android:longClickable="true"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:text="@={viewmodel.appName}"
                             android:hint="@string/label_app_name"
                             />
@@ -126,7 +126,7 @@
                             android:enabled="true"
                             android:inputType="textPersonName"
                             android:longClickable="true"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:text="@={viewmodel.description}"
                             android:hint="@string/label_app_description"
                             />
@@ -148,7 +148,7 @@
                             android:enabled="false"
                             android:inputType="textPersonName"
                             android:text="@string/label_app_home"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
 -->
                         <EditText
                             android:id="@+id/web_addr"
@@ -182,7 +182,7 @@
                         android:enabled="false"
                         android:inputType="textPersonName"
                         android:text="@string/label_app_flags"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
 -->
 
                     <EditText
@@ -194,7 +194,7 @@
                         android:enabled="true"
                         android:inputType="textPersonName"
                         android:longClickable="true"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:hint="@string/label_app_flags"
                         />
                     </RelativeLayout>

@@ -37,7 +37,7 @@ class TppsAdapter(private val viewModel: TppsViewModel, ctx: Context, layoutId: 
         val view : LinearLayout = vH.itemView as LinearLayout
         val item = vH.binding.tpp
         if (view != null) {
-            view.title?.textSize = 10f
+            view.title?.textSize = 11f
         }
         return vH
     }

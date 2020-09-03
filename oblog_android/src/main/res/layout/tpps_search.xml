@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/label_revoked"
-                    android:textSize="10sp"
+                    android:textSize="11sp"
                     android:onClick="@{(view) -> viewmodel.filterRevoked(((CompoundButton)view).isChecked())}" />
 
                 <CheckBox
@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/label_revoked_only"
-                    android:textSize="10sp"
+                    android:textSize="11sp"
                     android:onClick="@{(view) -> viewmodel.filterRevokedOnly(((CompoundButton)view).isChecked())}" />
             </LinearLayout>
 
@@ -60,13 +60,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="10sp" />
+                    android:textSize="11sp" />
 
                 <Spinner
                     android:id="@+id/search_role"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="10sp"
+                    android:textSize="11sp"
                     android:layout_weight="1" />
             </LinearLayout>
 

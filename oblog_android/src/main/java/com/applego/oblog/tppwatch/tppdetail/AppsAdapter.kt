@@ -28,7 +28,7 @@ class AppsAdapter(private val viewModel: AppsViewModel, ctx: Context, layoutId: 
         val vH = ViewHolder.from(parent)
         val view : LinearLayout = vH.itemView as LinearLayout
         if (view != null) {
-            view.title?.textSize = 10f
+            view.title?.textSize = 11f
         }
         return vH
     }

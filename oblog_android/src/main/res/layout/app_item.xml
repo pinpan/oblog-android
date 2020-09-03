@@ -36,7 +36,7 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:text="@{app.name}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:layout_weight="2"
             />
 
@@ -49,7 +49,7 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:text="@{app.description}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:layout_weight="3"
             />
 
@@ -62,7 +62,7 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:text="@{app.webAddr}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:layout_weight="3"
             />
         <!--android:onClick="@{(view) -> viewmodel.activateTpp(ebaEntity, ((CompoundButton)view).isChecked())}"-->

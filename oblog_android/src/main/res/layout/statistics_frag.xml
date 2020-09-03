@@ -62,7 +62,7 @@
                     android:text="@{@string/statistics_date(Calendar.getInstance().getTime())}"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textStyle="bold"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
                 <View
                     android:id="@+id/divider4"
                     android:layout_width="match_parent"
@@ -97,7 +97,7 @@
                                 android:text="@{@string/statistics_psd2_institutions}"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
                                 android:textStyle="bold"
-                                android:textSize="12sp" />
+                                android:textSize="14sp" />
 
                             <View
                                 android:id="@+id/divider1"
@@ -114,7 +114,7 @@
                                 android:paddingStart="10dp"
                                 android:text="@{@string/statistics_total_tpps(viewmodel.totalTpps)}"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textSize="11sp" />
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/stats_total_aisp_text"
@@ -124,7 +124,7 @@
                                 android:paddingStart="10dp"
                                 android:text="@{@string/statistics_total_aisp(viewmodel.totalAISPTpps)}"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textSize="11sp" />
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/stats_total_pisp_text"
@@ -134,7 +134,7 @@
                                 android:paddingStart="10dp"
                                 android:text="@{@string/statistics_total_pisp(viewmodel.totalPISPTpps)}"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textSize="11sp" />
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/stats_total_emi_text"
@@ -144,7 +144,7 @@
                                 android:paddingStart="10dp"
                                 android:text="@{@string/statistics_total_emi(viewmodel.totalEMITpps)}"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textSize="11sp" />
+                                android:textSize="12sp" />
                         </LinearLayout>
 
 
@@ -162,7 +162,7 @@
                                 android:text="@{@string/statistics_authorized_label}"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
                                 android:textStyle="bold"
-                                android:textSize="12sp" />
+                                android:textSize="14sp" />
 
                             <View
                                 android:id="@+id/divider2"
@@ -179,7 +179,7 @@
                                 android:paddingStart="10dp"
                                 android:text="@{@string/statistics_this_year(viewmodel.thisYearAuthorizedTpps)}"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textSize="11sp" />
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/stats_last_year_text"
@@ -189,7 +189,7 @@
                                 android:paddingStart="10dp"
                                 android:text="@{@string/statistics_last_year(viewmodel.lastYearRegisteredTpps)}"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textSize="11sp" />
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/stats_last_month_text"
@@ -199,7 +199,7 @@
                                 android:paddingStart="10dp"
                                 android:text="@{@string/statistics_last_month(viewmodel.lastMonthRegisteredTpps)}"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textSize="11sp" />
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/stats_last_week_text"
@@ -209,7 +209,7 @@
                                 android:paddingStart="10dp"
                                 android:text="@{@string/statistics_last_week(viewmodel.lastWeekRegisteredTpps)}"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textSize="11sp" />
+                                android:textSize="12sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </ScrollView>
@@ -233,12 +233,12 @@
                         android:layout_marginEnd="5sp"
                         android:text="@{@string/statistic_graphs}"
                         android:textStyle="bold"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
                     <Spinner
                         android:id="@+id/spinner_charttype"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 <!--
                 android:background="@color/colorEULightGrey"

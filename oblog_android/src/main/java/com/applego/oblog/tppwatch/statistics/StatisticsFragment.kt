@@ -148,7 +148,7 @@ class StatisticsFragment : Fragment() {
                 ChartType.PerCountryChange -> viewModel.getTppsPerCountryChangeDataSet()
                 ChartType.PerInstitutionTypeChange -> viewModel.getTppsPerInstitutionTypeChangeDataSet()
             })
-            chart.data.setValueTextSize(10f)
+            chart.data.setValueTextSize(11f)
 
             val desc = Description()
             desc.text = chartType.desc

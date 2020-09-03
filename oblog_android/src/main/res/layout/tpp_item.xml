@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:textColor="@color/colorEURed"
             android:text="!"
             android:visibility="@{tpp.ebaEntity.isRevoked() ? View.VISIBLE:View.GONE}"
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:checked="@{tpp.ebaEntity.used}"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:onClick="@{(view) -> viewmodel.activateTpp(tpp, ((CompoundButton)view).isChecked())}" />
 
         <TextView
@@ -70,7 +70,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:text="@{tpp.titleForList}"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
     </LinearLayout>

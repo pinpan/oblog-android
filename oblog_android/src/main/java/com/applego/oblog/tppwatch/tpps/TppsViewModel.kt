@@ -188,7 +188,7 @@ class TppsViewModel(
                         showSnackbarMessage(R.string.loading_finished)
                     }
                     _loadProgressEnd.value = Event(paging.page)
-                    _statusLine.value = "Successfully loaded #" + paging.totalPages + "pages of TPPs."
+                    // TODO#MoveToToast: _statusLine.value = "Successfully loaded #" + paging.totalPages + "pages of TPPs."
                     _dataLoadingRemoteEBA.value = false
                 }
             }

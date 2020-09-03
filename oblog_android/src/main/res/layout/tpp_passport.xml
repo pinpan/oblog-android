@@ -31,14 +31,14 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@{serviceVisa.service}"
-            android:textSize="10sp"
+            android:textSize="11sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
         <TextView
             android:id="@+id/visa_services"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="10sp"
+            android:textSize="11sp"
             android:textAlignment="viewStart"
             android:text="@{serviceVisa.countriesAsString}"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"

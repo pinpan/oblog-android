@@ -45,7 +45,7 @@
                     android:text="@{viewmodel.tpp.ebaEntity.entityName}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#006496"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <LinearLayout

@@ -46,7 +46,7 @@ class TppDetailAdapter(private val viewModel: TppDetailViewModel, ctx: Context, 
         val vH = ViewHolder.from(parent)
         val view : LinearLayout = vH.itemView as LinearLayout
         if (view != null) {
-            view.title?.textSize = 10f
+            view.title?.textSize = 12f
         }
         return vH
     }
