@@ -72,18 +72,27 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:weightSum="2">
+
                         <Spinner
                             android:id="@+id/serarch_country"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textSize="11sp" />
+                            android:contentDescription="@string/label_home_country"
+                            android:isScrollContainer="true"
+                            android:nestedScrollingEnabled="true"
+                            android:scrollbarAlwaysDrawHorizontalTrack="true"
+                            android:scrollbarAlwaysDrawVerticalTrack="true"
+                            android:scrollbars="horizontal|vertical"
+                            android:spinnerMode="dialog"
+                            android:textSize="14sp" />
+
                         <Spinner
                             android:id="@+id/search_role"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="11sp"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
             </FrameLayout>
@@ -211,6 +220,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:padding="2dp"
+                                android:textSize="11sp"
                                 android:text="@{viewmodel.isFiltered ? @string/tpps_registered_filtered_number(viewmodel.displayedItems.size, viewmodel.allItems.size) : @string/tpps_registered_all_number(viewmodel.displayedItems.size)}"
                                 android:textColor="@color/colorEUDarkBlue" />
 
