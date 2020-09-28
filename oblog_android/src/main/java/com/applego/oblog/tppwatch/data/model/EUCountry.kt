@@ -1,5 +1,7 @@
 package com.applego.oblog.tppwatch.data.model
 
+import com.applego.oblog.tppwatch.tpps.ResourcesUtils
+
 /**
  * Used with the filter countriesSpinner in the tpps list.
  */
@@ -13,7 +15,7 @@ enum class EUCountry(val country: String, val order: Int, val aliases: String = 
     /**
      * Belgium
      */
-    BE("Belgium", 1),
+    BE("BEelgium", 1),
 
     /**
      * Bulgaria
@@ -88,7 +90,7 @@ enum class EUCountry(val country: String, val order: Int, val aliases: String = 
     /**
      * ISLAND
      */
-    IS("ISLAND", 16),
+//    IS("ISLAND", 16),
 
     /**
      * Italy
@@ -98,7 +100,7 @@ enum class EUCountry(val country: String, val order: Int, val aliases: String = 
     /**
      * Lithuania
      */
-    LI("Liechtenstein", 18),
+    //LI("Liechtenstein", 18),
 
     /**
      * Latvia
@@ -186,9 +188,7 @@ enum class EUCountry(val country: String, val order: Int, val aliases: String = 
             allEUCountries.add(HR)
             allEUCountries.add(HU)
             allEUCountries.add(IE)
-            allEUCountries.add(IS)
             allEUCountries.add(IT)
-            allEUCountries.add(LI)
             allEUCountries.add(LT)
             allEUCountries.add(LU)
             allEUCountries.add(LV)

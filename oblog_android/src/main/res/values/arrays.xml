@@ -108,32 +108,32 @@
         <item>Austria</item>
         <item>Belgium</item>
         <item>Bulgaria</item>
-        <item>Croatia</item>
         <item>Cyprus</item>
         <item>Czech Republic</item>
         <item>Denmark</item>
+        <item>Germany</item>
         <item>Estonia</item>
+        <item>Spain</item>
         <item>Finland</item>
         <item>France</item>
-        <item>Germany</item>
+        <item>United Kingdom</item>
         <item>Greece</item>
+        <item>Croatia</item>
         <item>Hungary</item>
         <item>Ireland</item>
         <item>Italy</item>
         <item>Latvia</item>
-        <item>Lithuania</item>
         <item>Luxembourg</item>
+        <item>Lithuania</item>
         <item>Malta</item>
         <item>Netherlands</item>
         <item>Norway</item>
         <item>Poland</item>
         <item>Portugal</item>
         <item>Romania</item>
-        <item>Slovakia</item>
-        <item>Slovenia</item>
-        <item>Spain</item>
         <item>Sweden</item>
-        <item>United Kingdom</item>
+        <item>Slovenia</item>
+        <item>Slovakia</item>
     </string-array>
 
     <string-array name="eu_countries_iso">
@@ -141,32 +141,32 @@
         <item>AT</item>
         <item>BE</item>
         <item>BG</item>
-        <item>HR</item>
         <item>CY</item>
         <item>CZ</item>
+        <item>DE</item>
         <item>DK</item>
         <item>EE</item>
+        <item>ES</item>
         <item>FI</item>
         <item>FR</item>
-        <item>DE</item>
+        <item>GB</item>
         <item>GR</item>
+        <item>HR</item>
         <item>HU</item>
         <item>IE</item>
         <item>IT</item>
-        <item>LV</item>
         <item>LT</item>
         <item>LU</item>
+        <item>LV</item>
         <item>MT</item>
         <item>NL</item>
         <item>NO</item>
         <item>PL</item>
         <item>PT</item>
         <item>RO</item>
-        <item>SK</item>
-        <item>SI</item>
-        <item>ES</item>
         <item>SE</item>
-        <item>GB</item>
+        <item>SI</item>
+        <item>SK</item>
     </string-array>
 
     <string-array name="Introduction_titles">

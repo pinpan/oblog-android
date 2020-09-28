@@ -26,6 +26,11 @@ class ResourcesUtils {
 
             return emptyArray()
         }
+/*
+        fun getResourceIdByName(resourceName: String) : Int{
+            val id = ctx.resources.getIdentifier(resourceName, "drawable", ctx?.getPackageName())
 
+            return id
+        }*/
     }
 }

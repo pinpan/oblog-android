@@ -16,6 +16,8 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.R
+import com.applego.oblog.tppwatch.data.model.Country
+import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountries
 import com.applego.oblog.tppwatch.data.model.InstType
 import com.applego.oblog.tppwatch.databinding.TppsFragBinding
 import com.applego.oblog.tppwatch.util.ViewModelFactory.Companion.viewModelFactory
@@ -187,7 +189,7 @@ class TppsFragment : Fragment() {
     private fun setUpSearchForm() {
         countriesSpinner = activity?.findViewById(R.id.serarch_country)!!
         val countries = context!!.resources.getTextArray(R.array.eu_countries)
-        val countryAdapter                        = object: ArrayAdapter<CharSequence>(getActivity() as Context, R.layout.custom_spinner, 0, countries) {
+        val countryAdapter = /*object:*/ CountriesSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_country, allEUCountries)/* {
             override fun getDropDownView(
                     position: Int,
                     convertView: View?,
@@ -203,11 +205,31 @@ class TppsFragment : Fragment() {
                 if (position == countriesSpinner.selectedItemPosition){
                     view.background = ColorDrawable(resources.getColor(R.color.colorEULightGrey))
                     view.setTextColor(resources.getColor(R.color.colorEUFlagYellow))
+                    // ((view as LinearLayout).getChildAt(1) as TextView).setTextColor(resources.getColor(R.color.colorEUFlagYellow))
                 }
+                //val drawableResId = context!!.resources.resIdByName("ic_edit_black_24dp", "drawable")
 
                 return view
             }
-        }
+
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                *//*val isoCountryCode = context!!.resources?.getStringArray(R.array.eu_countries_iso)!![position]
+                val id = resources.getIdentifier("ic_flag_flat_" + isoCountryCode, "drawable", context?.getPackageName())
+
+                val view = ((view as LinearLayout).getChildAt(0) as ImageView).setImageResource(id)
+                view.setPadding(view.paddingLeft, view.paddingTop, view.paddingRight, 15)
+                *//*
+                val view = super.getView(position, convertView, parent)
+                view.setPadding(view.paddingLeft, view.paddingTop, view.paddingRight, 15)
+
+                val label = (view as LinearLayout).getChildAt(0) as ImageView
+                val isoCountryCode = context!!.resources?.getStringArray(R.array.eu_countries_iso)!![position]
+                val id = resources.getIdentifier("ic_flag_flat_" + isoCountryCode, "drawable", context?.getPackageName())
+                label.setImageResource(id)
+                //label.text = getItem(position)?.title
+                return label
+            }
+        }*/
         countriesSpinner.setAdapter(countryAdapter);
         //countryAdapter.setDropDownViewResource(R.layout.custom_spinner)
         countriesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
