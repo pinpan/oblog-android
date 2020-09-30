@@ -15,7 +15,7 @@ enum class EUCountry(val country: String, val order: Int, val aliases: String = 
     /**
      * Belgium
      */
-    BE("BEelgium", 1),
+    BE("Belgium", 1),
 
     /**
      * Bulgaria
@@ -48,44 +48,34 @@ enum class EUCountry(val country: String, val order: Int, val aliases: String = 
     EE("Estonia", 7),
 
     /**
-     * Spain
-     */
-    ES("Spain", 8),
-
-    /**
      * Finland
      */
-    FI("Finland", 9),
+    FI("Finland", 8),
 
     /**
      * France
      */
-    FR("France", 10),
-
-    /**
-     * Great Britain
-     */
-    GB("Great Britain", 11),
+    FR("France", 9),
 
     /**
      * Greece
      */
-    GR("Greece", 12),
+    GR("Greece", 10),
 
     /**
      * Croatia
      */
-    HR("Croatia", 13),
+    HR("Croatia", 11),
 
     /**
      * Hungary
      */
-    HU("Hungary", 14),
+    HU("Hungary", 12),
 
     /**
      * Ireland
      */
-    IE("Ireland", 15),
+    IE("Ireland", 13),
 
     /**
      * ISLAND
@@ -95,7 +85,7 @@ enum class EUCountry(val country: String, val order: Int, val aliases: String = 
     /**
      * Italy
      */
-    IT("Italy", 17),
+    IT("Italy", 14),
 
     /**
      * Lithuania
@@ -105,67 +95,82 @@ enum class EUCountry(val country: String, val order: Int, val aliases: String = 
     /**
      * Latvia
      */
-    LT("Lithuania", 19),
+    LT("Lithuania", 15),
 
     /**
      * Luxembourg
      */
-    LU("Luxembourg", 20),
+    LU("Luxembourg", 16),
 
     /**
      * Lithuania - Financial and Capital Market Commission
      */
-    LV("Latvia", 21),
+    LV("Latvia", 17),
 
     /**
      * Malta
      */
-    MT("Malta", 22),
+    MT("Malta", 18),
 
     /**
      * Netherlands
      */
-    NL("Netherlands", 22),
+    NL("Netherlands", 19),
 
     /**
      * Norway
      */
-    NO("Norway", 23),
+    NO("Norway", 20),
 
     /**
      * Poland
      */
-    PL("Poland", 24),
+    PL("Poland", 21),
 
     /**
      * Portugal
      */
-    PT("Portugal", 25),
+    PT("Portugal", 22),
 
     /**
      * Romania
      */
-    RO("Romania", 26),
+    RO("Romania", 23),
 
     /**
      * Sweden
      */
-    SE("Sweden", 27),
+    SE("Sweden", 24),
 
     /**
      * Slovenia
      */
-    SI("Slovenia", 28),
+    SI("Slovenia", 25),
 
     /**
      * Slovakia
      */
-    SK("Slovakia", 29),
+    SK("Slovakia", 26),
 
     /**
-     * Usd to indicate that no EU country was found
+     * Spain
      */
-    NEU("NotInEU", 30);
+    ES("Spain", 27),
+
+    /**
+     * Great Britain
+     */
+    UK("United Kingdom", 28),
+
+    /**
+     * Used to indicate that no EU country was found
+     */
+    EU("All EU countries", 29),
+
+    /**
+     * Used to indicate that no EU country was found
+     */
+    NEU("Not an EU country", 30);
 
     companion object {
 
@@ -180,10 +185,8 @@ enum class EUCountry(val country: String, val order: Int, val aliases: String = 
             allEUCountries.add(DE)
             allEUCountries.add(DK)
             allEUCountries.add(EE)
-            allEUCountries.add(ES)
             allEUCountries.add(FI)
             allEUCountries.add(FR)
-            allEUCountries.add(GB)
             allEUCountries.add(GR)
             allEUCountries.add(HR)
             allEUCountries.add(HU)
@@ -201,6 +204,8 @@ enum class EUCountry(val country: String, val order: Int, val aliases: String = 
             allEUCountries.add(SE)
             allEUCountries.add(SI)
             allEUCountries.add(SK)
+            allEUCountries.add(ES)
+            allEUCountries.add(UK)
 
             allEUCountries.forEach {
                 allEUCountriesMap.put(it.name, it)

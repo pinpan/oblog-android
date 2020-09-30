@@ -113,10 +113,8 @@
         <item>Denmark</item>
         <item>Germany</item>
         <item>Estonia</item>
-        <item>Spain</item>
         <item>Finland</item>
         <item>France</item>
-        <item>United Kingdom</item>
         <item>Greece</item>
         <item>Croatia</item>
         <item>Hungary</item>
@@ -134,6 +132,8 @@
         <item>Sweden</item>
         <item>Slovenia</item>
         <item>Slovakia</item>
+        <item>Spain</item>
+        <item>United Kingdom</item>
     </string-array>
 
     <string-array name="eu_countries_iso">
@@ -146,10 +146,8 @@
         <item>DE</item>
         <item>DK</item>
         <item>EE</item>
-        <item>ES</item>
         <item>FI</item>
         <item>FR</item>
-        <item>GB</item>
         <item>GR</item>
         <item>HR</item>
         <item>HU</item>
@@ -167,6 +165,8 @@
         <item>SE</item>
         <item>SI</item>
         <item>SK</item>
+        <item>ES</item>
+        <item>UK</item>
     </string-array>
 
     <string-array name="Introduction_titles">

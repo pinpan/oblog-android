@@ -188,8 +188,8 @@ class TppsFragment : Fragment() {
 
     private fun setUpSearchForm() {
         countriesSpinner = activity?.findViewById(R.id.serarch_country)!!
-        val countries = context!!.resources.getTextArray(R.array.eu_countries)
-        val countryAdapter = /*object:*/ CountriesSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_country, allEUCountries)/* {
+        //val countries = context!!.resources.getTextArray(R.array.eu_countries)
+        val countryAdapter = /*object:*/ CountriesSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_country, countriesSpinner, allEUCountries)/* {
             override fun getDropDownView(
                     position: Int,
                     convertView: View?,

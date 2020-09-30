@@ -2,6 +2,7 @@ package com.applego.oblog.tppwatch.tpps
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +14,15 @@ import com.applego.oblog.tppwatch.data.model.EUCountry
 /**
  * Adapter for the Countries Spinner list.
  */
-class CountriesSpinnerAdapter (context: Context , resource: Int, cntrys: List<EUCountry>)
+class CountriesSpinnerAdapter (context: Context , resource: Int, spinner: Spinner, cntrys: List<EUCountry>)
     : BaseAdapter() {
 
     private val myContext: Context = context
 
-    // Your custom values for the spinner (Country)
-    private val countries: List<EUCountry>? = cntrys
+    // Custom values for the spinner (Country)
+    private val countries: List<EUCountry> = cntrys
 
+    private val mySpinner: Spinner = spinner
     /**
      * The resource indicating what views to inflate to display the content of this
      * array adapter.
@@ -42,25 +44,30 @@ class CountriesSpinnerAdapter (context: Context , resource: Int, cntrys: List<EU
 //    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 //        return super.getView(position, convertView, parent)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        if (position >= count) {
+        var realPosition = position
+        if (realPosition >= count) {
             return super.getDropDownView(position, convertView, parent)
+        }
+
+        if (realPosition == 0) {
+            realPosition = -1
         }
 
         // I created a dynamic TextView here, but you can reference your own  custom layout for each spinner item
         val view = LayoutInflater.from(myContext).inflate(viewResourceId, parent, false)//super.getView(position, convertView, parent!!)// as TextView
         //val relLay = (view as LinearLayout).getChildAt(0) as RelativeLayout
 
-        val isoCountryCode = myContext.resources.getStringArray(R.array.eu_countries_iso)!![position]
-        val countryIsoId = myContext.resources.getIdentifier(isoCountryCode, "string", myContext?.getPackageName())
+        val isoCountryCode = countries.get(position).name //myContext.resources.getStringArray(R.array.eu_countries_iso)!![position]
+        //val countryIsoId = myContext.resources.getIdentifier(isoCountryCode, "string", myContext?.getPackageName())
 
-        val imageId = myContext.resources.getIdentifier("ic_flag_flat_" + isoCountryCode, "drawable", myContext?.getPackageName())
+        val imageId = myContext.resources.getIdentifier("ic_flag_flat_" + isoCountryCode.toLowerCase(), "drawable", myContext?.getPackageName())
         val image = view.findViewById(R.id.country_flag) as ImageView
         image.setImageResource(imageId)
 
 
         val label = view.findViewById(R.id.country_name) as TextView
-        val countryName = myContext.resources.getStringArray(R.array.eu_countries)!![position]
-        label.setText(if (position != 0) countryName else "N/A")
+        val countryName = countries.get(position).country //myContext.resources.getStringArray(R.array.eu_countries)!![position]
+        label.setText(countryName)
         label.setTextColor(Color.BLACK)
         //label.setText(countries?.get(position)?.name)
 
@@ -73,6 +80,14 @@ class CountriesSpinnerAdapter (context: Context , resource: Int, cntrys: List<EU
     override fun getDropDownView(position: Int, convertView: View?,
                                  parent: ViewGroup?): View? {
         val view = super.getDropDownView(position, convertView, parent)
+
+        //val countriesSpinner = myContext?.findViewById(R.id.serarch_country)!!
+
+        if (position == (mySpinner).selectedItemPosition) {
+            view.background = ColorDrawable(myContext.resources.getColor(R.color.colorEULightGrey))
+            //view.setTextColor(resources.getColor(R.color.colorEUFlagYellow))
+            ((view as LinearLayout).getChildAt(1) as TextView).setTextColor(myContext.resources.getColor(R.color.colorEUFlagYellow))
+        }
         //val relLay = (view as LinearLayout).getChildAt(0) as RelativeLayout
 /*
 
