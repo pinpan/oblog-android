@@ -1,81 +1,85 @@
 package com.applego.oblog.tppwatch.data.model
 
-import com.applego.oblog.tppwatch.tpps.ResourcesUtils
-
 /**
  * Used with the filter countriesSpinner in the tpps list.
  */
-enum class EUCountry(val country: String, val order: Int, val aliases: String = "", val nca: String = "") {
+enum class EUCountry(val countryName: String, val isoCode:String, val order: Int, val aliases: String = "", val nca: String = "") {
+
+
+    /**
+     * Used to indicate any EU country
+     */
+    EU("All EU countries", "EU",0),
 
     /**
      * Austria
      */
-    AT("Austria", 0),
+    AT("Austria", "AT", 1),
 
     /**
      * Belgium
      */
-    BE("Belgium", 1),
+    BE("Belgium", "BE",2),
 
     /**
      * Bulgaria
      */
-    BG("Bulgaria", 2),
+    BG("Bulgaria", "BG", 3),
 
     /**
      * Republic of Cyprus
      */
-    CY("Republic of Cyprus", 3),
+    CY("Republic of Cyprus", "CY",4),
 
     /**
      * Czech Republic
      */
-    CZ("Czech Republic", 4),
+    CZ("Czech Republic", "CZ", 5),
 
     /**
      * Germany
      */
-    DE("Germany", 5),
+    DE("Germany", "DE", 6),
 
     /**
      * Denmark
      */
-    DK("Denmark", 6),
+    DK("Denmark", "DK", 7),
 
     /**
      * Estonia
      */
-    EE("Estonia", 7),
+    EE("Estonia", "EE", 8),
 
     /**
      * Finland
      */
-    FI("Finland", 8),
+    FI("Finland", "FI", 9),
 
     /**
      * France
      */
-    FR("France", 9),
+    FR("France", "FR", 10),
 
     /**
      * Greece
      */
-    GR("Greece", 10),
+    GR("Greece", "GR", 11),
 
     /**
      * Croatia
      */
-    HR("Croatia", 11),
+    HR("Croatia", "HR", 12),
 
     /**
      * Hungary
      */
-    HU("Hungary", 12),
+    HU("Hungary", "HU", 13),
 
     /**
      * Ireland
      */
-    IE("Ireland", 13),
+    IE("Ireland", "IE", 14),
 
     /**
      * ISLAND
@@ -85,7 +89,7 @@ enum class EUCountry(val country: String, val order: Int, val aliases: String = 
     /**
      * Italy
      */
-    IT("Italy", 14),
+    IT("Italy", "IT", 15),
 
     /**
      * Lithuania
@@ -95,82 +99,77 @@ enum class EUCountry(val country: String, val order: Int, val aliases: String = 
     /**
      * Latvia
      */
-    LT("Lithuania", 15),
+    LT("Lithuania", "LT", 16),
 
     /**
      * Luxembourg
      */
-    LU("Luxembourg", 16),
+    LU("Luxembourg", "LU", 17),
 
     /**
      * Lithuania - Financial and Capital Market Commission
      */
-    LV("Latvia", 17),
+    LV("Latvia", "LV", 18),
 
     /**
      * Malta
      */
-    MT("Malta", 18),
+    MT("Malta", "MT", 19),
 
     /**
      * Netherlands
      */
-    NL("Netherlands", 19),
+    NL("Netherlands", "NL", 20),
 
     /**
      * Norway
      */
-    NO("Norway", 20),
+    NO("Norway", "NO", 21),
 
     /**
      * Poland
      */
-    PL("Poland", 21),
+    PL("Poland", "PL", 22),
 
     /**
      * Portugal
      */
-    PT("Portugal", 22),
+    PT("Portugal", "PT", 23),
 
     /**
      * Romania
      */
-    RO("Romania", 23),
+    RO("Romania", "RO", 24),
 
     /**
      * Sweden
      */
-    SE("Sweden", 24),
+    SE("Sweden", "SE",25),
 
     /**
      * Slovenia
      */
-    SI("Slovenia", 25),
+    SI("Slovenia", "SI", 26),
 
     /**
      * Slovakia
      */
-    SK("Slovakia", 26),
+    SK("Slovakia", "SK", 27),
 
     /**
      * Spain
      */
-    ES("Spain", 27),
+    ES("Spain", "ES", 28),
 
     /**
      * Great Britain
      */
-    UK("United Kingdom", 28),
+    GB("United Kingdom", "UK",29),
 
     /**
      * Used to indicate that no EU country was found
      */
-    EU("All EU countries", 29),
-
-    /**
-     * Used to indicate that no EU country was found
-     */
-    NEU("Not an EU country", 30);
+    NEU("Not an EU country", "NEU", 100);
 
     companion object {
 
@@ -205,7 +204,7 @@ enum class EUCountry(val country: String, val order: Int, val aliases: String = 
             allEUCountries.add(SI)
             allEUCountries.add(SK)
             allEUCountries.add(ES)
-            allEUCountries.add(UK)
+            allEUCountries.add(GB)
 
             allEUCountries.forEach {
                 allEUCountriesMap.put(it.name, it)

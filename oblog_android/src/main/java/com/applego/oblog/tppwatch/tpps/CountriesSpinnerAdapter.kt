@@ -41,37 +41,23 @@ class CountriesSpinnerAdapter (context: Context , resource: Int, spinner: Spinne
         return position.toLong()
     }
 
-//    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-//        return super.getView(position, convertView, parent)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var realPosition = position
-        if (realPosition >= count) {
+        if (position >= count) {
             return super.getDropDownView(position, convertView, parent)
         }
 
-        if (realPosition == 0) {
-            realPosition = -1
-        }
-
         // I created a dynamic TextView here, but you can reference your own  custom layout for each spinner item
-        val view = LayoutInflater.from(myContext).inflate(viewResourceId, parent, false)//super.getView(position, convertView, parent!!)// as TextView
-        //val relLay = (view as LinearLayout).getChildAt(0) as RelativeLayout
-
-        val isoCountryCode = countries.get(position).name //myContext.resources.getStringArray(R.array.eu_countries_iso)!![position]
-        //val countryIsoId = myContext.resources.getIdentifier(isoCountryCode, "string", myContext?.getPackageName())
-
+        val view = LayoutInflater.from(myContext).inflate(viewResourceId, parent, false)
+        val isoCountryCode = countries.get(position).isoCode
         val imageId = myContext.resources.getIdentifier("ic_flag_flat_" + isoCountryCode.toLowerCase(), "drawable", myContext?.getPackageName())
         val image = view.findViewById(R.id.country_flag) as ImageView
         image.setImageResource(imageId)
 
-
         val label = view.findViewById(R.id.country_name) as TextView
-        val countryName = countries.get(position).country //myContext.resources.getStringArray(R.array.eu_countries)!![position]
+        val countryName = countries.get(position).countryName
         label.setText(countryName)
         label.setTextColor(Color.BLACK)
-        //label.setText(countries?.get(position)?.name)
 
-        // And finally return your dynamic (or custom) view for each spinner item
         return view
     }
 
@@ -81,14 +67,11 @@ class CountriesSpinnerAdapter (context: Context , resource: Int, spinner: Spinne
                                  parent: ViewGroup?): View? {
         val view = super.getDropDownView(position, convertView, parent)
 
-        //val countriesSpinner = myContext?.findViewById(R.id.serarch_country)!!
-
         if (position == (mySpinner).selectedItemPosition) {
             view.background = ColorDrawable(myContext.resources.getColor(R.color.colorEULightGrey))
             //view.setTextColor(resources.getColor(R.color.colorEUFlagYellow))
             ((view as LinearLayout).getChildAt(1) as TextView).setTextColor(myContext.resources.getColor(R.color.colorEUFlagYellow))
         }
-        //val relLay = (view as LinearLayout).getChildAt(0) as RelativeLayout
 /*
 
         val label = view.findViewById(R.id.country_name) as TextView
