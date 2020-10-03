@@ -216,7 +216,7 @@ class StatisticsViewModel(
             }
 
             if (euCountry != null) {
-                tppsPerCountryArray[EUCountry.valueOf(euCountry).order] = tppsPerCountryArray[EUCountry.valueOf(euCountry).order]+1
+                tppsPerCountryArray[EUCountry.valueOf(euCountry).order-1] = tppsPerCountryArray[EUCountry.valueOf(euCountry).order-1]+1
             }
         }
         _lastWeekRegisteredTpps.value = aWeekOldTpps

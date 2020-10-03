@@ -70,6 +70,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:padding="@dimen/list_item_padding"
                         android:orientation="horizontal"
                         android:weightSum="2">
 
@@ -81,18 +82,26 @@
                             android:contentDescription="@string/label_home_country"
                             android:isScrollContainer="true"
                             android:nestedScrollingEnabled="true"
+                            android:padding="@dimen/list_item_padding"
                             android:scrollbarAlwaysDrawHorizontalTrack="true"
                             android:scrollbarAlwaysDrawVerticalTrack="true"
                             android:scrollbars="horizontal|vertical"
                             android:spinnerMode="dialog"
-                            android:textSize="14sp" />
-
+                             />
                         <Spinner
                             android:id="@+id/search_role"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textSize="14sp" />
+                            android:contentDescription="@string/label_psd2_services"
+                            android:isScrollContainer="true"
+                            android:nestedScrollingEnabled="true"
+                            android:padding="@dimen/list_item_padding"
+                            android:scrollbarAlwaysDrawHorizontalTrack="true"
+                            android:scrollbarAlwaysDrawVerticalTrack="true"
+                            android:scrollbars="horizontal|vertical"
+                            android:spinnerMode="dialog"
+                            />
                     </LinearLayout>
                 </LinearLayout>
             </FrameLayout>

@@ -19,8 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="?android:attr/listPreferredItemHeight"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/list_item_padding"
+        android:paddingRight="@dimen/list_item_padding"
         android:paddingBottom="@dimen/list_item_padding"
         android:paddingTop="@dimen/list_item_padding"
         android:onClick="@{() -> viewmodel.openTpp(ebaEntity.ebaEntity.id)}">
@@ -43,12 +43,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:text="@{ebaEntity.ebaEntity.titleForList}"
-                /> <!--app:followedTpp="@{ebaEntity.followed}"-->
-
+                />
+            <!--
+                app:followedTpp="@{ebaEntity.followed}"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+           -->
         </RelativeLayout>
     </LinearLayout>
 </layout>

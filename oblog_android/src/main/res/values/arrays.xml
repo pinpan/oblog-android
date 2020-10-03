@@ -64,8 +64,16 @@
     </string-array>
 
     <!-- Sync Preferences -->
-    <string-array name="eba_services">
-        <item> All services </item>
+    <string-array name="psd2_service_codes">
+        <item>&lt;All services&gt;</item>
+        <item>AIS</item>
+        <item>PIS</item>
+        <item>PIIS</item>
+    </string-array>
+
+    <!-- Sync Preferences -->
+    <string-array name="eba_roles">
+        <item> All PSD2 roles </item>
         <item>Account Information</item>
         <item>Payment Initiation</item>
         <item>Payment Instrument Issuing</item>
@@ -80,7 +88,7 @@
         <item>CI</item>
     </string-array>
 
-    <string-array name="eba_psd2_services">
+    <!--<string-array name="eba_psd2_services">
         <item>&lt;ALL&gt;</item>
         <item>5-a)</item>
         <item>5-b)</item>
@@ -88,7 +96,7 @@
         <item>6)</item>
         <item>7)</item>
     </string-array>
-
+-->
     <string-array name="chart_type_titles">
         <item>Tpps per country</item>
         <item>Per institution type</item>
@@ -137,7 +145,6 @@
     </string-array>
 
     <string-array name="eu_countries_iso">
-        <item>&lt;All EU countries&gt;</item>
         <item>AT</item>
         <item>BE</item>
         <item>BG</item>
@@ -152,7 +159,9 @@
         <item>HR</item>
         <item>HU</item>
         <item>IE</item>
+        <item>IS</item>
         <item>IT</item>
+        <item>LI</item>
         <item>LT</item>
         <item>LU</item>
         <item>LV</item>
@@ -167,6 +176,7 @@
         <item>SK</item>
         <item>ES</item>
         <item>UK</item>
+        <item>&lt;All EU countries&gt;</item>
     </string-array>
 
     <string-array name="Introduction_titles">

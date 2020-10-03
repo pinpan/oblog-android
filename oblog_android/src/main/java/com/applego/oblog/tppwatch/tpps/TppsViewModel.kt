@@ -219,7 +219,7 @@ class TppsViewModel(
             val tppsResult = tppsRepository.loadTppsFromLocalDatasource()
             if (tppsResult is Success) {
                     _allItems.value = tppsResult.data
-                    _displayedItems.value = getTppsByGlobalFilter()
+                    _displayedItems.value = applyAllTppFilters()
                 } else {
                     //is Result.Idle -> TODO()
                     //is Result.Error -> TODO()
@@ -236,7 +236,7 @@ class TppsViewModel(
         wrapEspressoIdlingResource {
 
             viewModelScope.launch {
-                val tppsToShow = getTppsByGlobalFilter()
+                val tppsToShow = applyAllTppFilters()
                 _displayedItems.value = tppsToShow
 
                 _dataLoadingLocalDB.value = false
@@ -244,7 +244,7 @@ class TppsViewModel(
         }
     }
 
-    fun getTppsByGlobalFilter(): List<Tpp> {
+    fun applyAllTppFilters(): List<Tpp> {
         _dataLoadingLocalDB.value = true
 
         if (allItems.value.isNullOrEmpty()) {
@@ -255,7 +255,7 @@ class TppsViewModel(
 
         tppsToShow = filterTppsByUserInterest(tppsToShow, _searchFilter)
 
-        if (!_searchFilter.countries.isNullOrBlank() && !_searchFilter.countries.equals("<All EU countries>")) {
+        if (!_searchFilter.countries.isNullOrBlank() && !_searchFilter.countries.equals("EU")) {
             tppsToShow = filterTppsByCountry(tppsToShow, _searchFilter.countries)
         }
 
@@ -374,7 +374,7 @@ class TppsViewModel(
         }
 
         val filteredTpps = ArrayList<Tpp>()
-        if (service.isNullOrBlank() || service.equals("<All services>")) {
+        if (service.isNullOrBlank() || service.equals("ALL")) {
             filteredTpps.addAll(inputTpps)
         } else {
             val psdService = EbaService.findPsd2Service(service)
@@ -394,37 +394,37 @@ class TppsViewModel(
     fun filterTppsByCountry(country: String) {
         _searchFilter.countries = country
 
-        _displayedItems.value = getTppsByGlobalFilter()
+        _displayedItems.value = applyAllTppFilters()
     }
 
     fun filterFollowed(only: Boolean) {
         setFiltering(TppsFilterType.FOLLOWED)
 
-        _displayedItems.value = getTppsByGlobalFilter()
+        _displayedItems.value = applyAllTppFilters()
     }
 
     fun filterUsed(only: Boolean) {
         setFiltering(TppsFilterType.USED)
 
-        _displayedItems.value = getTppsByGlobalFilter()
+        _displayedItems.value = applyAllTppFilters()
     }
 
     fun filterRevoked(dofilter: Boolean) {
         setFiltering(TppsFilterType.REVOKED)
 
-        _displayedItems.value = getTppsByGlobalFilter()
+        _displayedItems.value = applyAllTppFilters()
     }
 
     fun filterRevokedOnly(only: Boolean) {
         setFiltering(TppsFilterType.REVOKED_ONLY)
 
-        _displayedItems.value = getTppsByGlobalFilter()
+        _displayedItems.value = applyAllTppFilters()
     }
 
     fun filterTppsByService(service: String) {
         _searchFilter.services = service
 
-        _displayedItems.value = getTppsByGlobalFilter()
+        _displayedItems.value = applyAllTppFilters()
     }
 
     fun showEditResultMessage(result: Int) {

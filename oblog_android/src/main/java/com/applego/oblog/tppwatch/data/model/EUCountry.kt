@@ -84,87 +84,87 @@ enum class EUCountry(val countryName: String, val isoCode:String, val order: Int
     /**
      * ISLAND
      */
-//    IS("ISLAND", 16),
+    IS("ISLAND", "IS",15),
 
     /**
      * Italy
      */
-    IT("Italy", "IT", 15),
+    IT("Italy", "IT", 16),
 
     /**
-     * Lithuania
+     * Liechtenstein
      */
-    //LI("Liechtenstein", 18),
+    LI("Liechtenstein", "LI",17),
 
     /**
      * Latvia
      */
-    LT("Lithuania", "LT", 16),
+    LT("Lithuania", "LT", 18),
 
     /**
      * Luxembourg
      */
-    LU("Luxembourg", "LU", 17),
+    LU("Luxembourg", "LU", 19),
 
     /**
      * Lithuania - Financial and Capital Market Commission
      */
-    LV("Latvia", "LV", 18),
+    LV("Latvia", "LV", 20),
 
     /**
      * Malta
      */
-    MT("Malta", "MT", 19),
+    MT("Malta", "MT", 21),
 
     /**
      * Netherlands
      */
-    NL("Netherlands", "NL", 20),
+    NL("Netherlands", "NL", 22),
 
     /**
      * Norway
      */
-    NO("Norway", "NO", 21),
+    NO("Norway", "NO", 23),
 
     /**
      * Poland
      */
-    PL("Poland", "PL", 22),
+    PL("Poland", "PL", 24),
 
     /**
      * Portugal
      */
-    PT("Portugal", "PT", 23),
+    PT("Portugal", "PT", 25),
 
     /**
      * Romania
      */
-    RO("Romania", "RO", 24),
+    RO("Romania", "RO", 26),
 
     /**
      * Sweden
      */
-    SE("Sweden", "SE",25),
+    SE("Sweden", "SE",27),
 
     /**
      * Slovenia
      */
-    SI("Slovenia", "SI", 26),
+    SI("Slovenia", "SI", 28),
 
     /**
      * Slovakia
      */
-    SK("Slovakia", "SK", 27),
+    SK("Slovakia", "SK", 29),
 
     /**
      * Spain
      */
-    ES("Spain", "ES", 28),
+    ES("Spain", "ES", 30),
 
     /**
      * Great Britain
      */
-    GB("United Kingdom", "UK",29),
+    GB("United Kingdom", "UK",31),
 
     /**
      * Used to indicate that no EU country was found
@@ -176,6 +176,7 @@ enum class EUCountry(val countryName: String, val isoCode:String, val order: Int
         val allEUCountriesMap = hashMapOf<String, EUCountry>()
         val allEUCountries = arrayListOf<EUCountry>()
         init {
+            allEUCountries.add(EU)
             allEUCountries.add(AT)
             allEUCountries.add(BE)
             allEUCountries.add(BG)
@@ -190,7 +191,9 @@ enum class EUCountry(val countryName: String, val isoCode:String, val order: Int
             allEUCountries.add(HR)
             allEUCountries.add(HU)
             allEUCountries.add(IE)
+            allEUCountries.add(IS)
             allEUCountries.add(IT)
+            allEUCountries.add(LI)
             allEUCountries.add(LT)
             allEUCountries.add(LU)
             allEUCountries.add(LV)
