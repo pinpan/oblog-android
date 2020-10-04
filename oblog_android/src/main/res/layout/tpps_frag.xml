@@ -46,7 +46,7 @@
                         android:weightSum="2">
                         <CheckBox
                             android:id="@+id/show_revoked_checkbox"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
@@ -54,10 +54,10 @@
                             android:onClick="@{(view) -> viewmodel.filterRevoked(((CompoundButton)view).isChecked())}"
                             android:text="@string/label_revoked"
                             android:textColor="@color/colorEUDarkBlue"
-                            android:textSize="11sp" />
+                            />
                         <CheckBox
                             android:id="@+id/show_revoked_only_checkbox"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
@@ -65,15 +65,13 @@
                             android:onClick="@{(view) -> viewmodel.filterRevokedOnly(((CompoundButton)view).isChecked())}"
                             android:text="@string/label_revoked_only"
                             android:textColor="@color/colorEUDarkBlue"
-                            android:textSize="11sp" />
+                            />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="@dimen/list_item_padding"
                         android:orientation="horizontal"
                         android:weightSum="2">
-
                         <Spinner
                             android:id="@+id/serarch_country"
                             android:layout_width="match_parent"
@@ -82,21 +80,18 @@
                             android:contentDescription="@string/label_home_country"
                             android:isScrollContainer="true"
                             android:nestedScrollingEnabled="true"
-                            android:padding="@dimen/list_item_padding"
                             android:scrollbarAlwaysDrawHorizontalTrack="true"
                             android:scrollbarAlwaysDrawVerticalTrack="true"
                             android:scrollbars="horizontal|vertical"
                             android:spinnerMode="dialog"
                              />
                         <Spinner
-                            android:id="@+id/search_role"
+                            android:id="@+id/search_by_service"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:contentDescription="@string/label_psd2_services"
                             android:isScrollContainer="true"
-                            android:nestedScrollingEnabled="true"
-                            android:padding="@dimen/list_item_padding"
                             android:scrollbarAlwaysDrawHorizontalTrack="true"
                             android:scrollbarAlwaysDrawVerticalTrack="true"
                             android:scrollbars="horizontal|vertical"
@@ -153,15 +148,15 @@
 
                     <ImageButton
                         android:id="@+id/btn_first"
-                        android:layout_width="24dp"
-                        android:layout_height="28dp"
+                        android:layout_width="48dp"
+                        android:layout_height="32dp"
                         android:layout_weight="1"
-                        android:layout_marginEnd="16sp"
                         app:srcCompat="@android:drawable/ic_media_previous" />
                     <ImageButton
                         android:id="@+id/btn_last"
-                        android:layout_width="24dp"
-                        android:layout_height="28dp"
+                        android:layout_width="48dp"
+                        android:layout_height="32dp"
+                        android:layout_marginStart="16sp"
                         android:layout_weight="1"
                         app:srcCompat="@android:drawable/ic_media_next" />
                 </LinearLayout>

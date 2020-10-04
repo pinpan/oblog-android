@@ -204,5 +204,6 @@
     <string name="country_uk">UK</string>
     <string name="label_entity_version">EBA entity version</string>
     <string name="resource_not_found">RESOURCE_NOT_FOUND</string>
+    <string name="palceholder">Palceholder</string>
 
 </resources>

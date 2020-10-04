@@ -36,7 +36,7 @@
             android:id="@+id/show_branches"
             android:checkable="true"
             android:checked="false"
-            android:title="@string/show_agents" />
+            android:title="@string/show_branches" />
         <item
             android:id="@+id/show_agents"
             android:checkable="true"

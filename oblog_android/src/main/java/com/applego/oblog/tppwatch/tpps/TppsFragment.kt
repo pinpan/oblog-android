@@ -203,7 +203,7 @@ class TppsFragment : Fragment() {
         })
 
         val services = context!!.resources.getTextArray(R.array.psd2_service_codes)
-        servicesSpinner = activity?.findViewById(R.id.search_role)!!
+        servicesSpinner = activity?.findViewById(R.id.search_by_service)!!
         val servicesAdapter = ServicesSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_item, servicesSpinner, psd2Servies)
         servicesSpinner.setAdapter(servicesAdapter);
 
