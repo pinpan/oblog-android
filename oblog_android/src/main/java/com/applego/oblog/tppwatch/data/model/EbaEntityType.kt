@@ -17,8 +17,7 @@ import java.util.*
  */
 
 enum class EbaEntityType(val code: String, val description: String, val order: Int) {
-
-    NONE("NONE", "No entity type specified initially.", 0),
+    ALL("ALL", "ALL entity types", 0),
 
     PSD_PI("PSD_PI", "Payment Institution.", 1),
     PSD_AISP("PSD_AISP", "Account Information Services Provider.", 2),
@@ -30,7 +29,9 @@ enum class EbaEntityType(val code: String, val description: String, val order: I
 
     PSD_BR("PSD_BR", "Branch of a payment institution, electronic money institution or account information service provider.", 8),
     PSD_AG("PSD_AG", "‘Agents' as legally defined in Article 4(38) of PSD2.", 9),
-    CREDIT_INSTITUTION("CI", "No entity type specified initially.", 10);
+    CREDIT_INSTITUTION("CI", "No entity type specified initially.", 10),
+
+    NONE("NONE", "No entity type specified initially.", 100);
 
     companion object {
         val allEntityTypesMap = HashMap<String, EbaEntityType>()

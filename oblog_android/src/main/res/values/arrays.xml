@@ -179,16 +179,26 @@
         <item>&lt;All EU countries&gt;</item>
     </string-array>
 
-    <string-array name="Introduction_titles">
+    <string-array name="introduction_titles">
         <item>Introduction</item>
         <item>Features</item>
         <item>Disclaimer</item>
     </string-array>
 
-    <string-array name="Onboarding_titles">
+    <string-array name="onboarding_titles">
         <item>Select account</item>
         <item>Home country</item>
         <item>Disclaimer</item>
     </string-array>
 
+    <string-array name="time_intervals">
+        <item>Since The Big Bang</item>
+        <item>This year</item>
+        <item>Previous year</item>
+        <item>Last year</item>
+        <item>Last six months</item>
+        <item>Last quarter</item>
+        <item>Last month</item>
+        <item>Last week</item>
+    </string-array>
 </resources>

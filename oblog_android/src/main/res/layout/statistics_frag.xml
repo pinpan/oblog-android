@@ -221,28 +221,46 @@
                     android:layout_marginBottom="5dp"
                     android:background="?android:attr/listDivider" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5sp"
+                    android:text="@{@string/statistic_graphs}"
+                    android:textStyle="bold"
+
+                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
+                    />
+                <!--android:textSize="14sp"-->
+
                 <LinearLayout
                     android:id="@+id/statistics_chart_type_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:weightSum="3"
                     android:orientation="horizontal"
                     >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5sp"
-                        android:text="@{@string/statistic_graphs}"
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
                     <Spinner
                         android:id="@+id/spinner_charttype"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:textSize="14sp" />
+                        android:layout_weight="1"
+                        android:entries="@array/chart_type_titles"
+                        android:contentDescription="@string/chart_type"
+                        android:spinnerMode="dialog"
+                        android:textAppearance="@style/TextAppearance.Compat.Notification"
+                        />
+                    <Spinner
+                        android:id="@+id/spinner_period"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/time_interval"
+                        android:entries="@array/time_intervals"
+                        android:spinnerMode="dialog"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Widget.PopupMenu.Small"
+                        />
                 </LinearLayout>
-<!--
-                android:background="@color/colorEULightGrey"
--->
+
                 <LinearLayout
                     android:id="@+id/chart_layout"
                     android:layout_width="match_parent"

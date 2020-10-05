@@ -1,18 +1,12 @@
 package com.applego.oblog.tppwatch.statistics
 
-import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
@@ -31,7 +25,6 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.formatter.ValueFormatter
-import java.util.*
 
 
 /**
@@ -51,6 +44,8 @@ class StatisticsFragment : Fragment() {
     private  var toolbarIcon: Drawable? = null
 
     private lateinit var chartTypesSpinner: Spinner
+
+    private lateinit var periodSpinner: Spinner
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,39 +69,22 @@ class StatisticsFragment : Fragment() {
         toolbar?.setNavigationIcon(toolbarIcon)
 
         chartTypesSpinner = activity?.findViewById(R.id.spinner_charttype)!!
-
-        val strings = context!!.resources.getTextArray(R.array.chart_type_titles)
-        val chartTypeAdapter = object: ArrayAdapter<CharSequence>(getActivity() as Context, R.layout.custom_spinner, 0, strings) {
-            override fun getDropDownView(
-                    position: Int,
-                    convertView: View?,
-                    parent: ViewGroup
-            ): View {
-                val view: TextView = super.getDropDownView(
-                        position,
-                        convertView,
-                        parent
-                ) as TextView
-
-                // set item text size
-                view.setTextSize(TypedValue.COMPLEX_UNIT_SP,11F)
-
-                // set selected item style
-                if (position == chartTypesSpinner.selectedItemPosition){
-                    view.background = ColorDrawable(resources.getColor(R.color.colorEULightGrey))
-                    view.setTextColor(resources.getColor(R.color.colorEUDarkBlue))
-                }
-
-                return view
-            }
-        }
-
-        chartTypeAdapter.setDropDownViewResource(R.layout.custom_spinner)
-        chartTypesSpinner.setAdapter(chartTypeAdapter);
         chartTypesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 val chartType = ChartType.valueOf(context?.resources?.getStringArray(R.array.chart_type_values)!![pos]);
-                setUpChart(chartType)
+                setUpChart(chartType, viewModel.currentPeriod.value)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        })
+
+        periodSpinner = activity?.findViewById(R.id.spinner_period)!!
+        periodSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+                val period = TimePeriod.getByOrdinalValue(pos);
+                setUpChart(viewModel.currentChartType.value, period)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -128,26 +106,27 @@ class StatisticsFragment : Fragment() {
     }
 
     private fun setUpChart() {
-        setUpChart(ChartType.PerCountry)
+        setUpChart(ChartType.PerCountry, viewModel.currentPeriod.value)
     }
 
-    private fun setUpChart(ct: ChartType) {
+    //private fun setUpChart(ct: ChartType) {
+    private fun setUpChart(ct: ChartType?, per: TimePeriod?) {
         var chartType = ct
         if (chartType == null) {
             chartType = ChartType.PerCountry
         }
-
         viewModel.setActualChartType(chartType)
+
+        var period = per
+        if (period == null) {
+            period = TimePeriod.SinceTheBigBang
+        }
+        viewModel.setCurrentPeriod(period)
 
         if (chart != null) {
             chart.setDrawValueAboveBar(true)
 
-            chart.data = BarData(when (chartType) {
-                ChartType.PerCountry -> viewModel.getTppsPerCountryDataSet()
-                ChartType.PerInstitutionType -> viewModel.getTppsPerInstitutionTypeDataSet()
-                ChartType.PerCountryChange -> viewModel.getTppsPerCountryChangeDataSet()
-                ChartType.PerInstitutionTypeChange -> viewModel.getTppsPerInstitutionTypeChangeDataSet()
-            })
+            chart.data = BarData( viewModel.getBarData() )
             chart.data.setValueTextSize(11f)
 
             val desc = Description()
@@ -159,17 +138,17 @@ class StatisticsFragment : Fragment() {
             xAxis.axisMinimum = 0f
             xAxis.granularity = 1f
             xAxis.labelCount = when (chartType) {
-                ChartType.PerCountryChange,
+                //ChartType.PerCountryChange,
                 ChartType.PerCountry -> allEUCountries.size
-                ChartType.PerInstitutionTypeChange,
+                //ChartType.PerInstitutionTypeChange,
                 ChartType.PerInstitutionType -> allEbaServies.size
             }
             xAxis.setValueFormatter(object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String? {
                     return when (chartType) {
-                        ChartType.PerCountryChange,
+                        //ChartType.PerCountryChange,
                         ChartType.PerCountry -> if (value.toInt() < allEUCountries.size) allEUCountries[value.toInt()].name else "N/A"
-                        ChartType.PerInstitutionTypeChange,
+                        //ChartType.PerInstitutionTypeChange,
                         ChartType.PerInstitutionType -> {
                             if (value.toInt() < allEntityTypes.size) {
                                 getEntityTypeShortCode(allEntityTypes[value.toInt()]?.code)
