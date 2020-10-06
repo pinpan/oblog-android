@@ -1,0 +1,352 @@
+Index: oblog_android/src/main/java/com/applego/oblog/tppwatch/data/model/EbaEntityType.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- oblog_android/src/main/java/com/applego/oblog/tppwatch/data/model/EbaEntityType.kt	(date 1601995093698)
++++ oblog_android/src/main/java/com/applego/oblog/tppwatch/data/model/EbaEntityType.kt	(date 1601995093698)
+@@ -15,7 +15,6 @@
+  * ‘Institutions entitled under national law to provide payment services' under Article 2(5) of PSD2;
+  * ‘Service providers excluded from the scope of PSD2' under points (i) and (ii) of point (k) and point (l) of Article 3 of PSD2.
+  */
+-// TODO: Find out what is a CIISP type according to EBA?
+ 
+ enum class EbaEntityType(val code: String, val description: String, val order: Int) {
+     ALL("ALL", "ALL entity types", 0),
+Index: oblog_android/src/main/java/com/applego/oblog/tppwatch/statistics/ChartType.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- oblog_android/src/main/java/com/applego/oblog/tppwatch/statistics/ChartType.kt	(date 1601995093731)
++++ oblog_android/src/main/java/com/applego/oblog/tppwatch/statistics/ChartType.kt	(date 1601995093731)
+@@ -2,8 +2,7 @@
+ 
+ enum class ChartType (val desc: String) {
+     PerCountry("Tpps per country"),
+-    PerInstitutionType("Tpps per institution type");
+-    //,
++    PerInstitutionType("Tpps per institution type"); //,
+     //PerCountryChange("Tpps per country change"),
+     //PerInstitutionTypeChange("tpps per institution type change");
+ }
+Index: oblog_android/src/main/java/com/applego/oblog/tppwatch/statistics/StatisticsFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- oblog_android/src/main/java/com/applego/oblog/tppwatch/statistics/StatisticsFragment.kt	(date 1601995093733)
++++ oblog_android/src/main/java/com/applego/oblog/tppwatch/statistics/StatisticsFragment.kt	(date 1601995093733)
+@@ -15,6 +15,7 @@
+ import com.applego.oblog.tppwatch.R
+ import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountries
+ import com.applego.oblog.tppwatch.data.model.EbaEntityType.Companion.allEntityTypes
++import com.applego.oblog.tppwatch.data.model.EbaService.Companion.allEbaServies
+ import com.applego.oblog.tppwatch.databinding.StatisticsFragBinding
+ import com.applego.oblog.tppwatch.util.getViewModelFactory
+ import com.github.mikephil.charting.charts.BarChart
+@@ -70,11 +71,8 @@
+         chartTypesSpinner = activity?.findViewById(R.id.spinner_charttype)!!
+         chartTypesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+-                var chartType = ChartType.valueOf(context?.resources?.getStringArray(R.array.chart_type_values)!![pos]);
+-                if (chartType == null) {
+-                    chartType = ChartType.PerCountry
+-                }
+-                viewModel.setActualChartType(chartType)
++                val chartType = ChartType.valueOf(context?.resources?.getStringArray(R.array.chart_type_values)!![pos]);
++                setUpChart(chartType, viewModel.currentPeriod.value)
+             }
+ 
+             override fun onNothingSelected(parent: AdapterView<*>?) {
+@@ -85,11 +83,8 @@
+         periodSpinner = activity?.findViewById(R.id.spinner_period)!!
+         periodSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+-                var period = TimePeriod.getByOrdinalValue(pos);
+-                if (period == null) {
+-                    period = TimePeriod.SinceTheBigBang
+-                }
+-                viewModel.setCurrentPeriod(period)
++                val period = TimePeriod.getByOrdinalValue(pos);
++                setUpChart(viewModel.currentChartType.value, period)
+             }
+ 
+             override fun onNothingSelected(parent: AdapterView<*>?) {
+@@ -114,7 +109,19 @@
+         setUpChart(ChartType.PerCountry, viewModel.currentPeriod.value)
+     }
+ 
++    //private fun setUpChart(ct: ChartType) {
+     private fun setUpChart(ct: ChartType?, per: TimePeriod?) {
++        var chartType = ct
++        if (chartType == null) {
++            chartType = ChartType.PerCountry
++        }
++        viewModel.setActualChartType(chartType)
++
++        var period = per
++        if (period == null) {
++            period = TimePeriod.SinceTheBigBang
++        }
++        viewModel.setCurrentPeriod(period)
+ 
+         if (chart != null) {
+             chart.setDrawValueAboveBar(true)
+@@ -122,29 +129,34 @@
+             chart.data = BarData( viewModel.getBarData() )
+             chart.data.setValueTextSize(11f)
+ 
+-            var chartType = viewModel.currentChartType.value
+             val desc = Description()
+-            desc.text = chartType?.desc
++            desc.text = chartType.desc
+             chart.setDescription(desc)
+ 
+             val xAxis: XAxis = chart.getXAxis()
+             xAxis.position = XAxisPosition.BOTH_SIDED
+             xAxis.axisMinimum = 0f
+             xAxis.granularity = 1f
+-            xAxis.labelCount = if (ChartType.PerInstitutionType.equals(chartType)) allEntityTypes.size else allEUCountries.size
++            xAxis.labelCount = when (chartType) {
++                //ChartType.PerCountryChange,
++                ChartType.PerCountry -> allEUCountries.size
++                //ChartType.PerInstitutionTypeChange,
++                ChartType.PerInstitutionType -> allEbaServies.size
++            }
+             xAxis.setValueFormatter(object : ValueFormatter() {
+                 override fun getFormattedValue(value: Float): String? {
+-                    if (ChartType.PerInstitutionType.equals(chartType)) {
+-                        return if (value.toInt() < allEntityTypes.size)
+-                                   getEntityTypeShortCode(allEntityTypes[value.toInt()]?.code)
+-                               else "N/A"
+-                    } else if (ChartType.PerCountry.equals(chartType)) {
+-                        return if (value.toInt() < allEUCountries.size)
+-                                   allEUCountries[value.toInt()].name
+-                               else "N/A"
++                    return when (chartType) {
++                        //ChartType.PerCountryChange,
++                        ChartType.PerCountry -> if (value.toInt() < allEUCountries.size) allEUCountries[value.toInt()].name else "N/A"
++                        //ChartType.PerInstitutionTypeChange,
++                        ChartType.PerInstitutionType -> {
++                            if (value.toInt() < allEntityTypes.size) {
++                                getEntityTypeShortCode(allEntityTypes[value.toInt()]?.code)
++                            } else {
++                                "N/A"
++                            }
++                        }
+                     }
+-
+-                    return "N/A"
+                 }
+             })
+             //countryChart.xAxis.labelRotationAngle = 45f
+Index: oblog_android/src/main/java/com/applego/oblog/tppwatch/statistics/StatisticsViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- oblog_android/src/main/java/com/applego/oblog/tppwatch/statistics/StatisticsViewModel.kt	(date 1601995093734)
++++ oblog_android/src/main/java/com/applego/oblog/tppwatch/statistics/StatisticsViewModel.kt	(date 1601995093734)
+@@ -9,7 +9,6 @@
+ import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountries
+ import com.applego.oblog.tppwatch.data.model.EbaEntityType
+ import com.applego.oblog.tppwatch.data.model.EbaEntityType.Companion.allEntityTypes
+-import com.applego.oblog.tppwatch.data.model.InstType
+ import com.applego.oblog.tppwatch.data.model.Tpp
+ import com.applego.oblog.tppwatch.data.repository.TppsRepository
+ import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
+@@ -75,9 +74,6 @@
+     private val _totalPISPTpps = MutableLiveData<Int>()
+     val totalPISPTpps: MutableLiveData<Int> = _totalPISPTpps
+ 
+-    private val _totalCIISPTpps = MutableLiveData<Int>()
+-    val totalCIISPTpps: MutableLiveData<Int> = _totalCIISPTpps
+-
+     private val _totalEMITpps = MutableLiveData<Int>()
+     val totalEMITpps: MutableLiveData<Int> = _totalEMITpps
+ 
+@@ -88,15 +84,16 @@
+     val followedTppsPercent: LiveData<Float> = _followedTppsPercent
+ 
+     private val tppsPerCountrySet = MutableLiveData<ArrayList<BarEntry>>()
++    //private val tppsPerCountrySet: LiveData<ArrayList<BarEntry>> = _tppsPerCountrySet
+ 
+-    //private val tppsPerCountryChangeSet = MutableLiveData<ArrayList<BarEntry>>()
++    private val tppsPerCountryChangeSet = MutableLiveData<ArrayList<BarEntry>>()
++    //private val tppsPerCountryChangeSet: LiveData<ArrayList<BarEntry>> = _tppsPerCountryChangeSet
+ 
+     private val tppsPerInstitutionTypeSet = MutableLiveData<ArrayList<BarEntry>>()
+-
+-    private val barEntriesMap = MutableLiveData<Map<Pair<InstType, TimePeriod>, List<BarEntry>>>()
++    //private val tppsPerInstitutionTypeSet: LiveData<ArrayList<BarEntry>> = _tppsPerInstitutionTypeSet
+ 
+-
+-    //private val tppsPerInstitutionTypeChangeSet = MutableLiveData<ArrayList<BarEntry>>()
++    private val tppsPerInstitutionTypeChangeSet = MutableLiveData<ArrayList<BarEntry>>()
++    //private val tppsPerInstitutionTypeChangeSet: LiveData<ArrayList<BarEntry>> = _tppsPerInstitutionTypeChangeSet
+ 
+     private var usedTpps = 0
+ 
+@@ -149,7 +146,6 @@
+     private fun calculateEntityTypeStatistics(tpps: List<Tpp>?) {
+         var aispCounter = 0
+         var pispCounter = 0
+-        var ciispCounter = 0
+         var emiCounter = 0
+ 
+         var anYearOldTpps = 0
+@@ -181,9 +177,9 @@
+         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+ 
+         val tppsPerCountryArray = Array(allEUCountries.size-1) { 0 }
+-        //val tppsPerCountryMonthlyChangeArray = Array(allEUCountries.size) { 0 }
++        val tppsPerCountryMonthlyChangeArray = Array(allEUCountries.size) { 0 }
+         val tppsPerInstitutionTypeArray = Array(allEntityTypes.size) { 0 }
+-        //val tppsPerInstitutionTypeChangeArray = Array(allEntityTypes.size) { 0 }
++        val tppsPerInstitutionTypeChangeArray = Array(allEntityTypes.size) { 0 }
+ 
+         tpps?.forEach {
+             when (it.ebaEntity.entityType) {
+@@ -203,16 +199,13 @@
+                     anYearOldTpps++
+                 }
+ 
+-                if (currentPeriod != TimePeriod.SinceTheBigBang) {
+-                    if (cal.time.after(aMonthAgo) && cal.time.before(now)) {
+-                        aMonthOldTpps++
+-                        /*if (euCountry != null) {
++                if (cal.time.after(aMonthAgo) && cal.time.before(now)) {
++                    aMonthOldTpps++
++                    if (euCountry != null) {
+                         tppsPerCountryMonthlyChangeArray[EUCountry.valueOf(euCountry).order - 1] = tppsPerCountryArray[EUCountry.valueOf(euCountry).order - 1]+1
+                     }
+-
+                     if (!EbaEntityType.NONE.equals(it.ebaEntity.entityType)) {
+                         tppsPerInstitutionTypeChangeArray[it.ebaEntity.entityType.order - 1] = tppsPerInstitutionTypeChangeArray[it.ebaEntity.entityType.order - 1] + 1
+-                    }*/
+                     }
+                 }
+ 
+@@ -236,12 +229,15 @@
+ 
+         _totalAISPTpps.value = aispCounter
+         _totalPISPTpps.value = pispCounter
+-        _totalCIISPTpps.value = ciispCounter
+         _totalEMITpps.value = emiCounter
+ 
+-        addTppsPerCountryBarEntries(tppsPerCountryArray)
+-        addTppsPerInstitutionTypeBarEntries(tppsPerInstitutionTypeArray)
+-/*
++        var num1 =  tppsPerCountryArray.size
++        tppsPerCountrySet.value = ArrayList<BarEntry>()
++        allEUCountries.forEach {
++            if (it.order != 0) {
++                tppsPerCountrySet.value?.add(BarEntry((--num1).toFloat(), tppsPerCountryArray[num1].toFloat()))
++            }
++        }
+ 
+         num1 = 0
+         tppsPerCountryChangeSet.value = ArrayList<BarEntry>()
+@@ -250,33 +246,18 @@
+             tppsPerCountryChangeSet.value?.add(be1)
+         }
+ 
++        num1 = 0
++        tppsPerInstitutionTypeSet.value = ArrayList<BarEntry>()
++        allEntityTypes.forEach {
++            val be1 = BarEntry((num1++).toFloat(), tppsPerInstitutionTypeArray[it.order-1].toFloat())
++            tppsPerInstitutionTypeSet.value?.add(be1)
++        }
+         num1 = 0
+         tppsPerInstitutionTypeChangeSet.value = ArrayList<BarEntry>()
+         allEntityTypes.forEach {
+             val be1 = BarEntry((num1++).toFloat(), tppsPerInstitutionTypeChangeArray[it.order-1].toFloat())
+             tppsPerInstitutionTypeChangeSet.value?.add(be1)
+         }
+-*/
+-    }
+-
+-    private fun addTppsPerInstitutionTypeBarEntries(tppsPerInstitutionTypeArray: Array<Int>) {
+-        var num11 = 0
+-        tppsPerInstitutionTypeSet.value = ArrayList<BarEntry>()
+-        allEntityTypes.forEach {
+-            val be1 = BarEntry((num11++).toFloat(), tppsPerInstitutionTypeArray[it.order - 1].toFloat())
+-            tppsPerInstitutionTypeSet.value?.add(be1)
+-        }
+-    }
+-
+-    private fun addTppsPerCountryBarEntries(tppsPerCountryArray: Array<Int>): Int {
+-        var num1 = tppsPerCountryArray.size
+-        tppsPerCountrySet.value = ArrayList<BarEntry>()
+-        allEUCountries.forEach {
+-            if (it.order != 0) {
+-                tppsPerCountrySet.value?.add(BarEntry((--num1).toFloat(), tppsPerCountryArray[num1].toFloat()))
+-            }
+-        }
+-        return num1
+     }
+ 
+     fun getTppsPerCountryDataSet(): BarDataSet {
+@@ -297,6 +278,24 @@
+         return barDataSet1
+     }
+ 
++    /*fun getTppsPerCountryChangeDataSet(): BarDataSet {
++        val barDataSet1 = BarDataSet(tppsPerCountryChangeSet.value, "TPPs per EU country change")
++        barDataSet1.setValueTypeface(Typeface.SANS_SERIF);
++        barDataSet1.setValueTextSize(4f)
++        barDataSet1.setColors(*ColorTemplate.COLORFUL_COLORS, *ColorTemplate.JOYFUL_COLORS, *ColorTemplate.PASTEL_COLORS, *ColorTemplate.LIBERTY_COLORS, *ColorTemplate.MATERIAL_COLORS)
++
++        return barDataSet1
++    }*/
++
++    /*fun getTppsPerInstitutionTypeChangeDataSet(): BarDataSet {
++        val barDataSet1 = BarDataSet(tppsPerInstitutionTypeChangeSet.value, "TPPs per institution type change")
++        barDataSet1.setValueTypeface(Typeface.SANS_SERIF);
++        barDataSet1.setValueTextSize(4f)
++        barDataSet1.setColors(*ColorTemplate.COLORFUL_COLORS, *ColorTemplate.JOYFUL_COLORS, *ColorTemplate.PASTEL_COLORS, *ColorTemplate.LIBERTY_COLORS, *ColorTemplate.MATERIAL_COLORS)
++
++        return barDataSet1
++    }*/
++
+     fun setActualChartType(chartType: ChartType) {
+         _currentChartType.value = chartType
+     }
+@@ -305,11 +304,16 @@
+         _currentPeriod.value = period
+     }
+ 
++
++
++
+     fun getBarData(): IBarDataSet? {
+-        if (ChartType.PerInstitutionType.equals(currentChartType.value)) {
+-             return getTppsPerInstitutionTypeDataSet()
++        when (currentChartType.value) {
++            ChartType.PerCountry -> getTppsPerCountryDataSet()
++            ChartType.PerInstitutionType -> getTppsPerInstitutionTypeDataSet()
++            //ChartType.PerCountryChange -> viewModel.getTppsPerCountryChangeDataSet()
++            //ChartType.PerInstitutionTypeChange -> viewModel.getTppsPerInstitutionTypeChangeDataSet()
+         }
+-        return getTppsPerCountryDataSet()
++        TODO("Not yet implemented")
+     }
+-
+ }
+Index: oblog_android/src/prod/java/com/applego/oblog/tppwatch/data/TppFilter.kt
+===================================================================
+--- oblog_android/src/prod/java/com/applego/oblog/tppwatch/data/TppFilter.kt	(date 0)
++++ oblog_android/src/prod/java/com/applego/oblog/tppwatch/data/TppFilter.kt	(date 0)
+@@ -0,0 +1,11 @@
++package com.applego.oblog.tppwatch.data
++
++import com.applego.oblog.tppwatch.data.model.Psd2Service
++
++class TppFilter (
++    val name: String,
++    val country: String,
++    val service: Psd2Service) {
++
++
++}

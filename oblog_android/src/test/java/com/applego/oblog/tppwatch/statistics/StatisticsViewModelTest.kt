@@ -50,7 +50,7 @@ class StatisticsViewModelTest {
         // Given an initialized StatisticsViewModel with no tpps
 
         // When loading of Tpps is requested
-        statisticsViewModel.start()
+        statisticsViewModel.refresh()
 
         // Then the results are empty
         assertThat(LiveDataTestUtil.getValue(statisticsViewModel.empty)).isTrue()
@@ -70,16 +70,12 @@ class StatisticsViewModelTest {
         tppsRepository.addTpps(Tpp(tppEntity1, NcaEntity()), Tpp(tppEntity2, NcaEntity()), Tpp(tppEntity3, NcaEntity()), Tpp(tppEntity4, NcaEntity()))
 
         // When loading of Tpps is requested
-        statisticsViewModel.start()
+        statisticsViewModel.updateModel()
 
         // Then the results are not empty
         assertThat(LiveDataTestUtil.getValue(statisticsViewModel.empty))
             .isFalse()
-        assertThat(LiveDataTestUtil.getValue(statisticsViewModel.usedTppsPercent))
-            .isEqualTo(25f)
-        assertThat(LiveDataTestUtil.getValue(statisticsViewModel.followedTppsPercent))
-            .isEqualTo(75f)
-    }
+        }
 
     @Test
     fun loadStatisticsWhenTppsAreUnavailable_CallErrorToDisplay() =
@@ -94,7 +90,7 @@ class StatisticsViewModelTest {
             )
 
             // When statistics are loaded
-            errorViewModel.start()
+            errorViewModel.updateModel()
 
             // Then an error message is shown
             assertThat(LiveDataTestUtil.getValue(errorViewModel.empty)).isTrue()

@@ -15,7 +15,6 @@ import androidx.fragment.app.viewModels
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountries
 import com.applego.oblog.tppwatch.data.model.EbaEntityType.Companion.allEntityTypes
-import com.applego.oblog.tppwatch.data.model.EbaService.Companion.allEbaServies
 import com.applego.oblog.tppwatch.databinding.StatisticsFragBinding
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.github.mikephil.charting.charts.BarChart
@@ -71,8 +70,12 @@ class StatisticsFragment : Fragment() {
         chartTypesSpinner = activity?.findViewById(R.id.spinner_charttype)!!
         chartTypesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                val chartType = ChartType.valueOf(context?.resources?.getStringArray(R.array.chart_type_values)!![pos]);
-                setUpChart(chartType, viewModel.currentPeriod.value)
+                var chartType = ChartType.valueOf(context?.resources?.getStringArray(R.array.chart_type_values)!![pos]);
+                if (chartType == null) {
+                    chartType = ChartType.PerCountry
+                }
+                viewModel.setActualChartType(chartType)
+                setUpChart()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -83,8 +86,12 @@ class StatisticsFragment : Fragment() {
         periodSpinner = activity?.findViewById(R.id.spinner_period)!!
         periodSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                val period = TimePeriod.getByOrdinalValue(pos);
-                setUpChart(viewModel.currentChartType.value, period)
+                var period = TimePeriod.getByOrdinalValue(pos);
+                if (period == null) {
+                    period = TimePeriod.SinceTheBigBang
+                }
+                viewModel.setCurrentPeriod(period)
+                setUpChart()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -92,7 +99,7 @@ class StatisticsFragment : Fragment() {
             }
         })
 
-        viewModel.start()
+        viewModel.updateModel()
     }
 
     override fun onResume() {
@@ -109,19 +116,7 @@ class StatisticsFragment : Fragment() {
         setUpChart(ChartType.PerCountry, viewModel.currentPeriod.value)
     }
 
-    //private fun setUpChart(ct: ChartType) {
     private fun setUpChart(ct: ChartType?, per: TimePeriod?) {
-        var chartType = ct
-        if (chartType == null) {
-            chartType = ChartType.PerCountry
-        }
-        viewModel.setActualChartType(chartType)
-
-        var period = per
-        if (period == null) {
-            period = TimePeriod.SinceTheBigBang
-        }
-        viewModel.setCurrentPeriod(period)
 
         if (chart != null) {
             chart.setDrawValueAboveBar(true)
@@ -129,34 +124,29 @@ class StatisticsFragment : Fragment() {
             chart.data = BarData( viewModel.getBarData() )
             chart.data.setValueTextSize(11f)
 
+            var chartType = viewModel.currentChartType.value
             val desc = Description()
-            desc.text = chartType.desc
+            desc.text = chartType?.desc
             chart.setDescription(desc)
 
             val xAxis: XAxis = chart.getXAxis()
             xAxis.position = XAxisPosition.BOTH_SIDED
             xAxis.axisMinimum = 0f
             xAxis.granularity = 1f
-            xAxis.labelCount = when (chartType) {
-                //ChartType.PerCountryChange,
-                ChartType.PerCountry -> allEUCountries.size
-                //ChartType.PerInstitutionTypeChange,
-                ChartType.PerInstitutionType -> allEbaServies.size
-            }
+            xAxis.labelCount = if (ChartType.PerInstitutionType.equals(chartType)) allEntityTypes.size else allEUCountries.size
             xAxis.setValueFormatter(object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String? {
-                    return when (chartType) {
-                        //ChartType.PerCountryChange,
-                        ChartType.PerCountry -> if (value.toInt() < allEUCountries.size) allEUCountries[value.toInt()].name else "N/A"
-                        //ChartType.PerInstitutionTypeChange,
-                        ChartType.PerInstitutionType -> {
-                            if (value.toInt() < allEntityTypes.size) {
-                                getEntityTypeShortCode(allEntityTypes[value.toInt()]?.code)
-                            } else {
-                                "N/A"
-                            }
-                        }
+                    if (ChartType.PerInstitutionType.equals(chartType)) {
+                        return if (value.toInt() < allEntityTypes.size)
+                                   getEntityTypeShortCode(allEntityTypes[value.toInt()]?.code)
+                               else "N/A"
+                    } else if (ChartType.PerCountry.equals(chartType)) {
+                        return if (value.toInt() < allEUCountries.size-1)
+                                   allEUCountries[value.toInt() + 1].name
+                               else "N/A"
                     }
+
+                    return "N/A"
                 }
             })
             //countryChart.xAxis.labelRotationAngle = 45f
