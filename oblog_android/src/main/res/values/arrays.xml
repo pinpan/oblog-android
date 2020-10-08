@@ -100,8 +100,6 @@
     <string-array name="chart_type_titles">
         <item>Tpps per country</item>
         <item>Per institution type</item>
-        <!--<item>Per country change</item>
-        <item>Per institution type change</item>-->
     </string-array>
 
     <string-array name="chart_type_values">

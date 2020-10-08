@@ -92,7 +92,7 @@ class StatisticsFragment : Fragment() {
 
                 // set selected item style
                 if (position == chartTypesSpinner.selectedItemPosition){
-                    view.background = ColorDrawable(resources.getColor(R.color.colorEULightGrey))
+                    view.background = ColorDrawable(resources.getColor(R.color.colorEUGrey))
                     view.setTextColor(resources.getColor(R.color.colorEUDarkBlue))
                 }
 
@@ -104,6 +104,7 @@ class StatisticsFragment : Fragment() {
         chartTypesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 val chartType = ChartType.valueOf(context?.resources?.getStringArray(R.array.chart_type_values)!![pos]);
+                viewModel.setCurrentChartType(chartType)
                 setUpChart(chartType, viewModel.currentPeriod.value)
             }
 
@@ -111,20 +112,6 @@ class StatisticsFragment : Fragment() {
                 TODO("Not yet implemented")
             }
         })
-
-/*
-        chartTypesSpinner = activity?.findViewById(R.id.spinner_charttype)!!
-        chartTypesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                val chartType = ChartType.valueOf(context?.resources?.getStringArray(R.array.chart_type_values)!![pos]);
-                setUpChart(chartType, viewModel.currentPeriod.value)
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
-        })
-*/
 
         periodSpinner = activity?.findViewById(R.id.spinner_period)!!
         val timePeriods = context!!.resources.getTextArray(R.array.time_intervals)
@@ -144,8 +131,8 @@ class StatisticsFragment : Fragment() {
                 view.setTextSize(TypedValue.COMPLEX_UNIT_SP,12F)
 
                 // set selected item style
-                if (position == periodSpinner.selectedItemPosition){
-                    view.background = ColorDrawable(resources.getColor(R.color.colorEULightGrey))
+                if (position == periodSpinner.selectedItemPosition) {
+                    view.background = ColorDrawable(resources.getColor(R.color.colorEUGrey))
                     view.setTextColor(resources.getColor(R.color.colorEUDarkBlue))
                 }
 
@@ -157,6 +144,7 @@ class StatisticsFragment : Fragment() {
         periodSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 val timePeriod = /*timePeriods[pos]*/ TimePeriod.getByOrdinalValue(pos);
+                viewModel.setCurrentPeriod(timePeriod)
                 setUpChart(viewModel.currentChartType.value, timePeriod)
             }
 
@@ -164,20 +152,6 @@ class StatisticsFragment : Fragment() {
                 TODO("Not yet implemented")
             }
         })
-
-
-/*
-        periodSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                val period = TimePeriod.getByOrdinalValue(pos);
-                setUpChart(viewModel.currentChartType.value, period)
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
-        })
-*/
 
         viewModel.updateModel()
     }
@@ -196,13 +170,12 @@ class StatisticsFragment : Fragment() {
         setUpChart(ChartType.PerCountry, viewModel.currentPeriod.value)
     }
 
-    //private fun setUpChart(ct: ChartType) {
     private fun setUpChart(ct: ChartType?, per: TimePeriod?) {
         var chartType = ct
         if (chartType == null) {
             chartType = ChartType.PerCountry
         }
-        viewModel.setActualChartType(chartType)
+        viewModel.setCurrentChartType(chartType)
 
         var period = per
         if (period == null) {
@@ -225,17 +198,13 @@ class StatisticsFragment : Fragment() {
             xAxis.axisMinimum = 0f
             xAxis.granularity = 1f
             xAxis.labelCount = when (chartType) {
-                //ChartType.PerCountryChange,
                 ChartType.PerCountry -> allEUCountries.size
-                //ChartType.PerInstitutionTypeChange,
                 ChartType.PerInstitutionType -> allEbaServies.size
             }
             xAxis.setValueFormatter(object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String? {
                     return when (chartType) {
-                        //ChartType.PerCountryChange,
                         ChartType.PerCountry -> if (value.toInt() < allEUCountries.size) allEUCountries[value.toInt()].name else "N/A"
-                        //ChartType.PerInstitutionTypeChange,
                         ChartType.PerInstitutionType -> {
                             if (value.toInt() < allEntityTypes.size) {
                                 getEntityTypeShortCode(allEntityTypes[value.toInt()]?.code)
@@ -246,7 +215,6 @@ class StatisticsFragment : Fragment() {
                     }
                 }
             })
-            //countryChart.xAxis.labelRotationAngle = 45f
 
             val l: Legend = chart.getLegend()
             l.setEnabled(false)
@@ -263,10 +231,4 @@ class StatisticsFragment : Fragment() {
             code
         }
     }
-
-    /*fun showPsd2Only() {
-        if (viewModel.psd2Only?.value ?: false) {
-            viewModel.setActualChartType()
-        }
-    }*/
 }

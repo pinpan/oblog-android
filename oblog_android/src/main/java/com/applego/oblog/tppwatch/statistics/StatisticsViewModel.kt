@@ -98,6 +98,7 @@ class StatisticsViewModel(
         sinceTheBigBang = cal.time
 
         // TimePeriod.ThisYear
+        cal = Calendar.getInstance()
         cal.set(Calendar.MONTH, Calendar.JANUARY)
         cal.set(Calendar.DAY_OF_MONTH, 1)
         thisYear = cal.time
@@ -111,17 +112,17 @@ class StatisticsViewModel(
 
         // TimePeriod.LastYear
         cal = Calendar.getInstance()
-        cal.roll(Calendar.YEAR, -1)
+        cal.add(Calendar.YEAR, -1)
         lastYear = cal.time
 
         // TimePeriod.LastSixMonths
         cal = Calendar.getInstance()
-        cal.roll(Calendar.WEEK_OF_YEAR, -1)
+        cal.add(Calendar.MONTH, -6)
         lastSixMonths = cal.time
 
         // TimePeriod.LastQuarter
         cal = Calendar.getInstance()
-        cal.roll(Calendar.WEEK_OF_YEAR, -1)
+        cal.add(Calendar.MONTH, -3)
         lastQuarter = cal.time
 
         // TimePeriod.LastMonth
@@ -207,8 +208,6 @@ class StatisticsViewModel(
         _totalTpps.value = loadedTpps.size
         _empty.value = loadedTpps.isNullOrEmpty()
 
-        //val tppsPerCountryArray = Array(allEUCountries.size-1) { 0 }
-        //val tppsPerInstitutionTypeArray = Array(allEntityTypes.size) { 0 }
         var tppsStatisticsArray: Array<Int>? = null
         when (currentChartType.value) {
             ChartType.PerCountry -> {
@@ -268,7 +267,6 @@ class StatisticsViewModel(
         }
 
         addBarEntries(barEntries, tppsStatisticsArray)
-        //addTppsPerInstitutionTypeBarEntries(tppsPerInstitutionTypeArray)
 
         _dataLoading.value = false
     }
@@ -298,47 +296,7 @@ class StatisticsViewModel(
         }
     }
 
-/*
-        private fun addTppsPerInstitutionTypeBarEntries(tppsPerInstitutionTypeArray: Array<Int>) {
-            var num11 = 0
-            tppsPerInstitutionTypeSet.value = ArrayList<BarEntry>()
-            allEntityTypes.forEach {
-                val be1 = BarEntry((num11++).toFloat(), tppsPerInstitutionTypeArray[it.order - 1].toFloat())
-                tppsPerInstitutionTypeSet.value?.add(be1)
-            }
-        }
-
-        private fun addTppsPerCountryBarEntries(tppsPerCountryArray: Array<Int>): Int {
-            var num1 = tppsPerCountryArray.size
-            tppsPerCountrySet.value = ArrayList<BarEntry>()
-            allEUCountries.forEach {
-                if (it.order != tppsPerCountryArray.size) {
-                    tppsPerCountrySet.value?.add(BarEntry((--num1).toFloat(), tppsPerCountryArray[num1].toFloat()))
-                }
-            }
-            return num1
-        }
-
-        fun getTppsPerCountryDataSet(): BarDataSet {
-            val barDataSet1 = BarDataSet(tppsPerCountrySet.value, "TPPs per EU country")
-            barDataSet1.setValueTypeface(Typeface.SANS_SERIF);
-            barDataSet1.setValueTextSize(4f)
-            barDataSet1.setColors(*ColorTemplate.COLORFUL_COLORS, *ColorTemplate.JOYFUL_COLORS, *ColorTemplate.PASTEL_COLORS, *ColorTemplate.LIBERTY_COLORS, *ColorTemplate.MATERIAL_COLORS)
-
-            return barDataSet1
-        }
-
-        fun getTppsPerInstitutionTypeDataSet(): BarDataSet {
-            val barDataSet1 = BarDataSet(tppsPerInstitutionTypeSet.value, "TPPs per institution type")
-            barDataSet1.setValueTypeface(Typeface.SANS_SERIF);
-            barDataSet1.setValueTextSize(4f)
-            barDataSet1.setColors(*ColorTemplate.COLORFUL_COLORS, *ColorTemplate.JOYFUL_COLORS, *ColorTemplate.PASTEL_COLORS, *ColorTemplate.LIBERTY_COLORS, *ColorTemplate.MATERIAL_COLORS)
-
-            return barDataSet1
-        }
-
-    */
-    fun setActualChartType(chartType: ChartType) {
+    fun setCurrentChartType(chartType: ChartType) {
         _currentChartType.value = chartType
         computeStatistics()
     }
@@ -366,10 +324,5 @@ class StatisticsViewModel(
         barDataSet1.setColors(*ColorTemplate.COLORFUL_COLORS, *ColorTemplate.JOYFUL_COLORS, *ColorTemplate.PASTEL_COLORS, *ColorTemplate.LIBERTY_COLORS, *ColorTemplate.MATERIAL_COLORS)
 
         return barDataSet1
-
-        /*if (ChartType.PerInstitutionType.equals(currentChartType.value)) {
-             return getTppsPerInstitutionTypeDataSet()
-        }
-        return getTppsPerCountryDataSet()*/
     }
 }
