@@ -9,7 +9,6 @@ import com.applego.oblog.tppwatch.data.model.EUCountry
 import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountries
 import com.applego.oblog.tppwatch.data.model.EbaEntityType
 import com.applego.oblog.tppwatch.data.model.EbaEntityType.Companion.allEntityTypes
-import com.applego.oblog.tppwatch.data.model.InstType
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
@@ -28,6 +27,17 @@ class StatisticsViewModel(
     private val tppsRepository: TppsRepository
 ) : ViewModel() {
 
+    var sinceTheBigBang: Date? = null
+    var thisYear: Date? = null
+    var previousYear: Date? = null
+    var lastYear: Date? = null
+    var lastSixMonths: Date? = null
+    var lastQuarter: Date? = null
+    var lastMonth: Date? = null
+    var lastWeek: Date? = null
+
+    private val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+
     private var loadedTpps: List<Tpp> = emptyList()
 
     private val _dataLoading = MutableLiveData<Boolean>()
@@ -36,9 +46,6 @@ class StatisticsViewModel(
     private val _error = MutableLiveData<Boolean>()
     val error: LiveData<Boolean> = _error
 
-    /**
-     * Controls whether the stats are shown or a "No data" message.
-     */
     private val _empty = MutableLiveData<Boolean>()
     val empty: LiveData<Boolean> = _empty
 
@@ -71,7 +78,6 @@ class StatisticsViewModel(
 
     private val tppsPerCountrySet = MutableLiveData<ArrayList<BarEntry>>()
     private val tppsPerInstitutionTypeSet = MutableLiveData<ArrayList<BarEntry>>()
-    private val barEntriesMap = MutableLiveData<Map<Pair<InstType, TimePeriod>, List<BarEntry>>>()
 
     private val _currentChartType = MutableLiveData<ChartType>(ChartType.PerCountry)
     val currentChartType: LiveData<ChartType> = _currentChartType
@@ -79,22 +85,76 @@ class StatisticsViewModel(
     private val _currentPeriod = MutableLiveData<TimePeriod>(TimePeriod.SinceTheBigBang)
     val currentPeriod : LiveData<TimePeriod> = _currentPeriod
 
-    /*
-        private val _perServiceTppsMap = MutableLiveData<Map<String, Int>>()
-        val perServiceTppsMap: MutableLiveData<Map<String, Int>> = _perServiceTppsMap
-    */
+    private val _barEntriesMap = MutableLiveData<HashMap<Pair<ChartType, TimePeriod>, List<BarEntry>>>()
+    val barEntriesMap: MutableLiveData<HashMap<Pair<ChartType, TimePeriod>, List<BarEntry>>> = _barEntriesMap
+
+    init {
+        var cal = Calendar.getInstance()
+
+        // TimePeriod.SinceTheBigBang - just this millenium
+        cal.set(Calendar.MONTH, Calendar.JANUARY)
+        cal.set(Calendar.DAY_OF_MONTH, 1)
+        cal.set(Calendar.YEAR, 2000)
+        sinceTheBigBang = cal.time
+
+        // TimePeriod.ThisYear
+        cal.set(Calendar.MONTH, Calendar.JANUARY)
+        cal.set(Calendar.DAY_OF_MONTH, 1)
+        thisYear = cal.time
+
+        // TimePeriod.PrevYear
+        cal = Calendar.getInstance()
+        cal.set(Calendar.MONTH, Calendar.JANUARY)
+        cal.set(Calendar.DAY_OF_MONTH, 1)
+        cal.roll(Calendar.YEAR, -1)
+        previousYear = cal.time
+
+        // TimePeriod.LastYear
+        cal = Calendar.getInstance()
+        cal.roll(Calendar.YEAR, -1)
+        lastYear = cal.time
+
+        // TimePeriod.LastSixMonths
+        cal = Calendar.getInstance()
+        cal.roll(Calendar.WEEK_OF_YEAR, -1)
+        lastSixMonths = cal.time
+
+        // TimePeriod.LastQuarter
+        cal = Calendar.getInstance()
+        cal.roll(Calendar.WEEK_OF_YEAR, -1)
+        lastQuarter = cal.time
+
+        // TimePeriod.LastMonth
+        cal = Calendar.getInstance()
+        cal.roll(Calendar.MONTH, -1)
+        lastMonth = cal.time
+
+        // TimePeriod.LastWeek
+        cal = Calendar.getInstance()
+        cal.roll(Calendar.WEEK_OF_YEAR, -1)
+        lastWeek = cal.time
+
+        _barEntriesMap.value = HashMap<Pair<ChartType, TimePeriod>, List<BarEntry>>()
+    }
 
     fun refresh() {
-        //updateModel()
-        computeStatistics()
+        computeStatistics(true)
     }
 
     fun updateModel() {
         if (_dataLoading.value == true) {
             return
         }
-        _dataLoading.value = true
 
+        // Loading data is implemented as blocking operation.
+        //TODO: Change to create future and wait for it to complete before processing further
+        loadDataFromDB()
+
+        computeStatistics(true)
+    }
+
+    private fun loadDataFromDB() {
+        _dataLoading.value = true
         wrapEspressoIdlingResource {
             runBlocking {
                 tppsRepository.getAllTpps().let { result ->
@@ -105,7 +165,6 @@ class StatisticsViewModel(
                         _error.value = true
                         loadedTpps = emptyList()
                     }
-                    computeStatistics()
                     _dataLoading.value = false
                 }
             }
@@ -116,138 +175,169 @@ class StatisticsViewModel(
      * Called when new data is ready.
      */
     private fun computeStatistics() {
-        _dataLoading.value = true
+        computeStatistics(false)
+    }
 
-        var aispCounter = 0
-        var pispCounter = 0
-        var ciispCounter = 0
-        var emiCounter = 0
+    private fun computeStatistics(refresh: Boolean) {
+        if (currentChartType.value == null || currentPeriod.value == null) {
+            return
+        }
 
-        var anYearOldTpps = 0
-        var aMonthOldTpps = 0
-        var aWeekOldTpps = 0
+        val key = Pair(currentChartType.value!!, currentPeriod.value!!)
+        var barEntries: List<BarEntry>? = barEntriesMap.value?.get(key)
+        if (!barEntries.isNullOrEmpty() && !refresh) {
+            return
+        }
 
-        var thisYearAuthorizedTpps = 0
+        barEntries = ArrayList<BarEntry>()
+        barEntriesMap.value?.put(key, barEntries)
 
-        var cal = Calendar.getInstance()
-        val now = cal.time
+        _totalAISPTpps.value = 0
+        _totalPISPTpps.value = 0
+        _totalCIISPTpps.value = 0
+        _totalEMITpps.value = 0
+        _lastYearRegisteredTpps.value = 0
+        _lastMonthRegisteredTpps.value = 0
+        _lastWeekRegisteredTpps.value = 0
+        _thisYearAuthorizedTpps.value = 0
 
-        cal = Calendar.getInstance()
-        cal.set(Calendar.MONTH, Calendar.JANUARY)
-        cal.set(Calendar.DAY_OF_MONTH, 1)
-        val thisYearStart = cal.time
-
-        cal = Calendar.getInstance()
-        cal.roll(Calendar.MONTH, -1)
-        val aMonthAgo = cal.time
-
-        cal = Calendar.getInstance()
-        cal.roll(Calendar.WEEK_OF_YEAR, -1)
-        val aWeekAgo = cal.time
-
-        cal = Calendar.getInstance()
-        cal.roll(Calendar.YEAR, -1)
-        val anYearAgo = cal.time
-
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+        var authStart = Calendar.getInstance()
+        val now = authStart.time
 
         _totalTpps.value = loadedTpps.size
         _empty.value = loadedTpps.isNullOrEmpty()
 
-        val tppsPerCountryArray = Array(allEUCountries.size-1) { 0 }
-        val tppsPerInstitutionTypeArray = Array(allEntityTypes.size) { 0 }
+        //val tppsPerCountryArray = Array(allEUCountries.size-1) { 0 }
+        //val tppsPerInstitutionTypeArray = Array(allEntityTypes.size) { 0 }
+        var tppsStatisticsArray: Array<Int>? = null
+        when (currentChartType.value) {
+            ChartType.PerCountry -> {
+                tppsStatisticsArray = Array(allEUCountries.size-1) { 0 }
+            }
+            ChartType.PerInstitutionType -> {
+                tppsStatisticsArray = Array(allEntityTypes.size) { 0 }
+            }
+        }
 
+        _dataLoading.value = true
         loadedTpps.forEach {
             when (it.ebaEntity.entityType) {
-                EbaEntityType.PSD_AISP -> aispCounter++
-                EbaEntityType.PSD_PI -> pispCounter++
-                EbaEntityType.PSD_EMI -> emiCounter++
-            }
-            if (!EbaEntityType.NONE.equals(it.ebaEntity.entityType)) {
-                tppsPerInstitutionTypeArray[it.ebaEntity.entityType.order-1] = tppsPerInstitutionTypeArray[it.ebaEntity.entityType.order-1]+1
+                EbaEntityType.PSD_AISP -> _totalAISPTpps.value = _totalAISPTpps.value!! + 1
+                EbaEntityType.PSD_PI -> _totalPISPTpps.value = _totalPISPTpps.value!! + 1
+                EbaEntityType.PSD_EMI -> _totalEMITpps.value = _totalEMITpps.value!! + 1
             }
 
-            val euCountry = it.getCountry()
-            val authStart = it.ebaEntity.ebaProperties.authorizationStart
-            if (!authStart.isNullOrBlank()) {
-                cal.time = sdf.parse(authStart)
-                if (cal.time.after(anYearAgo) && cal.time.before(now)) {
-                    anYearOldTpps++
+            if (!it.ebaEntity.ebaProperties.authorizationStart.isNullOrBlank()) {
+                authStart.time = sdf.parse(it.ebaEntity.ebaProperties.authorizationStart)
+                if (authStart.time.after(lastYear) && authStart.time.before(now)) {
+                    _lastYearRegisteredTpps.value = _lastYearRegisteredTpps.value!! + 1
                 }
 
                 if (currentPeriod != TimePeriod.SinceTheBigBang) {
-                    if (cal.time.after(aMonthAgo) && cal.time.before(now)) {
-                        aMonthOldTpps++
+                    if (authStart.time.after(lastMonth) && authStart.time.before(now)) {
+                        _lastMonthRegisteredTpps.value = _lastMonthRegisteredTpps.value!! + 1
                     }
                 }
 
-                if (cal.time.after(aWeekAgo) && cal.time.before(now)) {
-                    aWeekOldTpps++
+                if (authStart.time.after(lastWeek) && authStart.time.before(now)) {
+                    _lastWeekRegisteredTpps.value = _lastWeekRegisteredTpps.value!! + 1
                 }
 
-                if (cal.time.after(thisYearStart) && cal.time.before(now)) {
-                    thisYearAuthorizedTpps++
+                if (authStart.time.after(thisYear) && authStart.time.before(now)) {
+                    _thisYearAuthorizedTpps.value = _thisYearAuthorizedTpps.value!! + 1
                 }
-            }
 
-            if (euCountry != null) {
-                tppsPerCountryArray[EUCountry.valueOf(euCountry).order - 1] = tppsPerCountryArray[EUCountry.valueOf(euCountry).order - 1] + 1
+                if (isAuthorizationTimeWithinCurrentTimePeriod(authStart.time)) {
+                    when (currentChartType.value) {
+                        ChartType.PerCountry -> {
+                            val euCountry = it.getCountry()
+                            if (euCountry != null) {
+                                tppsStatisticsArray!![EUCountry.valueOf(euCountry).order - 1] = tppsStatisticsArray[EUCountry.valueOf(euCountry).order - 1] + 1
+                            }
+                        }
+
+                        ChartType.PerInstitutionType -> {
+                            val entityType = it.ebaEntity.entityType
+                            if (!EbaEntityType.NONE.equals(entityType)) {
+                                tppsStatisticsArray!![entityType.order - 1] = tppsStatisticsArray[entityType.order - 1] + 1
+                            }
+                        }
+                    }
+                }
             }
         }
-        _lastWeekRegisteredTpps.value = aWeekOldTpps
-        _lastMonthRegisteredTpps.value = aMonthOldTpps
-        _lastYearRegisteredTpps.value = anYearOldTpps
-        _thisYearAuthorizedTpps.value = thisYearAuthorizedTpps
 
-        _totalAISPTpps.value = aispCounter
-        _totalPISPTpps.value = pispCounter
-        _totalCIISPTpps.value = ciispCounter
-        _totalEMITpps.value = emiCounter
-
-        addTppsPerCountryBarEntries(tppsPerCountryArray)
-        addTppsPerInstitutionTypeBarEntries(tppsPerInstitutionTypeArray)
+        addBarEntries(barEntries, tppsStatisticsArray)
+        //addTppsPerInstitutionTypeBarEntries(tppsPerInstitutionTypeArray)
 
         _dataLoading.value = false
     }
 
-    private fun addTppsPerInstitutionTypeBarEntries(tppsPerInstitutionTypeArray: Array<Int>) {
-        var num11 = 0
-        tppsPerInstitutionTypeSet.value = ArrayList<BarEntry>()
-        allEntityTypes.forEach {
-            val be1 = BarEntry((num11++).toFloat(), tppsPerInstitutionTypeArray[it.order - 1].toFloat())
-            tppsPerInstitutionTypeSet.value?.add(be1)
-        }
+    private fun isAuthorizationTimeWithinCurrentTimePeriod(authStart: Date) : Boolean {
+        val now = Calendar.getInstance().time
+        return authStart.before(now) && (when (currentPeriod.value) {
+            TimePeriod.SinceTheBigBang -> true
+            TimePeriod.ThisYear -> (authStart.after(thisYear))
+            TimePeriod.PrevYear -> (authStart.after(previousYear))
+            TimePeriod.LastYear -> (authStart.after(lastYear))
+            TimePeriod.LastSixMOnths -> (authStart.after(lastSixMonths))
+            TimePeriod.LastQuarter -> (authStart.after(lastQuarter))
+            TimePeriod.LastMonth -> (authStart.after(lastMonth))
+            TimePeriod.LastWeek -> (authStart.after(lastWeek))
+            else -> false
+        })
     }
 
-    private fun addTppsPerCountryBarEntries(tppsPerCountryArray: Array<Int>): Int {
-        var num1 = tppsPerCountryArray.size
-        tppsPerCountrySet.value = ArrayList<BarEntry>()
-        allEUCountries.forEach {
-            if (it.order != tppsPerCountryArray.size) {
-                tppsPerCountrySet.value?.add(BarEntry((--num1).toFloat(), tppsPerCountryArray[num1].toFloat()))
+    private fun addBarEntries(barEntries: ArrayList<BarEntry>, tppsCountsArray: Array<Int>?) {
+        if (!tppsCountsArray.isNullOrEmpty()) {
+            //tppsPerInstitutionTypeSet.value = ArrayList<BarEntry>()
+            for (n in 0..tppsCountsArray.size-1) {
+                val be1 = BarEntry(n.toFloat(), tppsCountsArray[n].toFloat())
+                barEntries.add(be1)
             }
         }
-        return num1
     }
 
-    fun getTppsPerCountryDataSet(): BarDataSet {
-        val barDataSet1 = BarDataSet(tppsPerCountrySet.value, "TPPs per EU country")
-        barDataSet1.setValueTypeface(Typeface.SANS_SERIF);
-        barDataSet1.setValueTextSize(4f)
-        barDataSet1.setColors(*ColorTemplate.COLORFUL_COLORS, *ColorTemplate.JOYFUL_COLORS, *ColorTemplate.PASTEL_COLORS, *ColorTemplate.LIBERTY_COLORS, *ColorTemplate.MATERIAL_COLORS)
+/*
+        private fun addTppsPerInstitutionTypeBarEntries(tppsPerInstitutionTypeArray: Array<Int>) {
+            var num11 = 0
+            tppsPerInstitutionTypeSet.value = ArrayList<BarEntry>()
+            allEntityTypes.forEach {
+                val be1 = BarEntry((num11++).toFloat(), tppsPerInstitutionTypeArray[it.order - 1].toFloat())
+                tppsPerInstitutionTypeSet.value?.add(be1)
+            }
+        }
 
-        return barDataSet1
-    }
+        private fun addTppsPerCountryBarEntries(tppsPerCountryArray: Array<Int>): Int {
+            var num1 = tppsPerCountryArray.size
+            tppsPerCountrySet.value = ArrayList<BarEntry>()
+            allEUCountries.forEach {
+                if (it.order != tppsPerCountryArray.size) {
+                    tppsPerCountrySet.value?.add(BarEntry((--num1).toFloat(), tppsPerCountryArray[num1].toFloat()))
+                }
+            }
+            return num1
+        }
 
-    fun getTppsPerInstitutionTypeDataSet(): BarDataSet {
-        val barDataSet1 = BarDataSet(tppsPerInstitutionTypeSet.value, "TPPs per institution type")
-        barDataSet1.setValueTypeface(Typeface.SANS_SERIF);
-        barDataSet1.setValueTextSize(4f)
-        barDataSet1.setColors(*ColorTemplate.COLORFUL_COLORS, *ColorTemplate.JOYFUL_COLORS, *ColorTemplate.PASTEL_COLORS, *ColorTemplate.LIBERTY_COLORS, *ColorTemplate.MATERIAL_COLORS)
+        fun getTppsPerCountryDataSet(): BarDataSet {
+            val barDataSet1 = BarDataSet(tppsPerCountrySet.value, "TPPs per EU country")
+            barDataSet1.setValueTypeface(Typeface.SANS_SERIF);
+            barDataSet1.setValueTextSize(4f)
+            barDataSet1.setColors(*ColorTemplate.COLORFUL_COLORS, *ColorTemplate.JOYFUL_COLORS, *ColorTemplate.PASTEL_COLORS, *ColorTemplate.LIBERTY_COLORS, *ColorTemplate.MATERIAL_COLORS)
 
-        return barDataSet1
-    }
+            return barDataSet1
+        }
 
+        fun getTppsPerInstitutionTypeDataSet(): BarDataSet {
+            val barDataSet1 = BarDataSet(tppsPerInstitutionTypeSet.value, "TPPs per institution type")
+            barDataSet1.setValueTypeface(Typeface.SANS_SERIF);
+            barDataSet1.setValueTextSize(4f)
+            barDataSet1.setColors(*ColorTemplate.COLORFUL_COLORS, *ColorTemplate.JOYFUL_COLORS, *ColorTemplate.PASTEL_COLORS, *ColorTemplate.LIBERTY_COLORS, *ColorTemplate.MATERIAL_COLORS)
+
+            return barDataSet1
+        }
+
+    */
     fun setActualChartType(chartType: ChartType) {
         _currentChartType.value = chartType
         computeStatistics()
@@ -259,9 +349,27 @@ class StatisticsViewModel(
     }
 
     fun getBarData(): IBarDataSet? {
-        if (ChartType.PerInstitutionType.equals(currentChartType.value)) {
+        val key = Pair(currentChartType.value!!, currentPeriod.value!!)
+        var barEntries: List<BarEntry>? = barEntriesMap.value?.get(key)
+        if (barEntries.isNullOrEmpty()) {
+            computeStatistics()
+            barEntries = barEntriesMap.value?.get(key)
+        }
+
+        if (barEntries == null) {
+            throw RuntimeException("Can't get bar entries from the map. Check the algorithm")
+        }
+
+        val barDataSet1 = BarDataSet(barEntries, "TPPs per institution type")
+        barDataSet1.setValueTypeface(Typeface.SANS_SERIF);
+        barDataSet1.setValueTextSize(4f)
+        barDataSet1.setColors(*ColorTemplate.COLORFUL_COLORS, *ColorTemplate.JOYFUL_COLORS, *ColorTemplate.PASTEL_COLORS, *ColorTemplate.LIBERTY_COLORS, *ColorTemplate.MATERIAL_COLORS)
+
+        return barDataSet1
+
+        /*if (ChartType.PerInstitutionType.equals(currentChartType.value)) {
              return getTppsPerInstitutionTypeDataSet()
         }
-        return getTppsPerCountryDataSet()
+        return getTppsPerCountryDataSet()*/
     }
 }

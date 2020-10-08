@@ -221,7 +221,7 @@
                     android:layout_marginBottom="5dp"
                     android:background="?android:attr/listDivider" />
 
-                <TextView
+                <!--<TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5sp"
@@ -229,14 +229,14 @@
                     android:textStyle="bold"
 
                     android:textAppearance="@style/TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
-                    />
+                    />-->
                 <!--android:textSize="14sp"-->
 
                 <LinearLayout
                     android:id="@+id/statistics_chart_type_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="3"
+                    android:weightSum="2"
                     android:orientation="horizontal"
                     >
                     <Spinner
@@ -257,7 +257,7 @@
                         android:contentDescription="@string/time_interval"
                         android:entries="@array/time_intervals"
                         android:spinnerMode="dialog"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Widget.PopupMenu.Small"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Small"
                         />
                 </LinearLayout>
 
