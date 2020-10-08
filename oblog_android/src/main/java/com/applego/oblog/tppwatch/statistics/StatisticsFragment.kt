@@ -1,12 +1,17 @@
 package com.applego.oblog.tppwatch.statistics
 
+import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
@@ -69,6 +74,33 @@ class StatisticsFragment : Fragment() {
         toolbar?.setNavigationIcon(toolbarIcon)
 
         chartTypesSpinner = activity?.findViewById(R.id.spinner_charttype)!!
+        val charTypeTitles = context!!.resources.getTextArray(R.array.chart_type_titles)
+        val chartTypeAdapter = object: ArrayAdapter<CharSequence>(getActivity() as Context, R.layout.custom_spinner, 0, charTypeTitles) {
+            override fun getDropDownView(
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
+            ): View {
+                val view: TextView = super.getDropDownView(
+                        position,
+                        convertView,
+                        parent
+                ) as TextView
+
+                // set item text size
+                view.setTextSize(TypedValue.COMPLEX_UNIT_SP,12F)
+
+                // set selected item style
+                if (position == chartTypesSpinner.selectedItemPosition){
+                    view.background = ColorDrawable(resources.getColor(R.color.colorEULightGrey))
+                    view.setTextColor(resources.getColor(R.color.colorEUDarkBlue))
+                }
+
+                return view
+            }
+        }
+        chartTypeAdapter.setDropDownViewResource(R.layout.custom_spinner)
+        chartTypesSpinner.setAdapter(chartTypeAdapter);
         chartTypesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 val chartType = ChartType.valueOf(context?.resources?.getStringArray(R.array.chart_type_values)!![pos]);
@@ -80,7 +112,61 @@ class StatisticsFragment : Fragment() {
             }
         })
 
+/*
+        chartTypesSpinner = activity?.findViewById(R.id.spinner_charttype)!!
+        chartTypesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+                val chartType = ChartType.valueOf(context?.resources?.getStringArray(R.array.chart_type_values)!![pos]);
+                setUpChart(chartType, viewModel.currentPeriod.value)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        })
+*/
+
         periodSpinner = activity?.findViewById(R.id.spinner_period)!!
+        val timePeriods = context!!.resources.getTextArray(R.array.time_intervals)
+        val timePeriodsAdapter = object: ArrayAdapter<CharSequence>(getActivity() as Context, R.layout.custom_spinner, 0, timePeriods) {
+            override fun getDropDownView(
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
+            ): View {
+                val view: TextView = super.getDropDownView(
+                        position,
+                        convertView,
+                        parent
+                ) as TextView
+
+                // set item text size
+                view.setTextSize(TypedValue.COMPLEX_UNIT_SP,12F)
+
+                // set selected item style
+                if (position == periodSpinner.selectedItemPosition){
+                    view.background = ColorDrawable(resources.getColor(R.color.colorEULightGrey))
+                    view.setTextColor(resources.getColor(R.color.colorEUDarkBlue))
+                }
+
+                return view
+            }
+        }
+        timePeriodsAdapter.setDropDownViewResource(R.layout.custom_spinner)
+        periodSpinner.setAdapter(timePeriodsAdapter);
+        periodSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+                val timePeriod = /*timePeriods[pos]*/ TimePeriod.getByOrdinalValue(pos);
+                setUpChart(viewModel.currentChartType.value, timePeriod)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        })
+
+
+/*
         periodSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 val period = TimePeriod.getByOrdinalValue(pos);
@@ -91,6 +177,7 @@ class StatisticsFragment : Fragment() {
                 TODO("Not yet implemented")
             }
         })
+*/
 
         viewModel.updateModel()
     }
