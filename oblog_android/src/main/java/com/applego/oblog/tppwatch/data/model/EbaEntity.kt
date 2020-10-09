@@ -105,7 +105,7 @@ data class EbaEntity @JvmOverloads constructor(
 
     @Ignore
     fun isAllPSD2(): Boolean = (
-           entityType.equals(EbaEntityType.PSD_PI)
+           entityType.equals(EbaEntityType.PSD_PISP)
         || entityType.equals(EbaEntityType.PSD_AISP)
         || entityType.equals(EbaEntityType.PSD_EPI)
         || entityType.equals(EbaEntityType.PSD_EMI)
@@ -118,7 +118,7 @@ data class EbaEntity @JvmOverloads constructor(
 
     @Ignore
     fun isPI(): Boolean = (
-            entityType.equals(EbaEntityType.PSD_PI)
+            entityType.equals(EbaEntityType.PSD_PISP)
             )
 
     @Ignore

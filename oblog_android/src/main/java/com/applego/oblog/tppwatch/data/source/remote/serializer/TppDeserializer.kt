@@ -106,7 +106,7 @@ class TppDeserializer : JsonDeserializer<Tpp> {
         val ebaEntityVersion: String = jsonObject.get("entityVersion")?.asString ?: ""
         val description: String = jsonObject.get("description")?.asString ?: ""
 
-        val ebaEntity = EbaEntity(_entityId = entityId, _entityCode = entityCode, _entityName = entityName, _description = description, _globalUrn = globalUrn, _ebaEntityVersion = ebaEntityVersion, _country = country, entityType = EbaEntityType.valueOf(entityType))
+        val ebaEntity = EbaEntity(_entityId = entityId, _entityCode = entityCode, _entityName = entityName, _description = description, _globalUrn = globalUrn, _ebaEntityVersion = ebaEntityVersion, _country = country, entityType = EbaEntityType.findByCode(entityType))
         ebaEntity.revoked = revoked
         ebaEntity.ebaProperties = ebaProperties
 

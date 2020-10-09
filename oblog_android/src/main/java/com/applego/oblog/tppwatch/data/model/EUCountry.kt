@@ -174,9 +174,9 @@ enum class EUCountry(val countryName: String, val isoCode:String, val order: Int
     companion object {
 
         val allEUCountriesMap = hashMapOf<String, EUCountry>()
-        val allEUCountries = arrayListOf<EUCountry>()
+        val allEUCountries  = arrayListOf<EUCountry>()
+        val allEUCountriesWithEU = arrayListOf<EUCountry>()
         init {
-            allEUCountries.add(EU)
             allEUCountries.add(AT)
             allEUCountries.add(BE)
             allEUCountries.add(BG)
@@ -209,8 +209,10 @@ enum class EUCountry(val countryName: String, val isoCode:String, val order: Int
             allEUCountries.add(ES)
             allEUCountries.add(GB)
 
-            allEUCountries.forEach {
-                allEUCountriesMap.put(it.name, it)
+            allEUCountriesWithEU.add(EU)
+            for(n in 0..allEUCountries.size-1) {
+                allEUCountriesMap.put(allEUCountries[n].name, allEUCountries[n])
+                allEUCountriesWithEU.add(allEUCountries[n])
             }
         }
     }

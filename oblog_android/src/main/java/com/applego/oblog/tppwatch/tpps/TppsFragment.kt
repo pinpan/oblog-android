@@ -15,14 +15,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountries
-import com.applego.oblog.tppwatch.data.model.EbaService.Companion.allEbaServies
+import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountriesWithEU
+import com.applego.oblog.tppwatch.data.model.EbaService
 import com.applego.oblog.tppwatch.data.model.EbaService.Companion.psd2Servies
 import com.applego.oblog.tppwatch.data.model.InstType
 import com.applego.oblog.tppwatch.databinding.TppsFragBinding
 import com.applego.oblog.tppwatch.util.ViewModelFactory.Companion.viewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
+import com.applego.oblog.ui.CountriesSpinnerAdapter
+import com.applego.oblog.ui.IconAndTextSpinnerAdapter
+import com.applego.oblog.ui.TextSpinnerAdapter
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
+import java.util.ArrayList
 
 class TppsFragment : Fragment() {
 
@@ -187,12 +192,12 @@ class TppsFragment : Fragment() {
 
     private fun setUpSearchForm() {
         countriesSpinner = activity?.findViewById(R.id.serarch_country)!!
-        val countryAdapter = CountriesSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_item, countriesSpinner, allEUCountries)
+        val countryAdapter = CountriesSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_item, countriesSpinner, allEUCountriesWithEU)
         countriesSpinner.setAdapter(countryAdapter);
         countriesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 // An item was selected. You can retrieve the selected item using
-                val countryISO = allEUCountries.get(pos).isoCode
+                val countryISO = allEUCountriesWithEU.get(pos).isoCode
 
                 viewModel.filterTppsByCountry(countryISO)
             }
@@ -202,9 +207,9 @@ class TppsFragment : Fragment() {
             }
         })
 
-        val services = context!!.resources.getTextArray(R.array.psd2_service_codes)
+        //val services = context!!.resources.getTextArray(R.array.psd2_service_codes)
         servicesSpinner = activity?.findViewById(R.id.search_by_service)!!
-        val servicesAdapter = ServicesSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_item, servicesSpinner, psd2Servies)
+        val servicesAdapter = IconAndTextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_item, servicesSpinner, getShortDescriptions(psd2Servies))
         servicesSpinner.setAdapter(servicesAdapter);
 
         servicesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
@@ -229,6 +234,14 @@ class TppsFragment : Fragment() {
         btnLast.setOnClickListener{
             recyclerView.scrollToPosition( (viewModel.displayedItems.value?.size ?:1) -1);
         }
+    }
+
+    private fun getShortDescriptions(psd2Servies: ArrayList<EbaService>): List<String> {
+        val result = ArrayList<String>()
+        psd2Servies.forEach {
+            result.add(it.shortDescription)
+        }
+        return result
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

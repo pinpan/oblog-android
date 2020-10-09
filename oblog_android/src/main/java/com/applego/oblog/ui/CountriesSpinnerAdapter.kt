@@ -1,4 +1,4 @@
-package com.applego.oblog.tppwatch.tpps
+package com.applego.oblog.ui
 
 import android.content.Context
 import android.graphics.Color
@@ -8,21 +8,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.data.model.EbaService
+import com.applego.oblog.tppwatch.data.model.EUCountry
 
 
 /**
- * Adapter for the PSD2 Servicess Spinner list.
+ * Adapter for the Countries Spinner list.
  */
-class ServicesSpinnerAdapter (context: Context, resource: Int, spinner: Spinner, srvcs: List<EbaService>)
+class CountriesSpinnerAdapter (context: Context , resource: Int, spinner: Spinner, cntrys: List<EUCountry>)
     : BaseAdapter() {
 
     private val myContext: Context = context
 
-    // Custom values for the spinner (Service)
-    private val services: List<EbaService> = srvcs
+    // Custom values for the spinner (Country)
+    private val countries: List<EUCountry> = cntrys
 
     private val mySpinner: Spinner = spinner
+
     /**
      * The resource indicating what views to inflate to display the content of this
      * array adapter.
@@ -30,11 +31,11 @@ class ServicesSpinnerAdapter (context: Context, resource: Int, spinner: Spinner,
     private val viewResourceId = resource
 
     override fun getCount(): Int {
-        return services?.size ?: 0
+        return countries?.size ?: 0
     }
 
-    override fun getItem(position: Int): EbaService? {
-        return services?.get(position) ?: null
+    override fun getItem(position: Int): EUCountry? {
+        return countries?.get(position) ?: null
     }
 
     override fun getItemId(position: Int): Long {
@@ -47,11 +48,14 @@ class ServicesSpinnerAdapter (context: Context, resource: Int, spinner: Spinner,
         }
 
         val view = LayoutInflater.from(myContext).inflate(viewResourceId, parent, false)
-        //val serviceCode = services.get(position).code
+        val isoCountryCode = countries.get(position).isoCode
+        val imageId = myContext.resources.getIdentifier("ic_flag_flat_" + isoCountryCode.toLowerCase(), "drawable", myContext?.getPackageName())
+        val image = view.findViewById(R.id.icon) as ImageView
+        image.setImageResource(imageId)
 
         val label = view.findViewById(R.id.title) as TextView
-        val serviceName = services.get(position).shortDescription
-        label.setText(serviceName)
+        val countryName = countries.get(position).countryName
+        label.setText(countryName)
         label.setTextColor(Color.BLACK)
 
         return view

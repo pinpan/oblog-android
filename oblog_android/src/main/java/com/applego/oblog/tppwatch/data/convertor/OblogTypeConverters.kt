@@ -43,7 +43,7 @@ class OblogTypeConverters {
 
     @TypeConverter
     fun toEntitytype(type: String) : EbaEntityType {
-        return EbaEntityType.valueOf(type)
+        return EbaEntityType.findByCode(type)
     }
 
     @TypeConverter

@@ -11,6 +11,7 @@ import com.applego.oblog.tppwatch.data.model.EbaEntityType
 import com.applego.oblog.tppwatch.data.model.EbaEntityType.Companion.allEntityTypes
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
+import com.applego.oblog.tppwatch.util.TimePeriod
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
@@ -190,9 +191,6 @@ class StatisticsViewModel(
             return
         }
 
-        barEntries = ArrayList<BarEntry>()
-        barEntriesMap.value?.put(key, barEntries)
-
         _totalAISPTpps.value = 0
         _totalPISPTpps.value = 0
         _totalCIISPTpps.value = 0
@@ -211,7 +209,7 @@ class StatisticsViewModel(
         var tppsStatisticsArray: Array<Int>? = null
         when (currentChartType.value) {
             ChartType.PerCountry -> {
-                tppsStatisticsArray = Array(allEUCountries.size-1) { 0 }
+                tppsStatisticsArray = Array(allEUCountries.size) { 0 }
             }
             ChartType.PerInstitutionType -> {
                 tppsStatisticsArray = Array(allEntityTypes.size) { 0 }
@@ -222,7 +220,7 @@ class StatisticsViewModel(
         loadedTpps.forEach {
             when (it.ebaEntity.entityType) {
                 EbaEntityType.PSD_AISP -> _totalAISPTpps.value = _totalAISPTpps.value!! + 1
-                EbaEntityType.PSD_PI -> _totalPISPTpps.value = _totalPISPTpps.value!! + 1
+                EbaEntityType.PSD_PISP -> _totalPISPTpps.value = _totalPISPTpps.value!! + 1
                 EbaEntityType.PSD_EMI -> _totalEMITpps.value = _totalEMITpps.value!! + 1
             }
 
@@ -266,6 +264,8 @@ class StatisticsViewModel(
             }
         }
 
+        barEntries = ArrayList<BarEntry>()
+        barEntriesMap.value?.put(key, barEntries)
         addBarEntries(barEntries, tppsStatisticsArray)
 
         _dataLoading.value = false
@@ -288,7 +288,6 @@ class StatisticsViewModel(
 
     private fun addBarEntries(barEntries: ArrayList<BarEntry>, tppsCountsArray: Array<Int>?) {
         if (!tppsCountsArray.isNullOrEmpty()) {
-            //tppsPerInstitutionTypeSet.value = ArrayList<BarEntry>()
             for (n in 0..tppsCountsArray.size-1) {
                 val be1 = BarEntry(n.toFloat(), tppsCountsArray[n].toFloat())
                 barEntries.add(be1)

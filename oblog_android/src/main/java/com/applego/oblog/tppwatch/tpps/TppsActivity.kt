@@ -26,6 +26,7 @@ import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.onboarding.OnboardingActivity
 import com.applego.oblog.tppwatch.preferences.OblogPreferencesActivity
 import com.applego.oblog.tppwatch.tppdetail.TppDetailTabsFragment
+import com.applego.oblog.tppwatch.util.ResourcesUtils
 import com.applego.oblog.tppwatch.util.ServiceLocator
 import com.applego.oblog.tppwatch.util.ViewModelFactory.Companion.viewModelFactory
 import com.google.android.gms.auth.GoogleAuthUtil

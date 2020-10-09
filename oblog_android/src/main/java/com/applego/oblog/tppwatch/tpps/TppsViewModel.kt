@@ -70,7 +70,7 @@ class TppsViewModel(
 
          setFiltering(TppsFilterType.ALL_INST)
 
-        dataLoading.addSource(_dataLoadingLocalDB, {value -> dataLoading.setValue(value)});
+        dataLoading.addSource(_dataLoadingRemoteEBA, {value -> dataLoading.setValue(value)});
         //dataLoading.addSource(dataLoadingRemoteEBA, {value -> dataLoading.setValue(value)});
     }
 

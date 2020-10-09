@@ -1,4 +1,4 @@
-package com.applego.oblog.tppwatch.tpps
+package com.applego.oblog.tppwatch.util
 
 import android.content.Context
 import android.content.res.TypedArray
@@ -26,11 +26,5 @@ class ResourcesUtils {
 
             return emptyArray()
         }
-/*
-        fun getResourceIdByName(resourceName: String) : Int{
-            val id = ctx.resources.getIdentifier(resourceName, "drawable", ctx?.getPackageName())
-
-            return id
-        }*/
     }
 }

@@ -1,41 +1,45 @@
-package com.applego.oblog.tppwatch.tpps
+package com.applego.oblog.ui
 
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.BaseAdapter
+import android.widget.LinearLayout
+import android.widget.Spinner
+import android.widget.TextView
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.data.model.EUCountry
 
 
 /**
- * Adapter for the Countries Spinner list.
+ * Adapter for text items Spinner.
  */
-class CountriesSpinnerAdapter (context: Context , resource: Int, spinner: Spinner, cntrys: List<EUCountry>)
+class TextSpinnerAdapter(context: Context, resource: Int, spinner: Spinner, itms: List<String>, tSize: Int = 12)
     : BaseAdapter() {
 
     private val myContext: Context = context
 
-    // Custom values for the spinner (Country)
-    private val countries: List<EUCountry> = cntrys
+    // Custom values for the spinner (Service)
+    private val items: List<String> = itms
 
     private val mySpinner: Spinner = spinner
-
     /**
      * The resource indicating what views to inflate to display the content of this
      * array adapter.
      */
     private val viewResourceId = resource
 
+    private val textSize: Float = tSize.toFloat()
+
     override fun getCount(): Int {
-        return countries?.size ?: 0
+        return items?.size ?: 0
     }
 
-    override fun getItem(position: Int): EUCountry? {
-        return countries?.get(position) ?: null
+    override fun getItem(position: Int): String {
+        return items?.get(position)
     }
 
     override fun getItemId(position: Int): Long {
@@ -47,16 +51,10 @@ class CountriesSpinnerAdapter (context: Context , resource: Int, spinner: Spinne
             return super.getDropDownView(position, convertView, parent)
         }
 
-        val view = LayoutInflater.from(myContext).inflate(viewResourceId, parent, false)
-        val isoCountryCode = countries.get(position).isoCode
-        val imageId = myContext.resources.getIdentifier("ic_flag_flat_" + isoCountryCode.toLowerCase(), "drawable", myContext?.getPackageName())
-        val image = view.findViewById(R.id.icon) as ImageView
-        image.setImageResource(imageId)
-
-        val label = view.findViewById(R.id.title) as TextView
-        val countryName = countries.get(position).countryName
-        label.setText(countryName)
-        label.setTextColor(Color.BLACK)
+        val view = LayoutInflater.from(myContext).inflate(viewResourceId, parent, false) as TextView
+        view.setText(items.get(position))
+        view.setTextColor(Color.BLACK)
+        view.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize)
 
         return view
     }
@@ -67,10 +65,9 @@ class CountriesSpinnerAdapter (context: Context , resource: Int, spinner: Spinne
         val view = super.getDropDownView(position, convertView, parent)
         if (position == mySpinner.selectedItemPosition) {
             view.background = ColorDrawable(myContext.resources.getColor(R.color.colorEULightGrey))
-            ((view as LinearLayout).getChildAt(1) as TextView).setTextColor(myContext.resources.getColor(R.color.colorEUFlagYellow))
+            (view as TextView).setTextColor(myContext.resources.getColor(R.color.colorEUFlagYellow))
         }
 
         return view
     }
 }
-

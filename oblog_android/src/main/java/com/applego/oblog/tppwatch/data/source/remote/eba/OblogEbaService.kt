@@ -6,7 +6,7 @@ import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import com.applego.oblog.tppwatch.data.source.remote.OblogRestClient
-import com.applego.oblog.tppwatch.tpps.ResourcesUtils
+import com.applego.oblog.tppwatch.util.ResourcesUtils
 
 import retrofit2.Call;
 import retrofit2.http.*

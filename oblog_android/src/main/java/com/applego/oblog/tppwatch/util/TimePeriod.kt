@@ -1,4 +1,4 @@
-package com.applego.oblog.tppwatch.statistics
+package com.applego.oblog.tppwatch.util
 
 enum class TimePeriod(val desc: String) {
     SinceTheBigBang("Since The Big Bang"),

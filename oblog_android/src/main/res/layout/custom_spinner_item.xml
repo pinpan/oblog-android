@@ -9,7 +9,8 @@
         android:fadeScrollbars="true"
         android:fadingEdge="vertical"
         android:orientation="horizontal"
-        android:padding="@dimen/list_item_padding">
+        android:padding="@dimen/list_item_padding"
+        >
 
         <ImageView
             android:id="@+id/icon"

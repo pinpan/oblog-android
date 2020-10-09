@@ -1,17 +1,13 @@
 package com.applego.oblog.tppwatch.statistics
 
 import android.content.Context
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
@@ -22,6 +18,8 @@ import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountries
 import com.applego.oblog.tppwatch.data.model.EbaEntityType.Companion.allEntityTypes
 import com.applego.oblog.tppwatch.data.model.EbaService.Companion.allEbaServies
 import com.applego.oblog.tppwatch.databinding.StatisticsFragBinding
+import com.applego.oblog.tppwatch.util.TimePeriod
+import com.applego.oblog.ui.TextSpinnerAdapter
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Description
@@ -75,32 +73,8 @@ class StatisticsFragment : Fragment() {
 
         chartTypesSpinner = activity?.findViewById(R.id.spinner_charttype)!!
         val charTypeTitles = context!!.resources.getTextArray(R.array.chart_type_titles)
-        val chartTypeAdapter = object: ArrayAdapter<CharSequence>(getActivity() as Context, R.layout.custom_spinner, 0, charTypeTitles) {
-            override fun getDropDownView(
-                    position: Int,
-                    convertView: View?,
-                    parent: ViewGroup
-            ): View {
-                val view: TextView = super.getDropDownView(
-                        position,
-                        convertView,
-                        parent
-                ) as TextView
-
-                // set item text size
-                view.setTextSize(TypedValue.COMPLEX_UNIT_SP,12F)
-
-                // set selected item style
-                if (position == chartTypesSpinner.selectedItemPosition){
-                    view.background = ColorDrawable(resources.getColor(R.color.colorEUGrey))
-                    view.setTextColor(resources.getColor(R.color.colorEUDarkBlue))
-                }
-
-                return view
-            }
-        }
-        chartTypeAdapter.setDropDownViewResource(R.layout.custom_spinner)
-        chartTypesSpinner.setAdapter(chartTypeAdapter);
+        val chartTypesAdapter = TextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner, chartTypesSpinner, getStringList(charTypeTitles), 11)
+        chartTypesSpinner.setAdapter(chartTypesAdapter);
         chartTypesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 val chartType = ChartType.valueOf(context?.resources?.getStringArray(R.array.chart_type_values)!![pos]);
@@ -115,35 +89,11 @@ class StatisticsFragment : Fragment() {
 
         periodSpinner = activity?.findViewById(R.id.spinner_period)!!
         val timePeriods = context!!.resources.getTextArray(R.array.time_intervals)
-        val timePeriodsAdapter = object: ArrayAdapter<CharSequence>(getActivity() as Context, R.layout.custom_spinner, 0, timePeriods) {
-            override fun getDropDownView(
-                    position: Int,
-                    convertView: View?,
-                    parent: ViewGroup
-            ): View {
-                val view: TextView = super.getDropDownView(
-                        position,
-                        convertView,
-                        parent
-                ) as TextView
-
-                // set item text size
-                view.setTextSize(TypedValue.COMPLEX_UNIT_SP,12F)
-
-                // set selected item style
-                if (position == periodSpinner.selectedItemPosition) {
-                    view.background = ColorDrawable(resources.getColor(R.color.colorEUGrey))
-                    view.setTextColor(resources.getColor(R.color.colorEUDarkBlue))
-                }
-
-                return view
-            }
-        }
-        timePeriodsAdapter.setDropDownViewResource(R.layout.custom_spinner)
+        val timePeriodsAdapter = TextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner, periodSpinner, getStringList(timePeriods), 11)
         periodSpinner.setAdapter(timePeriodsAdapter);
         periodSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                val timePeriod = /*timePeriods[pos]*/ TimePeriod.getByOrdinalValue(pos);
+                val timePeriod = TimePeriod.getByOrdinalValue(pos);
                 viewModel.setCurrentPeriod(timePeriod)
                 setUpChart(viewModel.currentChartType.value, timePeriod)
             }
@@ -154,6 +104,14 @@ class StatisticsFragment : Fragment() {
         })
 
         viewModel.updateModel()
+    }
+
+    private fun getStringList(arrayItems: Array<CharSequence>): List<String> {
+        val result = ArrayList<String>()
+        arrayItems.forEach {
+            result.add(it.toString())
+        }
+        return result
     }
 
     override fun onResume() {
@@ -198,13 +156,14 @@ class StatisticsFragment : Fragment() {
             xAxis.axisMinimum = 0f
             xAxis.granularity = 1f
             xAxis.labelCount = when (chartType) {
-                ChartType.PerCountry -> allEUCountries.size
+                ChartType.PerCountry -> allEUCountries.size-1
                 ChartType.PerInstitutionType -> allEbaServies.size
             }
             xAxis.setValueFormatter(object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String? {
+                    val intValue = value.toInt()
                     return when (chartType) {
-                        ChartType.PerCountry -> if (value.toInt() < allEUCountries.size) allEUCountries[value.toInt()].name else "N/A"
+                        ChartType.PerCountry -> allEUCountries[intValue].name
                         ChartType.PerInstitutionType -> {
                             if (value.toInt() < allEntityTypes.size) {
                                 getEntityTypeShortCode(allEntityTypes[value.toInt()]?.code)
