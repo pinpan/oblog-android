@@ -35,13 +35,13 @@ class PagingDeserializer: JsonDeserializer<Paging> {
                 val pageableObject = pageableElement.asJsonObject
                 val paged: Boolean = pageableObject.get("paged")?.asBoolean ?: false
                 if (paged) {
-                    paging.size = pageableObject.get("pageSize")?.asInt ?: -1
-                    paging.page = pageableObject.get("pageNumber")?.asInt ?: -1
+                    paging.size = pageableObject.get("page_size")?.asInt ?: -1
+                    paging.page = pageableObject.get("page_number")?.asInt ?: -1
                     paging.offset = pageableObject.get("offset")?.asInt ?: -1
                     paging.first = jsonObject.get("first")?.asBoolean ?: false
                     paging.last = jsonObject.get("last")?.asBoolean ?: false
-                    paging.totalPages = jsonObject.get("totalPages")?.asInt ?: -1
-                    paging.totalElements = jsonObject.get("totalElements")?.asInt ?: -1
+                    paging.totalPages = jsonObject.get("total_pages")?.asInt ?: -1
+                    paging.totalElements = jsonObject.get("total_elements")?.asInt ?: -1
                     paging.sorted = false;
                     val sortJsonObject: JsonObject? = pageableObject.get("sort")?.asJsonObject ?: null
                     if (sortJsonObject != null) {
