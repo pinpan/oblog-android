@@ -98,8 +98,12 @@ class DefaultTppsRepository (
     }
 
     override suspend fun loadTppsFromLocalDatasource(): Result<List<Tpp>> {
+        return loadTppsFromLocalDatasource("followed", true)
+    }
 
-        val localTpps = tppsLocalDataSource.getTpps()
+    override suspend fun loadTppsFromLocalDatasource(orderBy: String, isAsc: Boolean): Result<List<Tpp>> {
+
+        val localTpps = tppsLocalDataSource.getTpps(orderBy, isAsc)
         if (localTpps is Success) {
             return localTpps
         } else if (localTpps is Loading) {

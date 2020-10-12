@@ -10,6 +10,10 @@ object FakeFailingTppsLocalDataSource : LocalTppDataSource {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override suspend fun getTpps(orderBy: String, isASc: Boolean): Result<List<Tpp>> {
+        return Result.Error(Exception("Test"))
+    }
+
     override suspend fun deleteАpp(аpp: App) {
         TODO("Not yet implemented")
     }

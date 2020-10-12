@@ -15,6 +15,13 @@ class FakeLocalDataSource(var tpps: MutableList<Tpp>? = mutableListOf()) : Local
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override suspend fun getTpps(orderBy: String, isASc: Boolean): Result<List<Tpp>> {
+        tpps?.let { return Success(Lists.newArrayList(it)) }
+        return Error(
+                Exception("Tpps not found")
+        )
+    }
+
     override suspend fun deleteАpp(аpp: App) {
         TODO("Not yet implemented")
     }

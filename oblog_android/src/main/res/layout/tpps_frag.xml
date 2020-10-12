@@ -63,6 +63,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:contentDescription="@string/label_psd2_services"
+                            android:entries="@array/time_intervals"
                             android:isScrollContainer="true"
                             android:scrollbarAlwaysDrawHorizontalTrack="true"
                             android:scrollbarAlwaysDrawVerticalTrack="true"
@@ -92,7 +93,7 @@
                     android:weightSum="2">
                     <CheckBox
                         android:id="@+id/show_revoked_checkbox"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
@@ -101,71 +102,146 @@
                         android:text="@string/label_revoked"
                         android:textColor="@color/colorEUDarkBlue"
                         />
+
                     <CheckBox
                         android:id="@+id/show_revoked_only_checkbox"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layoutDirection="rtl"
                         android:layout_weight="1"
                         android:checked="@{viewmodel.showRevokedOnly}"
                         android:onClick="@{(view) -> viewmodel.filterRevokedOnly(((CompoundButton)view).isChecked())}"
                         android:text="@string/label_revoked_only"
-                        android:textColor="@color/colorEUDarkBlue"
-                        />
+                        android:textColor="@color/colorEUDarkBlue" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/fragment_views_margin_right"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:weightSum="10">
+
                     <CheckBox
                         android:id="@+id/show_followed_only_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                        android:layout_gravity="start"
+                        android:layout_weight="1"
+                        android:drawablePadding="0dp"
+                        android:layoutDirection="ltr"
                         android:onClick="@{(view) -> viewmodel.filterFollowed(((CompoundButton)view).isChecked())}"
+                        android:paddingLeft="0dp"
                         android:text="@string/F"
                         android:textColor="@color/colorEUDarkBlue"
                         android:textSize="12sp"
                         android:textStyle="bold" />
+
                     <CheckBox
                         android:id="@+id/show_used_only_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:includeFontPadding="true"
+                        android:layoutDirection="ltr"
                         android:onClick="@{(view) -> viewmodel.filterUsed(((CompoundButton)view).isChecked())}"
+                        android:padding="0dp"
+                        android:paddingEnd="0dp"
                         android:text="@string/U"
-                        android:textColor="@color/colorEUDarkBlue"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/tpp_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="24sp"
-                        android:layout_weight="8"
-                        android:text="@string/label_name"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textColor="@color/colorEUDarkBlue"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
                     <ImageButton
-                        android:id="@+id/btn_first"
-                        android:layout_width="48dp"
+                        android:id="@+id/order_direction"
+                        android:layout_width="32dp"
                         android:layout_height="32dp"
+                        android:layout_gravity="start|center_vertical"
+                        android:layout_marginStart="16dp"
                         android:layout_weight="1"
-                        app:srcCompat="@android:drawable/ic_media_previous" />
+                        android:scaleType="fitXY"
+                        android:clickable="true"
+                        android:src="@{viewmodel.orderByDirection ? @drawable/sort_ascending_bars : @drawable/sort_descending_bars}"
+                         />
+                    <!--
+                    android:color="@{isValid ? @color/green : @color/red}"
+
+                    android:textAlignment="gravity"
+                    android:textColor="@color/colorEUDarkBlue"
+                    android:textSize="11sp"
+                    android:textStyle="bold"-->
+                    <Spinner
+                        android:id="@+id/order_by"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center_vertical"
+                        android:gravity="center_vertical"
+                        android:layout_weight="2"
+                        android:contentDescription="@string/label_orderby_fields"
+                        android:entries="@array/orderby_field_names"
+                        android:spinnerMode="dialog"
+                        />
+
+                    <!--
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:isScrollContainer="true"
+                        android:scrollbarAlwaysDrawHorizontalTrack="true"
+                        android:scrollbarAlwaysDrawVerticalTrack="true"
+                        android:scrollbars="horizontal|vertical"
+
+                     @string/label_name
+                        <Button
+                        android:id="@+id/button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/label_name"
+                        android:textAlignment="gravity"
+                        android:textColor="@color/colorEUDarkBlue"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:srcCompat="@android:drawable/ic_menu_sort_alphabetically"
+                        />
+
                     <ImageButton
-                        android:id="@+id/btn_last"
+                        android:id="@+id/btn_order"
                         android:layout_width="48dp"
                         android:layout_height="32dp"
-                        android:layout_marginStart="16sp"
                         android:layout_weight="1"
-                        app:srcCompat="@android:drawable/ic_media_next" />
+                        app:srcCompat="@android:drawable/ic_menu_sort_alphabetically"
+                        />
+                    -->
+                    <!--android:drawableLeft="@android:drawable/ic_menu_sort_alphabetically"-->
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_weight="4"
+
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/activity_vertical_margin">
+                        <!--android:layoutDirection="rtl"-->
+                        <ImageButton
+                            android:id="@+id/btn_first"
+                            android:layout_width="40dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            app:srcCompat="@android:drawable/ic_media_previous" />
+
+                        <ImageButton
+                            android:id="@+id/btn_last"
+                            android:layout_width="40dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+
+                            app:srcCompat="@android:drawable/ic_media_next"
+                            />
+                        <!--android:layout_marginStart="@dimen/siblings_horizontal_margin"-->
+                    </LinearLayout>
                 </LinearLayout>
                 <View
                     android:id="@+id/divider1"

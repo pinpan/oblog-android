@@ -19,6 +19,13 @@ class FakeRepository : TppsRepository {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override suspend fun loadTppsFromLocalDatasource(orderBy: String, isAsc: Boolean): Result<List<Tpp>> {
+        if (shouldReturnError) {
+            return Error(Exception("Test exception"))
+        }
+        return Success(tppsServiceData.values.toList())
+    }
+
     override suspend fun deleteApp(app: App) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

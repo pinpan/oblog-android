@@ -34,6 +34,12 @@ class TppsViewModel(
     private var _searchFilter = SearchFilter()
     val  searchFilter = _searchFilter
 
+    private val _orderByField = MutableLiveData<String>("entityName")
+    val orderByField: LiveData<String> = _orderByField
+
+    private val _orderByDirection = MutableLiveData<Boolean>(true)
+    val orderByDirection: LiveData<Boolean> = _orderByDirection
+
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
 
@@ -214,19 +220,19 @@ class TppsViewModel(
     /**
       */
     fun loadTpps() {
-        //_dataLoadingLocalDB.value = true
+        _dataLoadingLocalDB.value = true
         viewModelScope.launch {
-            val tppsResult = tppsRepository.loadTppsFromLocalDatasource()
+            val tppsResult = tppsRepository.loadTppsFromLocalDatasource(orderByField.value!!, orderByDirection.value!!)
             if (tppsResult is Success) {
                     _allItems.value = tppsResult.data
-                    _displayedItems.value = applyAllTppFilters()
+                        _displayedItems.value = applyAllTppFilters()
                 } else {
                     //is Result.Idle -> TODO()
                     //is Result.Error -> TODO()
                     //is Result.Warn -> TODO()
                     //is Result.Loading -> TODO()
                 }
-           // _dataLoadingLocalDB.value = false
+           _dataLoadingLocalDB.value = false
         }
     }
 
@@ -453,5 +459,13 @@ class TppsViewModel(
             _searchFilter.countries = savedInstanceState.getString("countries", "") ?: ""
             _searchFilter.services = savedInstanceState.getString("services", "") ?: ""
         }
+    }
+
+    fun setOrderByField(orderByField: String?) {
+        _orderByField.value = orderByField
+    }
+
+    fun reverseOrderBy() {
+        _orderByDirection.value = !(_orderByDirection?.value ?: false)
     }
 }

@@ -15,6 +15,8 @@ interface TppsRepository {
 
     suspend fun loadTppsFromLocalDatasource(): Result<List<Tpp>>
 
+    suspend fun loadTppsFromLocalDatasource(orderBy: String, isAsc: Boolean): Result<List<Tpp>>
+
     suspend fun getAllTpps(forceUpdate: Boolean = false): Result<List<Tpp>>
 
     suspend fun getTpp(tppId: String, forceUpdate: Boolean = false): Result<Tpp>

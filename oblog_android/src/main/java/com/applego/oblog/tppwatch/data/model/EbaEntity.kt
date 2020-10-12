@@ -60,6 +60,8 @@ data class EbaEntity @JvmOverloads constructor(
     @Embedded
     var ebaProperties = EbaEntityProperties()
 
+    @Ignore
+    fun getAuthorizationDate() = ebaProperties.authorizationStart
 /*
 
     @ColumnInfo(name = "psd2")

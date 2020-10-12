@@ -189,6 +189,20 @@
         <item>Disclaimer</item>
     </string-array>
 
+    <string-array name="orderby_field_values">
+        <item>entityName</item>
+        <item>authorizationDate</item>
+        <item>country</item>
+        <item>entityType</item>
+    </string-array>
+
+    <string-array name="orderby_field_names">
+        <item>Name</item>
+        <item>Date</item>
+        <item>Country</item>
+        <item>Type</item>
+    </string-array>
+
     <string-array name="time_intervals">
         <item>Since The Big Bang</item>
         <item>This year</item>

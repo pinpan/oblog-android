@@ -19,6 +19,14 @@ interface TppsDao {
     suspend fun getAllTppEntities(): List<EbaEntity>
 
     /**
+     * Select all tpps from the tpps table.
+     *
+     * @return all tpps.
+     */
+    @Query("SELECT * FROM Tpps order by CASE WHEN :isAsc = 1 THEN :orderBy END ASC, CASE WHEN :isAsc = 0 THEN :orderBy END DESC")
+    suspend fun getAllTppEntitiesOrdered(orderBy: String, isAsc: Boolean): List<EbaEntity>
+
+    /**
      * Select a tpp by id.
      *
      * @param tppId the tpp id.

@@ -4,11 +4,14 @@ import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.model.App
+import kotlinx.coroutines.withContext
 
 /**
  * Main entry point for accessing tpps data.
  */
 interface LocalTppDataSource {
+
+    suspend fun getTpps(orderBy: String, isASc: Boolean): Result<List<Tpp>>
 
     suspend fun getTpps(): Result<List<Tpp>>
 

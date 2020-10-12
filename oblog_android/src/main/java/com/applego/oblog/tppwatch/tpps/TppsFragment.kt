@@ -14,7 +14,6 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountries
 import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountriesWithEU
 import com.applego.oblog.tppwatch.data.model.EbaService
 import com.applego.oblog.tppwatch.data.model.EbaService.Companion.psd2Servies
@@ -207,7 +206,6 @@ class TppsFragment : Fragment() {
             }
         })
 
-        //val services = context!!.resources.getTextArray(R.array.psd2_service_codes)
         servicesSpinner = activity?.findViewById(R.id.search_by_service)!!
         val servicesAdapter = IconAndTextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_item, servicesSpinner, getShortDescriptions(psd2Servies))
         servicesSpinner.setAdapter(servicesAdapter);
@@ -224,6 +222,32 @@ class TppsFragment : Fragment() {
             }
         })
 
+        val orderByDirectionButton:ImageButton = activity?.findViewById(R.id.order_direction)!!
+        orderByDirectionButton.setOnClickListener(object: View.OnClickListener {
+            override fun onClick(v: View) {
+                viewModel.reverseOrderBy()
+                viewModel.loadTpps()
+                orderByDirectionButton.setImageResource( if (viewModel.orderByDirection?.value ?: false)
+                     R.drawable.sort_ascending_bars else R.drawable.sort_descending_bars)
+            }
+        })
+
+        val orderBySpinner:Spinner = activity?.findViewById(R.id.order_by)!!
+        val orderByAdapter = TextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner, orderBySpinner, getOrderByFieldNames(), 10)
+        orderBySpinner.setAdapter(orderByAdapter)
+        orderBySpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+                        // An item was selected. You can retrieve the selected item using
+                        val orderByField = resources.getStringArray(R.array.orderby_field_values)[pos];
+                        viewModel.setOrderByField(orderByField)
+                        viewModel.loadTpps()
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>) {
+                        // Another interface callback
+                    }
+                })
+
         val recyclerView: RecyclerView = activity?.findViewById(R.id.tpps_list)!!
         val btnFirst:ImageButton = activity?.findViewById(R.id.btn_first)!!
         btnFirst.setOnClickListener{
@@ -234,6 +258,11 @@ class TppsFragment : Fragment() {
         btnLast.setOnClickListener{
             recyclerView.scrollToPosition( (viewModel.displayedItems.value?.size ?:1) -1);
         }
+    }
+
+    private fun getOrderByFieldNames() : List<String> {
+        val resourcesArray =  resources.getStringArray(R.array.orderby_field_names)
+        return resourcesArray.toList()
     }
 
     private fun getShortDescriptions(psd2Servies: ArrayList<EbaService>): List<String> {

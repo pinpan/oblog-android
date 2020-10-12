@@ -20,9 +20,13 @@ class TppsDaoDataSource internal constructor(
 ) : LocalTppDataSource {
 
     override suspend fun getTpps(): Result<List<Tpp>> = withContext(ioDispatcher) {
+        getTpps("followed", true)
+    }
+
+    override suspend fun getTpps(orderBy: String, isAsc: Boolean): Result<List<Tpp>> = withContext(ioDispatcher) {
         var tpps = ArrayList<Tpp>()
         try {
-            val allTppEntities = tppsDao.getAllTppEntities()
+            val allTppEntities = tppsDao.getAllTppEntitiesOrdered(orderBy, isAsc)
             var ebaEntities = allTppEntities
             ebaEntities.forEach { ebaEntity ->
                 tpps.add(Tpp(ebaEntity))}

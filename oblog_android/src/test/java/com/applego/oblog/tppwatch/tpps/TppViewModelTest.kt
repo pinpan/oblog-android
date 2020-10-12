@@ -81,10 +81,10 @@ class TppsViewModelTest {
         tppsViewModel.loadTpps()
 
         // Then progress indicator is shown
-        //assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoadingLocalDB)).isTrue()
+        assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoadingLocalDB)).isTrue()
 
         // Execute pending coroutines actions
-        //mainCoroutineRule.resumeDispatcher()
+        mainCoroutineRule.resumeDispatcher()
 
         // Then progress indicator is hidden
         assertThat(LiveDataTestUtil.getValue(tppsViewModel.dataLoadingLocalDB)).isFalse()

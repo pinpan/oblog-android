@@ -29,6 +29,7 @@
     <string name="label_national_ref_code">National ref. code</string>
     <string name="label_tpp_services">Servicess</string>
     <string name="label_psd2_services">PSD2 Servicess</string>
+    <string name="label_orderby_fields">Order by</string>
     <string name="label_role">Role</string>
     <string name="label_roles">Roles</string>
     <string name="label_psd2_role">PSD2 role</string>
