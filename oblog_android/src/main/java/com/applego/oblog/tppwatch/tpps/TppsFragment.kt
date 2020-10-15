@@ -225,16 +225,18 @@ class TppsFragment : Fragment() {
         val orderByDirectionButton:ImageButton = activity?.findViewById(R.id.order_direction)!!
         orderByDirectionButton.setOnClickListener(object: View.OnClickListener {
             override fun onClick(v: View) {
+                orderByDirectionButton.setImageResource( if (viewModel.orderByDirection?.value ?: false)
+                    R.drawable.sort_ascending_bars else R.drawable.sort_descending_bars)
                 viewModel.reverseOrderBy()
                 viewModel.loadTpps()
-                orderByDirectionButton.setImageResource( if (viewModel.orderByDirection?.value ?: false)
-                     R.drawable.sort_ascending_bars else R.drawable.sort_descending_bars)
             }
         })
 
         val orderBySpinner:Spinner = activity?.findViewById(R.id.order_by)!!
-        val orderByAdapter = TextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner, orderBySpinner, getOrderByFieldNames(), 10)
+        //val orderByAdapter = ArrayAdapter(getActivity() as Context, R.layout.spinner_chart_types, getOrderByFieldNames())
+        val orderByAdapter = TextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner, orderBySpinner, getOrderByFieldNames(), 11)
         orderBySpinner.setAdapter(orderByAdapter)
+        //orderByAdapter.setDropDownViewResource(R.layout.spinner_chart_types_item);
         orderBySpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                         // An item was selected. You can retrieve the selected item using
@@ -249,6 +251,7 @@ class TppsFragment : Fragment() {
                 })
 
         val recyclerView: RecyclerView = activity?.findViewById(R.id.tpps_list)!!
+
         val btnFirst:ImageButton = activity?.findViewById(R.id.btn_first)!!
         btnFirst.setOnClickListener{
             recyclerView.scrollToPosition(0);

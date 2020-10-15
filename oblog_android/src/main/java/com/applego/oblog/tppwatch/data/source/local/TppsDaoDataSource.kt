@@ -1,15 +1,19 @@
 package com.applego.oblog.tppwatch.data.source.local
 
+import androidx.sqlite.db.SimpleSQLiteQuery
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.dao.TppsDao
-import com.applego.oblog.tppwatch.data.model.*
+import com.applego.oblog.tppwatch.data.model.App
+import com.applego.oblog.tppwatch.data.model.NcaEntity
+import com.applego.oblog.tppwatch.data.model.Tpp
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+
 
 /**
  * Concrete implementation of a data source as a db.
@@ -26,8 +30,8 @@ class TppsDaoDataSource internal constructor(
     override suspend fun getTpps(orderBy: String, isAsc: Boolean): Result<List<Tpp>> = withContext(ioDispatcher) {
         var tpps = ArrayList<Tpp>()
         try {
-            val allTppEntities = tppsDao.getAllTppEntitiesOrdered(orderBy, isAsc)
-            var ebaEntities = allTppEntities
+            val query = "SELECT * FROM Tpps ORDER BY " + orderBy + (if (isAsc) " ASC" else " DESC")
+            var ebaEntities = tppsDao.getAllTppEntitiesRaw(SimpleSQLiteQuery(query))
             ebaEntities.forEach { ebaEntity ->
                 tpps.add(Tpp(ebaEntity))}
         } catch (e: Exception) {

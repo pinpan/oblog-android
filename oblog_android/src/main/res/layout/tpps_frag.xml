@@ -159,62 +159,36 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_gravity="start|center_vertical"
-                        android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:scaleType="fitXY"
                         android:clickable="true"
                         android:src="@{viewmodel.orderByDirection ? @drawable/sort_ascending_bars : @drawable/sort_descending_bars}"
                          />
-                    <!--
-                    android:color="@{isValid ? @color/green : @color/red}"
+<!--
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                        android:background="@null"
+-->
 
-                    android:textAlignment="gravity"
-                    android:textColor="@color/colorEUDarkBlue"
-                    android:textSize="11sp"
-                    android:textStyle="bold"-->
                     <Spinner
                         android:id="@+id/order_by"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="start|center_vertical"
-                        android:gravity="center_vertical"
                         android:layout_weight="2"
-                        android:contentDescription="@string/label_orderby_fields"
+                        android:layout_marginStart="@dimen/siblings_horizontal_margin"
+                        android:layout_gravity="center_vertical"
                         android:entries="@array/orderby_field_names"
                         android:spinnerMode="dialog"
                         />
 
-                    <!--
-                        android:layout_gravity="center"
-                        android:gravity="center_horizontal|center_vertical"
-                        android:isScrollContainer="true"
-                        android:scrollbarAlwaysDrawHorizontalTrack="true"
-                        android:scrollbarAlwaysDrawVerticalTrack="true"
-                        android:scrollbars="horizontal|vertical"
-
-                     @string/label_name
-                        <Button
-                        android:id="@+id/button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/label_name"
-                        android:textAlignment="gravity"
-                        android:textColor="@color/colorEUDarkBlue"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        app:srcCompat="@android:drawable/ic_menu_sort_alphabetically"
-                        />
-
-                    <ImageButton
-                        android:id="@+id/btn_order"
-                        android:layout_width="48dp"
-                        android:layout_height="32dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@android:drawable/ic_menu_sort_alphabetically"
-                        />
-                    -->
-                    <!--android:drawableLeft="@android:drawable/ic_menu_sort_alphabetically"-->
+<!--
+android:contentDescription="@string/label_orderby_fields"
+                        android:layout_gravity="right|end"
+                        android:drawableRight="@android:drawable/arrow_down_float"
+                        android:layout_marginStart="-12dp"
+                        android:layout_marginLeft="-12dp"
+                    android:spinnerMode="dialog"
+-->
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -293,7 +267,6 @@
                             android:layout_height="wrap_content"
                             android:background="@color/colorEUGrey"
                             android:orientation="vertical">
-
                             <ProgressBar
                                 android:id="@+id/progress_bar"
                                 style="?android:attr/progressBarStyleHorizontal"
@@ -301,7 +274,6 @@
                                 android:layout_height="wrap_content"
                                 android:progressTint="@color/colorEUFlagYellow"
                                 android:visibility="gone" />
-
                             <TextView
                                 android:id="@+id/tpps_registered"
                                 android:layout_width="match_parent"
@@ -310,14 +282,6 @@
                                 android:textSize="11sp"
                                 android:text="@{viewmodel.isFiltered ? @string/tpps_registered_filtered_number(viewmodel.displayedItems.size, viewmodel.allItems.size) : @string/tpps_registered_all_number(viewmodel.displayedItems.size)}"
                                 android:textColor="@color/colorEUDarkBlue" />
-
-                            <!--<TextView
-                                android:id="@+id/status_line"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:padding="2dp"
-                                android:text="@{viewmodel.statusLine}"
-                                android:textColor="@color/colorEUDarkBlue" />-->
                         </LinearLayout>
                         <LinearLayout
                             android:id="@+id/no_tpps_layout"

@@ -1,6 +1,7 @@
 package com.applego.oblog.tppwatch.data.dao
 
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.EbaEntity
 
@@ -15,8 +16,11 @@ interface TppsDao {
      *
      * @return all tpps.
      */
-    @Query("SELECT * FROM Tpps order by followed DESC")
+    @Query("SELECT * FROM Tpps order by entityName DESC")
     suspend fun getAllTppEntities(): List<EbaEntity>
+
+    @RawQuery
+    suspend fun getAllTppEntitiesRaw(sortQuery: SupportSQLiteQuery): List<EbaEntity>
 
     /**
      * Select all tpps from the tpps table.
@@ -24,6 +28,7 @@ interface TppsDao {
      * @return all tpps.
      */
     @Query("SELECT * FROM Tpps order by CASE WHEN :isAsc = 1 THEN :orderBy END ASC, CASE WHEN :isAsc = 0 THEN :orderBy END DESC")
+    //CASE WHEN :isAsc = 1 THEN :orderBy END ASC, CASE WHEN :isAsc = 0 THEN :orderBy END DESC
     suspend fun getAllTppEntitiesOrdered(orderBy: String, isAsc: Boolean): List<EbaEntity>
 
     /**

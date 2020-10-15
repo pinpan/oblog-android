@@ -143,7 +143,7 @@ class TppDeserializer : JsonDeserializer<Tpp> {
     private fun getStringFromJsonArray(jsounArray: JsonArray): String {
         var theString = ""
         for (jsonArrayElement:JsonElement in jsounArray) run {
-            theString += jsonArrayElement.asString.removeSurrounding("\"")
+            theString += jsonArrayElement.asString.trim().removeSurrounding("\"").trim()
             theString += "\\"
         }
         return theString.trimEnd(',',' ','\\')
