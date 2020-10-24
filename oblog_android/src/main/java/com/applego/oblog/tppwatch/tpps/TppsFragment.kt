@@ -11,14 +11,15 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountriesWithEU
 import com.applego.oblog.tppwatch.data.model.EbaService
 import com.applego.oblog.tppwatch.data.model.EbaService.Companion.psd2Servies
 import com.applego.oblog.tppwatch.data.model.InstType
 import com.applego.oblog.tppwatch.databinding.TppsFragBinding
+import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.util.ViewModelFactory.Companion.viewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.applego.oblog.ui.CountriesSpinnerAdapter
@@ -26,7 +27,7 @@ import com.applego.oblog.ui.IconAndTextSpinnerAdapter
 import com.applego.oblog.ui.TextSpinnerAdapter
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
-import java.util.ArrayList
+import java.util.*
 
 class TppsFragment : Fragment() {
 
@@ -41,6 +42,8 @@ class TppsFragment : Fragment() {
     private var searchView: SearchView? = null
     var lastTppsSearchViewQuery = ""
 
+    private var firstVisibleInListview = 0
+
     lateinit var countriesSpinner: Spinner
     lateinit var servicesSpinner: Spinner
 
@@ -49,9 +52,9 @@ class TppsFragment : Fragment() {
     private  var toolbarIcon: Drawable? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         viewDataBinding = TppsFragBinding.inflate(inflater, container, false).apply {
             viewmodel = viewModel
@@ -90,7 +93,7 @@ class TppsFragment : Fragment() {
                 return false
             }
         })
-        searchView?.setOnCloseListener (object: SearchView.OnCloseListener {
+        searchView?.setOnCloseListener(object : SearchView.OnCloseListener {
             override fun onClose(): Boolean {
                 if (!lastTppsSearchViewQuery.isNullOrBlank()) {
                     lastTppsSearchViewQuery = ""
@@ -103,20 +106,20 @@ class TppsFragment : Fragment() {
         var searchPlateId = searchView?.context?.resources?.getIdentifier("android:id/search_close_button", null, null)
         if (searchPlateId != null) {
             val closeBtn = searchView?.findViewById<ImageButton>(searchPlateId)
-            closeBtn?.setOnClickListener(object: View.OnClickListener {
-                        override fun onClick(v: View) {
-                            if (!lastTppsSearchViewQuery.isNullOrBlank()) {
-                                viewModel.loadTpps()
-                                lastTppsSearchViewQuery = ""
-                            }
-                        }
-                    })
+            closeBtn?.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(v: View) {
+                    if (!lastTppsSearchViewQuery.isNullOrBlank()) {
+                        viewModel.loadTpps()
+                        lastTppsSearchViewQuery = ""
+                    }
+                }
+            })
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
-            R.id.about_frag-> {
+            R.id.about_frag -> {
                 openAbout()
                 true
             }
@@ -222,35 +225,51 @@ class TppsFragment : Fragment() {
             }
         })
 
+        val recyclerView: RecyclerView = activity?.findViewById(R.id.tpps_list)!!
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                firstVisibleInListview = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition();
+                var aTpp = viewModel.displayedItems.value?.get(firstVisibleInListview)
+                // TODO: Find the Tpp item position after sorting
+                //recyclerView.scrollToPosition(firstVisibleInListview)
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                firstVisibleInListview = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+            }
+        })
+
         val orderByDirectionButton:ImageButton = activity?.findViewById(R.id.order_direction)!!
-        orderByDirectionButton.setOnClickListener(object: View.OnClickListener {
+        orderByDirectionButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
-                orderByDirectionButton.setImageResource( if (viewModel.orderByDirection?.value ?: false)
+                orderByDirectionButton.setImageResource(if (viewModel.orderByDirection?.value
+                                ?: false)
                     R.drawable.sort_ascending_bars else R.drawable.sort_descending_bars)
                 viewModel.reverseOrderBy()
-                viewModel.loadTpps()
+                listAdapter.notifyDataSetChanged()
+                //recyclerView.scrollToPosition(firstVisibleInListview)
+                recyclerView.invalidate()
             }
         })
 
         val orderBySpinner:Spinner = activity?.findViewById(R.id.order_by)!!
-        //val orderByAdapter = ArrayAdapter(getActivity() as Context, R.layout.spinner_chart_types, getOrderByFieldNames())
         val orderByAdapter = TextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner, orderBySpinner, getOrderByFieldNames(), 11)
         orderBySpinner.setAdapter(orderByAdapter)
-        //orderByAdapter.setDropDownViewResource(R.layout.spinner_chart_types_item);
         orderBySpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                        // An item was selected. You can retrieve the selected item using
-                        val orderByField = resources.getStringArray(R.array.orderby_field_values)[pos];
-                        viewModel.setOrderByField(orderByField)
-                        viewModel.loadTpps()
-                    }
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+                val orderByField = resources.getStringArray(R.array.orderby_field_values)[pos];
+                viewModel.orderTppsBy(orderByField)
+                listAdapter.notifyDataSetChanged()
+                //recyclerView.scrollToPosition(firstVisibleInListview)
+                recyclerView.invalidate()
+            }
 
-                    override fun onNothingSelected(parent: AdapterView<*>) {
-                        // Another interface callback
-                    }
-                })
-
-        val recyclerView: RecyclerView = activity?.findViewById(R.id.tpps_list)!!
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Another interface callback
+            }
+        })
 
         val btnFirst:ImageButton = activity?.findViewById(R.id.btn_first)!!
         btnFirst.setOnClickListener{
@@ -259,7 +278,7 @@ class TppsFragment : Fragment() {
 
         val btnLast:ImageButton = activity?.findViewById(R.id.btn_last)!!
         btnLast.setOnClickListener{
-            recyclerView.scrollToPosition( (viewModel.displayedItems.value?.size ?:1) -1);
+            recyclerView.scrollToPosition((viewModel.displayedItems.value?.size ?: 1) - 1);
         }
     }
 
@@ -329,10 +348,10 @@ class TppsFragment : Fragment() {
                             when (it.itemId) {
                                 R.id.allPSD2 -> TppsFilterType.ALL_INST
 
-                                R.id.inst_psd2_pi-> TppsFilterType.PI_INST
-                                R.id.inst_psd2_ai-> TppsFilterType.AI_INST
-                                R.id.inst_psd2_piai-> TppsFilterType.PIAI_INST
-                                R.id.inst_psd2_epi-> TppsFilterType.E_PI_INST
+                                R.id.inst_psd2_pi -> TppsFilterType.PI_INST
+                                R.id.inst_psd2_ai -> TppsFilterType.AI_INST
+                                R.id.inst_psd2_piai -> TppsFilterType.PIAI_INST
+                                R.id.inst_psd2_epi -> TppsFilterType.E_PI_INST
                                 R.id.inst_emi -> TppsFilterType.EMONEY_INST
                                 R.id.inst_e_emi -> TppsFilterType.E_EMONEY_INST
                                 R.id.non_psd2_inst -> TppsFilterType.NON_PSD2_INST
@@ -355,8 +374,8 @@ class TppsFragment : Fragment() {
     private fun navigateToAddNewTpp() {
         val action = TppsFragmentDirections
             .actionTppsFragmentToAddEditTppFragment(
-                null,
-                resources.getString(R.string.add_tpp)
+                    null,
+                    resources.getString(R.string.add_tpp)
             )
         findNavController().navigate(action)
     }

@@ -2,21 +2,25 @@ package com.applego.oblog.tppwatch.tpps
 
 import android.os.Bundle
 import androidx.lifecycle.*
-import com.applego.oblog.tppwatch.util.Event
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.model.*
+import com.applego.oblog.tppwatch.data.model.EbaService
+import com.applego.oblog.tppwatch.data.model.InstType
+import com.applego.oblog.tppwatch.data.model.SearchFilter
+import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.data.source.remote.Paging
+import com.applego.oblog.tppwatch.util.Event
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
-import kotlinx.coroutines.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 /**
  * ViewModel for the tpp list screen.
  */
 class TppsViewModel(
-    private val tppsRepository: TppsRepository
+        private val tppsRepository: TppsRepository
 ) : ViewModel() {
 
     private val _allItems: MutableLiveData<List<Tpp>> = MutableLiveData(listOf<Tpp>())
@@ -28,8 +32,8 @@ class TppsViewModel(
     private val _dataLoadingLocalDB = MutableLiveData<Boolean>()
     val dataLoadingLocalDB: LiveData<Boolean> = _dataLoadingLocalDB
 
-    private val _dataLoadingRemoteEBA = MutableLiveData<Boolean>()
-    val dataLoadingRemoteEBA: LiveData<Boolean> = _dataLoadingRemoteEBA
+    private val _dataLoadingRemote = MutableLiveData<Boolean>()
+    val dataLoadingRemote: LiveData<Boolean> = _dataLoadingRemote
 
     private var _searchFilter = SearchFilter()
     val  searchFilter = _searchFilter
@@ -76,8 +80,14 @@ class TppsViewModel(
 
          setFiltering(TppsFilterType.ALL_INST)
 
-        dataLoading.addSource(_dataLoadingRemoteEBA, {value -> dataLoading.setValue(value)});
-        //dataLoading.addSource(dataLoadingRemoteEBA, {value -> dataLoading.setValue(value)});
+        dataLoading.addSource(_dataLoadingRemote, { value ->
+            dataLoading.setValue((_dataLoadingLocalDB.value
+                    ?: false) || value)
+        });
+        dataLoading.addSource(dataLoadingLocalDB, { value ->
+            dataLoading.setValue((_dataLoadingRemote.value
+                    ?: false) || value)
+        });
     }
 
     fun refresh() {
@@ -88,7 +98,7 @@ class TppsViewModel(
         return (_allItems.value?.size != _displayedItems.value?.size)
     }
 
-    fun refreshTpp(tppId : String?) {
+    fun refreshTpp(tppId: String?) {
         if (!allItems.value.isNullOrEmpty() && !tppId.isNullOrBlank() && !tppId.equals("0")) {
             val tpp = findTppInList(allItems.value!!, tppId)
             runBlocking {
@@ -153,8 +163,8 @@ class TppsViewModel(
     // TODO: Set warning message than "Data is old" to be displayed,
     //  until refresh succeeds next time. May be for Remote updates only?
     fun loadEbaDirectory() {
-        if (!(_dataLoadingRemoteEBA.value?.equals(true) ?: false)) {
-            _dataLoadingRemoteEBA.value = true
+        if (!(_dataLoadingRemote.value?.equals(true) ?: false)) {
+            _dataLoadingRemote.value = true
             _displayedItems.value = emptyList()
 
             showSnackbarMessage(R.string.loading)
@@ -183,7 +193,7 @@ class TppsViewModel(
                     }
                     _loadProgressEnd.value = Event(paging.page)
                     // TODO#MoveToToast: _statusLine.value = "Successfully loaded #" + paging.totalPages + "pages of TPPs."
-                    _dataLoadingRemoteEBA.value = false
+                    _dataLoadingRemote.value = false
                 }
             }
         }
@@ -225,7 +235,7 @@ class TppsViewModel(
             val tppsResult = tppsRepository.loadTppsFromLocalDatasource(orderByField.value!!, orderByDirection.value!!)
             if (tppsResult is Success) {
                     _allItems.value = tppsResult.data
-                        _displayedItems.value = applyAllTppFilters()
+                    _displayedItems.value = applyAllTppFilters()
                 } else {
                     //is Result.Idle -> TODO()
                     //is Result.Error -> TODO()
@@ -271,9 +281,43 @@ class TppsViewModel(
 
         tppsToShow = filterTppsByName(tppsToShow)
 
+        if (orderByDirection.value ?: true) {
+            tppsToShow.sortBy { it.getEntityName() }
+        } else {
+            tppsToShow.sortedByDescending { it.getEntityName() }
+        }
+
+        /*orderTpps(tppsToShow.toMutableList(), orderByField.value
+                ?: "entityName", orderByDirection.value ?: true)
+        */
         _dataLoadingLocalDB.value = false
 
         return tppsToShow
+    }
+
+    fun orderTppsBy(fieldName: String)/*: List<Tpp>*/ {
+        _orderByField.value = fieldName
+        val asc = orderByDirection.value ?: true
+
+        if (!_displayedItems.value.isNullOrEmpty()) {
+            (_displayedItems.value as MutableList).sortBy {
+                when (fieldName) {
+                    "authorizationDate" -> it.ebaEntity.getAuthorizationDate()
+                    "country" -> it.ebaEntity.getCountry()
+                    "id" -> it.getEntityId()
+                    else -> it.getEntityName()
+                }
+            }
+
+            if (!asc) {
+                (_displayedItems.value as MutableList).reverse()
+            }
+        }
+    }
+
+    fun reverseOrderBy() {
+        _orderByDirection.value = !(_orderByDirection?.value ?: false)
+        (_displayedItems.value as MutableList).reverse()
     }
 
     private fun filterFollowedAndUsedOnly(inTpps: List<Tpp>?): List<Tpp>? {
@@ -282,7 +326,7 @@ class TppsViewModel(
         }
 
         val filteredTpps = ArrayList<Tpp>()
-        inTpps?.forEach {aTpp ->
+        inTpps?.forEach { aTpp ->
             if (searchFilter.showUsedOnly && aTpp.isUsed()) {
                 filteredTpps.add(aTpp)
             } else {
@@ -311,7 +355,7 @@ class TppsViewModel(
         return filteredTpps
     }
 
-    private fun filterTppsByUserInterest(inputTpps : List<Tpp>?, searchFilter: SearchFilter): MutableList<Tpp> {
+    private fun filterTppsByUserInterest(inputTpps: List<Tpp>?, searchFilter: SearchFilter): MutableList<Tpp> {
         val filteredTpps = ArrayList<Tpp>()
 
         inputTpps?.forEach { tpp ->
@@ -355,7 +399,7 @@ class TppsViewModel(
         return filteredTpps
     }
 
-    fun filterTppsByCountry(inputTpps : List<Tpp>?, country: String) : MutableList<Tpp> {
+    fun filterTppsByCountry(inputTpps: List<Tpp>?, country: String) : MutableList<Tpp> {
         if (inputTpps.isNullOrEmpty()) {
             return ArrayList<Tpp>()
         }
@@ -459,13 +503,5 @@ class TppsViewModel(
             _searchFilter.countries = savedInstanceState.getString("countries", "") ?: ""
             _searchFilter.services = savedInstanceState.getString("services", "") ?: ""
         }
-    }
-
-    fun setOrderByField(orderByField: String?) {
-        _orderByField.value = orderByField
-    }
-
-    fun reverseOrderBy() {
-        _orderByDirection.value = !(_orderByDirection?.value ?: false)
     }
 }
