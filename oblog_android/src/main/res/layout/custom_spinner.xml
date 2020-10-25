@@ -9,9 +9,3 @@
     android:paddingStart="@dimen/header_padding"
     android:paddingBottom="@dimen/list_item_padding"
     />
-<!--
-    android:layout_margin="@dimen/list_item_padding"
-
-android:background="@color/colorEULightGrey"
-    android:textAppearance="@style/TextAppearance.AppCompat.Widget.DropDownItem"
--->

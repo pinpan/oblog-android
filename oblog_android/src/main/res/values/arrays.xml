@@ -198,10 +198,10 @@
     </string-array>
 
     <string-array name="orderby_field_names">
-        <item>Entity</item>
-        <item>Date</item>
-        <item>Country</item>
-        <item>Type</item>
+        <item>Institution name</item>
+        <item>Authorization date</item>
+        <item>Home country</item>
+        <item>Institution type</item>
         <item>Following</item>
     </string-array>
 

@@ -25,30 +25,33 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <FrameLayout
-                android:id="@+id/tpps_advanced_search_layout"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:orientation="horizontal"
+                android:background="@color/colorEUGrey"
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"
-                android:background="@color/colorEUGrey"
-                android:orientation="vertical">
+                >
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:background="@color/colorEUGrey"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin">
-                    <LinearLayout
+                    >
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:weightSum="2">
+                        >
                         <Spinner
                             android:id="@+id/serarch_country"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_alignParentLeft="true"
                             android:contentDescription="@string/label_home_country"
                             android:isScrollContainer="true"
                             android:nestedScrollingEnabled="true"
@@ -57,11 +60,26 @@
                             android:scrollbars="horizontal|vertical"
                             android:spinnerMode="dialog"
                              />
+                    </RelativeLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@color/colorEUGrey"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    >
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        >
                         <Spinner
                             android:id="@+id/search_by_service"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_alignParentRight="true"
                             android:contentDescription="@string/label_psd2_services"
                             android:entries="@array/time_intervals"
                             android:isScrollContainer="true"
@@ -70,51 +88,52 @@
                             android:scrollbars="horizontal|vertical"
                             android:spinnerMode="dialog"
                             />
-                    </LinearLayout>
-                    <View
-                        android:id="@+id/divider4"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginBottom="1dp"
-                        android:background="?android:attr/listDivider" />
+                    </RelativeLayout>
                 </LinearLayout>
-            </FrameLayout>
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/colorEUGrey"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                >
+                <CheckBox
+                    android:id="@+id/show_revoked_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_alignParentLeft="true"
+                    android:checked="@{viewmodel.showRevoked}"
+                    android:onClick="@{(view) -> viewmodel.filterRevoked(((CompoundButton)view).isChecked())}"
+                    android:text="@string/label_revoked"
+                    android:textColor="@color/colorEUDarkBlue"
+                    />
+                <CheckBox
+                    android:id="@+id/show_revoked_only_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_alignParentRight="true"
+                    android:layoutDirection="rtl"
+                    android:checked="@{viewmodel.showRevokedOnly}"
+                    android:onClick="@{(view) -> viewmodel.filterRevokedOnly(((CompoundButton)view).isChecked())}"
+                    android:text="@string/label_revoked_only"
+                    android:textColor="@color/colorEUDarkBlue" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/divider4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="1dp"
+                android:background="?android:attr/listDivider" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorEUGrey"
                 android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:weightSum="2">
-                    <CheckBox
-                        android:id="@+id/show_revoked_checkbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:checked="@{viewmodel.showRevoked}"
-                        android:onClick="@{(view) -> viewmodel.filterRevoked(((CompoundButton)view).isChecked())}"
-                        android:text="@string/label_revoked"
-                        android:textColor="@color/colorEUDarkBlue"
-                        />
-
-                    <CheckBox
-                        android:id="@+id/show_revoked_only_checkbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layoutDirection="rtl"
-                        android:layout_weight="1"
-                        android:checked="@{viewmodel.showRevokedOnly}"
-                        android:onClick="@{(view) -> viewmodel.filterRevokedOnly(((CompoundButton)view).isChecked())}"
-                        android:text="@string/label_revoked_only"
-                        android:textColor="@color/colorEUDarkBlue" />
-                </LinearLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -123,13 +142,11 @@
                     >
 <!--
                     android:paddingRight="@dimen/fragment_views_margin_right"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin"
 -->
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:paddingRight="@dimen/fragment_views_margin_right"
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:layout_alignParentLeft="true"
                         android:weightSum="5">
@@ -171,10 +188,6 @@
                             android:entries="@array/orderby_field_names"
                             android:spinnerMode="dialog"
                             />
-    <!--
-                        android:layout_marginStart="@dimen/siblings_horizontal_margin"
-                        android:paddingStart="@dimen/header_padding"
-    -->
                         <ImageButton
                             android:id="@+id/order_direction"
                             android:layout_width="32dp"
@@ -209,9 +222,7 @@
                             android:layout_width="40dp"
                             android:layout_height="32dp"
                             android:layout_gravity="center"
-
                             app:srcCompat="@android:drawable/ic_media_next" />
-                        <!--android:layout_marginStart="@dimen/siblings_horizontal_margin"-->
                     </LinearLayout>
                 </RelativeLayout>
                 <View
