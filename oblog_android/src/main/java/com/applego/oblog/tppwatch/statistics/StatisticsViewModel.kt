@@ -218,7 +218,7 @@ class StatisticsViewModel(
 
         _dataLoading.value = true
         loadedTpps.forEach {
-            when (it.ebaEntity.entityType) {
+            when (it.ebaEntity._entityType) {
                 EbaEntityType.PSD_AISP -> _totalAISPTpps.value = _totalAISPTpps.value!! + 1
                 EbaEntityType.PSD_PISP -> _totalPISPTpps.value = _totalPISPTpps.value!! + 1
                 EbaEntityType.PSD_EMI -> _totalEMITpps.value = _totalEMITpps.value!! + 1
@@ -254,7 +254,7 @@ class StatisticsViewModel(
                         }
 
                         ChartType.PerInstitutionType -> {
-                            val entityType = it.ebaEntity.entityType
+                            val entityType = it.ebaEntity._entityType
                             if (!EbaEntityType.NONE.equals(entityType)) {
                                 tppsStatisticsArray!![entityType.order - 1] = tppsStatisticsArray[entityType.order - 1] + 1
                             }

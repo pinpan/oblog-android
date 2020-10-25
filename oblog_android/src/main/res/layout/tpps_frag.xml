@@ -115,6 +115,7 @@
                         android:text="@string/label_revoked_only"
                         android:textColor="@color/colorEUDarkBlue" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -122,7 +123,6 @@
                     android:paddingRight="@dimen/fragment_views_margin_right"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:weightSum="10">
-
                     <CheckBox
                         android:id="@+id/show_followed_only_checkbox"
                         android:layout_width="wrap_content"
@@ -137,7 +137,6 @@
                         android:textColor="@color/colorEUDarkBlue"
                         android:textSize="12sp"
                         android:textStyle="bold" />
-
                     <CheckBox
                         android:id="@+id/show_used_only_checkbox"
                         android:layout_width="wrap_content"
@@ -153,23 +152,6 @@
                         android:textColor="@color/colorEUDarkBlue"
                         android:textSize="12sp"
                         android:textStyle="bold" />
-
-                    <ImageButton
-                        android:id="@+id/order_direction"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="start|center_vertical"
-                        android:layout_weight="1"
-                        android:scaleType="fitXY"
-                        android:clickable="true"
-                        android:src="@{viewmodel.orderByDirection ? @drawable/sort_ascending_bars : @drawable/sort_descending_bars}"
-                         />
-<!--
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="16dp"
-                        android:background="@null"
--->
-
                     <Spinner
                         android:id="@+id/order_by"
                         android:layout_width="wrap_content"
@@ -180,24 +162,24 @@
                         android:entries="@array/orderby_field_names"
                         android:spinnerMode="dialog"
                         />
-
-<!--
-android:contentDescription="@string/label_orderby_fields"
-                        android:layout_gravity="right|end"
-                        android:drawableRight="@android:drawable/arrow_down_float"
-                        android:layout_marginStart="-12dp"
-                        android:layout_marginLeft="-12dp"
-                    android:spinnerMode="dialog"
--->
-
+                    <ImageButton
+                        android:id="@+id/order_direction"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="start|center_vertical"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY"
+                        android:clickable="true"
+                        android:src="@{viewmodel.orderByDirection ? @drawable/sort_ascending_bars : @drawable/sort_descending_bars}"
+                        />
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:layout_weight="4"
-
+                        android:layout_weight="2"
                         android:orientation="horizontal"
-                        android:paddingLeft="@dimen/activity_vertical_margin">
+                        android:paddingLeft="@dimen/activity_vertical_margin"
+                        >
                         <!--android:layoutDirection="rtl"-->
                         <ImageButton
                             android:id="@+id/btn_first"
@@ -229,7 +211,7 @@ android:contentDescription="@string/label_orderby_fields"
                     android:id="@+id/refresh_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:onRefreshListener="@{viewmodel::refresh}"
+                    app:onRefreshListener="@{viewmodel::loadTpps}"
                     app:refreshing="@{viewmodel.dataLoading}"
                     >
                     <LinearLayout

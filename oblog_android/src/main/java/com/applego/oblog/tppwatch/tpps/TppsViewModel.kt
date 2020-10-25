@@ -90,10 +90,6 @@ class TppsViewModel(
         });
     }
 
-    fun refresh() {
-        loadTpps()
-    }
-
     fun isFiltered() : Boolean {
         return (_allItems.value?.size != _displayedItems.value?.size)
     }
@@ -106,7 +102,7 @@ class TppsViewModel(
                     tppsRepository.refreshTpp(tpp)
                 }
             }
-            loadTpps()
+            // TODO: Check if this is needed: loadTpps()
         }
     }
 
@@ -183,7 +179,7 @@ class TppsViewModel(
 
                             paging = tppsResult.data.paging
 
-                            refresh()
+                            loadTpps()
                         } else {
                             showSnackbarMessage(R.string.loading_tpps_error)
                         }
@@ -287,9 +283,6 @@ class TppsViewModel(
             tppsToShow.sortedByDescending { it.getEntityName() }
         }
 
-        /*orderTpps(tppsToShow.toMutableList(), orderByField.value
-                ?: "entityName", orderByDirection.value ?: true)
-        */
         _dataLoadingLocalDB.value = false
 
         return tppsToShow
@@ -297,6 +290,10 @@ class TppsViewModel(
 
     fun orderTppsBy(fieldName: String)/*: List<Tpp>*/ {
         _orderByField.value = fieldName
+    }
+
+    fun orderTpps() {
+        val fieldName = _orderByField.value
         val asc = orderByDirection.value ?: true
 
         if (!_displayedItems.value.isNullOrEmpty()) {
@@ -304,7 +301,8 @@ class TppsViewModel(
                 when (fieldName) {
                     "authorizationDate" -> it.ebaEntity.getAuthorizationDate()
                     "country" -> it.ebaEntity.getCountry()
-                    "id" -> it.getEntityId()
+                    "type" -> it.ebaEntity.getEntityType().code
+                    "followed" -> it.isFollowed().toString()
                     else -> it.getEntityName()
                 }
             }
@@ -316,8 +314,10 @@ class TppsViewModel(
     }
 
     fun reverseOrderBy() {
-        _orderByDirection.value = !(_orderByDirection?.value ?: false)
-        (_displayedItems.value as MutableList).reverse()
+        if (!_displayedItems.value.isNullOrEmpty()) {
+            _orderByDirection.value = !(_orderByDirection?.value ?: false)
+            (_displayedItems.value as MutableList).reverse()
+        }
     }
 
     private fun filterFollowedAndUsedOnly(inTpps: List<Tpp>?): List<Tpp>? {

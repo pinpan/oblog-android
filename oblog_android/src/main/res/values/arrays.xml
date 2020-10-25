@@ -194,13 +194,15 @@
         <item>authorizationDate</item>
         <item>country</item>
         <item>entityType</item>
+        <item>followed</item>
     </string-array>
 
     <string-array name="orderby_field_names">
-        <item>Name</item>
+        <item>Entity</item>
         <item>Date</item>
         <item>Country</item>
         <item>Type</item>
+        <item>Following</item>
     </string-array>
 
     <string-array name="time_intervals">

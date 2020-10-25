@@ -102,8 +102,8 @@ class DefaultTppsRepository (
     }
 
     override suspend fun loadTppsFromLocalDatasource(orderBy: String, isAsc: Boolean): Result<List<Tpp>> {
-
-        val localTpps = tppsLocalDataSource.getTpps(orderBy, isAsc)
+//TODO: dont use the parameters and remove method if not needed.
+        val localTpps = tppsLocalDataSource.getTpps(/*orderBy, isAsc*/)
         if (localTpps is Success) {
             return localTpps
         } else if (localTpps is Loading) {

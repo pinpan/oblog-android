@@ -29,7 +29,7 @@ data class EbaEntity @JvmOverloads constructor(
         @ColumnInfo(name = "globalUrn") val _globalUrn: String,
         @ColumnInfo(name = "ebaEntityVersion") var _ebaEntityVersion: String,
         @ColumnInfo(name = "country") val _country: String,
-        @ColumnInfo(name = "entityType") val entityType: EbaEntityType, // TODO: Move up after entityName Fix tests!
+        @ColumnInfo(name = "entityType") val _entityType: EbaEntityType, // TODO: Move up after entityName Fix tests!
         @PrimaryKey @ColumnInfo(name = "db_id") var _db_id: String = UUID.randomUUID().toString()
 ) {
 
@@ -38,6 +38,9 @@ data class EbaEntity @JvmOverloads constructor(
 
     @Ignore
     fun getEntityCode() = _entityCode
+
+    @Ignore
+    fun getEntityType() = _entityType
 
     @Ignore
     fun getEntityName() = _entityName
@@ -107,25 +110,25 @@ data class EbaEntity @JvmOverloads constructor(
 
     @Ignore
     fun isAllPSD2(): Boolean = (
-           entityType.equals(EbaEntityType.PSD_PISP)
-        || entityType.equals(EbaEntityType.PSD_AISP)
-        || entityType.equals(EbaEntityType.PSD_EPI)
-        || entityType.equals(EbaEntityType.PSD_EMI)
-        || entityType.equals(EbaEntityType.PSD_EEMI)
-        || entityType.equals(EbaEntityType.PSD_EXC)
-        || entityType.equals(EbaEntityType.PSD_ENL)
+           _entityType.equals(EbaEntityType.PSD_PISP)
+        || _entityType.equals(EbaEntityType.PSD_AISP)
+        || _entityType.equals(EbaEntityType.PSD_EPI)
+        || _entityType.equals(EbaEntityType.PSD_EMI)
+        || _entityType.equals(EbaEntityType.PSD_EEMI)
+        || _entityType.equals(EbaEntityType.PSD_EXC)
+        || _entityType.equals(EbaEntityType.PSD_ENL)
         //|| entityType.equals(EbaEntityType.PSD_BR)
         //|| entityType.equals(EbaEntityType.PSD_AG)
             )
 
     @Ignore
     fun isPI(): Boolean = (
-            entityType.equals(EbaEntityType.PSD_PISP)
+            _entityType.equals(EbaEntityType.PSD_PISP)
             )
 
     @Ignore
     fun isAI(): Boolean = (
-            entityType.equals(EbaEntityType.PSD_AISP)
+            _entityType.equals(EbaEntityType.PSD_AISP)
             )
 
     @Ignore
@@ -135,7 +138,7 @@ data class EbaEntity @JvmOverloads constructor(
 
     @Ignore
     fun isEPI(): Boolean = (
-            entityType.equals(EbaEntityType.PSD_EPI)
+            _entityType.equals(EbaEntityType.PSD_EPI)
             )
 
     @Ignore
@@ -143,15 +146,15 @@ data class EbaEntity @JvmOverloads constructor(
 
 
     fun isEMI(): Boolean = (
-           entityType.equals(EbaEntityType.PSD_EMI)
+           _entityType.equals(EbaEntityType.PSD_EMI)
     )
 
     fun isE_EMI(): Boolean = (
-        entityType.equals(EbaEntityType.PSD_EEMI)
+        _entityType.equals(EbaEntityType.PSD_EEMI)
     )
 
     fun isNonPSD2Sp(): Boolean = (
-           entityType.equals(EbaEntityType.PSD_EXC)
+           _entityType.equals(EbaEntityType.PSD_EXC)
     )
 
     @Ignore
@@ -162,10 +165,10 @@ data class EbaEntity @JvmOverloads constructor(
     }
 
     fun isBranch(): Boolean = (
-        entityType.equals(EbaEntityType.PSD_BR)
+        _entityType.equals(EbaEntityType.PSD_BR)
     )
 
     fun isAgent(): Boolean = (
-        entityType.equals(EbaEntityType.PSD_AG)
+        _entityType.equals(EbaEntityType.PSD_AG)
     )
 }

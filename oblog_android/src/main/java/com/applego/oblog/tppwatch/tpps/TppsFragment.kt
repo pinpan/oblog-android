@@ -166,7 +166,7 @@ class TppsFragment : Fragment() {
             }
             progressBar?.progress = it.page
         })
-        viewModel.refresh()
+        viewModel.loadTpps()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -261,6 +261,7 @@ class TppsFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 val orderByField = resources.getStringArray(R.array.orderby_field_values)[pos];
                 viewModel.orderTppsBy(orderByField)
+                viewModel.orderTpps()
                 listAdapter.notifyDataSetChanged()
                 //recyclerView.scrollToPosition(firstVisibleInListview)
                 recyclerView.invalidate()
