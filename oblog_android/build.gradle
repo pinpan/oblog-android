@@ -15,8 +15,8 @@ android {
         applicationId "com.applego.oblog.tppwatch"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 7
-        versionName "0.7"
+        versionCode 8
+        versionName "v0.8"
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         kapt {
