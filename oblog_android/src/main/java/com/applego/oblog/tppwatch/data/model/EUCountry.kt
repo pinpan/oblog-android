@@ -9,7 +9,7 @@ enum class EUCountry(val countryName: String, val isoCode:String, val order: Int
     /**
      * Used to indicate any EU country
      */
-    EU("All EU countries", "EU",0),
+    EU("All EU", "EU",0),
 
     /**
      * Austria

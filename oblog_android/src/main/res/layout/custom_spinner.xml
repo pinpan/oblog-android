@@ -6,6 +6,7 @@
     android:dropDownWidth="wrap_content"
     android:textColor="@color/colorEUDarkBlue"
     android:paddingTop="@dimen/list_item_padding"
+    android:paddingStart="@dimen/list_item_padding"
     android:paddingBottom="@dimen/list_item_padding"
     />
 <!--
