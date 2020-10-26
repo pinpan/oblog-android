@@ -3,6 +3,7 @@ package com.applego.oblog.ui
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,7 @@ import com.applego.oblog.tppwatch.data.model.EUCountry
 /**
  * Adapter for the Countries Spinner list.
  */
-class CountriesSpinnerAdapter (context: Context , resource: Int, spinner: Spinner, cntrys: List<EUCountry>)
+class CountriesSpinnerAdapter (context: Context , resource: Int, spinner: Spinner, cntrys: List<EUCountry>, tSize: Int = 12)
     : BaseAdapter() {
 
     private val myContext: Context = context
@@ -23,6 +24,8 @@ class CountriesSpinnerAdapter (context: Context , resource: Int, spinner: Spinne
     private val countries: List<EUCountry> = cntrys
 
     private val mySpinner: Spinner = spinner
+
+    private val textSize: Float = tSize.toFloat()
 
     /**
      * The resource indicating what views to inflate to display the content of this
@@ -57,6 +60,7 @@ class CountriesSpinnerAdapter (context: Context , resource: Int, spinner: Spinne
         val countryName = countries.get(position).countryName
         label.setText(countryName)
         label.setTextColor(Color.BLACK)
+        label.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize)
 
         return view
     }

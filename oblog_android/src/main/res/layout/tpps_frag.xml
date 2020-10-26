@@ -35,17 +35,18 @@
                 android:paddingBottom="0dp"
                 >
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@color/colorEUGrey"
                     android:paddingTop="0dp"
+                    android:orientation="horizontal"
                     android:paddingBottom="0dp"
+                    android:layout_weight="1"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     >
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal"
                         >
                         <Spinner
                             android:id="@+id/serarch_country"
@@ -69,6 +70,7 @@
                     android:background="@color/colorEUGrey"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
+                    android:layout_weight="1"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     >
                     <RelativeLayout
@@ -140,9 +142,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     >
-<!--
-                    android:paddingRight="@dimen/fragment_views_margin_right"
--->
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -187,6 +186,7 @@
                             android:layout_gravity="center_vertical"
                             android:entries="@array/orderby_field_names"
                             android:spinnerMode="dialog"
+                            android:textColor="@color/colorEUDarkBlue"
                             />
                         <ImageButton
                             android:id="@+id/order_direction"
