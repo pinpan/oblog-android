@@ -194,7 +194,7 @@ class TppsFragment : Fragment() {
 
     private fun setUpSearchForm() {
         countriesSpinner = activity?.findViewById(R.id.serarch_country)!!
-        val countryAdapter = CountriesSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_item, countriesSpinner, allEUCountriesWithEU)
+        val countryAdapter = CountriesSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_item, countriesSpinner, allEUCountriesWithEU, 14)
         countriesSpinner.setAdapter(countryAdapter);
         countriesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
@@ -210,7 +210,7 @@ class TppsFragment : Fragment() {
         })
 
         servicesSpinner = activity?.findViewById(R.id.search_by_service)!!
-        val servicesAdapter = IconAndTextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_item, servicesSpinner, getShortDescriptions(psd2Servies))
+        val servicesAdapter = IconAndTextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_item, servicesSpinner, getShortDescriptions(psd2Servies), 14)
         servicesSpinner.setAdapter(servicesAdapter);
 
         servicesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
@@ -255,7 +255,7 @@ class TppsFragment : Fragment() {
         })
 
         val orderBySpinner:Spinner = activity?.findViewById(R.id.order_by)!!
-        val orderByAdapter = TextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner, orderBySpinner, getOrderByFieldNames(), 11)
+        val orderByAdapter = TextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner, orderBySpinner, getOrderByFieldNames(), 14)
         orderBySpinner.setAdapter(orderByAdapter)
         orderBySpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {

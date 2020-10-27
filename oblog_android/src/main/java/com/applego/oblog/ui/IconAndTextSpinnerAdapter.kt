@@ -52,7 +52,7 @@ class IconAndTextSpinnerAdapter (context: Context, resource: Int, spinner: Spinn
         val label = view.findViewById(R.id.title) as TextView
         label.setText(items.get(position))
         label.setTextColor(Color.BLACK)
-        label.setTextSize(TypedValue.COMPLEX_UNIT_SP,textSize)
+        label.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize)
 
         return view
     }
