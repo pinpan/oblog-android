@@ -30,7 +30,7 @@
             android:id="@+id/visa_country"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="@{serviceVisa.service}"
+            android:text="@{serviceVisa.serviceNameAndCode}"
             android:textSize="11sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 

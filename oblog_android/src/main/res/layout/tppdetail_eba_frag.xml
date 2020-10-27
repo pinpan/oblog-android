@@ -33,6 +33,8 @@
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:fadeScrollbars="false"
+                android:layout_marginTop="@dimen/tab_margin_top"
                 android:layout_weight="1">
 
                 <LinearLayout
@@ -58,10 +60,14 @@
                             android:text="@string/label_entity_names"
                             android:textIsSelectable="true"
                             android:textSize="11sp" />
+
                         <TextView
                             android:id="@+id/entity_names"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:elevation="2dp"
+                            android:focusable="auto"
                             android:padding="2dp"
                             android:text="@{viewmodel.tpp.ebaEntity.ebaProperties.entityNames}"
                             android:textColor="#006496"
@@ -269,16 +275,22 @@
                 android:id="@+id/visas_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/tab_margin_top"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:clickable="true"
+                android:orientation="vertical"
+                android:contentDescription="Services"
+                >
 
                 <LinearLayout
                     android:id="@+id/visas_labels"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:layout_margin="@dimen/tab_margin_top"
+                    android:background="@color/colorEULightGrey"
                     >
-                    <EditText
+                    <TextView
                         android:id="@+id/label_visa_psd2_roles"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
@@ -286,9 +298,11 @@
                         android:enabled="false"
                         android:inputType="textPersonName"
                         android:text="@string/label_services"
-                        android:textSize="12sp" />
+                        android:textSize="14sp"
+                        android:textColor="@color/colorEUDarkBlue"
+                        />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/label_visa_country"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -297,8 +311,9 @@
                         android:enabled="false"
                         android:inputType="none|textPersonName"
                         android:text="@string/label_country"
-                        android:textSize="12sp" />
-
+                        android:textSize="14sp"
+                        android:textColor="@color/colorEUDarkBlue"
+                        />
                 </LinearLayout>
 
 <!--
@@ -324,7 +339,9 @@
                     android:id="@+id/passports_services"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/tab_margin_top"
                     >
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/passports_services_list"
                         android:layout_width="match_parent"
@@ -332,10 +349,8 @@
                         android:layout_marginBottom="10dp"
                         android:fadeScrollbars="false"
                         android:scrollbars="horizontal|vertical"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-
                         app:items="@{viewmodel.tpp.ebaEntity.ebaPassport.services}"
-                        />
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

@@ -53,7 +53,7 @@ class TextSpinnerAdapter(context: Context, resource: Int, spinner: Spinner, itms
 
         val view = LayoutInflater.from(myContext).inflate(viewResourceId, parent, false) as TextView
         view.setText(items.get(position))
-        view.setTextColor(Color.BLACK)
+        view.setTextColor(myContext.resources.getColor(R.color.colorEUDarkBlue))
         view.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize)
 
         return view

@@ -110,7 +110,7 @@
     </string-array>
 
     <string-array name="eu_countries">
-        <item>&lt;All EU countries&gt;</item>
+        <item>&lt;All EU&gt;</item>
         <item>Austria</item>
         <item>Belgium</item>
         <item>Bulgaria</item>
@@ -173,8 +173,8 @@
         <item>SI</item>
         <item>SK</item>
         <item>ES</item>
-        <item>UK</item>
-        <item>&lt;All EU countries&gt;</item>
+        <item>GB</item>
+        <item>&lt;All EU&gt;</item>
     </string-array>
 
     <string-array name="introduction_titles">

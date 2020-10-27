@@ -9,7 +9,7 @@ import java.util.*
 enum class EbaService (val code: String, val psd2Code: String, val shortDescription: String, val description: String, val order: Int) {
 
     NONE("NONE", "NOPE",  "Payment service not defined", "", 0),
-    ALL("ALL", "PSD2",  "All PSD2 services", "An aggregation item for all PSD2 services: AIS, PIS, CII", 1),
+    ALL("ALL", "PSD2",  "PSD2 services", "An aggregation item for all PSD2 services: AIS, PIS, CII", 1),
     PS_010("PS_010", "EMS_PS_010",  "Payment account cash deposit", "1. Services enabling cash to be placed on a payment account as well as all the operations required for operating a payment account.", 2),
     PS_020("PS_020", "EMS_PS_020", "Payment account withdrawals", "2. Services enabling cash withdrawals from a payment account as well as all the operations required for operating a payment account.", 3),
     PS_03A("PS_03A", "EMS_PS_03A", "Direct debits execution", "3a. Execution of direct debits, including one-off direct debits.",4),

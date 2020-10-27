@@ -405,7 +405,7 @@ class TppsViewModel(
         }
 
         var filteredTpps = ArrayList<Tpp>()
-        if (country.isNullOrBlank() || country.equals("<All EU countries>")) {
+        if (country.isNullOrBlank() || country.equals("<All EU>")) {
             filteredTpps.addAll(inputTpps)
         } else {
             inputTpps.forEach {

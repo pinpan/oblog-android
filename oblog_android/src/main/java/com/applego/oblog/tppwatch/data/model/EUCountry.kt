@@ -9,7 +9,7 @@ enum class EUCountry(val countryName: String, val isoCode:String, val order: Int
     /**
      * Used to indicate any EU country
      */
-    EU("All EU countries", "EU",0),
+    EU("All EU", "EU",0),
 
     /**
      * Austria
@@ -82,9 +82,9 @@ enum class EUCountry(val countryName: String, val isoCode:String, val order: Int
     IE("Ireland", "IE", 14),
 
     /**
-     * ISLAND
+     * ICELAND
      */
-    IS("ISLAND", "IS",15),
+    IS("ICELAND", "IS",15),
 
     /**
      * Italy
@@ -164,7 +164,7 @@ enum class EUCountry(val countryName: String, val isoCode:String, val order: Int
     /**
      * Great Britain
      */
-    GB("United Kingdom", "UK",31),
+    GB("United Kingdom", "GB",31),
 
     /**
      * Used to indicate that no EU country was found

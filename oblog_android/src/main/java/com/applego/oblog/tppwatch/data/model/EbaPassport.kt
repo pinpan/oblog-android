@@ -38,6 +38,11 @@ data class EbaPassport @JvmOverloads constructor(
             this.countries = countries
         }
 
+        val serviceNameAndCode : String
+            get() {
+                return StringBuilder().append("(").append(service).append(") ").append(serviceDetail).toString()
+            }
+
         val countriesAsString : String
             get() {
                 val sb = StringBuilder()

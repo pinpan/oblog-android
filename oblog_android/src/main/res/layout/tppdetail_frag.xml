@@ -40,9 +40,9 @@
                     android:paddingTop="1dp"
                     android:text="@{viewmodel.tpp.ebaEntity.entityName}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="#006496"
+                    android:textColor="@color/colorEUDarkBlue"
                     android:textIsSelectable="true"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
