@@ -21,7 +21,7 @@ data class EbaPassport @JvmOverloads constructor(
         get() {
             val myPasportedServices = ArrayList<ServiceVisa>()
             serviceMap.forEach({
-                myPasportedServices.add(ServiceVisa(it.key, EbaService.findService(it.key).description, it.value))
+                myPasportedServices.add(ServiceVisa(it.key, EbaService.findService(it.key).shortDescription, it.value))
             })
             return myPasportedServices
         }
