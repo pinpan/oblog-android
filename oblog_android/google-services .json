@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1068274290520",
+    "firebase_url": "https://oblog-bb6fa.firebaseio.com",
+    "project_id": "oblog-bb6fa",
+    "storage_bucket": "oblog-bb6fa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068274290520:android:1df227815cffa5223b5f2d",
+        "android_client_info": {
+          "package_name": "com.applego.oblog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1068274290520-nab5vvcatsaii17bg6k581hp8te5otta.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.applego.oblog",
+            "certificate_hash": "4650f28668dd4fdf3b2368d8e9f810f36278869a"
+          }
+        },
+        {
+          "client_id": "1068274290520-g0va3lfvquqa9ena8a5j6jlcogaf9r49.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuUOoqPVGb54oN4JFICmdGht32iT7uwjA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1068274290520-g0va3lfvquqa9ena8a5j6jlcogaf9r49.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

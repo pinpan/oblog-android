@@ -4,6 +4,8 @@ apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'com.google.gms.google-services'
+
 repositories {
     maven { url "https://jitpack.io" }
 }
@@ -136,7 +138,8 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.google.android.material:material:1.1.0'
     kapt group: 'com.google.dagger', name: 'dagger-compiler', version: '2.21'
-    implementation 'com.google.android.gms:play-services:8.4.0'
+    implementation 'com.google.android.gms:play-services:9.0.0'
+    implementation 'com.google.firebase:firebase-messaging:10.2.6'
 
     // App dependencies
     //implementation "androidx.appcompat:appcompat:$appCompatVersion"
