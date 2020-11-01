@@ -77,7 +77,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                     editor.commit()
 
                     startActivity(Intent(this@TppsActivity, OnboardingActivity::class.java))
-                    Toast.makeText(this@TppsActivity, "Run only once", Toast.LENGTH_LONG).show()
+                    //Toast.makeText(this@TppsActivity, "Run only once", Toast.LENGTH_LONG).show()
                 }
             })
         } else {

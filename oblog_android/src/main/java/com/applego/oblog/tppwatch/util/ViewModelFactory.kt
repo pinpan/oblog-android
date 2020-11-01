@@ -6,6 +6,7 @@ import com.applego.oblog.tppwatch.about.AboutViewModel
 import com.applego.oblog.tppwatch.addedittppapp.AddEditTppAppViewModel
 import com.applego.oblog.tppwatch.addedittpp.AddEditTppViewModel
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
+import com.applego.oblog.tppwatch.onboarding.OnboardingViewModel
 import com.applego.oblog.tppwatch.statistics.StatisticsViewModel
 import com.applego.oblog.tppwatch.tppdetail.*
 import com.applego.oblog.tppwatch.tpps.TppsViewModel
@@ -66,6 +67,11 @@ class ViewModelFactory constructor(
                     isAssignableFrom(AboutViewModel::class.java) -> {
                         model = AboutViewModel()
                         models.put(AboutViewModel::class.java.name, model)
+                        model
+                    }
+                    isAssignableFrom(OnboardingViewModel::class.java) -> {
+                        model = OnboardingViewModel()
+                        models.put(OnboardingViewModel::class.java.name, model)
                         model
                     }
                     else -> {

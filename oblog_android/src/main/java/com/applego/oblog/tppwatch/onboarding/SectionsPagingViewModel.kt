@@ -1,4 +1,4 @@
-package com.applego.oblog.tppwatch.onboarding.ui.main
+package com.applego.oblog.tppwatch.onboarding
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

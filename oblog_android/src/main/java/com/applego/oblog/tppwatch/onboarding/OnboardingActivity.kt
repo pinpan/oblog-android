@@ -13,8 +13,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.applego.oblog.tppwatch.R
-import com.applego.oblog.tppwatch.onboarding.ui.main.OnboardingViewModel
-import com.applego.oblog.tppwatch.onboarding.ui.main.SectionsPagerAdapter
 import com.applego.oblog.tppwatch.tpps.TppsActivity
 
 class OnboardingActivity : AppCompatActivity() {

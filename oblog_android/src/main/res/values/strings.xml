@@ -174,7 +174,8 @@
     <string name="onboarding_label_1">Welcome to Open Banking LOG!</string>
     <string name="onboarding_label_2">Browse European FI registries</string>
     <string name="onboarding_label_3">Analyze statistics</string>
-    <string name="onboarding_label_4">OBLOG</string>
+    <string name="onboarding_label_4">By clicking "Start Using" button you agree with the disclaimer bellow</string>
+    <string name="empty_label_4"></string>
 
     <string name="onboarding_description_1">OBLOG - Know Your Financial Services Provider</string>
     <string name="onboarding_description_2">Browse, Search, Filter European FI registries, Get TPP details...</string>

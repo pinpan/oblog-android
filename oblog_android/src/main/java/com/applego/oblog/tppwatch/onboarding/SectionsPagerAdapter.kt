@@ -1,4 +1,4 @@
-package com.applego.oblog.tppwatch.onboarding.ui.main
+package com.applego.oblog.tppwatch.onboarding
 
 import android.content.Context
 import android.view.View

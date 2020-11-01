@@ -1,89 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/activity_horizontal_margin">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="viewmodel"
+            type="com.applego.oblog.tppwatch.onboarding.OnboardingViewModel"
+            />
+    </data>
+
+    <FrameLayout android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:padding="@dimen/activity_horizontal_margin"
+            >
+<!--
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+-->
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="@dimen/activity_horizontal_margin">
-
-            <TextView
-                android:id="@+id/section_label"
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                tools:text="Page One"
-                android:textColor="@color/colorEUDarkBlue"
-                />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:weightSum="3"
+                android:layout_gravity="center"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="@dimen/activity_horizontal_margin">
-
-                <!--<FrameLayout
+                >
+                <TextView
+                    android:id="@+id/section_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    >-->
+                    android:gravity="center"
+                    tools:text="Page One"
+                    android:textColor="@color/colorEUDarkBlue"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    >
+
                     <ImageView
                         android:id="@+id/section_img"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:padding="@dimen/activity_horizontal_margin"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
                         android:adjustViewBounds="true"
                         android:background="@drawable/oblog_onboarding_1"
                         android:scaleType="fitCenter"
-                    />
-                <!--</FrameLayout>-->
-
-<!--
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="@dimen/activity_vertical_margin">
-
--->
-
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:scrollbarAlwaysDrawVerticalTrack="true"
-                    android:scrollbars="horizontal|vertical">
-
+                        android:visibility="@{viewmodel.showDisclamer ? View.GONE : View.VISIBLE}"
+                        />
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:layout_alignParentBottom="true"
+                        android:scrollbarAlwaysDrawVerticalTrack="true"
+                        android:scrollbars="horizontal|vertical"
+                        android:visibility="@{viewmodel.showDisclamer ? View.VISIBLE : View.GONE}"
+                        >
+                        <TextView
+                            android:id="@+id/section_disclamer"
+                            style="@style/TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.7"
+                            android:gravity="center"
+                            android:text="Add a long description here about your app's important feature."
+                            android:textColor="@color/colorEUGrey"
+                            android:textSize="12sp" />
+                    </ScrollView>
                     <TextView
                         android:id="@+id/section_description"
                         style="@style/TextAppearance.AppCompat.Subhead"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/activity_vertical_margin"
-                        android:layout_weight="1"
                         android:alpha="0.7"
                         android:gravity="center"
                         android:text="Add a long description here about your app's important feature."
                         android:textColor="@color/colorEUGrey"
-                        android:textSize="16sp" />
-                </ScrollView>
-<!--
-                </LinearLayout>
--->
-        </LinearLayout>
-    </LinearLayout>
-
-</FrameLayout>
+                        android:textSize="12sp" />
+                </RelativeLayout>
+            </LinearLayout>
+    </FrameLayout>
+    <!--</androidx.coordinatorlayout.widget.CoordinatorLayout>-->
+</layout>
