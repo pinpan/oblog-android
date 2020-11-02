@@ -6,92 +6,131 @@
         <import type="android.view.View" />
 
         <variable
-            name="viewmodel"
-            type="com.applego.oblog.tppwatch.onboarding.OnboardingViewModel"
+                name="viewmodel"
+                type="com.applego.oblog.tppwatch.onboarding.OnboardingViewModel"
             />
     </data>
-
-    <FrameLayout android:layout_width="match_parent"
-                 android:layout_height="match_parent"
-                 android:padding="@dimen/activity_horizontal_margin"
-            >
 <!--
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinator_layout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
--->
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_gravity="center"
+        android:gravity="center">-->
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/fragment_views_margin_top"
+        android:layout_gravity="center_horizontal"
+        android:gravity="clip_horizontal"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/section_label"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:gravity="center_horizontal"
+            android:textColor="@color/colorEUDarkBlue"
+            tools:text="Page One" />
+
+        <!--
+            android:layout_alignParentTop="true"
+        android:orientation="vertical"
+
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+
+        <ImageView
+            android:id="@+id/section_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:alpha="0.5"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:foregroundGravity="center|center_horizontal"
+            android:background="@drawable/oblog_logo"
+            android:gravity="center"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:visibility="gone"
+            />
+            android:layout_below="@id/section_logo"
+            android:layout_below="@id/section_label"
+            -->
         <LinearLayout
-                android:layout_width="wrap_content"
+            android:id="@+id/section_img_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            >
+            <ImageView
+                android:id="@+id/section_img"
+                android:layout_width="320dip"
+                android:layout_height="420dip"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                />
+        </LinearLayout>
+
+        <!--
+        android:foregroundGravity="center|center_horizontal"
+        android:padding="@dimen/activity_horizontal_margin"
+            android:layout_below="@id/section_img_layout"
+        -->
+
+        <ScrollView
+            android:id="@+id/scrolview_description"
+            android:layout_width="320dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:scrollbars="horizontal|vertical"
+            >
+
+            <TextView
+                android:id="@+id/section_description"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical"
-                >
-                <TextView
-                    android:id="@+id/section_label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                android:text="Add a long description here about your app's important feature."
+                android:textColor="@color/colorEULightBlue"
+                android:textSize="12sp"
+                android:textAlignment="viewStart"
+                />
+            <!--
+                android:textAlignment="viewStart"
+                style="@style/TextAppearance.AppCompat.Body1"
+            Subhead
+                android:alpha="0.7"
                     android:gravity="center"
-                    tools:text="Page One"
-                    android:textColor="@color/colorEUDarkBlue"
-                    style="@style/TextAppearance.AppCompat.Title"
-                    />
+            -->
+        </ScrollView>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    >
-
-                    <ImageView
-                        android:id="@+id/section_img"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/activity_horizontal_margin"
-                        android:layout_centerHorizontal="true"
-                        android:gravity="center"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/oblog_onboarding_1"
-                        android:scaleType="fitCenter"
-                        android:visibility="@{viewmodel.showDisclamer ? View.GONE : View.VISIBLE}"
-                        />
-                    <ScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/activity_vertical_margin"
-                        android:layout_alignParentBottom="true"
-                        android:scrollbarAlwaysDrawVerticalTrack="true"
-                        android:scrollbars="horizontal|vertical"
-                        android:visibility="@{viewmodel.showDisclamer ? View.VISIBLE : View.GONE}"
-                        >
-                        <TextView
-                            android:id="@+id/section_disclamer"
-                            style="@style/TextAppearance.AppCompat.Subhead"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.7"
-                            android:gravity="center"
-                            android:text="Add a long description here about your app's important feature."
-                            android:textColor="@color/colorEUGrey"
-                            android:textSize="12sp" />
-                    </ScrollView>
-                    <TextView
-                        android:id="@+id/section_description"
-                        style="@style/TextAppearance.AppCompat.Subhead"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.7"
-                        android:gravity="center"
-                        android:text="Add a long description here about your app's important feature."
-                        android:textColor="@color/colorEUGrey"
-                        android:textSize="12sp" />
-                </RelativeLayout>
-            </LinearLayout>
-    </FrameLayout>
-    <!--</androidx.coordinatorlayout.widget.CoordinatorLayout>-->
+        <TextView
+            android:id="@+id/section_warning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fragment_views_margin_right"
+            android:layout_marginBottom="@dimen/fragment_views_margin_right"
+            android:gravity="center"
+            android:text="@string/onboarding_warning"
+            android:textColor="@color/colorEUDarkBlue"
+            android:textSize="12sp"
+            android:visibility="gone" />
+        <!--
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_below="@id/scrolview_description"
+        android:layout_alignParentBottom="true"
+-->
+    </LinearLayout>
 </layout>

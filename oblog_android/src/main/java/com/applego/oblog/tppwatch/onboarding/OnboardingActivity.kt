@@ -75,16 +75,12 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     fun finish(regularFinish: Boolean) {
-        finish()
-    }
-
-    override fun finish() {
         //if (viewPager.currentItem == viewModel.pageCount) {
-            val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
+        val sharedPerfs = PreferenceManager.getDefaultSharedPreferences(this)
 
-            val editor = sharedPerfs.edit()
-            editor.putBoolean("isFirstRun", false)
-            editor.commit()
+        val editor = sharedPerfs.edit()
+        editor.putBoolean("isFirstRun", false)
+        editor.commit()
         //}
         // if (TargetApi >= 16)
         //   finishAffinity()
@@ -93,6 +89,10 @@ class OnboardingActivity : AppCompatActivity() {
         startActivity(intent)
 
         super.finish()
+    }
+
+    override fun finish() {
+        finish(true)
     }
 
     override fun onStart() {

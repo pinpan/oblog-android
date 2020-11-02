@@ -8,7 +8,7 @@ import com.applego.oblog.tppwatch.util.Event
 open abstract class SectionsPagingViewModel : ViewModel() {
 
     protected var pageCount: Int = 4 // TODO: find out how to pass this to the model
-    protected val _index = MutableLiveData<Int>()
+    protected val _index = MutableLiveData<Int>(0)
     var index: LiveData<Int> = _index
 
     private val _onboardingFinishEvent = MutableLiveData<Event<Boolean>>()

@@ -8,10 +8,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.OnboardingFragmentBinding
 import com.applego.oblog.tppwatch.util.Event
-import com.applego.oblog.tppwatch.util.ViewModelFactory.Companion.viewModelFactory
 
 
 /**
@@ -19,12 +19,17 @@ import com.applego.oblog.tppwatch.util.ViewModelFactory.Companion.viewModelFacto
  */
 class OnboardingFragment : Fragment() {
 
-    private val onboardingViewModel = viewModelFactory.get(OnboardingViewModel::class.java) as OnboardingViewModel
+    private lateinit var onboardingViewModel: OnboardingViewModel
+    //private val onboardingViewModel = viewModelFactory.get(OnboardingViewModel::class.java) as OnboardingViewModel
+    //private val onboardingViewModel = viewModelFactory.get(OnboardingViewModel::class.java) as OnboardingViewModel
+    //private lateinit var onboardingViewModel: OnboardingViewModel
 
     private lateinit var viewDataBinding: OnboardingFragmentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //onboardingViewModel = ViewModelProviders.of(this.activity!!).get(OnboardingViewModel::class.java)
+        onboardingViewModel = ViewModelProviders.of(this.activity!!).get(OnboardingViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -33,19 +38,33 @@ class OnboardingFragment : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.onboarding_fragment, container, false)
 
+        /*viewDataBinding = OnboardingFragmentBinding.inflate(inflater, container, false).apply {
+            viewmodel = onboardingViewModel
+        }*/
         viewDataBinding = OnboardingFragmentBinding.inflate(inflater, container, false).apply {
             viewmodel = onboardingViewModel
         }
 
-        val textView: TextView = root.findViewById(R.id.section_label)
+        val titleView: TextView = root.findViewById(R.id.section_label)
         val descView: TextView = root.findViewById(R.id.section_description)
 
         onboardingViewModel.text.observe(this, Observer<Int> {
-            textView.text = resources.getString(onboardingViewModel.text.value ?: 0)
+            titleView.text = resources.getString(onboardingViewModel.text.value ?: 0)
         })
 
         onboardingViewModel.desc.observe(this, Observer<Int> {
             descView.text = resources.getString(onboardingViewModel.desc.value ?: 0)
+        })
+
+        val imgView: ImageView = root.findViewById(R.id.section_img)
+        //val logoView: ImageView = root.findViewById(R.id.section_logo)
+        val warningView: TextView = root.findViewById(R.id.section_warning)
+        onboardingViewModel.image.observe(this, Observer<Int> {
+            imgView.setBackgroundResource(onboardingViewModel.image.value ?: 0)
+
+            imgView.visibility = if (onboardingViewModel.isLastPage()) View.GONE else View.VISIBLE
+            //logoView.visibility = if (onboardingViewModel.isLastPage()) View.VISIBLE else View.GONE
+            warningView.visibility = if (onboardingViewModel.isLastPage()) View.VISIBLE else View.GONE
         })
 
         onboardingViewModel.onboardingFinishEvent.observe(this, Observer<Event<Boolean>> {event ->
