@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/oblog_onboarding_fragment_dest"
-        android:name="com.applego.oblog.tppwatch.onboarding.ui.main.OnboardingFragment"
+        android:name="com.applego.oblog.tppwatch.onboarding.OnboardingFragment"
         android:label="OBLOG onboarding">
 
         <action

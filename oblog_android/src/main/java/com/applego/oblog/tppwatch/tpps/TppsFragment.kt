@@ -31,7 +31,7 @@ import java.util.*
 
 class TppsFragment : Fragment() {
 
-    private val viewModel = viewModelFactory.get(TppsViewModel::class.java) as TppsViewModel
+    private val tppsFragViewModel = viewModelFactory.get(TppsViewModel::class.java) as TppsViewModel
 
     private val args: TppsFragmentArgs by navArgs()
 
@@ -57,11 +57,11 @@ class TppsFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         viewDataBinding = TppsFragBinding.inflate(inflater, container, false).apply {
-            viewmodel = viewModel
+            viewmodel = tppsFragViewModel
         }
         setHasOptionsMenu(true)
 
-        viewModel.refreshTpp(arguments?.getString("tppId"))
+        tppsFragViewModel.refreshTpp(arguments?.getString("tppId"))
 
         return viewDataBinding.root
     }
@@ -109,7 +109,7 @@ class TppsFragment : Fragment() {
             closeBtn?.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(v: View) {
                     if (!lastTppsSearchViewQuery.isNullOrBlank()) {
-                        viewModel.loadTpps()
+                        tppsFragViewModel.loadTpps()
                         lastTppsSearchViewQuery = ""
                     }
                 }
@@ -124,7 +124,7 @@ class TppsFragment : Fragment() {
                 true
             }
             R.id.load_directory -> {
-                viewModel.loadEbaDirectory()
+                tppsFragViewModel.loadEbaDirectory()
                 true
             }
             R.id.menu_filter -> {
@@ -132,7 +132,7 @@ class TppsFragment : Fragment() {
                 true
             }
             R.id.menu_refresh -> {
-                viewModel.loadTpps()
+                tppsFragViewModel.loadTpps()
                 true
             }
             R.id.menu_add_tpp -> {
@@ -152,21 +152,21 @@ class TppsFragment : Fragment() {
 
         progressBar = activity?.findViewById(R.id.progress_bar)!!
 
-        viewModel.loadProgressStart.observe(this, EventObserver {
+        tppsFragViewModel.loadProgressStart.observe(this, EventObserver {
             progressBar?.max = it
             progressBar?.visibility = View.VISIBLE
         })
-        viewModel.loadProgressEnd.observe(this, EventObserver {
+        tppsFragViewModel.loadProgressEnd.observe(this, EventObserver {
             progressBar?.visibility = View.GONE
         })
-        viewModel.loadProgress.observe(this, EventObserver {
+        tppsFragViewModel.loadProgress.observe(this, EventObserver {
             if ((progressBar?.progress ?: 0).compareTo(it.page) < 0) {
                 progressBar?.visibility = View.VISIBLE
                 progressBar?.max = it.totalPages
             }
             progressBar?.progress = it.page
         })
-        viewModel.loadTpps()
+        tppsFragViewModel.loadTpps()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -177,7 +177,7 @@ class TppsFragment : Fragment() {
         // Set the lifecycle owner to the lifecycle of the view
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
         arguments?.let {
-            viewModel.showEditResultMessage(args.userMessage)
+            tppsFragViewModel.showEditResultMessage(args.userMessage)
         }
 
         setupSnackbar()
@@ -189,19 +189,19 @@ class TppsFragment : Fragment() {
     }
 
     private fun setupSearchFilter(savedInstanceState: Bundle?) {
-        viewModel.setupSearchFilter(savedInstanceState)
+        tppsFragViewModel.setupSearchFilter(savedInstanceState)
     }
 
     private fun setUpSearchForm() {
         countriesSpinner = activity?.findViewById(R.id.serarch_country)!!
-        val countryAdapter = CountriesSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_item, countriesSpinner, allEUCountriesWithEU, 14)
+        val countryAdapter = CountriesSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_item, countriesSpinner, allEUCountriesWithEU, 12)
         countriesSpinner.setAdapter(countryAdapter);
         countriesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 // An item was selected. You can retrieve the selected item using
                 val countryISO = allEUCountriesWithEU.get(pos).isoCode
 
-                viewModel.filterTppsByCountry(countryISO)
+                tppsFragViewModel.filterTppsByCountry(countryISO)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -210,14 +210,14 @@ class TppsFragment : Fragment() {
         })
 
         servicesSpinner = activity?.findViewById(R.id.search_by_service)!!
-        val servicesAdapter = IconAndTextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_item, servicesSpinner, getShortDescriptions(psd2Servies), 14)
+        val servicesAdapter = IconAndTextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_item, servicesSpinner, getShortDescriptions(psd2Servies), 12)
         servicesSpinner.setAdapter(servicesAdapter);
 
         servicesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 // An item was selected. You can retrieve the selected item using
                 val serviceCode = resources.getStringArray(R.array.eba_service_codes)[pos];
-                viewModel.filterTppsByService(serviceCode)
+                tppsFragViewModel.filterTppsByService(serviceCode)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -230,7 +230,7 @@ class TppsFragment : Fragment() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 firstVisibleInListview = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition();
-                var aTpp = viewModel.displayedItems.value?.get(firstVisibleInListview)
+                var aTpp = tppsFragViewModel.displayedItems.value?.get(firstVisibleInListview)
                 // TODO: Find the Tpp item position after sorting
                 //recyclerView.scrollToPosition(firstVisibleInListview)
             }
@@ -244,10 +244,10 @@ class TppsFragment : Fragment() {
         val orderByDirectionButton:ImageButton = activity?.findViewById(R.id.order_direction)!!
         orderByDirectionButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
-                orderByDirectionButton.setImageResource(if (viewModel.orderByDirection?.value
+                orderByDirectionButton.setImageResource(if (tppsFragViewModel.orderByDirection?.value
                                 ?: false)
                     R.drawable.sort_ascending_bars else R.drawable.sort_descending_bars)
-                viewModel.reverseOrderBy()
+                tppsFragViewModel.reverseOrderBy()
                 listAdapter.notifyDataSetChanged()
                 //recyclerView.scrollToPosition(firstVisibleInListview)
                 recyclerView.invalidate()
@@ -255,13 +255,13 @@ class TppsFragment : Fragment() {
         })
 
         val orderBySpinner:Spinner = activity?.findViewById(R.id.order_by)!!
-        val orderByAdapter = TextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner, orderBySpinner, getOrderByFieldNames(), 14)
+        val orderByAdapter = TextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner, orderBySpinner, getOrderByFieldNames(), 12)
         orderBySpinner.setAdapter(orderByAdapter)
         orderBySpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 val orderByField = resources.getStringArray(R.array.orderby_field_values)[pos];
-                viewModel.orderTppsBy(orderByField)
-                viewModel.orderTpps()
+                tppsFragViewModel.orderTppsBy(orderByField)
+                tppsFragViewModel.orderTpps()
                 listAdapter.notifyDataSetChanged()
                 //recyclerView.scrollToPosition(firstVisibleInListview)
                 recyclerView.invalidate()
@@ -279,7 +279,7 @@ class TppsFragment : Fragment() {
 
         val btnLast:ImageButton = activity?.findViewById(R.id.btn_last)!!
         btnLast.setOnClickListener{
-            recyclerView.scrollToPosition((viewModel.displayedItems.value?.size ?: 1) - 1);
+            recyclerView.scrollToPosition((tppsFragViewModel.displayedItems.value?.size ?: 1) - 1);
         }
     }
 
@@ -297,31 +297,31 @@ class TppsFragment : Fragment() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        viewModel.saveSearchFilter(outState)
+        tppsFragViewModel.saveSearchFilter(outState)
         progressBar?.visibility = View.INVISIBLE
         super.onSaveInstanceState(outState)
     }
 
     fun searchBy(query: String) {
-        viewModel.applyFilterByTitle(query)
+        tppsFragViewModel.applyFilterByTitle(query)
     }
 
     private fun setupNavigation() {
-        viewModel.openTppEvent.observe(this, EventObserver {
+        tppsFragViewModel.openTppEvent.observe(this, EventObserver {
             openTppDetails(it)
         })
-        viewModel.newTppEvent.observe(this, EventObserver {
+        tppsFragViewModel.newTppEvent.observe(this, EventObserver {
             navigateToAddNewTpp()
         })
-        viewModel.aboutEvent.observe(this, EventObserver {
+        tppsFragViewModel.aboutEvent.observe(this, EventObserver {
             openAbout()
         })
     }
 
     private fun setupSnackbar() {
-        view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
+        view?.setupSnackbar(this, tppsFragViewModel.snackbarText, Snackbar.LENGTH_SHORT)
         arguments?.let {
-            viewModel.showEditResultMessage(args.userMessage)
+            tppsFragViewModel.showEditResultMessage(args.userMessage)
         }
     }
 
@@ -331,7 +331,7 @@ class TppsFragment : Fragment() {
             PopupMenu(requireContext(), view).run {
                 menuInflater.inflate(R.menu.filter_tpps, menu)
 
-                when (viewModel.searchFilter.instType) {
+                when (tppsFragViewModel.searchFilter.instType) {
                     InstType.INST_PI -> menu.findItem(R.id.inst_psd2_pi).isChecked = true
                     InstType.INST_AI -> menu.findItem(R.id.inst_psd2_ai).isChecked = true
                     InstType.INST_PIAI -> menu.findItem(R.id.inst_psd2_piai).isChecked = true
@@ -341,11 +341,11 @@ class TppsFragment : Fragment() {
                     InstType.NON_PSD2_INST -> menu.findItem(R.id.non_psd2_inst).isChecked = true
                     InstType.CIs -> menu.findItem(R.id.credit_inst).isChecked = true
                 }
-                menu.findItem(R.id.show_branches).isChecked = viewModel.searchFilter.showBranches
-                menu.findItem(R.id.show_agents).isChecked = viewModel.searchFilter.showAgents
+                menu.findItem(R.id.show_branches).isChecked = tppsFragViewModel.searchFilter.showBranches
+                menu.findItem(R.id.show_agents).isChecked = tppsFragViewModel.searchFilter.showAgents
 
                 setOnMenuItemClickListener {
-                    viewModel.setFiltering(
+                    tppsFragViewModel.setFiltering(
                             when (it.itemId) {
                                 R.id.allPSD2 -> TppsFilterType.ALL_INST
 
@@ -364,7 +364,7 @@ class TppsFragment : Fragment() {
                                 else -> TppsFilterType.ALL_INST
                             }
                     )
-                    viewModel.loadTpps()
+                    tppsFragViewModel.loadTpps()
                     true
                 }
                 show()

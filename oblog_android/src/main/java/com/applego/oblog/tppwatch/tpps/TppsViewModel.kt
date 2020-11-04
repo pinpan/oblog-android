@@ -62,8 +62,8 @@ class TppsViewModel(
     private val _loadProgressStart = MutableLiveData<Event<Int>>()
     val loadProgressStart: LiveData<Event<Int>> = _loadProgressStart
 
-    private val _loadProgressEnd = MutableLiveData<Event<Int>>()
-    val loadProgressEnd: LiveData<Event<Int>> = _loadProgressEnd
+    private val _loadProgressEnd = MutableLiveData<Event<Boolean>>()
+    val loadProgressEnd: LiveData<Event<Boolean>> = _loadProgressEnd
 
     // This LiveData depends on another so we can use a transformation.
     val empty: LiveData<Boolean> = Transformations.map(_displayedItems) {
@@ -187,7 +187,7 @@ class TppsViewModel(
                     if (paging.page == paging.totalPages) {
                         showSnackbarMessage(R.string.loading_finished)
                     }
-                    _loadProgressEnd.value = Event(paging.page)
+                    _loadProgressEnd.value = Event(paging.last)
                     // TODO#MoveToToast: _statusLine.value = "Successfully loaded #" + paging.totalPages + "pages of TPPs."
                     _dataLoadingRemote.value = false
                 }
