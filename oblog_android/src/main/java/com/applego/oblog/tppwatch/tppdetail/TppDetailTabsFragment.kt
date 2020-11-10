@@ -27,8 +27,8 @@ import kotlinx.coroutines.runBlocking
 class TppDetailTabsFragment : Fragment() {
 
     private lateinit var tppDetailTabsAdapter: TppDetailTabsAdapter
+
     private lateinit var viewPager: ViewPager
-    //private var toolbarIcon: Drawable? = null
 
     private lateinit var viewDataBinding: TppDetailTabsFragmentBinding
 
@@ -44,11 +44,10 @@ class TppDetailTabsFragment : Fragment() {
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
         setupFab()
+
         setupNavigation()
 
         view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
-        //toolbarIcon = ResourcesCompat.getDrawable(resources, R.drawable.oblog_logo_48x52, null)
-
     }
 
     private fun setupNavigation() {
@@ -156,12 +155,7 @@ class TppDetailTabsFragment : Fragment() {
 
     private fun openAbout() {
         val action = TppDetailTabsFragmentDirections.actionTppDetailTabsFragmentToAboutFragment()
+
         findNavController().navigate(action)
     }
-
-    /*override fun onResume() {
-        super.onResume()
-        val toolbar: Toolbar?= activity?.findViewById(com.applego.oblog.tppwatch.R.id.toolbar)
-        toolbar?.setNavigationIcon(toolbarIcon)
-    }*/
 }

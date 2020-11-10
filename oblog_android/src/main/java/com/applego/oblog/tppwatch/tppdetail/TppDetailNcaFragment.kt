@@ -19,7 +19,7 @@ import timber.log.Timber
 class TppDetailNcaFragment(private val viewModel: TppDetailViewModel, @Nullable private val tppId : String) : Fragment() {
     private lateinit var viewDataBinding: TppdetailNcaFragBinding
 
-    private val args: TppDetailTabsFragmentArgs by navArgs()
+    //private val args: TppDetailTabsFragmentArgs by navArgs()
 
     private lateinit var listAdapter: TppDetailAdapter
 

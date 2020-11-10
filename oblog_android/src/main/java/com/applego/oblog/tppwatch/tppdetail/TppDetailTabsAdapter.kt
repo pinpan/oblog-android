@@ -28,7 +28,7 @@ class TppDetailTabsAdapter(private val viewModel: TppDetailViewModel, private va
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        var title: String? = null
+        var title: String?
         if (position == 0) {
             title = "EBA"
         } else if (position == 1) {

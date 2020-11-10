@@ -119,7 +119,8 @@ class DefaultTppsRepository (
     override suspend fun getTpp(tppId: String, forceUpdate: Boolean): Result<Tpp> {
 
         wrapEspressoIdlingResource {
-
+            return getTppBlocking(tppId, forceUpdate)
+            /*
             return withContext(ioDispatcher) {
                 // Respond immediately with cache if available
                 getTppWithId(tppId)?.let {
@@ -128,7 +129,7 @@ class DefaultTppsRepository (
                 }
 
                 return@withContext fetchTppFromLocalOrRemote(tppId, forceUpdate)
-            }
+            }*/
         }
     }
 
@@ -166,6 +167,7 @@ class DefaultTppsRepository (
         }
 
         // Local if local fails
+
         if (tpp != null) {
             if (forceUpdate) {
                 var ebaUpdate: Boolean = false

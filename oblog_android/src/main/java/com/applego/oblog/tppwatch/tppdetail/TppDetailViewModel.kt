@@ -41,12 +41,14 @@ open class TppDetailViewModel(
     private val _addTppAppEvent = MutableLiveData<Event<Unit>>()
     val addTppAppEvent: LiveData<Event<Unit>> = _addTppAppEvent
 
-
     private val _editTppAppEvent = MutableLiveData<Event<String>>()
     val editTppAppEvent: LiveData<Event<String>> = _editTppAppEvent
 
     private val _backToTppsListEvent = MutableLiveData<Event<String>>()
     val backToTppsListEvent: LiveData<Event<String>> = _backToTppsListEvent
+
+    private val _deleteTppEvent = MutableLiveData<Event<Unit>>()
+    val deleteTppEvent: LiveData<Event<Unit>> = _deleteTppEvent
 
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
@@ -54,7 +56,7 @@ open class TppDetailViewModel(
     private val tppId: String?
         get() = _tpp.value?.getId()
 
-    public val description: String?
+    val description: String?
         get() {
             return tpp.value?.getDescription() ?: ""
         }
@@ -144,12 +146,6 @@ open class TppDetailViewModel(
         _snackbarText.value = Event(message)
     }
 
-    public fun goBack() {
-        _backToTppsListEvent.value = Event<String>("")
-    }
-
-    private val _deleteTppEvent = MutableLiveData<Event<Unit>>()
-    val deleteTppEvent: LiveData<Event<Unit>> = _deleteTppEvent
     fun deleteTpp() = viewModelScope.launch {
         tppId?.let {
             tppsRepository.deleteTpp(it)
