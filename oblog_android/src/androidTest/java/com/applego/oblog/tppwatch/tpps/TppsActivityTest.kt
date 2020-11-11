@@ -93,11 +93,11 @@ class TppsActivityTest {
         //onView(withId(R.id.tpp_detail_follow_checkbox)).check(matches(not(isChecked())))
 
         // Click on the edit button, edit, and save
-        onView(withId(R.id.edit_tpp_fab)).perform(click())
+        /*onView(withId(R.id.edit_tpp_fab)).perform(click())
         onView(withId(R.id.add_tpp_title_edit_text)).perform(replaceText("NEW TITLE"))
         onView(withId(R.id.add_tpp_description_edit_text)).perform(replaceText("NEW DESCRIPTION"))
         onView(withId(R.id.save_tpp_fab)).perform(click())
-
+*/
         // Verify tpp is displayed on screen in the tpp list.
         onView(withText("NEW TITLE")).check(matches(isDisplayed()))
         // Verify previous tpp is not displayed

@@ -29,9 +29,9 @@ class TppDetailEbaFragment (private val viewModel: TppDetailViewModel, @Nullable
         super.onActivityCreated(savedInstanceState)
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
-        setupFab()
-        view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
-        setupNavigation()
+        //setupFab()
+        //view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
+        // setupNavigation()
 
         //this.setupRefreshLayout(viewDataBinding.refreshLayout)
     }
@@ -46,7 +46,7 @@ class TppDetailEbaFragment (private val viewModel: TppDetailViewModel, @Nullable
         }
     }
 
-    private fun setupNavigation() {
+    /*private fun setupNavigation() {
         viewModel.editTppEvent.observe(this, EventObserver {
             val action = TppDetailTabsFragmentDirections
                     .actionTppDetailTabsFragmentToAddEditTppFragment(
@@ -55,14 +55,14 @@ class TppDetailEbaFragment (private val viewModel: TppDetailViewModel, @Nullable
                     )
             findNavController().navigate(action)
         })
-    }
+    }*/
 
-    private fun setupFab() {
+   /* private fun setupFab() {
         activity?.findViewById<View>(R.id.edit_tpp_fab)?.setOnClickListener {
             viewModel.editTpp()
         }
     }
-
+*/
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupListAdapter()
     }

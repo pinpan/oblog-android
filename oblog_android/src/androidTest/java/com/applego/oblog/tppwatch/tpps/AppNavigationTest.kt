@@ -170,7 +170,7 @@ class AppNavigationTest {
         // Click on the tpp on the list
         onView(withText("UI <- button")).perform(click())
         // Click on the edit tpp button
-        onView(withId(R.id.edit_tpp_fab)).perform(click())
+        //onView(withId(R.id.edit_tpp_fab)).perform(click())
 
         // Confirm that if we click "<-" once, we end up back at the tpp details page
         onView(
@@ -203,7 +203,7 @@ class AppNavigationTest {
         // Click on the tpp on the list
         onView(withText("Back button")).perform(click())
         // Click on the edit tpp button
-        onView(withId(R.id.edit_tpp_fab)).perform(click())
+        //onView(withId(R.id.edit_tpp_fab)).perform(click())
 
         // Confirm that if we click back once, we end up back at the tpp details page
         pressBack()

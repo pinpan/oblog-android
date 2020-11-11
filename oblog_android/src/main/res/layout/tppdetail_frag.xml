@@ -277,7 +277,7 @@
 
         </RelativeLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/edit_tpp_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -288,7 +288,7 @@
             android:layout_marginBottom="@dimen/fab_margin"
             android:src="@drawable/ic_edit"
             app:fabSize="mini"
-            app:layout_anchorGravity="bottom|right" />
+            app:layout_anchorGravity="bottom|right" />-->
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

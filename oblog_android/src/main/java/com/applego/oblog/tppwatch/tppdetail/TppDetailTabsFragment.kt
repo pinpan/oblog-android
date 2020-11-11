@@ -43,11 +43,11 @@ class TppDetailTabsFragment : Fragment() {
 
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
-        setupFab()
+        //setupFab()
 
         setupNavigation()
 
-        view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
+        //view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
     }
 
     private fun setupNavigation() {
@@ -93,11 +93,13 @@ class TppDetailTabsFragment : Fragment() {
         })
     }
 
+    /*
     private fun setupFab() {
         activity?.findViewById<View>(R.id.edit_tpp_fab)?.setOnClickListener {
             viewModel.editTpp()
         }
     }
+    */
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -27,15 +27,16 @@ class TppDetailNcaFragment(private val viewModel: TppDetailViewModel, @Nullable 
         super.onActivityCreated(savedInstanceState)
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
         setupListAdapter()
-        setupFab()
-        view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
-        setupNavigation()
+        //setupFab()
+
+        //view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
+        //setupNavigation()
 
         //this.setupRefreshLayout(viewDataBinding.refreshLayout)
     }
 
-    private fun setupNavigation() {
-    }
+    /*private fun setupNavigation() {
+    }*/
 
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.viewmodel
@@ -47,11 +48,11 @@ class TppDetailNcaFragment(private val viewModel: TppDetailViewModel, @Nullable 
         }
     }
 
-    private fun setupFab() {
+    /*private fun setupFab() {
         activity?.findViewById<View>(R.id.edit_tpp_fab)?.setOnClickListener {
             viewModel.editTpp()
         }
-    }
+    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater,
