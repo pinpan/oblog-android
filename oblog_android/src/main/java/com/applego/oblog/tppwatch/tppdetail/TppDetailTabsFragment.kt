@@ -105,9 +105,9 @@ class TppDetailTabsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        CoroutineScope(Dispatchers.Main).launch {
+        //CoroutineScope(Dispatchers.Main).launch {
             viewModel.start(args.tppId)
-        }
+        //}
 
         runBlocking {
             appsViewModel.start(args.tppId)
