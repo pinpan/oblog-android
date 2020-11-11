@@ -1,8 +1,6 @@
 package com.applego.oblog.tppwatch.tppdetail
 
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.widget.TooltipCompat
-import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -55,7 +52,6 @@ class TppDetailAdapter(private val viewModel: TppDetailViewModel, ctx: Context, 
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(viewModel: TppDetailViewModel, item: EbaPassport.ServiceVisa) {
-
             //binding.viewmodel = viewModel
             binding.serviceVisa = item
             binding.executePendingBindings()

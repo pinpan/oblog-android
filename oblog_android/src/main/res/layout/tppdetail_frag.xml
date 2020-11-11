@@ -5,9 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <import type="android.view.View" />
-
         <import type="android.widget.CompoundButton" />
 
         <variable
@@ -79,22 +77,6 @@
                         android:textColor="#006496" />
 
                 </LinearLayout>
-
-<!--
-                <Button
-                    android:id="@+id/refresh_tpp"
-                    style="@style/Widget.MaterialComponents.Button.Icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/title"
-                    android:layout_alignRight="@id/follow_used"
-                    android:layout_alignBottom="@id/follow_used"
-                    android:layout_marginEnd="5dp"
-                    android:text="refresh"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
--->
-
             </RelativeLayout>
 
             <View
@@ -127,7 +109,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="APPs" />
-
             </com.google.android.material.tabs.TabLayout>
 
             <RelativeLayout
@@ -258,7 +239,6 @@
                             android:inputType="textPersonName"
                             android:text="@string/label_roles"
                             android:textSize="14sp" />
-
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -272,9 +252,7 @@
                         app:items="@{viewmodel.tpp.ebaEntity.ebaPassport.services}"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
                 </LinearLayout>
-
             </RelativeLayout>
-
         </RelativeLayout>
 
         <!--<com.google.android.material.floatingactionbutton.FloatingActionButton

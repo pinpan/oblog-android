@@ -6,11 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.navArgs
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.TppdetailNcaFragBinding
-import com.applego.oblog.tppwatch.util.setupSnackbar
-import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
 /**
@@ -19,24 +16,13 @@ import timber.log.Timber
 class TppDetailNcaFragment(private val viewModel: TppDetailViewModel, @Nullable private val tppId : String) : Fragment() {
     private lateinit var viewDataBinding: TppdetailNcaFragBinding
 
-    //private val args: TppDetailTabsFragmentArgs by navArgs()
-
     private lateinit var listAdapter: TppDetailAdapter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
         setupListAdapter()
-        //setupFab()
-
-        //view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
-        //setupNavigation()
-
-        //this.setupRefreshLayout(viewDataBinding.refreshLayout)
     }
-
-    /*private fun setupNavigation() {
-    }*/
 
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.viewmodel
@@ -47,12 +33,6 @@ class TppDetailNcaFragment(private val viewModel: TppDetailViewModel, @Nullable 
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
         }
     }
-
-    /*private fun setupFab() {
-        activity?.findViewById<View>(R.id.edit_tpp_fab)?.setOnClickListener {
-            viewModel.editTpp()
-        }
-    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater,

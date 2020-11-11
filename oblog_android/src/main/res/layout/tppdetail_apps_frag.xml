@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -63,7 +63,6 @@
                     app:fabSize="mini"
                     app:layout_anchor="@id/refresh_layout"
                     app:layout_anchorGravity="bottom|right|end" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -115,22 +114,6 @@
                         android:inputType="textPersonName"
                         android:text="@string/label_app_home"
                         android:textSize="14sp" />
-
-<!--
-                    <EditText
-                        android:id="@+id/label_flags"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="0dp"
-                        android:layout_toRightOf="@id/label_web_addr"
-                        android:layout_weight="1"
-                        android:clickable="false"
-                        android:enabled="false"
-                        android:inputType="none|textPersonName"
-                        android:text="@string/label_app_flags"
-                        android:textSize="14sp" />
--->
-
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -144,7 +127,6 @@
                     app:items="@{viewmodel.items}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     />
-                <!--tools:listitem="@layout/recycler_view_item"-->
             </LinearLayout>
         </RelativeLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

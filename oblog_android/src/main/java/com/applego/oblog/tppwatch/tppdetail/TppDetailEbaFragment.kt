@@ -6,13 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.TppdetailEbaFragBinding
-import com.applego.oblog.tppwatch.util.setupSnackbar
-import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
 /**
@@ -37,7 +33,6 @@ class TppDetailEbaFragment (private val viewModel: TppDetailViewModel, @Nullable
     }
 
     private fun setupListAdapter() {
-        //val viewModel = viewDataBinding.viewmodel
         if (viewModel != null) {
             fragmentAdapter = TppDetailAdapter(viewModel, context!!, R.layout.tpp_passport)
             viewDataBinding.passportsServicesList.adapter = fragmentAdapter

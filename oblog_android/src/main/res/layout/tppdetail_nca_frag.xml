@@ -138,7 +138,6 @@
                         android:layout_toRightOf="@id/label_visa_country"
                         android:layout_weight="3"
                         android:clickable="false"
-                        android:editable="false"
                         android:enabled="false"
                         android:inputType="textPersonName"
                         android:text="@string/label_roles"

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <import type="android.view.View" />
 
         <variable
@@ -27,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:weightSum="2"
+            android:weightSum="3"
             android:visibility="@{viewmodel.isDataAvailable ? View.VISIBLE : View.GONE}">
 
             <ScrollView
@@ -271,12 +270,25 @@
                 </LinearLayout>
             </ScrollView>
 
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="@dimen/tab_margin_top"
+                android:layout_marginBottom="0dp"
+                android:background="?android:attr/listDivider"
+                android:backgroundTint="@color/colorEUFlagBlue"
+                />
+<!--
+                android:layout_weight="1"
+-->
+
             <LinearLayout
                 android:id="@+id/visas_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/tab_margin_top"
                 android:layout_weight="1"
+                android:layout_marginTop="0dp"
                 android:clickable="true"
                 android:orientation="vertical"
                 android:contentDescription="Services"
@@ -316,25 +328,6 @@
                         />
                 </LinearLayout>
 
-<!--
-                <LinearLayout
-                    android:id="@+id/passports_countries_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/passports_countries_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="10dp"
-                        android:fadeScrollbars="false"
-                        android:scrollbars="horizontal|vertical"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-
-                        app:items="@{viewmodel.tpp.ebaEntity.ebaPassport.services}"
-                        />
-                </LinearLayout>
--->
                 <LinearLayout
                     android:id="@+id/passports_services"
                     android:layout_width="match_parent"

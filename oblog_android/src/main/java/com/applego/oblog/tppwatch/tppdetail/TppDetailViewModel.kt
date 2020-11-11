@@ -98,26 +98,22 @@ open class TppDetailViewModel(
         // Show loading indicator
         _dataLoading.value = true
 
-        //wrapEspressoIdlingResource {
-                if (tppId != null) {
-                    try {
-                        //CoroutineScope(Dispatchers.Main).launch {
-                        runBlocking {
-                            tppsRepository.getTpp(tppId, forceRefresh).let { result ->
-                                if (result is Success) {
-                                    onTppLoaded(result.data)
-                                } else {
-                                    onDataNotAvailable(result)
-                                }
-                            }
+        if (tppId != null) {
+            try {
+                runBlocking {
+                    tppsRepository.getTpp(tppId, forceRefresh).let { result ->
+                        if (result is Success) {
+                            onTppLoaded(result.data)
+                        } else {
+                            onDataNotAvailable(result)
                         }
-                        //}
-                    } catch (t: Throwable) {
-                        Timber.e(t)
                     }
                 }
-                _dataLoading.value = false
-        //}
+            } catch (t: Throwable) {
+                Timber.e(t)
+            }
+        }
+        _dataLoading.value = false
     }
 
     private fun setTpp(tpp: Tpp?) {
@@ -135,11 +131,9 @@ open class TppDetailViewModel(
     }
 
     fun refresh() {
-        //CoroutineScope(Dispatchers.Main).launch {
-            tppId?.let {
-                start(it, true)
-            }
-        //}
+        tppId?.let {
+            start(it, true)
+        }
     }
 
     private fun showSnackbarMessage(@StringRes message: Int) {

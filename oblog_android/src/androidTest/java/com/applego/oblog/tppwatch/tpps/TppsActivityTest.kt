@@ -5,7 +5,6 @@ import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.replaceText
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.hasSibling
@@ -92,65 +91,11 @@ class TppsActivityTest {
         //onView(withId(R.id.tpp_detail_description_text)).check(matches(withText("DESCRIPTION")))
         //onView(withId(R.id.tpp_detail_follow_checkbox)).check(matches(not(isChecked())))
 
-        // Click on the edit button, edit, and save
-        /*onView(withId(R.id.edit_tpp_fab)).perform(click())
-        onView(withId(R.id.add_tpp_title_edit_text)).perform(replaceText("NEW TITLE"))
-        onView(withId(R.id.add_tpp_description_edit_text)).perform(replaceText("NEW DESCRIPTION"))
-        onView(withId(R.id.save_tpp_fab)).perform(click())
-*/
         // Verify tpp is displayed on screen in the tpp list.
         onView(withText("NEW TITLE")).check(matches(isDisplayed()))
         // Verify previous tpp is not displayed
         onView(withText("TITLE1")).check(doesNotExist())
     }
-
-/*
-    @Test
-    fun createOneTpp_deleteTpp() {
-
-        // start up Tpps screen
-        val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
-        dataBindingIdlingResource.monitorActivity(activityScenario)
-
-        // Add used tpp
-        onView(withId(R.id.add_app_fab)).perform(click())
-        onView(withId(R.id.add_tpp_title_edit_text))
-            .perform(typeText("TITLE1"), closeSoftKeyboard())
-        onView(withId(R.id.add_tpp_description_edit_text)).perform(typeText("DESCRIPTION"))
-        onView(withId(R.id.save_tpp_fab)).perform(click())
-
-        // Open it in details view
-        onView(withText("TITLE1")).perform(click())
-        // Click delete tpp in menu
-        onView(withId(R.id.menu_delete)).perform(click())
-
-        // Verify it was deleted
-        //onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(string.nav_all)).perform(click())
-        onView(withText("TITLE1")).check(doesNotExist())
-    }
-
-    @Test
-    fun createTwoTpps_deleteOneTpp() {
-        repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = "TITLE1", _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "CZ", entityType = EbaEntityType.NONE), NcaEntity()))
-        repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173282", _entityCode = "Entity_CZ28173282", _entityName = "TITLE2", _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "CZ", entityType = EbaEntityType.NONE), NcaEntity()))
-
-        // start up Tpps screen
-        val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
-        dataBindingIdlingResource.monitorActivity(activityScenario)
-
-        // Open the second tpp in details view
-        onView(withText("TITLE2")).perform(click())
-        // Click delete tpp in menu
-        onView(withId(R.id.menu_delete)).perform(click())
-
-        // Verify only one tpp was deleted
-        //onView(withId(R.id.menu_filter)).perform(click())
-        onView(withText(string.nav_all)).perform(click())
-        onView(withText("TITLE1")).check(matches(isDisplayed()))
-        onView(withText("TITLE2")).check(doesNotExist())
-    }
-*/
 
     @Test
     fun markTppAsFollowedOnDetailScreen_tppIsFollowInList() {
@@ -264,23 +209,4 @@ class TppsActivityTest {
         onView(allOf(withId(R.id.follow_checkbox), hasSibling(withText(tppTitle))))
             .check(matches(isChecked()))
     }
-
-/*
-    @Test
-    fun createTpp() {
-        // start up Tpps screen
-        val activityScenario = ActivityScenario.launch(TppsActivity::class.java)
-        dataBindingIdlingResource.monitorActivity(activityScenario)
-
-        // Click on the "+" button, add details, and save
-        onView(withId(R.id.add_tpp_fab)).perform(click())
-        onView(withId(R.id.add_tpp_title_edit_text))
-            .perform(typeText("entityName"), closeSoftKeyboard())
-        onView(withId(R.id.add_tpp_description_edit_text)).perform(typeText("description"))
-        onView(withId(R.id.save_tpp_fab)).perform(click())
-
-        // Then verify tpp is displayed on screen
-        onView(withText("entityName")).check(matches(isDisplayed()))
-    }
-*/
 }

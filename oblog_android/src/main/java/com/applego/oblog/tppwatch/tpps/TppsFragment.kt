@@ -395,7 +395,7 @@ class TppsFragment : Fragment() {
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.viewmodel
         if (viewModel != null) {
-            listAdapter = TppsAdapter(viewModel, context!!, R.layout.tppitemlayout)
+            listAdapter = TppsAdapter(viewModel/*, context!!, R.layout.tppitemlayout*/)
 
             viewDataBinding.tppsList.adapter = listAdapter
 

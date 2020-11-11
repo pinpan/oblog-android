@@ -1,6 +1,5 @@
 package com.applego.oblog.tppwatch.tpps
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -16,7 +15,7 @@ import timber.log.Timber
 /**
  * Adapter for the tpp list. Has a reference to the [TppsViewModel] to send actions back to it.
  */
-class TppsAdapter(private val viewModel: TppsViewModel, ctx: Context, layoutId: Int) :
+class TppsAdapter(private val viewModel: TppsViewModel/*, ctx: Context, layoutId: Int*/) :
     ListAdapter<Tpp, TppsAdapter.ViewHolder>(TppDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -27,13 +26,11 @@ class TppsAdapter(private val viewModel: TppsViewModel, ctx: Context, layoutId: 
         if (isrevoked) {
             Timber.d(item!!.getId() + " is revoked")
         }
-        //holder.itemView.setBackgroundResource((if (isrevoked) R.color.colorEUOrange else R.color.colorEULightGrey))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val vH = ViewHolder.from(parent)
         val view : LinearLayout = vH.itemView as LinearLayout
-        //val item = vH.binding.tpp
         if (view != null) {
             view.title?.textSize = 11f
         }
@@ -44,7 +41,6 @@ class TppsAdapter(private val viewModel: TppsViewModel, ctx: Context, layoutId: 
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(viewModel: TppsViewModel, item: Tpp) {
-
             binding.viewmodel = viewModel
             binding.tpp = item
             binding.executePendingBindings()

@@ -12,12 +12,7 @@ import com.applego.oblog.tppwatch.addedittppapp.AddEditTppAppFragmentDirections
 import com.applego.oblog.tppwatch.databinding.TppDetailTabsFragmentBinding
 import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.util.getViewModelFactory
-import com.applego.oblog.tppwatch.util.setupSnackbar
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 
@@ -43,11 +38,7 @@ class TppDetailTabsFragment : Fragment() {
 
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
-        //setupFab()
-
         setupNavigation()
-
-        //view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
     }
 
     private fun setupNavigation() {
@@ -93,23 +84,13 @@ class TppDetailTabsFragment : Fragment() {
         })
     }
 
-    /*
-    private fun setupFab() {
-        activity?.findViewById<View>(R.id.edit_tpp_fab)?.setOnClickListener {
-            viewModel.editTpp()
-        }
-    }
-    */
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        //CoroutineScope(Dispatchers.Main).launch {
-            viewModel.start(args.tppId)
-        //}
+        viewModel.start(args.tppId)
 
         runBlocking {
             appsViewModel.start(args.tppId)
@@ -124,8 +105,8 @@ class TppDetailTabsFragment : Fragment() {
         val tabLayout = view.findViewById(R.id.detail_tabs) as TabLayout
         tabLayout.setupWithViewPager(viewPager)
 
-        (tabLayout.getChildAt(0) as ViewGroup).getChildAt(1).isEnabled = false
-        (tabLayout.getChildAt(0) as ViewGroup).getChildAt(1).isClickable = false
+        //(tabLayout.getChildAt(0) as ViewGroup).getChildAt(1).isEnabled = false
+        //(tabLayout.getChildAt(0) as ViewGroup).getChildAt(1).isClickable = false
 
         viewDataBinding = TppDetailTabsFragmentBinding.bind(view).apply {
             viewmodel = viewModel
