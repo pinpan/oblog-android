@@ -147,18 +147,18 @@ class TppEbaDataSource internal constructor (
     }
 
     private fun loadTppsPage(paging: Paging): Result<TppsListResponse> {
-        val call = tppsService.listEbaEntitiesByName(theApiKey.apiKey,"", paging.page, paging.size, paging.sortBy)
-        var response: Response<EbaEntitiesListResponse>?
+        val call = tppsService.listTppsByName(theApiKey.apiKey,"", paging.page, paging.size, paging.sortBy)
+        var response: Response<TppsListResponse>?
         try {
             response = call.execute()
 
             if (response.isSuccessful()) {
-                val ebaEntitiesListResponse = response.body()
-                Timber.d("ebaEntitiesList=" + ebaEntitiesListResponse?.entitiesList)
+                val entitiesListResponse = response.body()
+                Timber.d("ebaEntitiesList=" + entitiesListResponse?.tppsList)
 
-                if (ebaEntitiesListResponse?.paging != null) {
-                    val tppsListResponse = getTppsListResponse(ebaEntitiesListResponse)
-                    return Result.Success(tppsListResponse)
+                if (entitiesListResponse?.paging != null) {
+                    //val tppsListResponse = getTppsListResponse(ebaEntitiesListResponse)
+                    return Result.Success(entitiesListResponse)
                 } else  {
                     return Result.Error(Exception("Rest call returned no data"))
                 }

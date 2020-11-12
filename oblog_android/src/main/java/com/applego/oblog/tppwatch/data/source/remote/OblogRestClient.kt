@@ -23,8 +23,8 @@ object OblogRestClient {
 
     fun createRetrofit() : Gson {
         return GsonBuilder()
-                .registerTypeAdapter(RetrofitTypes.ebaEntityType, EbaEntityDeserializer())
-                .registerTypeAdapter(RetrofitTypes.ncaEntityType, NcaEntityDeserializer())
+                //.registerTypeAdapter(RetrofitTypes.ebaEntityType, EbaEntityDeserializer())
+                //.registerTypeAdapter(RetrofitTypes.ncaEntityType, NcaEntityDeserializer())
                 .registerTypeAdapter(RetrofitTypes.tppType, TppDeserializer())
                 .registerTypeAdapter(RetrofitTypes.tppListType, TppListDeserializer())
                 .registerTypeAdapter(RetrofitTypes.tppsListResponseType, TppsListResponseDeserializer())
