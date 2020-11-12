@@ -102,8 +102,8 @@ class DefaultTppsRepository (
     }
 
     override suspend fun loadTppsFromLocalDatasource(orderBy: String, isAsc: Boolean): Result<List<Tpp>> {
-//TODO: dont use the parameters and remove method if not needed.
-        val localTpps = tppsLocalDataSource.getTpps(/*orderBy, isAsc*/)
+        //TODO: dont use the parameters and remove method if not needed.
+        val localTpps = tppsLocalDataSource.getTpps()
         if (localTpps is Success) {
             return localTpps
         } else if (localTpps is Loading) {
@@ -120,23 +120,11 @@ class DefaultTppsRepository (
 
         wrapEspressoIdlingResource {
             return getTppBlocking(tppId, forceUpdate)
-            /*
-            return withContext(ioDispatcher) {
-                // Respond immediately with cache if available
-                getTppWithId(tppId)?.let {
-                    EspressoIdlingResource.decrement() // Set app as idle.
-                    return@withContext Success(it)
-                }
-
-                return@withContext fetchTppFromLocalOrRemote(tppId, forceUpdate)
-            }*/
         }
     }
 
-
     override suspend fun getTppBlocking(tppId: String, forceUpdate: Boolean): Result<Tpp> {
         return withContext(ioDispatcher) {
-            // Respond immediately with cache if available
             getTppWithId(tppId)?.let {
                 EspressoIdlingResource.decrement() // Set app as idle.
                 return@withContext Success(it)
@@ -145,7 +133,6 @@ class DefaultTppsRepository (
             return@withContext fetchTppFromLocalOrRemote(tppId, forceUpdate)
         }
     }
-
 
     private suspend fun fetchTppFromLocalOrRemote (
         tppId: String,
@@ -165,8 +152,6 @@ class DefaultTppsRepository (
                 return tppResult
             }
         }
-
-        // Local if local fails
 
         if (tpp != null) {
             var ebaUpdate: Boolean = false

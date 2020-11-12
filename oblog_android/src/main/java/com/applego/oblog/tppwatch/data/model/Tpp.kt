@@ -12,13 +12,9 @@ class Tpp : TppModel {
         this.ncaEntity = ncaEntity
     }
 
-    constructor(ebaEntity: EbaEntity) {
-        this.ebaEntity = ebaEntity
-    }
-
     var ebaEntity : EbaEntity
 
-    var ncaEntity : NcaEntity? = null
+    var ncaEntity : NcaEntity
 
     /**
      * One and only apps portfolio instance

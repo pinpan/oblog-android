@@ -48,19 +48,19 @@ object ServiceLocator {
     private fun createTppLocalDataSource(context: Context): LocalTppDataSource {
         val database = database
                 ?: createDataBase(context)
-        return TppsDaoDataSource(database.tppDao())
+        return TppsDaoDataSource(database.ebaDao())
     }
 
     private fun createTppsEbaDataSource(context: Context): RemoteTppDataSource {
         val database = database
                 ?: createDataBase(context)
-        return TppEbaDataSource(OblogEbaService.create(context), database.tppDao())
+        return TppEbaDataSource(OblogEbaService.create(context), database.ebaDao())
     }
 
     private fun createTppsNcaDataSource(context: Context): TppsNcaDataSource {
         val database = database
                 ?: createDataBase(context)
-        return TppsNcaDataSource(OblogNcaService.create(context), database.tppDao())
+        return TppsNcaDataSource(OblogNcaService.create(context), database.ncaDao())
     }
 
     private fun createDataBase(context: Context): TppDatabase {

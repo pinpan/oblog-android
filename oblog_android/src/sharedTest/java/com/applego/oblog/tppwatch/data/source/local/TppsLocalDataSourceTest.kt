@@ -59,7 +59,7 @@ class TppsLocalDataSourceTest {
             .allowMainThreadQueries()
             .build()
 
-        localDataSource = TppsDaoDataSource(database.tppDao(), Dispatchers.Main)
+        localDataSource = TppsDaoDataSource(database.ebaDao(), Dispatchers.Main)
     }
 
     @After

@@ -33,7 +33,7 @@ class TppsDaoDataSource internal constructor(
             val query = "SELECT * FROM Tpps ORDER BY " + orderBy + (if (isAsc) " ASC" else " DESC")
             var ebaEntities = ebaEntityDao.getAllTppEntitiesRaw(SimpleSQLiteQuery(query))
             ebaEntities.forEach { ebaEntity ->
-                tpps.add(Tpp(ebaEntity))}
+                tpps.add(Tpp(ebaEntity, NcaEntity()))}
         } catch (e: Exception) {
             Error(e)
         }

@@ -9,7 +9,7 @@ import com.applego.oblog.tppwatch.data.model.EbaEntity
  * Data Access Object for the tpps table.
  */
 @Dao
-interface EbaEntityDao {
+interface TppEntityDao {
 
     /**
      * Select all tpps from the tpps table.
