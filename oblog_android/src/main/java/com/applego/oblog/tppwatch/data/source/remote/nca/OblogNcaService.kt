@@ -16,7 +16,7 @@ import retrofit2.http.Query
 interface OblogNcaService {
 
     // #TODO@PZA: Refactor to make it common for all Services
-    companion object EbaService {
+    companion object NcaService {
         val HTTP_CONTEXT = "/api/nca-registry/"
 
         fun create(context: Context): OblogNcaService {

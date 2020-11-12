@@ -1,9 +1,6 @@
 package com.applego.oblog.tppwatch.data.source.remote
 
-import com.applego.oblog.tppwatch.data.source.remote.serializer.TppDeserializer
-import com.applego.oblog.tppwatch.data.source.remote.serializer.TppListDeserializer
-import com.applego.oblog.tppwatch.data.source.remote.serializer.TppServiceDeserializer
-import com.applego.oblog.tppwatch.data.source.remote.serializer.TppsListResponseDeserializer
+import com.applego.oblog.tppwatch.data.source.remote.serializer.*
 import com.applego.oblog.tppwatch.util.RetrofitTypes
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
@@ -26,6 +23,8 @@ object OblogRestClient {
 
     fun createRetrofit() : Gson {
         return GsonBuilder()
+                .registerTypeAdapter(RetrofitTypes.ebaEntityType, EbaEntityDeserializer())
+                .registerTypeAdapter(RetrofitTypes.ncaEntityType, NcaEntityDeserializer())
                 .registerTypeAdapter(RetrofitTypes.tppType, TppDeserializer())
                 .registerTypeAdapter(RetrofitTypes.tppListType, TppListDeserializer())
                 .registerTypeAdapter(RetrofitTypes.tppsListResponseType, TppsListResponseDeserializer())

@@ -12,7 +12,6 @@ import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
-import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 import timber.log.Timber
 
@@ -20,8 +19,8 @@ import timber.log.Timber
  * ViewModel for the Details screen.
  */
 open class TppDetailViewModel(
-    private val tppsRepository: TppsRepository
-) : ViewModel() {
+        private val tppsRepository: TppsRepository
+    ) : ViewModel() {
 
     private val _tpp = MutableLiveData<Tpp>()
     val tpp: LiveData<Tpp> = _tpp
@@ -47,8 +46,10 @@ open class TppDetailViewModel(
     private val _backToTppsListEvent = MutableLiveData<Event<String>>()
     val backToTppsListEvent: LiveData<Event<String>> = _backToTppsListEvent
 
-    private val _deleteTppEvent = MutableLiveData<Event<Unit>>()
-    val deleteTppEvent: LiveData<Event<Unit>> = _deleteTppEvent
+    /*
+        private val _deleteTppEvent = MutableLiveData<Event<Unit>>()
+        val deleteTppEvent: LiveData<Event<Unit>> = _deleteTppEvent
+    */
 
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
@@ -140,10 +141,10 @@ open class TppDetailViewModel(
         _snackbarText.value = Event(message)
     }
 
-    fun deleteTpp() = viewModelScope.launch {
+    /*fun deleteTpp() = viewModelScope.launch {
         tppId?.let {
             tppsRepository.deleteTpp(it)
             _deleteTppEvent.value = Event(Unit)
         }
-    }
+    }*/
 }

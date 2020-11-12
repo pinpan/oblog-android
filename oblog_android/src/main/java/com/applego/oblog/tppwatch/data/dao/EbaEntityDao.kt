@@ -9,7 +9,7 @@ import com.applego.oblog.tppwatch.data.model.EbaEntity
  * Data Access Object for the tpps table.
  */
 @Dao
-interface TppsDao {
+interface EbaEntityDao {
 
     /**
      * Select all tpps from the tpps table.
@@ -23,22 +23,13 @@ interface TppsDao {
     suspend fun getAllTppEntitiesRaw(sortQuery: SupportSQLiteQuery): List<EbaEntity>
 
     /**
-     * Select all tpps from the tpps table.
-     *
-     * @return all tpps.
-     */
-    @Query("SELECT * FROM Tpps order by CASE WHEN :isAsc = 1 THEN :orderBy END ASC, CASE WHEN :isAsc = 0 THEN :orderBy END DESC")
-    //CASE WHEN :isAsc = 1 THEN :orderBy END ASC, CASE WHEN :isAsc = 0 THEN :orderBy END DESC
-    suspend fun getAllTppEntitiesOrdered(orderBy: String, isAsc: Boolean): List<EbaEntity>
-
-    /**
      * Select a tpp by id.
      *
      * @param tppId the tpp id.
      * @return the tpp with tppId.
      */
     @Query("SELECT * FROM Tpps WHERE db_id = :tppId order by followed DESC")
-    /*suspend */fun getTppEntityByDbId(tppId: String): EbaEntity?
+    /*suspend */fun getEbaEntityByDbId(tppId: String): EbaEntity?
 
     /**
      * Select a tpp by id.
@@ -47,7 +38,7 @@ interface TppsDao {
      * @return the tpp with tppId.
      */
     @Query("SELECT * FROM Tpps WHERE globalUrn = :globalUrn")
-    suspend fun getTppEntityByGlobalUrn(globalUrn: String): EbaEntity?
+    suspend fun getEbaEntityByGlobalUrn(globalUrn: String): EbaEntity?
 
     /**
      * Select a tpp by EBA entityCode (provided by OBLOG backend).
@@ -56,7 +47,7 @@ interface TppsDao {
      * @return the tpp with entityCode.
      */
     @Query("SELECT * FROM Tpps WHERE entityCode = :entityCode and codeType = :entityCodeType")
-    suspend fun getTppEntityByCode(entityCode: String, entityCodeType: String): EbaEntity?
+    suspend fun getEbaEntityByCode(entityCode: String, entityCodeType: String): EbaEntity?
 
     /**
      * Select a tpp by EBA entityCode (provided by OBLOG backend).
@@ -65,16 +56,16 @@ interface TppsDao {
      * @return the tpp with entityCode.
      */
     @Query("SELECT * FROM Tpps WHERE entityCode = :entityCode and codeType = :entityCodeType and revoked = :isRevoked")
-    suspend fun getActiveOrRevokedTppEntityByCode(entityCode: String, entityCodeType: String, isRevoked: Boolean = false): EbaEntity?
+    suspend fun getActiveOrRevokedEbaEntityByCode(entityCode: String, entityCodeType: String, isRevoked: Boolean = false): EbaEntity?
 
     /**
-     * Select a tpp by NCA entityId (provided by OBLOG backend).
+     * Select a tpp by EBA entityId (provided by OBLOG backend).
      *
-     * @param entityId the NCA tpp entityId.
+     * @param entityId the EBA tpp entityId.
      * @return the tpp with entityId.
      */
     @Query("SELECT * FROM Tpps WHERE entityId = :entityId")
-    suspend fun getTppEntityByEntityId(entityId: String): EbaEntity?
+    suspend fun getEbaEntityById(entityId: String): EbaEntity?
 
     /**
      * Insert or Update an EbaEntity in the database. If the EbaEntity already exists, replace it.

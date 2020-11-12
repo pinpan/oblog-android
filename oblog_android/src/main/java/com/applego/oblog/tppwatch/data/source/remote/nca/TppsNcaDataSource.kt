@@ -4,7 +4,7 @@ import com.applego.oblog.apikey.ApiKey
 import com.applego.oblog.tppwatch.data.source.remote.Paging
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.model.Tpp
-import com.applego.oblog.tppwatch.data.dao.TppsDao
+import com.applego.oblog.tppwatch.data.dao.EbaEntityDao
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import kotlinx.coroutines.*
@@ -12,6 +12,7 @@ import okio.Timeout
 import retrofit2.Response
 import timber.log.Timber
 import java.io.IOException
+import java.util.*
 
 
 /**
@@ -19,7 +20,7 @@ import java.io.IOException
  */
 class TppsNcaDataSource internal constructor (
         private val tppsService: OblogNcaService,
-        private val tppsDao: TppsDao,
+        private val ebaEntityDao: EbaEntityDao,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : RemoteTppDataSource {
 
@@ -64,10 +65,10 @@ class TppsNcaDataSource internal constructor (
                     System.out.println("Insert/Update tpp: " + tpp.ebaEntity.getEntityName() + " into database")
 
                     runBlocking<Unit> {
-                        if (tppsDao.getTppEntityByCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType) == null) {
-                            tppsDao.insertEbaEntity(tpp.ebaEntity)
+                        if (ebaEntityDao.getEbaEntityByCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType) == null) {
+                            ebaEntityDao.insertEbaEntity(tpp.ebaEntity)
                         } else {
-                            tppsDao.updateEbaEntity(tpp.ebaEntity)
+                            ebaEntityDao.updateEbaEntity(tpp.ebaEntity)
                         }
                     }
                 }
@@ -114,22 +115,22 @@ class TppsNcaDataSource internal constructor (
 
     suspend fun updateTppEntity(ncaTpp: Tpp) : Tpp {
         val ncaEntity = ncaTpp.ebaEntity
-        val dbEntity = tppsDao.getTppEntityByCode(ncaEntity.getEntityCode(), ncaEntity.ebaProperties.codeType)
+        val dbEntity = ebaEntityDao.getEbaEntityByCode(ncaEntity.getEntityCode(), ncaEntity.ebaProperties.codeType)
         if (dbEntity == null) {
-            tppsDao.insertEbaEntity(ncaEntity)
+            ebaEntityDao.insertEbaEntity(ncaEntity)
         } else {
             dbEntity._description = ncaEntity._description
             dbEntity._entityName = ncaEntity._entityName
             dbEntity._ebaEntityVersion = ncaEntity._ebaEntityVersion
             dbEntity._ebaPassport = ncaEntity._ebaPassport
             dbEntity._status = ncaEntity._status
-            tppsDao.updateEbaEntity(dbEntity)
+            ebaEntityDao.updateEbaEntity(dbEntity)
         }
 
         return ncaTpp
     }
 
-    override suspend fun getTppByName(country: String, tppName: String): Result<Tpp> {
+    override suspend fun getTppByName(country: String, tppName: String): Result<List<Tpp>> {
 
         val paging = Paging()
 
@@ -141,15 +142,19 @@ class TppsNcaDataSource internal constructor (
 
             if (response.isSuccessful()) {
                 val tppList = response.body()!!
-                theTpp = tppList[0]
-                val tppEntity = theTpp.ebaEntity
-                Timber.d("tppsList=" + tppEntity)
-                if (tppsDao.getTppEntityByCode(tppEntity.getEntityCode(), tppEntity.ebaProperties.codeType) == null) {
-                    tppsDao.insertEbaEntity(tppEntity)
-                } else {
-                    tppsDao.updateEbaEntity(tppEntity)
+
+                theTpp = tppList.firstOrNull()
+                if (theTpp != null) {
+                    val tppEntity = theTpp?.ebaEntity
+                    Timber.d("tppsList=" + tppEntity)
+                    if (ebaEntityDao.getEbaEntityByCode(tppEntity.getEntityCode(), tppEntity.ebaProperties.codeType) == null) {
+                        ebaEntityDao.insertEbaEntity(tppEntity)
+                    } else {
+                        ebaEntityDao.updateEbaEntity(tppEntity)
+                    }
+                    return Result.Success(tppList)
                 }
-                return Result.Success(theTpp)
+                return Result.Warn("Tpp was not found in NCA registry", "")
             } else {
                 return Result.Warn(response.code().toString(),  response.errorBody().toString())
             }
@@ -157,5 +162,17 @@ class TppsNcaDataSource internal constructor (
             Timber.e(ioe, "IOException caught: %s", ioe.message)
             return Result.Error(ioe)
         }
+    }
+
+    override suspend fun getTppByNameExact(country: String, tppName: String, tppId: String): Result<Tpp> {
+
+        val result: Result<List<Tpp>> = getTppByName(country, tppName)
+        if (result is Result.Success) {
+            val tpp: Optional<Tpp> = result.data.stream().filter { it.getEntityId().equals(tppId) }.findFirst()
+            if (tpp.isPresent) {
+                return Result.Success(tpp.get())
+            }
+        }
+        return Result.Error(Exception("Tpp not found"))
     }
 }

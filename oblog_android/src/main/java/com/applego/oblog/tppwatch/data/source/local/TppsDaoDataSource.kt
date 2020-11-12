@@ -5,7 +5,7 @@ import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.TppsFilter
-import com.applego.oblog.tppwatch.data.dao.TppsDao
+import com.applego.oblog.tppwatch.data.dao.EbaEntityDao
 import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.NcaEntity
 import com.applego.oblog.tppwatch.data.model.Tpp
@@ -19,7 +19,7 @@ import timber.log.Timber
  * Concrete implementation of a data source as a db.
  */
 class TppsDaoDataSource internal constructor(
-        private val tppsDao: TppsDao,
+        private val ebaEntityDao: EbaEntityDao,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : LocalTppDataSource {
 
@@ -31,7 +31,7 @@ class TppsDaoDataSource internal constructor(
         var tpps = ArrayList<Tpp>()
         try {
             val query = "SELECT * FROM Tpps ORDER BY " + orderBy + (if (isAsc) " ASC" else " DESC")
-            var ebaEntities = tppsDao.getAllTppEntitiesRaw(SimpleSQLiteQuery(query))
+            var ebaEntities = ebaEntityDao.getAllTppEntitiesRaw(SimpleSQLiteQuery(query))
             ebaEntities.forEach { ebaEntity ->
                 tpps.add(Tpp(ebaEntity))}
         } catch (e: Exception) {
@@ -46,11 +46,11 @@ class TppsDaoDataSource internal constructor(
 
     override fun getTpp(tppId: String): Result<Tpp> {
         try {
-            val tppEntity = tppsDao.getTppEntityByDbId(tppId)
+            val tppEntity = ebaEntityDao.getEbaEntityByDbId(tppId)
             if (tppEntity != null) {
                 val tpp = Tpp(tppEntity, NcaEntity())
 
-                val apps = tppsDao.getTppEntityAppsByDbId(tppId)
+                val apps = ebaEntityDao.getTppEntityAppsByDbId(tppId)
                 if ((apps != null) && !apps.isEmpty()) {
                     tpp.appsPortfolio.tppId = tppId
                     tpp.appsPortfolio.appsList = apps as ArrayList
@@ -69,9 +69,9 @@ class TppsDaoDataSource internal constructor(
         for (app in apps) {
             try {
                 if (app.id != null) {
-                    tppsDao.updateApp(app)
+                    ebaEntityDao.updateApp(app)
                 } else {
-                    tppsDao.insertApp(app)
+                    ebaEntityDao.insertApp(app)
                 }
             } catch (e: Exception) {
                 Timber.e(e)
@@ -79,13 +79,13 @@ class TppsDaoDataSource internal constructor(
         }
 
         val isRevoked = tpp.isRevoked()
-        val foundEntity = tppsDao.getActiveOrRevokedTppEntityByCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType, isRevoked)
+        val foundEntity = ebaEntityDao.getActiveOrRevokedEbaEntityByCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType, isRevoked)
         if (foundEntity == null) {
-            tppsDao.insertEbaEntity(tpp.ebaEntity)
+            ebaEntityDao.insertEbaEntity(tpp.ebaEntity)
             Timber.d("TPP with Eba Code %s was inserted in local DB.", tpp.getEntityCode())
         } else {
             tpp.ebaEntity._db_id = foundEntity._db_id
-            val updatedNumber = tppsDao.updateEbaEntity(tpp.ebaEntity)
+            val updatedNumber = ebaEntityDao.updateEbaEntity(tpp.ebaEntity)
             if (updatedNumber != 1) {
                 Timber.w("Update of TPP with ID %s was not successfull.", tpp.getEntityId())
             } else {
@@ -95,38 +95,38 @@ class TppsDaoDataSource internal constructor(
     }
 
     override suspend fun deleteАpp(аpp: App) {
-        tppsDao.deleteApp(аpp)
+        ebaEntityDao.deleteApp(аpp)
     }
 
     override suspend fun saveАpp(аpp: App) {
-        val foundApp = tppsDao.getAppByName(аpp.name, аpp.tppId)
+        val foundApp = ebaEntityDao.getAppByName(аpp.name, аpp.tppId)
         if (foundApp != null) {
             аpp.id = foundApp.id
-            if (1 != tppsDao.updateApp(аpp) ) {
+            if (1 != ebaEntityDao.updateApp(аpp) ) {
                 Timber.w("Couldn't update aplication: %s from TPP: %s", аpp.id, аpp.tppId)
             }
         } else {
-            tppsDao.insertApp(аpp)
+            ebaEntityDao.insertApp(аpp)
         }
     }
 
     override suspend fun updateFollowing(tpp: Tpp, follow: Boolean) = withContext(ioDispatcher) {
-        tppsDao.updateFollowed(tpp.ebaEntity.getId(), follow)
+        ebaEntityDao.updateFollowed(tpp.ebaEntity.getId(), follow)
     }
 
     override suspend fun setTppActivateFlag(tppId: String, used: Boolean)  = withContext(ioDispatcher) {
-        tppsDao.updateUsed(tppId, used)
+        ebaEntityDao.updateUsed(tppId, used)
     }
 
     suspend fun clearFollowedTpps() = withContext<Unit>(ioDispatcher) {
-        tppsDao.deleteFollowedTppsEntities()
+        ebaEntityDao.deleteFollowedTppsEntities()
     }
 
     override suspend fun deleteAllTpps() = withContext(ioDispatcher) {
-        tppsDao.deleteTpps()
+        ebaEntityDao.deleteTpps()
     }
 
     override suspend fun deleteTpp(tppId: String) = withContext<Unit>(ioDispatcher) {
-        tppsDao.deleteTppEntityByDbId(tppId)
+        ebaEntityDao.deleteTppEntityByDbId(tppId)
     }
 }

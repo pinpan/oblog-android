@@ -19,7 +19,11 @@ object FakeFailingTppsRemoteDataSource : RemoteTppDataSource {
         return Result.Error(Exception("Test"))
     }
 
-    override suspend fun getTppByName(country: String, tppName: String): Result<Tpp> {
+    override suspend fun getTppByName(country: String, tppName: String): Result<List<Tpp>> {
         return Result.Error(Exception("Test"))
+    }
+
+    override suspend fun getTppByNameExact(country: String, tppName: String, tppId: String): Result<Tpp> {
+        TODO("Not yet implemented")
     }
 }

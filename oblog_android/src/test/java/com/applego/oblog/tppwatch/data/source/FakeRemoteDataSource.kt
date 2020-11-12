@@ -7,6 +7,7 @@ import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.remote.Paging
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
+import java.util.*
 
 class FakeRemoteDataSource(var tppsListResponse: TppsListResponse = TppsListResponse(mutableListOf())) : RemoteTppDataSource {
     override suspend fun getAllTpps(): Result<TppsListResponse> {
@@ -34,10 +35,22 @@ class FakeRemoteDataSource(var tppsListResponse: TppsListResponse = TppsListResp
         )
     }
 
-    override suspend fun getTppByName(country: String, tppName: String): Result<Tpp> {
-        tppsListResponse?.tppsList?.firstOrNull { it.getEntityName() == tppName}?.let { return Success(it) }
+    override suspend fun getTppByName(country: String, tppName: String): Result<List<Tpp>> {
+        tppsListResponse?.tppsList?.firstOrNull { it.getEntityName() == tppName}?.let { return Success(listOf(it)) }
+
         return Error(
             Exception("Tpp not found")
         )
+    }
+
+    override suspend fun getTppByNameExact(country: String, tppName: String, tppId: String): Result<Tpp> {
+        // TODO: Use tppId to filter
+        val tpp: Optional<Tpp> = tppsListResponse.tppsList.stream().filter { it.getEntityId().equals(tppId) }.findFirst()
+        if (tpp.isPresent) {
+            return Result.Success(tpp.get())
+        }
+        //tppsListResponse.tppsList.stream().findFirst()?.let {return Success(it.get()) }  //filter(item -> item.getEntityId().equals(tppId)).
+
+        return Error(Exception("Tpp not found"))
     }
 }

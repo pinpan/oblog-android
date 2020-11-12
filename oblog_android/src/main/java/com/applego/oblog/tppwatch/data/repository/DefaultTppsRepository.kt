@@ -169,10 +169,8 @@ class DefaultTppsRepository (
         // Local if local fails
 
         if (tpp != null) {
+            var ebaUpdate: Boolean = false
             if (forceUpdate) {
-                var ebaUpdate: Boolean = false
-                var ncaUpdate: Boolean = false
-
                 val result = tppsEbaDataSource.getTppById(tpp.getCountry(), tpp.getEntityId())
                 when (result) {
                     is Error -> {
@@ -185,24 +183,26 @@ class DefaultTppsRepository (
                         ebaUpdate = updateTppFromRemote(tpp, result.data)
                     }
                 }
+            }
 
-                val resultNca = tppsNcaDataSource.getTppById(tpp.getCountry(), tpp.getEntityId())
-                when (resultNca) {
-                    is Error -> {
-                        Timber.w("Nca remote data source fetch failed with error: %s.", resultNca.exception)
-                    }
-                    is Warn -> {
-                        Timber.w("Nca remote data source fetch failed with warning: %s.", resultNca.warning)
-                    }
-                    is Success -> {
-                        ebaUpdate = updateTppFromRemote(tpp, resultNca.data)
-                    }
+            var ncaUpdate = false
+            val resultNca = tppsNcaDataSource.getTppByNameExact(tpp.getCountry(), tpp.getEntityName(), tpp.getEntityId())
+            when (resultNca) {
+                is Error -> {
+                    Timber.w("Nca remote data source fetch failed with error: %s.", resultNca.exception)
                 }
-
-                if (ebaUpdate || ncaUpdate) {
-                    updateLocalDataSource(tpp)
+                is Warn -> {
+                    Timber.w("Nca remote data source fetch failed with warning: %s.", resultNca.warning)
+                }
+                is Success -> {
+                    ncaUpdate = updateTppFromRemote(tpp, resultNca.data)
                 }
             }
+
+            if (ebaUpdate || ncaUpdate) {
+                updateLocalDataSource(tpp)
+            }
+
             return tppResult
         }
 
@@ -210,11 +210,20 @@ class DefaultTppsRepository (
     }
 
     private fun updateTppFromRemote(tpp: Tpp, updateFrom: Tpp): Boolean {
-        tpp.ebaEntity._entityName = updateFrom.getEntityName()
-        tpp.ebaEntity._description = updateFrom.getDescription()
+        var updated = false
+
+        if (!tpp.ebaEntity._entityName.equals(updateFrom.getEntityName())) {
+            tpp.ebaEntity._entityName = updateFrom.getEntityName()
+            updated = true
+        }
+
+        if (!tpp.ebaEntity._description.equals(updateFrom.getDescription())) {
+            tpp.ebaEntity._description = updateFrom.getDescription()
+            updated = true
+        }
         // TODO: Update what is relevant
 
-        return true
+        return updated
     }
 
     override suspend fun saveTpp(tpp: Tpp) {

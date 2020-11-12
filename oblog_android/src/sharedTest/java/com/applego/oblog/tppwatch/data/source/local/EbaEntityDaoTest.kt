@@ -26,7 +26,7 @@ import org.robolectric.annotation.Config
 @SmallTest
 // TODO: Elevate SDK version to 29 for tests
 @Config(sdk = [Build.VERSION_CODES.P])
-class TppsDaoTest {
+class EbaEntityDaoTest {
 
     private lateinit var database: TppDatabase
 
@@ -59,7 +59,7 @@ class TppsDaoTest {
         database.tppDao().insertEbaEntity(tpp)
 
         // WHEN - Get the tpp by id from the database
-        val loaded = database.tppDao().getTppEntityByDbId(tpp.getId())
+        val loaded = database.tppDao().getEbaEntityByDbId(tpp.getId())
 
         // THEN - The loaded data contains the expected values
         assertThat<EbaEntity>(loaded as EbaEntity, notNullValue())
@@ -80,7 +80,7 @@ class TppsDaoTest {
         database.tppDao().insertEbaEntity(newTpp)
 
         // THEN - The loaded data contains the expected values
-        val loaded = database.tppDao().getTppEntityByDbId(tpp.getId())
+        val loaded = database.tppDao().getEbaEntityByDbId(tpp.getId())
         assertThat(loaded?.getEntityId(), `is`(tpp.getEntityId()))
         assertThat(loaded?.getEntityName(), `is`("entityName"))
         assertThat(loaded?.getDescription(), `is`("description"))
@@ -116,7 +116,7 @@ class TppsDaoTest {
         database.tppDao().updateEbaEntity(updatedTpp)
 
         // THEN - The loaded data contains the expected values
-        val loaded = database.tppDao().getTppEntityByDbId(originalTpp.getId())
+        val loaded = database.tppDao().getEbaEntityByDbId(originalTpp.getId())
         assertThat(loaded?.getEntityId(), `is`(updatedTpp.getEntityId()))
         assertThat(loaded?.getEntityName(), `is`("new entityName"))
         assertThat(loaded?.getDescription(), `is`("new description"))
@@ -133,7 +133,7 @@ class TppsDaoTest {
         database.tppDao().updateFollowed(tpp.getId(), false)
 
         // THEN - The loaded data contains the expected values
-        val loaded = database.tppDao().getTppEntityByDbId(tpp.getId())
+        val loaded = database.tppDao().getEbaEntityByDbId(tpp.getId())
         assertThat(loaded?.getEntityId(), `is`(tpp.getEntityId()))
         assertThat(loaded?.getEntityName(), `is`(tpp.getEntityName()))
         assertThat(loaded?._description, `is`(tpp.getDescription()))

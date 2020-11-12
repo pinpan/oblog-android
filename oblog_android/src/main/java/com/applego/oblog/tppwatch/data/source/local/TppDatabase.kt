@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.applego.oblog.tppwatch.data.convertor.OblogTypeConverters
 import com.applego.oblog.tppwatch.data.dao.ServicesDao
-import com.applego.oblog.tppwatch.data.dao.TppsDao
+import com.applego.oblog.tppwatch.data.dao.EbaEntityDao
 import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.EbaEntity
 import com.applego.oblog.tppwatch.data.model.Psd2Service
@@ -20,7 +20,7 @@ import com.applego.oblog.tppwatch.data.model.Role
 @TypeConverters(OblogTypeConverters::class)
 abstract class TppDatabase : RoomDatabase() {
 
-    abstract fun tppDao(): TppsDao
+    abstract fun tppDao(): EbaEntityDao
 
     abstract fun serviceDao(): ServicesDao
 

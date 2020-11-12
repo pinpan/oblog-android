@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.preference.PreferenceManager
 import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.source.remote.EbaEntitiesListResponse
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import com.applego.oblog.tppwatch.data.source.remote.OblogRestClient
 import com.applego.oblog.tppwatch.util.ResourcesUtils
@@ -56,6 +57,13 @@ interface  OblogEbaService {
                        @Query("page") page: Int? = null,
                        @Query("size") pageSize: Int? = null,
                        @Query("sort") order: String? = null): Call<TppsListResponse>;
+
+    @GET("tpps/local/")
+    fun listEbaEntitiesByName(@Header("X-Api-Key") apiKey: String,
+                       @Query("name") tppName: String,
+                       @Query("page") page: Int? = null,
+                       @Query("size") pageSize: Int? = null,
+                       @Query("sort") order: String? = null): Call<EbaEntitiesListResponse>;
 
     @GET("tpps/local/")
     fun listTppsByName(@Query("country")country: String, @Query("services") services: String): Call<List<Tpp>>;
