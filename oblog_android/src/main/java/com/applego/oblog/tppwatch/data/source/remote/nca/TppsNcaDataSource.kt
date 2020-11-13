@@ -3,10 +3,11 @@ package com.applego.oblog.tppwatch.data.source.remote.nca
 import com.applego.oblog.apikey.ApiKey
 import com.applego.oblog.tppwatch.data.source.remote.Paging
 import com.applego.oblog.tppwatch.data.Result
-import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.dao.NcaEntityDao
+import com.applego.oblog.tppwatch.data.model.NcaEntity
+import com.applego.oblog.tppwatch.data.source.remote.ListResponse
+import com.applego.oblog.tppwatch.data.source.remote.NcaEntitiesListResponse
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
-import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import kotlinx.coroutines.*
 import okio.Timeout
 import retrofit2.Response
@@ -21,11 +22,11 @@ class TppsNcaDataSource internal constructor (
         private val oblogNcaService: OblogNcaService,
         private val ncaEntityDao: NcaEntityDao,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-) : RemoteTppDataSource {
+) : RemoteTppDataSource<NcaEntity> {
 
     var theApiKey : ApiKey = ApiKey("T11NOL41x0L7Cn4OAc1FNQogHAcpWvQA ")
 
-    override suspend fun getAllTpps(): Result<TppsListResponse> = withContext(ioDispatcher) {
+    override suspend fun getAllEntities(): Result<ListResponse<NcaEntity>> = withContext(ioDispatcher) {
         var paging = Paging(10, 1, 10, true)
 
         launch {
@@ -47,31 +48,31 @@ class TppsNcaDataSource internal constructor (
         return@withContext Result.Loading(Timeout())
     }
 
-    override suspend fun getTpps(paging: Paging): Result<TppsListResponse> {
+    override suspend fun getEntitiesPage(paging: Paging): Result<ListResponse<NcaEntity>> {
         TODO("Not yet implemented")
     }
 
     private fun loadTppsPage(country: String, tppName: String, paging: Paging): Result<Paging> {
         val call = oblogNcaService.listTpps(theApiKey.apiKey, country, tppName, paging.page, paging.size, paging.sortBy)
-        var response: Response<TppsListResponse>?
+        var response: Response<NcaEntitiesListResponse>?
         try {
             response = call.execute()
 
             if (response.isSuccessful()) {
-                val tppsListResponse = response.body()!!
-                Timber.d("tppsList=" + tppsListResponse.tppsList)
-                tppsListResponse.tppsList?.forEach { tpp ->
-                    System.out.println("Insert/Update tpp: " + tpp.ebaEntity.getEntityName() + " into database")
+                val ncaEntitiesListResponse = response.body()!!
+                Timber.d("tppsList=" + ncaEntitiesListResponse.aList)
+                ncaEntitiesListResponse.aList?.forEach { entity ->
+                    Timber.d("Insert/Update NCA Entity: " + entity.getEntityName() + " into database")
 
                     runBlocking<Unit> {
-                        if (ncaEntityDao.getNcaEntityById(tpp.ebaEntity.getEntityId()) == null) {
-                            ncaEntityDao.insertNcaEntity(tpp.ncaEntity)
+                        if (ncaEntityDao.getNcaEntityById(entity.getEntityId()) == null) {
+                            ncaEntityDao.insertNcaEntity(entity)
                         } else {
-                            ncaEntityDao.updateNcaEntity(tpp.ncaEntity)
+                            ncaEntityDao.updateNcaEntity(entity)
                         }
                     }
                 }
-                return Result.Success(tppsListResponse.paging)
+                return Result.Success(ncaEntitiesListResponse.paging)
             } else {
                 return Result.Warn(response.code().toString(),  response.errorBody().toString())
             }
@@ -81,27 +82,27 @@ class TppsNcaDataSource internal constructor (
         }
     }
 
-    override suspend fun getTppById(country: String, tppId: String): Result<Tpp> {
+    override suspend fun getEntityById(country: String, tppId: String): Result<NcaEntity> {
         val paging = Paging()
 
-        val call = oblogNcaService.findById(theApiKey.apiKey,country, tppId.toString(), paging.page, paging.size, paging.sortBy)
-        var response: Response<List<Tpp>>?
+        val call = oblogNcaService.findById(theApiKey.apiKey,country, tppId, paging.page, paging.size, paging.sortBy)
         try {
-            response = call.execute()
-            var theTpp: Tpp?
+            var response: Response<List<NcaEntity>> = call.execute()
             if (response.isSuccessful()) {
                 if (response.body().isNullOrEmpty()) {
                     return Result.Warn("HTTP response body is empty", "HTTP response code: $response.code(), response body: $response.body()")
                 } else {
-                    val tppList = response.body()
-                    Timber.d("tppsList=" + tppList)
-                    if (tppList?.size == 1) {
-                        theTpp = updateTppEntity(tppList[0])
+                    val ncaEntityList = response.body()
+                    Timber.d("ncaEntitiesList=" + ncaEntityList)
+
+                    var ncaEntity: NcaEntity?
+                    if (ncaEntityList?.size == 1) {
+                        ncaEntity = updateNcaEntity(ncaEntityList[0])
                     } else {
                         // Multiple entities matched by NCA entityID - mess to be solved
                         return Result.Warn("HTTP response returned multiple entities", "HTTP response code: $response.code(), response body: $response.body()")
                     }
-                    return Result.Success(theTpp)
+                    return Result.Success(ncaEntity)
                 }
             } else {
                 return Result.Error(Exception("HTTP response with code: $response.code().toString() and error body: $response.errorBody().toString()"))
@@ -112,8 +113,7 @@ class TppsNcaDataSource internal constructor (
         }
     }
 
-    suspend fun updateTppEntity(ncaTpp: Tpp) : Tpp {
-        val ncaEntity = ncaTpp.ncaEntity
+    suspend fun updateNcaEntity(ncaEntity: NcaEntity) : NcaEntity {
         val dbEntity = ncaEntityDao.getNcaEntityById(ncaEntity.getEntityId())
         if (dbEntity == null) {
             ncaEntityDao.insertNcaEntity(ncaEntity)
@@ -126,33 +126,31 @@ class TppsNcaDataSource internal constructor (
             ncaEntityDao.updateNcaEntity(dbEntity)
         }
 
-        return ncaTpp
+        return dbEntity!!
     }
 
-    override suspend fun getTppByName(country: String, tppName: String): Result<List<Tpp>> {
+    override suspend fun getEntityByName(country: String, tppName: String): Result<List<NcaEntity>> {
 
         val paging = Paging()
 
         val call = oblogNcaService.findByName(theApiKey.apiKey,country, tppName, paging.page, paging.size, paging.sortBy)
-        var response: Response<List<Tpp>>?
         try {
-            response = call.execute()
-            var theTpp: Tpp?
+            var response: Response<List<NcaEntity>> = call.execute()
 
             if (response.isSuccessful()) {
-                val tppList = response.body()!!
+                val ncaEntityList = response.body()!!
+                var ncaEntity: NcaEntity? = ncaEntityList.firstOrNull()
+                if (ncaEntity != null) {
+                    //val ncaEntity = theTpp.ncaEntity
+                    Timber.d("ncaEntity = " + ncaEntity)
 
-                theTpp = tppList.firstOrNull()
-                if (theTpp != null) {
-                    val ncaEntity = theTpp.ncaEntity
-                    Timber.d("tppsList=" + ncaEntity)
                     if (ncaEntityDao.getNcaEntityById(ncaEntity.getEntityId()) == null) {
                         ncaEntityDao.insertNcaEntity(ncaEntity)
                     } else {
 
                         ncaEntityDao.updateNcaEntity(ncaEntity)
                     }
-                    return Result.Success(tppList)
+                    return Result.Success(ncaEntityList)
                 }
                 return Result.Warn("Tpp was not found in NCA registry", "")
             } else {
@@ -164,11 +162,11 @@ class TppsNcaDataSource internal constructor (
         }
     }
 
-    override suspend fun getTppByNameExact(country: String, tppName: String, tppId: String): Result<Tpp> {
+    override suspend fun getEntityByNameExact(country: String, entityName: String, entityId: String): Result<NcaEntity> {
 
-        val result: Result<List<Tpp>> = getTppByName(country, tppName)
+        val result: Result<List<NcaEntity>> = getEntityByName(country, entityName)
         if (result is Result.Success) {
-            val tpp: Optional<Tpp> = result.data.stream().filter { it.getEntityId().equals(tppId) }.findFirst()
+            val tpp: Optional<NcaEntity> = result.data.stream().filter { it.getEntityId().equals(entityId) }.findFirst()
             if (tpp.isPresent) {
                 return Result.Success(tpp.get())
             }

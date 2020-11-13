@@ -1,10 +1,8 @@
 package com.applego.oblog.tppwatch.data.source.local
 
 import com.applego.oblog.tppwatch.data.Result
-import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.model.App
-import kotlinx.coroutines.withContext
 
 /**
  * Main entry point for accessing tpps data.

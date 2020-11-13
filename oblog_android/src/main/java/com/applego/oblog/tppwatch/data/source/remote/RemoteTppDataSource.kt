@@ -1,17 +1,16 @@
 package com.applego.oblog.tppwatch.data.source.remote
 
 import com.applego.oblog.tppwatch.data.Result
-import com.applego.oblog.tppwatch.data.model.Tpp
 
-interface RemoteTppDataSource {
+interface RemoteTppDataSource<T> {
 
-    suspend fun getAllTpps(): Result<TppsListResponse>
+    suspend fun getAllEntities(): Result<ListResponse<T>>
 
-    suspend fun getTpps(paging : Paging): Result<TppsListResponse>
+    suspend fun getEntitiesPage(paging : Paging): Result<ListResponse<T>>
 
-    suspend fun getTppByName(country: String, tppName: String): Result<List<Tpp>>
+    suspend fun getEntityByName(country: String, tppName: String): Result<List<T>>
 
-    suspend fun getTppByNameExact(country: String, tppName: String, tppId: String): Result<Tpp>
+    suspend fun getEntityByNameExact(country: String, tppName: String, tppId: String): Result<T>
 
-    suspend fun getTppById(country: String, tppId: String): Result<Tpp>
+    suspend fun getEntityById(country: String, tppId: String): Result<T>
 }

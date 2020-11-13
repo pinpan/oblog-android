@@ -6,20 +6,22 @@ import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Warn
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.model.App
+import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.NcaEntity
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
+import com.applego.oblog.tppwatch.data.source.remote.ListResponse
 import com.applego.oblog.tppwatch.data.source.remote.Paging
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
-import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import com.applego.oblog.tppwatch.util.EspressoIdlingResource
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
 import okio.Timeout
 import timber.log.Timber
-import java.util.ArrayList
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 import java.util.concurrent.TimeUnit
+import java.util.stream.Collectors
 
 /**
  * Concrete implementation to load tpps from the data sources into a cache.
@@ -28,10 +30,10 @@ import java.util.concurrent.TimeUnit
  * data source fails. Remote is the source of truth.
  */
 class DefaultTppsRepository (
-        /*private */var tppsEbaDataSource: RemoteTppDataSource,
-        /*private */var tppsNcaDataSource: RemoteTppDataSource,
-                    var tppsLocalDataSource: LocalTppDataSource,
-                    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+        var tppsEbaDataSource: RemoteTppDataSource<EbaEntity>,
+        var tppsNcaDataSource: RemoteTppDataSource<NcaEntity>,
+        var tppsLocalDataSource: LocalTppDataSource,
+        private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
     ) : TppsRepository {
 
     private var cachedTpps: ConcurrentMap<String, Tpp> = ConcurrentHashMap()
@@ -50,7 +52,7 @@ class DefaultTppsRepository (
                         when (tppsListResponse) {
                             is Success -> {
                                 //allFetchedTpps.addAll(tppsListResponse.data.tppsList)
-                                updateLocalDataSource(tppsListResponse.data.tppsList)
+                                updateLocalDataSource(tppsListResponse.data.aList)
 
                                 paging = tppsListResponse.data.paging
                             }
@@ -66,35 +68,30 @@ class DefaultTppsRepository (
         }
     }
 
-    /**
-     * This method ensures we have Up-To-Date repository version, according to set freshness requirements.
-     * If @param forced is true, Do full refresh from remote source
-     */
-    private suspend fun fetchAllTppsFromRemoteDatasource() {
-        // If forced to update -> Get remotes now, otherwise call
-        val tppsListResponse: Result<TppsListResponse> = tppsEbaDataSource.getAllTpps()
-        when (tppsListResponse) {
-            is Success -> {
-                updateLocalDataSource(tppsListResponse.data.tppsList)
-            }
-            is Error -> Timber.w("Remote data source fetch failed: %s", tppsListResponse.exception)
-        }
-    }
-
-    override suspend fun fetchTppsPageFromRemoteDatasource(paging: Paging): Result<TppsListResponse> {
-        val tppsListResponse: Result<TppsListResponse> = tppsEbaDataSource.getTpps(paging)
-        when (tppsListResponse) {
+    override suspend fun fetchTppsPageFromRemoteDatasource(paging: Paging): Result<ListResponse<Tpp>> {
+        val ebaEntitiesListResponse: Result<ListResponse<EbaEntity>> = tppsEbaDataSource.getEntitiesPage(paging)
+        var tppsList: List<Tpp> = listOf()
+        when (ebaEntitiesListResponse) {
             is Success -> {
                 //allFetchedTpps.addAll(tppsListResponse.data.tppsList)
                 //paging = tppsListResponse.data.paging
-                updateLocalDataSource(tppsListResponse.data.tppsList)
+                tppsList = ebaEntitiesListResponse.data.aList.stream().map {it -> Tpp(it, NcaEntity())}.collect(Collectors.toList())
+                //updateLocalDataSource(tppsList)
+                val resultListResponse = ListResponse(tppsList)
+                resultListResponse.paging = ebaEntitiesListResponse.data.paging
+                return Success(resultListResponse)
             }
-            is Error -> {
-                Timber.w("Remote data source fetch failed: %s", tppsListResponse.exception)
+            is Exception -> {
+                Timber.w("Remote data source fetch failed: %s", ebaEntitiesListResponse)
                 paging.last = true
+                val emptyListResponse = ListResponse<Tpp>()
+                emptyListResponse.paging = paging
+                return Warn("Remote data source fetch failed: %s\", ebaEntitiesListResponse.exception", "")
+            }
+            else -> {
+                return Warn("Remote data source fetch was not successful", "")
             }
         }
-        return tppsListResponse
     }
 
     override suspend fun loadTppsFromLocalDatasource(): Result<List<Tpp>> {
@@ -156,7 +153,7 @@ class DefaultTppsRepository (
         if (tpp != null) {
             var ebaUpdate: Boolean = false
             if (forceUpdate) {
-                val result = tppsEbaDataSource.getTppById(tpp.getCountry(), tpp.getEntityId())
+                val result = tppsEbaDataSource.getEntityById(tpp.getCountry(), tpp.getEntityId())
                 when (result) {
                     is Error -> {
                         Timber.w("Eba remote data source fetch failed with error: %s.", result.exception)
@@ -165,13 +162,13 @@ class DefaultTppsRepository (
                         Timber.w("Eba remote data source fetch failed with warning: %s", result.warning)
                     }
                     is Success -> {
-                        ebaUpdate = updateTppFromRemote(tpp, result.data)
+                        ebaUpdate = updateEbaEntityFromRemote(tpp.ebaEntity, result.data)
                     }
                 }
             }
 
             var ncaUpdate = false
-            val resultNca = tppsNcaDataSource.getTppByNameExact(tpp.getCountry(), tpp.getEntityName(), tpp.getEntityId())
+            val resultNca = tppsNcaDataSource.getEntityByNameExact(tpp.getCountry(), tpp.getEntityName(), tpp.getEntityId())
             when (resultNca) {
                 is Error -> {
                     Timber.w("Nca remote data source fetch failed with error: %s.", resultNca.exception)
@@ -180,7 +177,7 @@ class DefaultTppsRepository (
                     Timber.w("Nca remote data source fetch failed with warning: %s.", resultNca.warning)
                 }
                 is Success -> {
-                    ncaUpdate = updateTppFromRemote(tpp, resultNca.data)
+                    ncaUpdate = updateNcaEntityFromRemote(tpp.ncaEntity, resultNca.data)
                 }
             }
 
@@ -195,15 +192,36 @@ class DefaultTppsRepository (
     }
 
     private fun updateTppFromRemote(tpp: Tpp, updateFrom: Tpp): Boolean {
+        return updateEbaEntityFromRemote(tpp.ebaEntity, tpp.ebaEntity) || updateNcaEntityFromRemote(tpp.ncaEntity, tpp.ncaEntity)
+    }
+
+    private fun updateEbaEntityFromRemote(ebaEntity: EbaEntity, updateFrom: EbaEntity): Boolean {
         var updated = false
 
-        if (!tpp.ebaEntity._entityName.equals(updateFrom.getEntityName())) {
-            tpp.ebaEntity._entityName = updateFrom.getEntityName()
+        if (!ebaEntity._entityName.equals(updateFrom.getEntityName())) {
+            ebaEntity._entityName = updateFrom.getEntityName()
             updated = true
         }
 
-        if (!tpp.ebaEntity._description.equals(updateFrom.getDescription())) {
-            tpp.ebaEntity._description = updateFrom.getDescription()
+        if (!ebaEntity._description.equals(updateFrom.getDescription())) {
+            ebaEntity._description = updateFrom.getDescription()
+            updated = true
+        }
+        // TODO: Update what is relevant
+
+        return updated
+    }
+
+    private fun updateNcaEntityFromRemote(ncaEntity: NcaEntity, updateFrom: NcaEntity): Boolean {
+        var updated = false
+
+        if (!ncaEntity._entityName.equals(updateFrom.getEntityName())) {
+            ncaEntity._entityName = updateFrom.getEntityName()
+            updated = true
+        }
+
+        if (!ncaEntity._description.equals(updateFrom.getDescription())) {
+            ncaEntity._description = updateFrom.getDescription()
             updated = true
         }
         // TODO: Update what is relevant

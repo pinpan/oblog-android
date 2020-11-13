@@ -3,15 +3,15 @@ package com.applego.oblog.tppwatch.data.repository
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.source.remote.ListResponse
 import com.applego.oblog.tppwatch.data.source.remote.Paging
-import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 
 /**
  * Interface to the data layer.
  */
 interface TppsRepository {
 
-    suspend fun fetchTppsPageFromRemoteDatasource(paging: Paging): Result<TppsListResponse> //Result<List<Tpp>>
+    suspend fun fetchTppsPageFromRemoteDatasource(paging: Paging): Result<ListResponse<Tpp>>
 
     suspend fun loadTppsFromLocalDatasource(): Result<List<Tpp>>
 

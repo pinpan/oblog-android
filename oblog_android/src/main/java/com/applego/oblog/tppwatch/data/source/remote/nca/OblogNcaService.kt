@@ -2,9 +2,9 @@ package com.applego.oblog.tppwatch.data.source.remote.nca;
 
 import android.content.Context
 import androidx.preference.PreferenceManager
-import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.model.NcaEntity
+import com.applego.oblog.tppwatch.data.source.remote.NcaEntitiesListResponse
 import com.applego.oblog.tppwatch.data.source.remote.OblogRestClient
-import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import com.applego.oblog.tppwatch.util.ResourcesUtils
 
 import retrofit2.Call;
@@ -25,7 +25,7 @@ interface OblogNcaService {
             val actualEnvironment = ResourcesUtils.getActualEnvironmentForActivity(context, selectedEnvironmentName)
 
             var baseUrl = OblogRestClient.getBaseUrl(actualEnvironment[1])
-            val retrofit = OblogRestClient.createRetrofitChecking(baseUrl, OblogNcaService.HTTP_CONTEXT)
+            val retrofit = OblogRestClient.createRetrofitChecking(baseUrl, HTTP_CONTEXT)
             val oblogService = retrofit.create(OblogNcaService::class.java)
 
             return oblogService
@@ -38,7 +38,7 @@ interface OblogNcaService {
                  @Path("entityId") entityId: String,
                  @Query("page") page: Int? = null,
                  @Query("size") pageSize: Int? = null,
-                 @Query("sort") order: String? = null): Call<List<Tpp>>;
+                 @Query("sort") order: String? = null): Call<List<NcaEntity>>;
 
     @GET("{country}")
     fun findByName( @Header("X-Api-Key") apiKey: String,
@@ -46,7 +46,7 @@ interface OblogNcaService {
                     @Query("name") entityName: String,
                     @Query("page") page: Int? = null,
                     @Query("size") pageSize: Int? = null,
-                    @Query("sort") order: String? = null): Call<List<Tpp>>;
+                    @Query("sort") order: String? = null): Call<List<NcaEntity>>;
 
     @GET("{country}")
     fun listTpps(
@@ -55,7 +55,7 @@ interface OblogNcaService {
                  @Query("name") tppName: String,
                  @Query("page") page: Int? = null,
                  @Query("size") pageSize: Int? = null,
-                 @Query("sort") order: String? = null): Call<TppsListResponse>;
+                 @Query("sort") order: String? = null): Call<NcaEntitiesListResponse>;
 
     // #TODO-EKO: Not implemented on back-end
     @GET("{country}")
@@ -65,6 +65,5 @@ interface OblogNcaService {
                  @Query("filter") tppName: String,
                  @Query("page") page: Int? = null,
                  @Query("size") pageSize: Int? = null,
-                 @Query("sort") order: String? = null): Call<TppsListResponse>;
-
+                 @Query("sort") order: String? = null): Call<NcaEntitiesListResponse>;
 }

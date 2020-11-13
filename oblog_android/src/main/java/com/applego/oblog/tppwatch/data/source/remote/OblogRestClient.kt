@@ -23,11 +23,18 @@ object OblogRestClient {
 
     fun createRetrofit() : Gson {
         return GsonBuilder()
-                //.registerTypeAdapter(RetrofitTypes.ebaEntityType, EbaEntityDeserializer())
-                //.registerTypeAdapter(RetrofitTypes.ncaEntityType, NcaEntityDeserializer())
+                .registerTypeAdapter(RetrofitTypes.ebaEntityType, EbaEntityDeserializer())
+                .registerTypeAdapter(RetrofitTypes.ebaEntityListType, EbaEntitiesListDeserializer())
+                .registerTypeAdapter(RetrofitTypes.ebaEntityListResponseType, EbaEntitiesListResponseDeserializer())
+
+                .registerTypeAdapter(RetrofitTypes.ncaEntityType, NcaEntityDeserializer())
+                .registerTypeAdapter(RetrofitTypes.ncaEntityListType, NcaEntitiesListDeserializer())
+                .registerTypeAdapter(RetrofitTypes.ncaEntityListResponseType, NcaEntitiesListResponseDeserializer())
+                // TODO: Remove TppDeserializers and use EbaDeserializers. Separate serializers registration for EBA and NCA
                 .registerTypeAdapter(RetrofitTypes.tppType, TppDeserializer())
                 .registerTypeAdapter(RetrofitTypes.tppListType, TppListDeserializer())
                 .registerTypeAdapter(RetrofitTypes.tppsListResponseType, TppsListResponseDeserializer())
+
                 .registerTypeAdapter(RetrofitTypes.tppServiceType, TppServiceDeserializer())
                 .enableComplexMapKeySerialization()
                 .serializeNulls()

@@ -1,15 +1,16 @@
 package com.applego.oblog.tppwatch.data.source.remote.serializer
 
-import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
+import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.source.remote.ListResponse
 import com.google.gson.*
 import java.lang.reflect.Type
 
-class TppsListResponseDeserializer : JsonDeserializer<TppsListResponse> {
-    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): TppsListResponse {
+class TppsListResponseDeserializer : JsonDeserializer<ListResponse<Tpp>> {
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): ListResponse<Tpp> {
 
-        var tppsListResponse = TppsListResponse()
+        var tppsListResponse = ListResponse<Tpp>()
 
-        tppsListResponse.tppsList = TppListDeserializer.tppListDeserializer.convertFrom(json?.asJsonObject)
+        tppsListResponse.aList = TppListDeserializer.tppListDeserializer.convertFrom(json?.asJsonObject)
         tppsListResponse.paging = PagingDeserializer.pagingDeserializer.convertFrom(json?.asJsonObject)
 
         return tppsListResponse

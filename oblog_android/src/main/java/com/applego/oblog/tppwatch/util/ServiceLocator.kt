@@ -3,6 +3,7 @@ package com.applego.oblog.tppwatch.util
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.room.Room
+import com.applego.oblog.tppwatch.data.model.EbaEntity
 import com.applego.oblog.tppwatch.data.repository.DefaultTppsRepository
 import com.applego.oblog.tppwatch.data.source.local.TppsDaoDataSource
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
@@ -10,7 +11,7 @@ import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.local.TppDatabase
 import com.applego.oblog.tppwatch.data.source.remote.eba.OblogEbaService
-import com.applego.oblog.tppwatch.data.source.remote.eba.TppEbaDataSource
+import com.applego.oblog.tppwatch.data.source.remote.eba.TppsEbaDataSource
 import com.applego.oblog.tppwatch.data.source.remote.nca.OblogNcaService
 import com.applego.oblog.tppwatch.data.source.remote.nca.TppsNcaDataSource
 
@@ -51,10 +52,10 @@ object ServiceLocator {
         return TppsDaoDataSource(database.ebaDao())
     }
 
-    private fun createTppsEbaDataSource(context: Context): RemoteTppDataSource {
+    private fun createTppsEbaDataSource(context: Context): RemoteTppDataSource<EbaEntity> {
         val database = database
                 ?: createDataBase(context)
-        return TppEbaDataSource(OblogEbaService.create(context), database.ebaDao())
+        return TppsEbaDataSource(OblogEbaService.create(context), database.ebaDao())
     }
 
     private fun createTppsNcaDataSource(context: Context): TppsNcaDataSource {

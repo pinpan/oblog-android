@@ -1,15 +1,10 @@
 package com.applego.oblog.tppwatch.data.source.remote.eba
 
 import com.applego.oblog.apikey.ApiKey
-import com.applego.oblog.tppwatch.data.source.remote.Paging
 import com.applego.oblog.tppwatch.data.Result
-import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.dao.EbaEntityDao
 import com.applego.oblog.tppwatch.data.model.EbaEntity
-import com.applego.oblog.tppwatch.data.model.NcaEntity
-import com.applego.oblog.tppwatch.data.source.remote.EbaEntitiesListResponse
-import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
-import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
+import com.applego.oblog.tppwatch.data.source.remote.*
 import kotlinx.coroutines.*
 import okio.Timeout
 import retrofit2.Response
@@ -17,23 +12,22 @@ import timber.log.Timber
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
-import java.util.stream.Collectors
 
 
 /**
  * Concrete implementation of a data source as a db.
  */
-class TppEbaDataSource internal constructor (
+class TppsEbaDataSource internal constructor (
         private val tppsService: OblogEbaService,
         private val ebaEntityDao: EbaEntityDao,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-) : RemoteTppDataSource {
+) : RemoteTppDataSource<EbaEntity> {
 
     // TODO: Get the String from config per Base URL
     var theApiKey : ApiKey = ApiKey("T11NOL41x0L7Cn4OAc1FNQogHAcpWvQA") // Old key "MyhCyIKQ0IlIG5dFVk6sjXcG2aHhFbj0", "2Dvgcj0W7sinv0mqtwm2CSQuYYsW79xb", "GaW42ue9mRsgvlL0eIrrD6biU1tlpr8Y"
 
-    override suspend fun getAllTpps(): Result<TppsListResponse> {
-        var allFetchedTpps = ArrayList<Tpp>()
+    override suspend fun getAllEntities(): Result<ListResponse<EbaEntity>> {
+        var allFetchedTpps = ArrayList<EbaEntity>()
         runBlocking {
             var paging = Paging(100, 1, 0, true)
 
@@ -41,7 +35,7 @@ class TppEbaDataSource internal constructor (
                 var result = loadTppsPage(paging)
                 when (result) {
                     is Result.Success -> {
-                        allFetchedTpps.addAll(result.data.tppsList)
+                        allFetchedTpps.addAll(result.data.aList)
                         paging = result.data.paging
                         paging.page +=1
                         if (paging.totalPages == paging.page) {
@@ -56,10 +50,10 @@ class TppEbaDataSource internal constructor (
             }
         }
 
-        return Result.Success(TppsListResponse(allFetchedTpps))
+        return Result.Success(ListResponse(allFetchedTpps))
     }
 
-    override suspend fun getTpps(paging : Paging): Result<TppsListResponse> = withContext(ioDispatcher) {
+    override suspend fun getEntitiesPage(paging : Paging): Result<ListResponse<EbaEntity>> = withContext(ioDispatcher) {
         var result = loadTppsPage(paging)
         when (result) {
             is Result.Success -> {
@@ -79,22 +73,22 @@ class TppEbaDataSource internal constructor (
     }
 
     // TODO: Refactor to single implementation <- This implementatiomn is exactly the same as for NcaDataSource
-    override suspend fun getTppById(country: String, tppId: String): Result<Tpp> {
+    override suspend fun getEntityById(country: String, tppId: String): Result<EbaEntity> {
         val paging = Paging()
 
         val call = tppsService.findById(theApiKey.apiKey, tppId.toString(), paging.page, paging.size, paging.sortBy)
-        var response: Response<List<Tpp>>?
+        var response: Response<List<EbaEntity>>?
         try {
             response = call.execute()
-            var theTpp: Tpp?
+            var theTpp: EbaEntity
             if (response.isSuccessful()) {
                 if (response.body().isNullOrEmpty()) {
                     return Result.Warn("HTTP response body is empty", "HTTP response code: $response.code(), response body: $response.body()")
                 } else {
-                    val tppList = response.body()
-                    Timber.d("tppsList=" + tppList)
-                    if (tppList?.size == 1) {
-                        theTpp = updateTppEntity(tppList[0])
+                    val ebaEntityList = response.body()
+                    Timber.d("tppsList=" + ebaEntityList)
+                    if (ebaEntityList?.size == 1) {
+                        theTpp = updateTppEntity(ebaEntityList[0])
                     } else {
                         // Multiple entities matched by EBA entityCode - mess to be solved
                         return Result.Warn("HTTP response returned multiple entities", "HTTP response code: $response.code(), response body: $response.body()")
@@ -110,8 +104,7 @@ class TppEbaDataSource internal constructor (
         }
     }
 
-    suspend fun updateTppEntity(ebaTpp: Tpp) : Tpp {
-        val ebaEntity = ebaTpp.ebaEntity
+    suspend fun updateTppEntity(ebaEntity: EbaEntity) : EbaEntity {
         val dbEntity = ebaEntityDao.getEbaEntityByCode(ebaEntity.getEntityCode(), ebaEntity.ebaProperties.codeType)
         if (dbEntity == null) {
             ebaEntityDao.insertEbaEntity(ebaEntity)
@@ -124,21 +117,21 @@ class TppEbaDataSource internal constructor (
             ebaEntityDao.updateEbaEntity(dbEntity)
         }
 
-        return ebaTpp
+        return dbEntity!!
     }
 
-    override suspend fun getTppByName(country: String, tppName: String): Result<List<Tpp>> {
+    override suspend fun getEntityByName(country: String, tppName: String): Result<List<EbaEntity>> {
         if (tppName.isNullOrBlank()) {
             Result.Warn("TPP Not Found", "Cannot find a TPP with empty ID")
         }
         return Result.Loading(Timeout().timeout(100, TimeUnit.MILLISECONDS));
     }
 
-    override suspend fun getTppByNameExact(country: String, tppName: String, tppId: String): Result<Tpp> {
+    override suspend fun getEntityByNameExact(country: String, tppName: String, tppId: String): Result<EbaEntity> {
 
-        val tppsResult: Result<List<Tpp>> = getTppByName(country, tppName)
-        if (tppsResult is Result.Success) {
-            val tpp: Optional<Tpp> = tppsResult.data.stream().filter { it.getEntityId().equals(tppId) }.findFirst()
+        val ebaEntityResult: Result<List<EbaEntity>> = getEntityByName(country, tppName)
+        if (ebaEntityResult is Result.Success) {
+            val tpp: Optional<EbaEntity> = ebaEntityResult.data.stream().filter { it.getEntityId().equals(tppId) }.findFirst()
             if (tpp.isPresent) {
                 return Result.Success(tpp.get())
             }
@@ -146,18 +139,17 @@ class TppEbaDataSource internal constructor (
         return Result.Error(Exception("Tpp not found"))
     }
 
-    private fun loadTppsPage(paging: Paging): Result<TppsListResponse> {
+    private fun loadTppsPage(paging: Paging): Result<ListResponse<EbaEntity>> {
         val call = tppsService.listTppsByName(theApiKey.apiKey,"", paging.page, paging.size, paging.sortBy)
-        var response: Response<TppsListResponse>?
+        var response: Response<ListResponse<EbaEntity>>?
         try {
             response = call.execute()
 
             if (response.isSuccessful()) {
                 val entitiesListResponse = response.body()
-                Timber.d("ebaEntitiesList=" + entitiesListResponse?.tppsList)
+                Timber.d("ebaEntitiesList=" + entitiesListResponse?.aList)
 
                 if (entitiesListResponse?.paging != null) {
-                    //val tppsListResponse = getTppsListResponse(ebaEntitiesListResponse)
                     return Result.Success(entitiesListResponse)
                 } else  {
                     return Result.Error(Exception("Rest call returned no data"))
@@ -184,13 +176,15 @@ class TppEbaDataSource internal constructor (
         }
     }
 
-    private fun getTppsListResponse(ebaEntitiesListResponse: EbaEntitiesListResponse): TppsListResponse {
-        return TppsListResponse(ebaEntitiesListResponse.entitiesList.stream().map{x -> getTpp(x)}.collect(Collectors.toList()))
+/*
+    private fun getTppsListResponse(ebaEntitiesListResponse: EbaEntitiesListResponse): ListResponse<EbaEntity> {
+        return ListResponse<EbaEntity>(ebaEntitiesListResponse.entitiesList.stream().map{x -> getTpp(x)}.collect(Collectors.toList()))
     }
 
     fun getTpp(ebaEntity: EbaEntity) : Tpp {
         return Tpp(ebaEntity, NcaEntity())
     }
+*/
 
     private fun getErrorCodeCategory(code: Int): Any {
         return (code/100)*100;

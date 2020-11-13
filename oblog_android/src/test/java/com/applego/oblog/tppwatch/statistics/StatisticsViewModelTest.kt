@@ -82,8 +82,8 @@ class StatisticsViewModelTest {
         mainCoroutineRule.runBlockingTest {
             val errorViewModel = StatisticsViewModel(
                     DefaultTppsRepository(
-                            FakeFailingTppsRemoteDataSource,
-                            FakeFailingTppsRemoteDataSource,
+                            FakeFailingTppsRemoteDataSource<EbaEntity>(),
+                            FakeFailingTppsRemoteDataSource<NcaEntity>(),
                             FakeFailingTppsLocalDataSource,
                             Dispatchers.Main  // Main is set in MainCoroutineRule
                     )

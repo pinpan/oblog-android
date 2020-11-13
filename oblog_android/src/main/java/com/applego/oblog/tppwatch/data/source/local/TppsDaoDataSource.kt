@@ -4,7 +4,6 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
-import com.applego.oblog.tppwatch.data.TppsFilter
 import com.applego.oblog.tppwatch.data.dao.EbaEntityDao
 import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.NcaEntity
@@ -38,10 +37,6 @@ class TppsDaoDataSource internal constructor(
             Error(e)
         }
         return@withContext Success(tpps)
-    }
-
-    private fun isOnlyCountry(filter: TppsFilter): Boolean {
-        return (!filter.country.isNullOrBlank() && filter.pasportedTo.isNullOrEmpty() && filter.services.isNullOrEmpty() && filter.tppName.isNullOrBlank());
     }
 
     override fun getTpp(tppId: String): Result<Tpp> {

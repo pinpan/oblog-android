@@ -3,9 +3,10 @@ package com.applego.oblog.tppwatch.data.source.remote.eba;
 import android.content.Context
 import androidx.preference.PreferenceManager
 import com.applego.oblog.tppwatch.data.model.App
+import com.applego.oblog.tppwatch.data.model.EbaEntity
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.remote.EbaEntitiesListResponse
-import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
+import com.applego.oblog.tppwatch.data.source.remote.ListResponse
 import com.applego.oblog.tppwatch.data.source.remote.OblogRestClient
 import com.applego.oblog.tppwatch.util.ResourcesUtils
 
@@ -40,7 +41,7 @@ interface  OblogEbaService {
                  @Path("entityId") entityId: String,
                  @Query("page") page: Int? = null,
                  @Query("size") pageSize: Int? = null,
-                 @Query("sort") order: String? = null): Call<List<Tpp>>;
+                 @Query("sort") order: String? = null): Call<List<EbaEntity>>;
 
 
     @GET("import/")
@@ -49,14 +50,14 @@ interface  OblogEbaService {
     @GET("tpps/local/")
     fun listAllTpps(@Query("page") page: Int? = null,
                     @Query("size") pageSize: Int? = null,
-                    @Query("sort") order: String? = null): Call<TppsListResponse>;
+                    @Query("sort") order: String? = null): Call<ListResponse<Tpp>>;
 
     @GET("tpps/local/")
     fun listTppsByName(@Header("X-Api-Key") apiKey: String,
                        @Query("name") tppName: String,
                        @Query("page") page: Int? = null,
                        @Query("size") pageSize: Int? = null,
-                       @Query("sort") order: String? = null): Call<TppsListResponse>;
+                       @Query("sort") order: String? = null): Call<ListResponse<EbaEntity>>;
 
     @GET("tpps/local/")
     fun listEbaEntitiesByName(@Header("X-Api-Key") apiKey: String,
