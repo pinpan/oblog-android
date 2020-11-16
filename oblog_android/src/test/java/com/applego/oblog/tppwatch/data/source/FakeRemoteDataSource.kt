@@ -35,14 +35,14 @@ class FakeRemoteDataSource<T> () : RemoteTppDataSource<T> {
 
     override suspend fun getEntityById(country: String, tppId: String): Result<T> {
         // #TODO: Get from a MAP the Country Specific EntityCodeSchema. For CZ it is stripping the parts of the EBA Entitiy Code which
-        listResponse?.aList?.firstOrNull () // { it.getCountry().equals(country) && it.getEntityId().equals(tppId)}?.let { return Success(it) }
+        listResponse?.aList?.firstOrNull ().let {return Success(it!!)} // { it.getCountry().equals(country) && it.getEntityId().equals(tppId)}?.let { return Success(it) }
         return Error(
             Exception("Tpp not found")
         )
     }
 
     override suspend fun getEntityByName(country: String, tppName: String): Result<List<T>> {
-        listResponse?.aList?.firstOrNull () //{ it.getEntityName() == tppName}?.let { return Success(listOf(it)) }
+        listResponse?.aList?.let {return Success(it!!)} //{ it.getEntityName() == tppName}?.let { return Success(listOf(it)) }
 
         return Error(
             Exception("Tpp not found")
@@ -53,7 +53,7 @@ class FakeRemoteDataSource<T> () : RemoteTppDataSource<T> {
         // TODO: Use tppId to filter
         val tpp: Optional<T> = listResponse.aList.stream()./*filter { it.getEntityId().equals(tppId) }*/findFirst()
         if (tpp.isPresent) {
-            return Result.Success(tpp.get())
+            return Success(tpp.get())
         }
         //tppsListResponse.tppsList.stream().findFirst()?.let {return Success(it.get()) }  //filter(item -> item.getEntityId().equals(tppId)).
 

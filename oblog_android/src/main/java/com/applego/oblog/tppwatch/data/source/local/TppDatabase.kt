@@ -12,7 +12,7 @@ import com.applego.oblog.tppwatch.data.model.*
  *
  * Note that exportSchema should be true in production databases.
  */
-@Database(entities = [EbaEntity::class, NcaEntity::class, Psd2Service::class, Role::class, App::class], version = 39, exportSchema = true)
+@Database(entities = [EbaEntity::class, NcaEntity::class, Psd2Service::class, Role::class, App::class], version = 40, exportSchema = true)
 @TypeConverters(OblogTypeConverters::class)
 abstract class TppDatabase : RoomDatabase() {
 

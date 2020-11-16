@@ -1,19 +1,19 @@
 package com.applego.oblog.tppwatch.data.source.remote.serializer
 
-import com.applego.oblog.tppwatch.data.model.Tpp
-import com.applego.oblog.tppwatch.data.source.remote.ListResponse
+import com.applego.oblog.tppwatch.data.model.NcaEntity
+import com.applego.oblog.tppwatch.data.source.remote.NcaEntitiesListResponse
 import com.google.gson.*
 import java.lang.reflect.Type
 
-class NcaEntitiesListResponseDeserializer : JsonDeserializer<ListResponse<Tpp>> {
-    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): ListResponse<Tpp> {
+class NcaEntitiesListResponseDeserializer : JsonDeserializer<NcaEntitiesListResponse> {
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): NcaEntitiesListResponse {
 
-        var tppsListResponse = ListResponse<Tpp>()
+        var ncaEntitiesListResponse = NcaEntitiesListResponse()
 
-        tppsListResponse.aList = TppListDeserializer.tppListDeserializer.convertFrom(json?.asJsonObject)
-        tppsListResponse.paging = PagingDeserializer.pagingDeserializer.convertFrom(json?.asJsonObject)
+        ncaEntitiesListResponse.aList = NcaEntitiesListDeserializer.ncaEntitiesListDeserializer.convertFrom(json?.asJsonObject)
+        ncaEntitiesListResponse.paging = PagingDeserializer.pagingDeserializer.convertFrom(json?.asJsonObject)
 
-        return tppsListResponse
+        return ncaEntitiesListResponse
     }
 
     companion object {

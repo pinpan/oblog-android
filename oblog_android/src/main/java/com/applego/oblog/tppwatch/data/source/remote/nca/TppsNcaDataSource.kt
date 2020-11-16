@@ -87,22 +87,24 @@ class TppsNcaDataSource internal constructor (
 
         val call = oblogNcaService.findById(theApiKey.apiKey,country, tppId, paging.page, paging.size, paging.sortBy)
         try {
-            var response: Response<List<NcaEntity>> = call.execute()
+            var response: Response<NcaEntitiesListResponse> = call.execute()
             if (response.isSuccessful()) {
-                if (response.body().isNullOrEmpty()) {
+                if (response.body()?.aList.isNullOrEmpty()) {
                     return Result.Warn("HTTP response body is empty", "HTTP response code: $response.code(), response body: $response.body()")
                 } else {
-                    val ncaEntityList = response.body()
+                    val ncaEntityList = response.body()?.aList
                     Timber.d("ncaEntitiesList=" + ncaEntityList)
 
                     var ncaEntity: NcaEntity?
-                    if (ncaEntityList?.size == 1) {
+                    if (!ncaEntityList.isNullOrEmpty()) {
+                        if (ncaEntityList?.size > 1) {
+                            // Multiple entities matched by NCA entityID - mess to be solved
+                            return Result.Warn("HTTP response returned multiple entities", "HTTP response code: $response.code(), response body: $response.body()")
+                        }
                         ncaEntity = updateNcaEntity(ncaEntityList[0])
-                    } else {
-                        // Multiple entities matched by NCA entityID - mess to be solved
-                        return Result.Warn("HTTP response returned multiple entities", "HTTP response code: $response.code(), response body: $response.body()")
+                        return Result.Success(ncaEntity)
                     }
-                    return Result.Success(ncaEntity)
+                    return Result.Warn("EMPTY", "Couldn't parse a NcaEntitiy from remote rest response")
                 }
             } else {
                 return Result.Error(Exception("HTTP response with code: $response.code().toString() and error body: $response.errorBody().toString()"))
@@ -130,7 +132,6 @@ class TppsNcaDataSource internal constructor (
     }
 
     override suspend fun getEntityByName(country: String, tppName: String): Result<List<NcaEntity>> {
-
         val paging = Paging()
 
         val call = oblogNcaService.findByName(theApiKey.apiKey,country, tppName, paging.page, paging.size, paging.sortBy)

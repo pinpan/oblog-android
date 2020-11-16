@@ -13,6 +13,7 @@ import com.applego.oblog.tppwatch.data.source.local.LocalTppDataSource
 import com.applego.oblog.tppwatch.data.source.remote.ListResponse
 import com.applego.oblog.tppwatch.data.source.remote.Paging
 import com.applego.oblog.tppwatch.data.source.remote.RemoteTppDataSource
+import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import com.applego.oblog.tppwatch.util.EspressoIdlingResource
 import com.applego.oblog.tppwatch.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.*
@@ -68,16 +69,18 @@ class DefaultTppsRepository (
         }
     }
 
-    override suspend fun fetchTppsPageFromRemoteDatasource(paging: Paging): Result<ListResponse<Tpp>> {
+    override suspend fun fetchTppsPageFromRemoteDatasource(paging: Paging): Result<TppsListResponse> {
         val ebaEntitiesListResponse: Result<ListResponse<EbaEntity>> = tppsEbaDataSource.getEntitiesPage(paging)
         var tppsList: List<Tpp> = listOf()
         when (ebaEntitiesListResponse) {
             is Success -> {
                 //allFetchedTpps.addAll(tppsListResponse.data.tppsList)
-                //paging = tppsListResponse.data.paging
+                //val paging = ebaEntitiesListResponse.data.paging
                 tppsList = ebaEntitiesListResponse.data.aList.stream().map {it -> Tpp(it, NcaEntity())}.collect(Collectors.toList())
-                //updateLocalDataSource(tppsList)
-                val resultListResponse = ListResponse(tppsList)
+                updateLocalDataSource(tppsList)
+
+                val resultListResponse = TppsListResponse()
+                resultListResponse.aList = tppsList
                 resultListResponse.paging = ebaEntitiesListResponse.data.paging
                 return Success(resultListResponse)
             }
@@ -168,7 +171,7 @@ class DefaultTppsRepository (
             }
 
             var ncaUpdate = false
-            val resultNca = tppsNcaDataSource.getEntityByNameExact(tpp.getCountry(), tpp.getEntityName(), tpp.getEntityId())
+            val resultNca = tppsNcaDataSource.getEntityById(tpp.getCountry(), tpp.getEntityId())
             when (resultNca) {
                 is Error -> {
                     Timber.w("Nca remote data source fetch failed with error: %s.", resultNca.exception)

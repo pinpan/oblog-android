@@ -4,6 +4,7 @@ import com.applego.oblog.apikey.ApiKey
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.dao.EbaEntityDao
 import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.remote.*
 import kotlinx.coroutines.*
 import okio.Timeout
@@ -35,7 +36,7 @@ class TppsEbaDataSource internal constructor (
                 var result = loadTppsPage(paging)
                 when (result) {
                     is Result.Success -> {
-                        allFetchedTpps.addAll(result.data.aList)
+                        allFetchedTpps.addAll(result.data.aList) //.stream().map{t -> t}.collect(Collectors.toList())
                         paging = result.data.paging
                         paging.page +=1
                         if (paging.totalPages == paging.page) {
@@ -77,7 +78,7 @@ class TppsEbaDataSource internal constructor (
         val paging = Paging()
 
         val call = tppsService.findById(theApiKey.apiKey, tppId.toString(), paging.page, paging.size, paging.sortBy)
-        var response: Response<List<EbaEntity>>?
+        var response: Response<List<Tpp>>?
         try {
             response = call.execute()
             var theTpp: EbaEntity
@@ -88,7 +89,7 @@ class TppsEbaDataSource internal constructor (
                     val ebaEntityList = response.body()
                     Timber.d("tppsList=" + ebaEntityList)
                     if (ebaEntityList?.size == 1) {
-                        theTpp = updateTppEntity(ebaEntityList[0])
+                        theTpp = updateTppEntity(ebaEntityList[0].ebaEntity)
                     } else {
                         // Multiple entities matched by EBA entityCode - mess to be solved
                         return Result.Warn("HTTP response returned multiple entities", "HTTP response code: $response.code(), response body: $response.body()")
@@ -141,12 +142,18 @@ class TppsEbaDataSource internal constructor (
 
     private fun loadTppsPage(paging: Paging): Result<ListResponse<EbaEntity>> {
         val call = tppsService.listTppsByName(theApiKey.apiKey,"", paging.page, paging.size, paging.sortBy)
-        var response: Response<ListResponse<EbaEntity>>?
+        var response: Response<TppsListResponse>?
         try {
             response = call.execute()
 
             if (response.isSuccessful()) {
-                val entitiesListResponse = response.body()
+                val tppsList = response.body()?.aList ?: emptyList()
+                val entitiesList = ArrayList<EbaEntity>() //tppsList.stream().map (Tpp::ebaEntity).collect(Collectors.toList())
+                for (tpp in tppsList) {
+                    entitiesList.add(tpp.ebaEntity)
+                }
+                val entitiesListResponse = ListResponse(entitiesList, response.body()?.paging ?: Paging.Builder().last(true).toPaging())
+                // TODO: Investigate why this code was blocking the whole program: response.body().aList.stream().map { t -> t.ebaEntity }.collect(Collectors.toList())
                 Timber.d("ebaEntitiesList=" + entitiesListResponse?.aList)
 
                 if (entitiesListResponse?.paging != null) {

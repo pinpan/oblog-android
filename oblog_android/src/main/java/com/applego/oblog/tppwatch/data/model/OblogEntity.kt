@@ -13,9 +13,13 @@ import java.util.*
  */
 @Entity(tableName = "tpps")
 @TypeConverters(OblogTypeConverters::class)
-data class OblogEntity @JvmOverloads constructor(
-        @PrimaryKey @ColumnInfo(name = "id") var _id: String = UUID.randomUUID().toString()
-) {
+open class OblogEntity() { //@JvmOverloads constructor() {
+
+/*
+    @PrimaryKey
+    @ColumnInfo(name = "db_id")
+    var _db_id: String = UUID.randomUUID().toString()
+*/
 
     @ColumnInfo(name = "fis")
     var fis: Boolean = false

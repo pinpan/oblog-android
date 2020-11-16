@@ -29,9 +29,9 @@ data class EbaEntity @JvmOverloads constructor(
         @ColumnInfo(name = "globalUrn") val _globalUrn: String,
         @ColumnInfo(name = "ebaEntityVersion") var _ebaEntityVersion: String,
         @ColumnInfo(name = "country") val _country: String,
-        @ColumnInfo(name = "entityType") val _entityType: EbaEntityType, // TODO: Move up after entityName Fix tests!
+        @ColumnInfo(name = "entityType") val _entityType: EbaEntityType, //  TODO: Move up after entityName Fix tests!
         @PrimaryKey @ColumnInfo(name = "db_id") var _db_id: String = UUID.randomUUID().toString()
-) {
+) : OblogEntity() {
 
     @Ignore
     fun getEntityId() = _entityId
@@ -81,17 +81,17 @@ data class EbaEntity @JvmOverloads constructor(
     var fis: Boolean = !psd2
 
 */
-    @ColumnInfo(name = "followed")
-    var followed: Boolean = false
+    //@ColumnInfo(name = "followed")
+    //var followed: Boolean = false
 
-    @ColumnInfo(name = "used")
-    var used: Boolean = false
+    //@ColumnInfo(name = "used")
+    //var used: Boolean = false
 
     @ColumnInfo(name = "revoked")
     var revoked: Boolean = false
 
-    @ColumnInfo(name = "status")
-    var _status: RecordStatus = RecordStatus.NEW
+    //@ColumnInfo(name = "status")
+    //var _status: RecordStatus = RecordStatus.NEW
 
     var _ebaPassport : EbaPassport = EbaPassport()
 

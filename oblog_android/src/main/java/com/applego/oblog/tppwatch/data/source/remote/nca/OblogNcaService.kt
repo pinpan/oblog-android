@@ -5,19 +5,26 @@ import androidx.preference.PreferenceManager
 import com.applego.oblog.tppwatch.data.model.NcaEntity
 import com.applego.oblog.tppwatch.data.source.remote.NcaEntitiesListResponse
 import com.applego.oblog.tppwatch.data.source.remote.OblogRestClient
+import com.applego.oblog.tppwatch.data.source.remote.serializer.NcaEntitiesListDeserializer
+import com.applego.oblog.tppwatch.data.source.remote.serializer.NcaEntitiesListResponseDeserializer
+import com.applego.oblog.tppwatch.data.source.remote.serializer.NcaEntityDeserializer
 import com.applego.oblog.tppwatch.util.ResourcesUtils
+import com.applego.oblog.tppwatch.util.RetrofitTypes
+import com.google.gson.JsonDeserializer
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header
 import retrofit2.http.Path;
 import retrofit2.http.Query
+import java.lang.reflect.Type
 
 interface OblogNcaService {
 
-    // #TODO@PZA: Refactor to make it common for all Services
     companion object NcaService {
         val HTTP_CONTEXT = "/api/nca-registry/"
+
+        val deserializersMap = HashMap<Type, JsonDeserializer<*>>()
 
         fun create(context: Context): OblogNcaService {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context) //Environment.getDataDirectory()
@@ -25,7 +32,12 @@ interface OblogNcaService {
             val actualEnvironment = ResourcesUtils.getActualEnvironmentForActivity(context, selectedEnvironmentName)
 
             var baseUrl = OblogRestClient.getBaseUrl(actualEnvironment[1])
-            val retrofit = OblogRestClient.createRetrofitChecking(baseUrl, HTTP_CONTEXT)
+
+            deserializersMap.put(RetrofitTypes.ncaEntityType, NcaEntityDeserializer())
+            deserializersMap.put(RetrofitTypes.ncaEntityListType, NcaEntitiesListDeserializer())
+            deserializersMap.put(RetrofitTypes.ncaEntityListResponseType, NcaEntitiesListResponseDeserializer())
+
+            val retrofit = OblogRestClient.createRetrofitChecking(baseUrl + HTTP_CONTEXT, deserializersMap)
             val oblogService = retrofit.create(OblogNcaService::class.java)
 
             return oblogService
@@ -38,7 +50,7 @@ interface OblogNcaService {
                  @Path("entityId") entityId: String,
                  @Query("page") page: Int? = null,
                  @Query("size") pageSize: Int? = null,
-                 @Query("sort") order: String? = null): Call<List<NcaEntity>>;
+                 @Query("sort") order: String? = null): Call<NcaEntitiesListResponse>;
 
     @GET("{country}")
     fun findByName( @Header("X-Api-Key") apiKey: String,

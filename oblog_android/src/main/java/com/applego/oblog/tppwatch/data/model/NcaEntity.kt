@@ -27,7 +27,7 @@ data class NcaEntity @JvmOverloads constructor(
         @ColumnInfo(name = "country") var _country: String = "",
 
         @PrimaryKey @ColumnInfo(name = "id") var _id: String = UUID.randomUUID().toString()
-) {
+)  : OblogEntity() {
 
     @Ignore
     fun getEntityId() = _entityId
@@ -59,9 +59,26 @@ data class NcaEntity @JvmOverloads constructor(
 
 
     // TODO#: Consider Following fields
-    //  details aka properties from EBA
-    //  tppRoles, - CZ has, Eba hasn't
-    //  apps,
+    // Address -> G Maps
+
+    //  Details aka properties from CNB
+    //
+        // "nazevRole": "Banka"
+        // "kodRole": 1,
+        // "ncaProperties {
+            //"icoTyp": "ICO",
+            //"typ": "P",
+            //"ico": "25672720",
+        // }
+    // telefon: 224441111 Fax	                 	E-mail	podatelna@moneta.cz	www	www.moneta.cz
+    // Číselný kód (Bank code)	0600
+    // ??? LEI	I6USJ58BDV2BO5KP3C31
+
+    // Povolené činnosti
+    // Související vazby
+    // Historie subjektu
+
+    // Přeshraniční služby
 }
 
 

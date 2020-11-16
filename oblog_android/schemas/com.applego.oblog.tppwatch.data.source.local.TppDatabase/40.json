@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 39,
-    "identityHash": "1d88aa9db6713fa0e9ef265de3de487f",
+    "version": 40,
+    "identityHash": "aaf3f66c03e0aa2911f69f17cf9eeb00",
     "entities": [
       {
         "tableName": "tpps",
@@ -170,7 +170,7 @@
       },
       {
         "tableName": "nca_entity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`entityId` TEXT NOT NULL, `entityCode` TEXT NOT NULL, `entityName` TEXT NOT NULL, `description` TEXT NOT NULL, `globalUrn` TEXT NOT NULL, `ebaEntityVersion` TEXT NOT NULL, `country` TEXT NOT NULL, `id` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`entityId` TEXT NOT NULL, `entityCode` TEXT NOT NULL, `entityName` TEXT NOT NULL, `description` TEXT NOT NULL, `globalUrn` TEXT NOT NULL, `ebaEntityVersion` TEXT NOT NULL, `country` TEXT NOT NULL, `id` TEXT NOT NULL, `fis` INTEGER NOT NULL, `psd2` INTEGER NOT NULL, `followed` INTEGER NOT NULL, `used` INTEGER NOT NULL, `status` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "_entityId",
@@ -218,6 +218,36 @@
             "fieldPath": "_id",
             "columnName": "id",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fis",
+            "columnName": "fis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "psd2",
+            "columnName": "psd2",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "followed",
+            "columnName": "followed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "used",
+            "columnName": "used",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "_status",
+            "columnName": "status",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -348,7 +378,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1d88aa9db6713fa0e9ef265de3de487f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'aaf3f66c03e0aa2911f69f17cf9eeb00')"
     ]
   }
 }

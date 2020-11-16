@@ -1,6 +1,5 @@
 package com.applego.oblog.tppwatch.data.source.remote.serializer
 
-import com.applego.oblog.tppwatch.data.convertor.OblogTypeConverters
 import com.applego.oblog.tppwatch.data.model.*
 import com.google.gson.*
 import java.lang.reflect.Type
@@ -14,11 +13,11 @@ class NcaEntityDeserializer : JsonDeserializer<NcaEntity> {
         return ncaEntity
     }
 
-    val __oblogTypeConverters = OblogTypeConverters()
+    //val __oblogTypeConverters = OblogTypeConverters()
 
     companion object {
         private var INSTANCE: NcaEntityDeserializer? = null
-        val tppDeserializer: NcaEntityDeserializer
+        val ncaEntityDeserializer: NcaEntityDeserializer
             get() {
                 if (INSTANCE == null) {
                     INSTANCE = NcaEntityDeserializer()
@@ -47,7 +46,9 @@ class NcaEntityDeserializer : JsonDeserializer<NcaEntity> {
 
         val description: String = jsonObject.get("description")?.asString ?: ""
         val globalUrn = jsonObject.get("globalUrn")?.asString ?:""
-        val ebaEntityVersion: String = jsonObject.get("entityVersion")?.asString ?: ""
+
+        val entityVersionJson = jsonObject.get("entityVersion")
+        val ebaEntityVersion: String = (if ((entityVersionJson != null) && (!(entityVersionJson is JsonNull))) jsonObject.get("entityVersion") .asString else "")
 
         var country = ""
 

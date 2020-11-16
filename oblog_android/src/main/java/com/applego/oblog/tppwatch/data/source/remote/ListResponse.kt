@@ -2,7 +2,7 @@ package com.applego.oblog.tppwatch.data.source.remote
 
 open class ListResponse<T> {
 
-    var aList = emptyList<T>()
+    var aList : List<T> //= emptyList<T>()
     var paging = Paging()
 
     constructor() {
@@ -10,7 +10,7 @@ open class ListResponse<T> {
     }
 
     constructor (items: List<T>) {
-        this.aList = items
+        this.aList = ArrayList(items)
     }
 
     constructor (items: List<T>, paging: Paging) : this(items) {

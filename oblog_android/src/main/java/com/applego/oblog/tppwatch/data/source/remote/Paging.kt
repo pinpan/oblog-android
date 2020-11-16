@@ -13,6 +13,38 @@ class Paging (
     var totalElements: Int = -1
     ){
 
+    companion object {
+        val LAST = Paging()
+        init {
+            LAST.last = true
+        }
+    }
 
+    class Builder {
+        val paging = Paging()
 
+        fun size(s: Int) : Builder {
+            paging.size = s
+            return this
+        }
+
+        fun page(p: Int) : Builder {
+            paging.page = p
+            return this
+        }
+
+        fun first(f: Boolean) : Builder {
+            paging.first = f
+            return this
+        }
+
+        fun last(l: Boolean) : Builder {
+            paging.last = l
+            return this
+        }
+
+        fun toPaging() : Paging {
+            return paging
+        }
+    }
 }

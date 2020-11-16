@@ -1,16 +1,16 @@
 package com.applego.oblog.tppwatch.data.source.remote.serializer
 
-import com.applego.oblog.tppwatch.data.model.Tpp
+import com.applego.oblog.tppwatch.data.model.NcaEntity
 import com.google.gson.*
 import java.lang.reflect.Type
 import kotlin.collections.ArrayList
 import kotlin.collections.List
 
-class NcaEntitiesListDeserializer : JsonDeserializer<List<Tpp>> {
+class NcaEntitiesListDeserializer : JsonDeserializer<List<NcaEntity>> {
 
     companion object {
         private var INSTANCE: NcaEntitiesListDeserializer? = null
-        val tppListDeserializer: NcaEntitiesListDeserializer
+        val ncaEntitiesListDeserializer: NcaEntitiesListDeserializer
             get() {
                 if (INSTANCE == null) {
                     INSTANCE = NcaEntitiesListDeserializer()
@@ -19,15 +19,15 @@ class NcaEntitiesListDeserializer : JsonDeserializer<List<Tpp>> {
             }
     }
 
-    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): List<Tpp> {
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): List<NcaEntity> {
 
-        var items : List<Tpp> = convertFrom(json?.asJsonObject)
+        var items : List<NcaEntity> = convertFrom(json?.asJsonObject)
 
         return items
     }
 
-    fun convertFrom(jsonObject: JsonObject?) : ArrayList<Tpp> {
-        var items : ArrayList<Tpp> = arrayListOf()
+    fun convertFrom(jsonObject: JsonObject?) : ArrayList<NcaEntity> {
+        var items : ArrayList<NcaEntity> = arrayListOf()
 
         if (jsonObject != null) {
 
@@ -36,9 +36,9 @@ class NcaEntitiesListDeserializer : JsonDeserializer<List<Tpp>> {
             for (itemsJsonElement:JsonElement in itemsJsonArray) run {
 
                 val itemJsonObject: JsonObject = itemsJsonElement.getAsJsonObject();
-                var tpp : Tpp? = TppDeserializer.tppDeserializer.convertFrom(itemJsonObject)
-                if (tpp != null) {
-                    items.add(tpp)
+                var ncaEntity : NcaEntity? = NcaEntityDeserializer.ncaEntityDeserializer.convertFrom(itemJsonObject)
+                if (ncaEntity != null) {
+                    items.add(ncaEntity)
                 } else {
                     //TODO: log()
                 }

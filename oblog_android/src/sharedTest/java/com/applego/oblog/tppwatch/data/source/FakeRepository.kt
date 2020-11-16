@@ -9,6 +9,7 @@ import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.data.source.remote.ListResponse
 import com.applego.oblog.tppwatch.data.source.remote.Paging
+import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import java.util.LinkedHashMap
 
 /**
@@ -35,7 +36,7 @@ class FakeRepository : TppsRepository {
     }
 
     var tppsServiceData: LinkedHashMap<String, Tpp> = LinkedHashMap()
-    var tppsResponseData = ListResponse<Tpp>()
+    var tppsResponseData = TppsListResponse()
 
     private var shouldReturnError = false
 
@@ -62,7 +63,7 @@ class FakeRepository : TppsRepository {
         // Void
     }
 
-    override suspend fun fetchTppsPageFromRemoteDatasource(paging: Paging): Result<ListResponse<Tpp>> {
+    override suspend fun fetchTppsPageFromRemoteDatasource(paging: Paging): Result<TppsListResponse> {
         if (shouldReturnError) {
             paging.last = true
             return Error(Exception("Test exception"))
