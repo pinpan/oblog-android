@@ -63,8 +63,9 @@ data class NcaEntity @JvmOverloads constructor(
 
     //  Details aka properties from CNB
     //
-        // "nazevRole": "Banka"
-        // "kodRole": 1,
+        // TODO: "nazevRole": "Banka"
+        // TODO: "kodRole": 1,
+
         // "ncaProperties {
             //"icoTyp": "ICO",
             //"typ": "P",

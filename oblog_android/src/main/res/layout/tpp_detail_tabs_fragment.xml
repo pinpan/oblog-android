@@ -97,7 +97,9 @@
                     android:id="@+id/detail_tabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/divider4">
+                    android:layout_below="@id/divider4"
+
+                    >
 
                     <com.google.android.material.tabs.TabItem
                         android:id="@+id/eba_details_tab"
@@ -110,9 +112,13 @@
                         android:id="@+id/nca_details_tab"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:clickable="false"
+
                         android:text="NCA"
-                        android:visibility="visible" />
+                        />
+<!--
+android:visibility="visible"
+                    android:clickable="false"
+-->
 
                     <com.google.android.material.tabs.TabItem
                         android:id="@+id/apps_details_tab"
