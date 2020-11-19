@@ -17,17 +17,90 @@ import java.util.*
  */
 @Entity(tableName = "nca_entity")
 @TypeConverters(OblogTypeConverters::class)
-data class NcaEntity @JvmOverloads constructor(
-        @ColumnInfo(name = "entityId") val _entityId: String = "",
-        @ColumnInfo(name = "entityCode") val _entityCode: String = "",
-        @ColumnInfo(name = "entityName") var _entityName: String = "",
-        @ColumnInfo(name = "description") var _description: String = "",
-        @ColumnInfo(name = "globalUrn") var _globalUrn: String = "",
-        @ColumnInfo(name = "ebaEntityVersion") var _ebaEntityVersion: String = "",
-        @ColumnInfo(name = "country") var _country: String = "",
+data class NcaEntity constructor (
+                    @PrimaryKey var _id: String = UUID.randomUUID().toString()
+            ) : OblogEntity() {
 
-        @PrimaryKey @ColumnInfo(name = "id") var _id: String = UUID.randomUUID().toString()
-)  : OblogEntity() {
+    @JvmOverloads
+    constructor(
+          entityId: String
+        , entityCode: String
+        , entityName: String
+        , description: String
+        , globalUrn: String
+        , ncaEntityVersion: String
+        , id: String = UUID.randomUUID().toString()
+    )  : this(id) {
+        _globalUrn = globalUrn
+        _ncaEntityVersion = ncaEntityVersion
+
+        _entityId = entityId
+        _entityCode = entityCode
+        _entityName = entityName
+
+        _description = description
+        _description = description
+    }
+
+    @ColumnInfo(name = "entityId")
+    var _entityId: String = ""
+
+    @ColumnInfo(name = "entityCode")
+    var _entityCode: String = ""
+
+    @ColumnInfo(name = "entityName")
+    var _entityName: String = ""
+
+    @ColumnInfo(name = "description")
+    var _description: String = ""
+
+    @ColumnInfo(name = "globalUrn")
+    var _globalUrn: String = ""
+
+    @ColumnInfo(name = "ebaEntityVersion")
+    var _ncaEntityVersion: String = ""
+
+    @ColumnInfo(name = "role")
+    var role = "" // "Banka" - Role in czech
+
+    @ColumnInfo(name = "role_code")
+    var roleCode = -1 // : 1, - Bank
+
+    @ColumnInfo(name = "unstructured_address")
+    var unstructuredAddress = "" //  G Maps
+
+    //@Embedded
+    //@ColumnInfo(name = "ncaProperties")
+    @Ignore
+    var ncaProperties = NcaCZEntityProperties()
+
+    @Embedded
+    //@ColumnInfo(name = "ncaProperties")
+    var _address = Address()
+
+    @ColumnInfo(name = "type") // TODO: type of what?
+    var type  = ""// : "P",
+
+    @ColumnInfo(name = "icoType")
+    var icoType  = "ICO"// "ICO",
+
+    @ColumnInfo(name = "ico")
+    var    ico = "" // "25672720",
+
+    @ColumnInfo(name = "phone")
+    var phone = ""// telefon: 224441111 Fax
+
+    @ColumnInfo(name = "email")
+    var email = "" // podatelna@moneta.cz
+
+    @ColumnInfo(name = "web")
+    var web = "" //	www.moneta.cz
+
+    @ColumnInfo(name = "bankCode")
+    var bankCode = "" // Číselný kód=0600
+
+    // TODO: "services": null,
+
 
     @Ignore
     fun getEntityId() = _entityId
@@ -45,13 +118,10 @@ data class NcaEntity @JvmOverloads constructor(
     fun getGlobalUrn() = _globalUrn
 
     @Ignore
-    fun getEbaEntityVersion() = _ebaEntityVersion
+    fun getEbaEntityVersion() = _ncaEntityVersion
 
     @Ignore
-    fun getCountry() = _country
-
-    @Ignore
-    fun getId() = _id
+    fun getCountry() = _address.country
 
     fun getTitleForList(): String {
         return getEntityName()
@@ -75,11 +145,11 @@ data class NcaEntity @JvmOverloads constructor(
     // Číselný kód (Bank code)	0600
     // ??? LEI	I6USJ58BDV2BO5KP3C31
 
-    // Povolené činnosti
-    // Související vazby
-    // Historie subjektu
-
-    // Přeshraniční služby
+    // TODO: Use Povolene cinnosti in relation to Role and Relationship
+    //      Role: Povolené činnosti
+    //      Související vazby:  Povolené činnosti
+    //      Historie subjektu
+    //      Přeshraniční služby
 }
 
 

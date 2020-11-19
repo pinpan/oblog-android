@@ -156,7 +156,8 @@ class DefaultTppsRepository (
         if (tpp != null) {
             var ebaUpdate: Boolean = false
             if (forceUpdate) {
-                val result = tppsEbaDataSource.getEntityById(tpp.getCountry(), tpp.getEntityId())
+                // TODO: Consider other request parameters to achieve uniqueness of the result
+                val result= tppsEbaDataSource.getEntityById(tpp.getCountry(), tpp.getEntityId())
                 when (result) {
                     is Error -> {
                         Timber.w("Eba remote data source fetch failed with error: %s.", result.exception)
@@ -165,12 +166,13 @@ class DefaultTppsRepository (
                         Timber.w("Eba remote data source fetch failed with warning: %s", result.warning)
                     }
                     is Success -> {
-                        ebaUpdate = updateEbaEntityFromRemote(tpp.ebaEntity, result.data)
+                        tpp.ebaEntity = result.data
                     }
                 }
             }
 
             var ncaUpdate = false
+            // TODO: Consider other request parameters to achieve uniqueness of the result
             val resultNca = tppsNcaDataSource.getEntityById(tpp.getCountry(), tpp.getEntityId())
             when (resultNca) {
                 is Error -> {
@@ -180,7 +182,7 @@ class DefaultTppsRepository (
                     Timber.w("Nca remote data source fetch failed with warning: %s.", resultNca.warning)
                 }
                 is Success -> {
-                    ncaUpdate = updateNcaEntityFromRemote(tpp.ncaEntity, resultNca.data)
+                    tpp.ncaEntity = resultNca.data
                 }
             }
 

@@ -65,33 +65,9 @@ data class EbaEntity @JvmOverloads constructor(
 
     @Ignore
     fun getAuthorizationDate() = ebaProperties.authorizationStart
-/*
-
-    @ColumnInfo(name = "psd2")
-    var psd2: Boolean = (entityType.equals(EbaEntityType.PSD_PI)
-                      || entityType.equals(EbaEntityType.PSD_EPI)
-                      || entityType.equals(EbaEntityType.PSD_AISP)
-                      || entityType.equals(EbaEntityType.PSD_AG)
-                      || entityType.equals(EbaEntityType.PSD_BR)
-            )
-*/
-
-/*
-    @ColumnInfo(name = "fis")
-    var fis: Boolean = !psd2
-
-*/
-    //@ColumnInfo(name = "followed")
-    //var followed: Boolean = false
-
-    //@ColumnInfo(name = "used")
-    //var used: Boolean = false
 
     @ColumnInfo(name = "revoked")
     var revoked: Boolean = false
-
-    //@ColumnInfo(name = "status")
-    //var _status: RecordStatus = RecordStatus.NEW
 
     var _ebaPassport : EbaPassport = EbaPassport()
 

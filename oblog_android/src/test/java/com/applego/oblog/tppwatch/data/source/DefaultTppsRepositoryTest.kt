@@ -39,7 +39,7 @@ class DefaultTppsRepositoryTest {
     private val ncaEntity1 = NcaEntity()
     private val ncaEntity2 = NcaEntity()
     private val ncaEntity32 = NcaEntity()
-    private val remoteNcaEntities = listOf(ncaEntity1, ncaEntity2).sortedBy { it.getId() }
+    private val remoteNcaEntities = listOf(ncaEntity1, ncaEntity2).sortedBy { it._id }
     private val remoteNcaTpps = listOf(ncaEntity32)
 
     private val localTpps = listOf(Tpp(ebaEntity3, NcaEntity()))

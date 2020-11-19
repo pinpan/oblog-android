@@ -32,10 +32,7 @@ class NcaEntityDeserializer : JsonDeserializer<NcaEntity> {
         }
 
         val entityCode: String  = jsonObject?.get("entityCode")?.asString ?: ""
-        val entityType: String  = jsonObject?.get("entityType")?.asString ?: ""
-        if (entityType.isNullOrBlank()) {
-            Timber.w("Importing from registry an EBA TPP with empty entityType! It will not occur in type related statistics.")
-        }
+
         var entityId: String   =  jsonObject.get("entityId")?.asString ?: entityCode
         if (!entityId.isNullOrBlank()) {
             entityId = getEntityId(entityId)
@@ -44,13 +41,25 @@ class NcaEntityDeserializer : JsonDeserializer<NcaEntity> {
         val nameJson = jsonObject.get("entityName")
         val entityName = if (nameJson is JsonArray) getStringFromJsonArray(nameJson.asJsonArray) else nameJson.asString
 
+        val entityType: String  = jsonObject?.get("entityType")?.asString ?: ""
+        if (entityType.isNullOrBlank()) {
+            Timber.w("Importing from registry an EBA TPP with empty entityType! It will not occur in type related statistics.")
+        }
+
         val description: String = jsonObject.get("description")?.asString ?: ""
+
         val globalUrn = jsonObject.get("globalUrn")?.asString ?:""
 
         val entityVersionJson = jsonObject.get("entityVersion")
-        val ebaEntityVersion: String = (if ((entityVersionJson != null) && (!(entityVersionJson is JsonNull))) jsonObject.get("entityVersion") .asString else "")
+        val entityVersion: String = (if ((entityVersionJson != null) && (!(entityVersionJson is JsonNull))) jsonObject.get("entityVersion") .asString else "")
 
-        var country = ""
+        val ncaPropertiesJson = jsonObject.get("ncaProperties")?.asJsonObject
+
+        val icoJson = ncaPropertiesJson?.get("ico")
+
+        val addressJson = ncaPropertiesJson?.get("adresa")
+        val addressJsonNotNull : JsonObject = if ((addressJson!=null) && !addressJson.isJsonNull) addressJson.asJsonObject else JsonObject()
+        val address = getAddress(addressJsonNotNull)
 
 /*
         val ent_add = ebaPropertiesJson?.get("ENT_ADD")
@@ -109,12 +118,54 @@ class NcaEntityDeserializer : JsonDeserializer<NcaEntity> {
                 , entAuthEnd
         )
 
-        val country: String = ebaProperties.countryOfResidence
 */
-
-        val ncaEntity = NcaEntity(_entityId = entityId, _entityCode = entityCode, _entityName = entityName, _description = description, _globalUrn = globalUrn, _ebaEntityVersion = ebaEntityVersion, _country = country)
+        val ncaEntity = NcaEntity()
+        ncaEntity._globalUrn = globalUrn
+        ncaEntity._entityId = entityId
+        ncaEntity._entityCode = entityCode
+        ncaEntity._entityName = entityName
+        ncaEntity._description = description
+        ncaEntity._ncaEntityVersion = entityVersion
+        ncaEntity._address = address
+        ncaEntity.ico = icoJson.toString()
 
         return ncaEntity
+    }
+
+    private fun getAddress(addressJson: JsonObject): Address {
+        val address = Address()
+
+        val ruianCodeJson = addressJson.get("ruian")
+        address.ruianCode =  if( (ruianCodeJson != null) && !ruianCodeJson.isJsonNull) ruianCodeJson.asString else ""
+
+        val countryJson = addressJson.get("stat")
+        address.country =  if( (countryJson!=null) && !countryJson.isJsonNull) countryJson.asString else ""
+
+        val municipalityJson = addressJson.get("obec")
+        address.municipality =  if( (municipalityJson!=null) && !municipalityJson.isJsonNull) municipalityJson.asString else ""
+
+        val quarterJson = addressJson.get("castObce")
+        address.quarter =  if( (quarterJson!=null) && !quarterJson.isJsonNull) quarterJson.asString else ""
+
+        val zipCodeJson = addressJson.get("psc")
+        address.zipCode =  if( (zipCodeJson!=null) && !zipCodeJson.isJsonNull) zipCodeJson.asString else ""
+
+        val streetJson = addressJson.get("ulice")
+        address.street =  if( (streetJson!=null) && !streetJson.isJsonNull) streetJson.asString else ""
+
+        val descriptionalNumberJson = addressJson.get("cisloPopisne")
+        address.descriptionalNumber =  if( (descriptionalNumberJson!=null) && !descriptionalNumberJson.isJsonNull) descriptionalNumberJson.asInt else -1
+
+        val orientationalNumberJson = addressJson.get("cisloOrientacni")
+        address.orientationalNumber =  if ((orientationalNumberJson != null) && !orientationalNumberJson.isJsonNull) orientationalNumberJson.asInt else -1
+
+        val discriminatorLetterJson = addressJson.get("cisloOrientacniPismeno")
+        address.discriminatorLetter =  if( (discriminatorLetterJson!=null) && !discriminatorLetterJson.isJsonNull) discriminatorLetterJson.asString else ""
+
+        val unstructuredAddressJson = addressJson.get("nestrukturovanaAdresa")
+        address.unstructuredAddress =  if( (unstructuredAddressJson != null) && !unstructuredAddressJson.isJsonNull) unstructuredAddressJson.asString else ""
+
+        return address
     }
 
     private fun getEntityId(entityCode: String): String {

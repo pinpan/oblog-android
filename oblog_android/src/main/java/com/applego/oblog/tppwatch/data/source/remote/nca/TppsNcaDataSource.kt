@@ -97,10 +97,11 @@ class TppsNcaDataSource internal constructor (
 
                     var ncaEntity: NcaEntity?
                     if (!ncaEntityList.isNullOrEmpty()) {
-                        if (ncaEntityList?.size > 1) {
+                        // TODO: Resolve the issue with multiple entities with same key (ICO, CODE whatever)
+                        //if (ncaEntityList?.size > 1) {
                             // Multiple entities matched by NCA entityID - mess to be solved
-                            return Result.Warn("HTTP response returned multiple entities", "HTTP response code: $response.code(), response body: $response.body()")
-                        }
+                            //return Result.Warn("HTTP response returned multiple entities", "HTTP response code: $response.code(), response body: $response.body()")
+                        //}
                         ncaEntity = updateNcaEntity(ncaEntityList[0])
                         return Result.Success(ncaEntity)
                     }
@@ -116,19 +117,16 @@ class TppsNcaDataSource internal constructor (
     }
 
     suspend fun updateNcaEntity(ncaEntity: NcaEntity) : NcaEntity {
-        val dbEntity = ncaEntityDao.getNcaEntityById(ncaEntity.getEntityId())
+        var dbEntity = ncaEntityDao.getNcaEntityById(ncaEntity.getEntityId())
         if (dbEntity == null) {
-            ncaEntityDao.insertNcaEntity(ncaEntity)
+            dbEntity = ncaEntity
+            ncaEntityDao.insertNcaEntity(dbEntity)
         } else {
-            dbEntity._description = ncaEntity._description
-            dbEntity._entityName = ncaEntity._entityName
-            dbEntity._ebaEntityVersion = ncaEntity._ebaEntityVersion
-            //dbEntity._ebaPassport = ncaEntity._ebaPassport
-            //dbEntity._status = ncaEntity._status
-            ncaEntityDao.updateNcaEntity(dbEntity)
+            ncaEntity._id = dbEntity._id
+            ncaEntityDao.updateNcaEntity(ncaEntity)
         }
 
-        return dbEntity!!
+        return ncaEntity
     }
 
     override suspend fun getEntityByName(country: String, tppName: String): Result<List<NcaEntity>> {

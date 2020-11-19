@@ -3,173 +3,173 @@ package com.applego.oblog.tppwatch.data.model
 /**
  * Used with the filter countriesSpinner in the tpps list.
  */
-enum class EUCountry(val countryName: String, val isoCode:String, val order: Int, val aliases: String = "", val nca: String = "") {
+enum class EUCountry(val countryName: String, val isoCode: String, val nca: String = "", val aliases: String = "", val order: Int) {
 
 
     /**
      * Used to indicate any EU country
      */
-    EU("All EU", "EU",0),
+    EU("All EU", "EU", nca = "EBA", order = 0),
 
     /**
      * Austria
      */
-    AT("Austria", "AT", 1),
+    AT("Austria", "AT", nca = "FMA", order = 1),
 
     /**
      * Belgium
      */
-    BE("Belgium", "BE",2),
+    BE("Belgium", "BE", nca = "", order = 2),
 
     /**
      * Bulgaria
      */
-    BG("Bulgaria", "BG", 3),
+    BG("Bulgaria", "BG", nca = "BNB", order = 3),
 
     /**
      * Republic of Cyprus
      */
-    CY("Republic of Cyprus", "CY",4),
+    CY("Republic of Cyprus", "CY", nca = "", order = 4),
 
     /**
      * Czech Republic
      */
-    CZ("Czech Republic", "CZ", 5),
+    CZ("Czech Republic", "CZ", nca = "CNB", order = 5),
 
     /**
      * Germany
      */
-    DE("Germany", "DE", 6),
+    DE("Germany", "DE", nca = "BAFIN", order = 6),
 
     /**
      * Denmark
      */
-    DK("Denmark", "DK", 7),
+    DK("Denmark", "DK", nca = "", order = 7),
 
     /**
      * Estonia
      */
-    EE("Estonia", "EE", 8),
+    EE("Estonia", "EE", nca = "", order = 8),
 
     /**
      * Finland
      */
-    FI("Finland", "FI", 9),
+    FI("Finland", "FI", nca = "", order = 9),
 
     /**
      * France
      */
-    FR("France", "FR", 10),
+    FR("France", "FR", nca = "", order = 10),
 
     /**
      * Greece
      */
-    GR("Greece", "GR", 11),
+    GR("Greece", "GR", nca = "", order = 11),
 
     /**
      * Croatia
      */
-    HR("Croatia", "HR", 12),
+    HR("Croatia", "HR", nca = "", order = 12),
 
     /**
      * Hungary
      */
-    HU("Hungary", "HU", 13),
+    HU("Hungary", "HU", nca = "", order = 13),
 
     /**
      * Ireland
      */
-    IE("Ireland", "IE", 14),
+    IE("Ireland", "IE", nca = "", order = 14),
 
     /**
      * ICELAND
      */
-    IS("ICELAND", "IS",15),
+    IS("ICELAND", "IS", nca = "", order = 15),
 
     /**
      * Italy
      */
-    IT("Italy", "IT", 16),
+    IT("Italy", "IT", nca = "", order = 16),
 
     /**
      * Liechtenstein
      */
-    LI("Liechtenstein", "LI",17),
+    LI("Liechtenstein", "LI", nca = "", order = 17),
 
     /**
      * Latvia
      */
-    LT("Lithuania", "LT", 18),
+    LT("Lithuania", "LT", nca = "", order = 18),
 
     /**
      * Luxembourg
      */
-    LU("Luxembourg", "LU", 19),
+    LU("Luxembourg", "LU", nca = "", order = 19),
 
     /**
      * Lithuania - Financial and Capital Market Commission
      */
-    LV("Latvia", "LV", 20),
+    LV("Latvia", "LV", nca = "", order = 20),
 
     /**
      * Malta
      */
-    MT("Malta", "MT", 21),
+    MT("Malta", "MT", nca = "", order = 21),
 
     /**
      * Netherlands
      */
-    NL("Netherlands", "NL", 22),
+    NL("Netherlands", "NL", nca = "", order = 22),
 
     /**
      * Norway
      */
-    NO("Norway", "NO", 23),
+    NO("Norway", "NO", nca = "", order = 23),
 
     /**
      * Poland
      */
-    PL("Poland", "PL", 24),
+    PL("Poland", "PL", nca = "", order = 24),
 
     /**
      * Portugal
      */
-    PT("Portugal", "PT", 25),
+    PT("Portugal", "PT", nca = "", order = 25),
 
     /**
      * Romania
      */
-    RO("Romania", "RO", 26),
+    RO("Romania", "RO", nca = "", order = 26),
 
     /**
      * Sweden
      */
-    SE("Sweden", "SE",27),
+    SE("Sweden", "SE", nca = "", order = 27),
 
     /**
      * Slovenia
      */
-    SI("Slovenia", "SI", 28),
+    SI("Slovenia", "SI", nca = "", order = 28),
 
     /**
      * Slovakia
      */
-    SK("Slovakia", "SK", 29),
+    SK("Slovakia", "SK", nca = "", order = 29),
 
     /**
      * Spain
      */
-    ES("Spain", "ES", 30),
+    ES("Spain", "ES", nca = "", order = 30),
 
     /**
      * Great Britain
      */
-    GB("United Kingdom", "GB",31),
+    GB("United Kingdom", "GB", nca = "", order = 31),
 
     /**
      * Used to indicate that no EU country was found
      */
-    NEU("Not an EU country", "NEU", 100);
+    NEU("Not an EU country", "NEU", nca = "", order = 100);
 
     companion object {
 

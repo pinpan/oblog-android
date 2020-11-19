@@ -160,7 +160,7 @@ class TppsFragment : Fragment() {
             progressBar?.visibility = View.GONE
         })
         tppsFragViewModel.loadProgress.observe(this, EventObserver {
-            if ((progressBar?.progress ?: 0).compareTo(it.page) < 0) {
+            if (it.totalPages.compareTo(it.page+1) > 0) {
                 progressBar?.visibility = View.VISIBLE
                 progressBar?.max = it.totalPages
             }

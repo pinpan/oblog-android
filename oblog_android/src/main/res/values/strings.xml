@@ -44,6 +44,8 @@
     <string name="label_using">Using</string>
     <string name="label_name">Tpp name</string>
     <string name="label_home_country">Home country</string>
+    <string name="label_entity_ico">ICO</string>
+    <string name="label_home_address">Address</string>
     <string name="label_description">Description</string>
     <string name="label_services">Services</string>
     <string name="label_app_name">Application name</string>
