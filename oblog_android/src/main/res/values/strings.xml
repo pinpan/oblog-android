@@ -26,6 +26,13 @@
     <string name="label_entity_authorization_end">Authorization End</string>
     <string name="label_entity_city_of_residence">City of residence</string>
     <string name="label_entity_names">Entity names</string>
+    <string name="label_entity_type">Entity type</string>
+    <string name="label_bank_code">Bank code</string>
+    <string name="label_entity_lei">LEI</string>
+    <string name="label_ruian_code">RUIAN code</string>
+    <string name="label_phone">Phone</string>
+    <string name="label_email">E-mail</string>
+    <string name="label_web">Web</string>
     <string name="label_national_ref_code">National ref. code</string>
     <string name="label_tpp_services">Servicess</string>
     <string name="label_psd2_services">PSD2 Servicess</string>

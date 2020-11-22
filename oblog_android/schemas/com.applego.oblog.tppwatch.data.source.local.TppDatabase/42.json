@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 42,
-    "identityHash": "66b46dd489ffd4ec8408a16211c49559",
+    "identityHash": "ff9396e66185c4892210216a0ce4c3ca",
     "entities": [
       {
         "tableName": "tpps",
@@ -170,7 +170,7 @@
       },
       {
         "tableName": "nca_entity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`entityId` TEXT NOT NULL, `entityCode` TEXT NOT NULL, `entityName` TEXT NOT NULL, `description` TEXT NOT NULL, `globalUrn` TEXT NOT NULL, `ebaEntityVersion` TEXT NOT NULL, `role` TEXT NOT NULL, `role_code` INTEGER NOT NULL, `unstructured_address` TEXT NOT NULL, `type` TEXT NOT NULL, `icoType` TEXT NOT NULL, `ico` TEXT NOT NULL, `phone` TEXT NOT NULL, `email` TEXT NOT NULL, `web` TEXT NOT NULL, `bankCode` TEXT NOT NULL, `_id` TEXT NOT NULL, `fis` INTEGER NOT NULL, `psd2` INTEGER NOT NULL, `followed` INTEGER NOT NULL, `used` INTEGER NOT NULL, `status` INTEGER NOT NULL, `street` TEXT NOT NULL, `descriptionalNumber` INTEGER NOT NULL, `orientationalNumber` INTEGER NOT NULL, `discriminatorLetter` TEXT NOT NULL, `quarter` TEXT NOT NULL, `municipality` TEXT NOT NULL, `zipCode` TEXT NOT NULL, `country` TEXT NOT NULL, `ruianCode` TEXT NOT NULL, `unstructuredAddress` TEXT NOT NULL, `id` TEXT NOT NULL, PRIMARY KEY(`_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`entityId` TEXT NOT NULL, `entityCode` TEXT NOT NULL, `entityName` TEXT NOT NULL, `description` TEXT NOT NULL, `globalUrn` TEXT NOT NULL, `ebaEntityVersion` TEXT NOT NULL, `role` TEXT NOT NULL, `role_code` INTEGER NOT NULL, `unstructured_address` TEXT NOT NULL, `type` TEXT NOT NULL, `icoType` TEXT NOT NULL, `ico` TEXT NOT NULL, `lei` TEXT NOT NULL, `phone` TEXT NOT NULL, `email` TEXT NOT NULL, `web` TEXT NOT NULL, `bankCode` TEXT NOT NULL, `_id` TEXT NOT NULL, `fis` INTEGER NOT NULL, `psd2` INTEGER NOT NULL, `followed` INTEGER NOT NULL, `used` INTEGER NOT NULL, `status` INTEGER NOT NULL, `street` TEXT NOT NULL, `descriptionalNumber` INTEGER NOT NULL, `orientationalNumber` INTEGER NOT NULL, `discriminatorLetter` TEXT NOT NULL, `quarter` TEXT NOT NULL, `municipality` TEXT NOT NULL, `zipCode` TEXT NOT NULL, `country` TEXT NOT NULL, `ruianCode` TEXT NOT NULL, `unstructuredAddress` TEXT NOT NULL, `id` TEXT NOT NULL, PRIMARY KEY(`_id`))",
         "fields": [
           {
             "fieldPath": "_entityId",
@@ -241,6 +241,12 @@
           {
             "fieldPath": "ico",
             "columnName": "ico",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lei",
+            "columnName": "lei",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -498,7 +504,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '66b46dd489ffd4ec8408a16211c49559')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ff9396e66185c4892210216a0ce4c3ca')"
     ]
   }
 }

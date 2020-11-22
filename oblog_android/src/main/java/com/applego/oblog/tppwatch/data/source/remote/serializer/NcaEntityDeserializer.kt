@@ -13,8 +13,6 @@ class NcaEntityDeserializer : JsonDeserializer<NcaEntity> {
         return ncaEntity
     }
 
-    //val __oblogTypeConverters = OblogTypeConverters()
-
     companion object {
         private var INSTANCE: NcaEntityDeserializer? = null
         val ncaEntityDeserializer: NcaEntityDeserializer
@@ -56,69 +54,27 @@ class NcaEntityDeserializer : JsonDeserializer<NcaEntity> {
         val ncaPropertiesJson = jsonObject.get("ncaProperties")?.asJsonObject
 
         val icoJson = ncaPropertiesJson?.get("ico")
+        val ico = if ((icoJson!=null) && !icoJson.isJsonNull) icoJson.asString else ""
+
+        val leiJson = ncaPropertiesJson?.get("lei")
+        val lei = if ((leiJson!=null) && !leiJson.isJsonNull) leiJson.asString else ""
 
         val addressJson = ncaPropertiesJson?.get("adresa")
         val addressJsonNotNull : JsonObject = if ((addressJson!=null) && !addressJson.isJsonNull) addressJson.asJsonObject else JsonObject()
         val address = getAddress(addressJsonNotNull)
 
-/*
-        val ent_add = ebaPropertiesJson?.get("ENT_ADD")
-        val enityAddress = if (ent_add is JsonArray) getStringFromJsonArray(ent_add.asJsonArray) else (ent_add?.asString ?: "")
-        val entAuthStart_End = ebaPropertiesJson?.get("ENT_AUT")?.asJsonArray
-        val entAuthStart = entAuthStart_End?.get(0)?.asString ?: ""
-        var entAuthEnd = "N/A"
-        if (entAuthStart_End?.size()!! > 1) {
-            entAuthEnd = entAuthStart_End?.get(1)?.asString ?: "N/A"
-        }
-        val revoked = !entAuthEnd.isNullOrBlank()
-                            && !"N/A".contentEquals(entAuthEnd)
+        val entAuthStartJson = ncaPropertiesJson?.get("datumVzniku")
+        val entAuthStart = if ((entAuthStartJson != null) && !entAuthStartJson.isJsonNull) entAuthStartJson.asString else ""
 
+        val entAuthEndJson = ncaPropertiesJson?.get("datumZaniku")
+        var entAuthEnd = if ((entAuthEndJson != null) && !entAuthEndJson.isJsonNull) entAuthEndJson.asString else "N/A"
 
-        var entityTowCitRes = ""
-        val entTowCitRes = ebaPropertiesJson.get("ENT_TOW_CIT_RES")
-        if (entTowCitRes == null) {
-            // dummy
-        } else if (entTowCitRes.isJsonArray) {
-            // TODO: Concatenate all strings in the array
-            entityTowCitRes = entTowCitRes.asJsonArray[0].asString
-        } else {
-            entityTowCitRes = entTowCitRes.asString
-        }
+        val revoked = !entAuthEnd.isNullOrBlank() && !"N/A".contentEquals(entAuthEnd)
 
-        var entityPosCod = ""
-        val entPosCod = ebaPropertiesJson.get("ENT_POS_COD")
-        if (entPosCod == null) {
-            // Dummy
-        } else if (entPosCod.isJsonArray) {
-            // TODO: Concatenate all strings in the array
-            entityPosCod = entPosCod.asJsonArray[0].asString
-        } else {
-            entityPosCod = entPosCod.asString
-        }
+        // TODO: Replace with names corresponding to NCA API instead of using proprietary CNB czech field names
+        val bankCodeJson = ncaPropertiesJson?.get("ciselni_kod")
+        val bankCode = if ((bankCodeJson != null) && !bankCodeJson.isJsonNull) bankCodeJson.toString() else ""
 
-        var entityCouRes = ""
-        val entCouRes = ebaPropertiesJson.get("ENT_COU_RES")
-        if (entCouRes == null) {
-            // dummy
-        } else if (entCouRes.isJsonArray) {
-            entityCouRes = entCouRes.asJsonArray[0].asString
-        } else {
-            entityCouRes = entCouRes.asString
-        }
-
-        val ebaProperties = EbaEntityProperties(
-                  ebaPropertiesJson.get("ENT_COD_TYP")?.asString ?: ""
-                , ebaPropertiesJson.get("ENT_NAT_REF_COD")?.asString ?: ""
-                , entityName
-                , enityAddress
-                , entityTowCitRes
-                , entityPosCod
-                , entityCouRes
-                , entAuthStart
-                , entAuthEnd
-        )
-
-*/
         val ncaEntity = NcaEntity()
         ncaEntity._globalUrn = globalUrn
         ncaEntity._entityId = entityId
@@ -127,7 +83,10 @@ class NcaEntityDeserializer : JsonDeserializer<NcaEntity> {
         ncaEntity._description = description
         ncaEntity._ncaEntityVersion = entityVersion
         ncaEntity._address = address
-        ncaEntity.ico = icoJson.toString()
+        ncaEntity.ico = ico
+        ncaEntity.lei = lei
+        ncaEntity.bankCode = bankCode
+        ncaEntity.authStart = entAuthStart
 
         return ncaEntity
     }
