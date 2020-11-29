@@ -1,9 +1,11 @@
 package com.applego.oblog.tppwatch.data.source.remote.eba
 
 import com.applego.oblog.apikey.ApiKey
+import com.applego.oblog.tppwatch.BuildConfig
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.dao.EbaEntityDao
 import com.applego.oblog.tppwatch.data.model.EbaEntity
+import com.applego.oblog.tppwatch.data.model.EbaService
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.source.remote.*
 import kotlinx.coroutines.*
@@ -77,7 +79,7 @@ class TppsEbaDataSource internal constructor (
     override suspend fun getEntityById(country: String, tppId: String): Result<EbaEntity> {
         val paging = Paging()
 
-        val call = tppsService.findById(theApiKey.apiKey, tppId.toString(), paging.page, paging.size, paging.sortBy)
+        val call = tppsService.findById(OblogEbaService.theApiKey.apiKey, tppId.toString(), paging.page, paging.size, paging.sortBy)
         var response: Response<List<Tpp>>?
         try {
             response = call.execute()
@@ -141,7 +143,7 @@ class TppsEbaDataSource internal constructor (
     }
 
     private fun loadTppsPage(paging: Paging): Result<ListResponse<EbaEntity>> {
-        val call = tppsService.listTppsByName(theApiKey.apiKey,"", paging.page, paging.size, paging.sortBy)
+        val call = tppsService.listTppsByName(OblogEbaService.theApiKey.apiKey,"", paging.page, paging.size, paging.sortBy)
         var response: Response<TppsListResponse>?
         try {
             response = call.execute()

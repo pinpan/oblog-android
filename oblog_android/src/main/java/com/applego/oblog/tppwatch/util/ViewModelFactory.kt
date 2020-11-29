@@ -16,7 +16,7 @@ import com.applego.oblog.tppwatch.tpps.TppsViewModel
  */
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory constructor(
-        private val tppsRepository: TppsRepository
+        var tppsRepository: TppsRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     private val models = HashMap<String, ViewModel>()

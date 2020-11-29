@@ -4,7 +4,7 @@
     <string name="env_DEV">Dev</string>
     <string name="env_TEST">Test</string>
     <string name="env_STAGING">Staging</string>
-    <string name="env_PRODUCTION">Production</string>
+    <string name="env_PROD">Prod</string>
 
     <string name="add_app">New APP</string>
     <string name="edit_app">Edit APP</string>

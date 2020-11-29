@@ -22,7 +22,7 @@ class TppWatchApplication : Application() , SharedPreferences.OnSharedPreference
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if ("RUNTIME_ENV".equals(key)) {
             ServiceLocator.resetTppsRepository(this)
-            tppRepository = ServiceLocator.tppsRepository!!
+            //tppRepository = ServiceLocator.tppsRepository!!
         }
     }
 

@@ -20,7 +20,7 @@ import java.util.*
  * ViewModel for the tpp list screen.
  */
 class TppsViewModel(
-        private val tppsRepository: TppsRepository
+        var tppsRepository: TppsRepository
 ) : ViewModel() {
 
     private val _allItems: MutableLiveData<List<Tpp>> = MutableLiveData(listOf<Tpp>())

@@ -42,22 +42,21 @@ class OblogRestClient {
             return builder.create()
         }
 
-
         fun createRetrofitChecking(baseUrl: String, convertorsMap: Map<Type, JsonDeserializer<*>>) : Retrofit {
 
             val logging = HttpLoggingInterceptor()
-// set your desired log level
-// set your desired log level
+                // set your desired log level
+                // set your desired log level
             logging.level = HttpLoggingInterceptor.Level.BODY
 
             //val httpClient = OkHttpClient.Builder()
-// add your other interceptors …
-// add logging as last interceptor
-// add your other interceptors …
-// add logging as last interceptor
+                // add your other interceptors …
+                // add logging as last interceptor
+                // add your other interceptors …
+                // add logging as last interceptor
             //httpClient.addInterceptor(logging) // <-- this is the important line!
 
-            val okHttpClient = /*OblogRestClient.*/OkHttpClient.Builder()
+            val okHttpClient = OkHttpClient.Builder()
                     .connectTimeout(60, TimeUnit.SECONDS)
                     .readTimeout(60, TimeUnit.SECONDS)
                     .writeTimeout(60, TimeUnit.SECONDS)
@@ -66,10 +65,10 @@ class OblogRestClient {
 
             val retrofit: Retrofit = Retrofit.Builder()
                     .addCallAdapterFactory(
-                            RxJava2CallAdapterFactory.create())
-                    .addConverterFactory(
-                            GsonConverterFactory.create(createRetrofit(convertorsMap)))
-                    .baseUrl(baseUrl)
+                        RxJava2CallAdapterFactory.create()
+                    ).addConverterFactory(
+                        GsonConverterFactory.create(createRetrofit(convertorsMap))
+                    ).baseUrl(baseUrl)
                     .client(okHttpClient)
                     .build()
 
