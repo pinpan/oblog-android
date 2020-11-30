@@ -30,7 +30,7 @@ interface  OblogEbaService {
 
         fun create(context: Context): OblogEbaService {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context) //Environment.getDataDirectory()
-            var selectedEnvironmentName = sharedPreferences?.getString("RUNTIME_ENV","TEST") ?: "TEST"
+            var selectedEnvironmentName = sharedPreferences?.getString("RUNTIME_ENV","Prod") ?: "Prod"
 
             var actualEnvironment = ResourcesUtils.getActualEnvironmentForActivity(context, selectedEnvironmentName)
             if (actualEnvironment.isNullOrEmpty()) {

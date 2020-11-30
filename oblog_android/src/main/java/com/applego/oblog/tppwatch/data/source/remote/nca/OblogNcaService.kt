@@ -33,10 +33,10 @@ interface OblogNcaService {
 
         fun create(context: Context): OblogNcaService {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context) //Environment.getDataDirectory()
-            var selectedEnvironmentName = sharedPreferences?.getString("RUNTIME_ENV","TEST") ?: "TEST"
+            var selectedEnvironmentName = sharedPreferences?.getString("RUNTIME_ENV","Prod") ?: "Prod"
             var actualEnvironment = ResourcesUtils.getActualEnvironmentForActivity(context, selectedEnvironmentName)
             if (actualEnvironment.isNullOrEmpty()) {
-                selectedEnvironmentName = "Dev"
+                selectedEnvironmentName = "Prod"
                 sharedPreferences.edit().putString("RUNTIME_ENV", selectedEnvironmentName).commit()
                 actualEnvironment = ResourcesUtils.getActualEnvironmentForActivity(context, selectedEnvironmentName)
             }
