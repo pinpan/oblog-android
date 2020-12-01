@@ -22,7 +22,7 @@ class TppWatchApplication : Application() , SharedPreferences.OnSharedPreference
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if ("RUNTIME_ENV".equals(key)) {
             ServiceLocator.resetTppsRepository(this)
-            tppRepository = ServiceLocator.tppsRepository!!
+            //tppRepository = ServiceLocator.tppsRepository!!
         }
     }
 
@@ -45,9 +45,9 @@ class TppWatchApplication : Application() , SharedPreferences.OnSharedPreference
         ServiceLocator.resetTppsRepository(this)
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val currentEnv = sharedPreferences.getString("RUNTIME_ENV", "TEST")
+        val currentEnv = sharedPreferences.getString("RUNTIME_ENV", "Prod")
         if (currentEnv == null) {
-            sharedPreferences.edit().putString("RUNTIME_ENV", "TEST").commit()
+            sharedPreferences.edit().putString("RUNTIME_ENV", "Prod").commit()
         }
 
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)

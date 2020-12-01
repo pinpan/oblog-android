@@ -7,45 +7,53 @@
         <item>@string/env_DEV</item>
         <item>@string/env_TEST</item>
         <item>@string/env_STAGING</item>
-        <item>@string/env_PRODUCTION</item>
+        <item>@string/env_PROD</item>
     </string-array>
 
     <string-array name="env_base_url">
-        <item>DEV#http://192.168.0.194:27010"</item>
-        <item>TEST#https://api.oblog.org:443"</item>
-        <item>STAGING#https://api.oblog.org:443"</item>
-        <item>PRODUCTION#https://api.oblog.org:443"</item>
+        <item>LOCAL#http://192.168.0.194:27010"</item>
+        <item>DEV#https://dev.oblog.org:443"</item>
+        <item>TEST#https://test.oblog.org:443"</item>
+        <item>STAGING#https://staging.oblog.org:443"</item>
+        <item>PROD#https://api.oblog.org:443"</item>
+    </string-array>
+
+    <string-array name="env_LOCAL">
+        <item>LOCAL</item>
+        <item>\"https://192.168.0.194:27010\""</item>
+        <item>SomethingElse-Local</item>
     </string-array>
 
     <string-array name="env_DEV">
         <item>DEV</item>
-        <item>\"http://192.168.0.194:27010\""</item>
+        <item>\"httpS://dev.oblog.org:443\""</item>
         <item>SomethingElse-Dev</item>
     </string-array>
 
     <string-array name="env_TEST">
         <item>TEST</item>
-        <item>\"https://api.oblog.org:443\""</item>
-        <item>SomethingElse-Dev</item>
+        <item>\"https://test.oblog.org:443\""</item>
+        <item>SomethingElse-Test</item>
     </string-array>
 
     <string-array name="env_STAGING">
         <item>STAGING</item>
-        <item>\"https://api.oblog.org:443\""</item>
-        <item>SomethingElse-Dev</item>
+        <item>\"https://staging.oblog.org:443\""</item>
+        <item>SomethingElse-Staging</item>
     </string-array>
 
-    <string-array name="env_PRODUCTION">
-        <item>PRODUCTION</item>
+    <string-array name="env_PROD">
+        <item>PROD</item>
         <item>\"https://api.oblog.org:443\""</item>
-        <item>SomethingElse-Dev</item>
+        <item>SomethingElse-Prod</item>
     </string-array>
 
     <array name="environments">
+        <item>@array/env_LOCAL</item>
         <item>@array/env_DEV</item>
         <item>@array/env_TEST</item>
         <item>@array/env_STAGING</item>
-        <item>@array/env_PRODUCTION</item>
+        <item>@array/env_PROD</item>
     </array>
 
     <string-array name="list_tpps_array">

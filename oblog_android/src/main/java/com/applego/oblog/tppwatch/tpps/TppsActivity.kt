@@ -10,7 +10,6 @@ import android.preference.PreferenceManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -73,7 +72,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                 override fun run(): Unit {
                     val editor = sharedPrefs.edit()
                     editor.putBoolean("show_intro", false)
-                    editor.putString("RUNTIME_ENV", "TEST")
+                    editor.putString("RUNTIME_ENV", "Prod")
                     editor.commit()
 
                     startActivity(Intent(this@TppsActivity, OnboardingActivity::class.java))
@@ -119,8 +118,20 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (key.equals("RUNTIME_ENV")) {
-            selectedEnvironmentName = sharedPreferences?.getString("RUNTIME_ENV","") ?: "TEST"
+            selectedEnvironmentName = sharedPreferences?.getString("RUNTIME_ENV", "") ?: "Prod"
             actualEnvironment = ResourcesUtils.getActualEnvironmentForActivity(this, selectedEnvironmentName)
+
+            viewModelFactory.tppsRepository = ServiceLocator.resetTppsRepository(this.applicationContext)
+            viewModel!!.tppsRepository = viewModelFactory.tppsRepository //viewModelFactory.get(TppsViewModel::class.java) as TppsViewModel
+/*
+            val frg: Fragment? = supportFragmentManager.findFragmentById(R.id.tpps_fragment_layout) ?: supportFragmentManager.findFragmentByTag("tpps_fragment_coordinator")
+            val theFrg : TppsFragment? = if (frg != null)  (frg as TppsFragment) else null
+            theFrg?.refrehsViewBinding()*/
+            val i = Intent(this@TppsActivity, TppsActivity::class.java)
+            finish()
+            overridePendingTransition(0, 0)
+            startActivity(i)
+            overridePendingTransition(0, 0)
         }
     }
 

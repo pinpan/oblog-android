@@ -9,6 +9,8 @@ import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +23,7 @@ import com.applego.oblog.tppwatch.data.model.InstType
 import com.applego.oblog.tppwatch.databinding.TppsFragBinding
 import com.applego.oblog.tppwatch.util.EventObserver
 import com.applego.oblog.tppwatch.util.ViewModelFactory.Companion.viewModelFactory
+import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.applego.oblog.ui.CountriesSpinnerAdapter
 import com.applego.oblog.ui.IconAndTextSpinnerAdapter
@@ -31,7 +34,7 @@ import java.util.*
 
 class TppsFragment : Fragment() {
 
-    private val tppsFragViewModel = viewModelFactory.get(TppsViewModel::class.java) as TppsViewModel
+    private val tppsFragViewModel by viewModels<TppsViewModel> { getViewModelFactory() } //getViewModel()
 
     private val args: TppsFragmentArgs by navArgs()
 
@@ -57,7 +60,7 @@ class TppsFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         viewDataBinding = TppsFragBinding.inflate(inflater, container, false).apply {
-            viewmodel = tppsFragViewModel
+            viewmodel = tppsFragViewModel //refreshViewModel()
         }
         setHasOptionsMenu(true)
 
@@ -65,6 +68,23 @@ class TppsFragment : Fragment() {
 
         return viewDataBinding.root
     }
+
+    fun refrehsViewBinding() {
+        viewDataBinding.viewmodel = tppsFragViewModel
+        val ft : FragmentTransaction? = activity?.getSupportFragmentManager()?.beginTransaction();
+        ft?.detach(this);
+        ft?.attach(this);
+        ft?.commit();
+    }
+
+    /*fun getViewModel() :TppsViewModel {
+        return viewModelFactory.get(TppsViewModel::class.java) as TppsViewModel
+    }
+
+    fun refreshViewModel() :TppsViewModel {
+        return viewModelFactory.create(TppsViewModel::class.java) as TppsViewModel
+    }
+    */
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
