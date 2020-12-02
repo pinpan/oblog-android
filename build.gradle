@@ -1,6 +1,7 @@
 buildscript {
     ext.kotlinVersion = '1.3.31'
     ext.navigationVersion = "2.1.0-alpha06"
+
     repositories {
         google()
         jcenter()
@@ -28,8 +29,29 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+// Create a variable called secretPropertiesFile, and initializes it to the
+// secret.properties file.
+def secretPropertiesFile = rootProject.file("../config/secret.properties")
+// Initializes a new Properties() object called secretProperties.
+def secretProperties = new Properties()
+// Loads the secret.properties file into the secretProperties object.
+secretProperties.load(new FileInputStream(secretPropertiesFile))
+
 // Define versions in a single place
 ext {
+
+    $BASE_URL_LOCAL = secretProperties.getProperty("base_url.local") // "\"http://192.168.0.15:8585\""
+    $BASE_URL_DEV = secretProperties.getProperty("base_url.dev") // "\"http://dev.oblog.org:443\""
+    $BASE_URL_TEST = secretProperties.getProperty("base_url.test") // "\"http://test.oblog.org:443\""
+    $BASE_URL_STAGING = secretProperties.getProperty("base_url.staging") // "\"http://staging.oblog.org:443\""
+    $BASE_URL_PROD = secretProperties.getProperty("base_url.prod") // "\"http://api.oblog.org:443\""
+
+    $API_KEY_LOCAL = secretProperties.getProperty("api.key.local") // "\"http://192.168.0.15:8585\""
+    $API_KEY_DEV = secretProperties.getProperty("api.key.dev") // "\"http://dev.oblog.org:443\""
+    $API_KEY_TEST = secretProperties.getProperty("api.key.test") // "\"http://test.oblog.org:443\""
+    $API_KEY_STAGING = secretProperties.getProperty("api.key.staging") // "\"http://staging.oblog.org:443\""
+    $API_KEY_PROD = secretProperties.getProperty("api.key.prod") // "\"http://api.oblog.org:443\""
+
     // Sdk and tools
     // Support library and architecture components support minSdk 14 and above.
     minSdkVersion = 24

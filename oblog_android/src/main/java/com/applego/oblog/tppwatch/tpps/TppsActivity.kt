@@ -98,7 +98,6 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
             setupActionBarWithNavController(navController, appBarConfiguration)
             val navView = findViewById<NavigationView>(R.id.nav_view)
             navView.setupWithNavController(navController)
-            //val headerLayout = navView.getHeaderView(0)//findViewById<ViewGroup>(R.id.header_layout)
             val headerLogo = (navView.getHeaderView(0) as FrameLayout).getChildAt(0)
             headerLogo.setOnTouchListener {v, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
@@ -148,11 +147,8 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
             actualEnvironment = ResourcesUtils.getActualEnvironmentForActivity(this, selectedEnvironmentName)
 
             viewModelFactory.tppsRepository = ServiceLocator.resetTppsRepository(this.applicationContext)
-            viewModel!!.tppsRepository = viewModelFactory.tppsRepository //viewModelFactory.get(TppsViewModel::class.java) as TppsViewModel
-/*
-            val frg: Fragment? = supportFragmentManager.findFragmentById(R.id.tpps_fragment_layout) ?: supportFragmentManager.findFragmentByTag("tpps_fragment_coordinator")
-            val theFrg : TppsFragment? = if (frg != null)  (frg as TppsFragment) else null
-            theFrg?.refrehsViewBinding()*/
+            viewModel!!.tppsRepository = viewModelFactory.tppsRepository
+
             val i = Intent(this@TppsActivity, TppsActivity::class.java)
             finish()
             overridePendingTransition(0, 0)
