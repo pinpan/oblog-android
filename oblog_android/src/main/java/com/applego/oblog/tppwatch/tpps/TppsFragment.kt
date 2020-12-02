@@ -9,7 +9,6 @@ import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -22,7 +21,6 @@ import com.applego.oblog.tppwatch.data.model.EbaService.Companion.psd2Servies
 import com.applego.oblog.tppwatch.data.model.InstType
 import com.applego.oblog.tppwatch.databinding.TppsFragBinding
 import com.applego.oblog.tppwatch.util.EventObserver
-import com.applego.oblog.tppwatch.util.ViewModelFactory.Companion.viewModelFactory
 import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.applego.oblog.ui.CountriesSpinnerAdapter
@@ -60,7 +58,7 @@ class TppsFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         viewDataBinding = TppsFragBinding.inflate(inflater, container, false).apply {
-            viewmodel = tppsFragViewModel //refreshViewModel()
+            viewmodel = tppsFragViewModel
         }
         setHasOptionsMenu(true)
 
@@ -68,23 +66,6 @@ class TppsFragment : Fragment() {
 
         return viewDataBinding.root
     }
-
-    fun refrehsViewBinding() {
-        viewDataBinding.viewmodel = tppsFragViewModel
-        val ft : FragmentTransaction? = activity?.getSupportFragmentManager()?.beginTransaction();
-        ft?.detach(this);
-        ft?.attach(this);
-        ft?.commit();
-    }
-
-    /*fun getViewModel() :TppsViewModel {
-        return viewModelFactory.get(TppsViewModel::class.java) as TppsViewModel
-    }
-
-    fun refreshViewModel() :TppsViewModel {
-        return viewModelFactory.create(TppsViewModel::class.java) as TppsViewModel
-    }
-    */
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -252,7 +233,6 @@ class TppsFragment : Fragment() {
                 firstVisibleInListview = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition();
                 var aTpp = tppsFragViewModel.displayedItems.value?.get(firstVisibleInListview)
                 // TODO: Find the Tpp item position after sorting
-                //recyclerView.scrollToPosition(firstVisibleInListview)
             }
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -269,7 +249,6 @@ class TppsFragment : Fragment() {
                     R.drawable.sort_ascending_bars else R.drawable.sort_descending_bars)
                 tppsFragViewModel.reverseOrderBy()
                 listAdapter.notifyDataSetChanged()
-                //recyclerView.scrollToPosition(firstVisibleInListview)
                 recyclerView.invalidate()
             }
         })
@@ -283,7 +262,6 @@ class TppsFragment : Fragment() {
                 tppsFragViewModel.orderTppsBy(orderByField)
                 tppsFragViewModel.orderTpps()
                 listAdapter.notifyDataSetChanged()
-                //recyclerView.scrollToPosition(firstVisibleInListview)
                 recyclerView.invalidate()
             }
 
@@ -327,13 +305,13 @@ class TppsFragment : Fragment() {
     }
 
     private fun setupNavigation() {
-        tppsFragViewModel.openTppEvent.observe(this, EventObserver {
+        tppsFragViewModel.openTppEvent.observe(viewLifecycleOwner, EventObserver {
             openTppDetails(it)
         })
-        tppsFragViewModel.newTppEvent.observe(this, EventObserver {
+        tppsFragViewModel.newTppEvent.observe(viewLifecycleOwner, EventObserver {
             navigateToAddNewTpp()
         })
-        tppsFragViewModel.aboutEvent.observe(this, EventObserver {
+        tppsFragViewModel.aboutEvent.observe(viewLifecycleOwner, EventObserver {
             openAbout()
         })
     }
@@ -415,7 +393,7 @@ class TppsFragment : Fragment() {
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.viewmodel
         if (viewModel != null) {
-            listAdapter = TppsAdapter(viewModel/*, context!!, R.layout.tppitemlayout*/)
+            listAdapter = TppsAdapter(viewModel)
 
             viewDataBinding.tppsList.adapter = listAdapter
 

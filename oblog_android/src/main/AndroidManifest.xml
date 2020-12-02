@@ -57,6 +57,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.applego.oblog.tppwatch.tpps.TppsActivity" />
         </activity>
+        <activity
+            android:name=".preferences.OblogEnvironmentPreferencesActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".tpps.TppsActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.applego.oblog.tppwatch.tpps.TppsActivity" />
+        </activity>
     </application>
 
 </manifest>

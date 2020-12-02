@@ -38,7 +38,7 @@ class TppDetailAppsFragment(private val viewModel: AppsViewModel) : Fragment() {
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.viewmodel
         if (viewModel != null) {
-            listAdapter = AppsAdapter(viewModel, context!!, R.layout.app_item)
+            listAdapter = AppsAdapter(viewModel, requireContext(), R.layout.app_item)
             viewDataBinding.appsList.adapter = listAdapter
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
@@ -46,7 +46,7 @@ class TppDetailAppsFragment(private val viewModel: AppsViewModel) : Fragment() {
     }
 
     private fun setupNavigation() {
-         viewModel.editAppEvent.observe(this.parentFragment!!, EventObserver {
+         viewModel.editAppEvent.observe(viewLifecycleOwner, EventObserver { //.requireParentFragment()
              val action = TppDetailTabsFragmentDirections
                      .actionTppDetailAppsFragmentToAddEditTppAppFragment(
                              viewModel.tpp.value!!.getId(),

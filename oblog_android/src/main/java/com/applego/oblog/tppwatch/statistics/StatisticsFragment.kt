@@ -72,7 +72,7 @@ class StatisticsFragment : Fragment() {
         toolbar?.setNavigationIcon(toolbarIcon)
 
         chartTypesSpinner = activity?.findViewById(R.id.spinner_charttype)!!
-        val charTypeTitles = context!!.resources.getTextArray(R.array.chart_type_titles)
+        val charTypeTitles = requireContext().resources.getTextArray(R.array.chart_type_titles)
         val chartTypesAdapter = TextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner, chartTypesSpinner, getStringList(charTypeTitles), 12)
         chartTypesSpinner.setAdapter(chartTypesAdapter);
         chartTypesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
@@ -88,7 +88,7 @@ class StatisticsFragment : Fragment() {
         })
 
         periodSpinner = activity?.findViewById(R.id.spinner_period)!!
-        val timePeriods = context!!.resources.getTextArray(R.array.time_intervals)
+        val timePeriods = requireContext().resources.getTextArray(R.array.time_intervals)
         val timePeriodsAdapter = TextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner, periodSpinner, getStringList(timePeriods), 12)
         periodSpinner.setAdapter(timePeriodsAdapter);
         periodSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {

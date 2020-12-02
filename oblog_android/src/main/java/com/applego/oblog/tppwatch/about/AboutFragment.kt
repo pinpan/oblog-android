@@ -1,7 +1,5 @@
 package com.applego.oblog.tppwatch.about
 
-import android.content.Context
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +8,6 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -80,7 +77,7 @@ class AboutFragment : Fragment() {
     }
 
     private fun setupNavigation() {
-        viewModel.tppUpdatedEvent.observe(this, EventObserver {
+        viewModel.tppUpdatedEvent.observe(viewLifecycleOwner, EventObserver {
             val action = AboutFragmentDirections
                     .actionAboutFragmentToTppsFragment(null, ADD_EDIT_RESULT_OK)
             findNavController().navigate(action)

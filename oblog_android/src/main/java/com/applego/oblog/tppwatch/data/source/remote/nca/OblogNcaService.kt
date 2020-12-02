@@ -7,7 +7,6 @@ import com.applego.oblog.tppwatch.BuildConfig
 import com.applego.oblog.tppwatch.data.model.NcaEntity
 import com.applego.oblog.tppwatch.data.source.remote.NcaEntitiesListResponse
 import com.applego.oblog.tppwatch.data.source.remote.OblogRestClient
-import com.applego.oblog.tppwatch.data.source.remote.eba.OblogEbaService
 import com.applego.oblog.tppwatch.data.source.remote.serializer.NcaEntitiesListDeserializer
 import com.applego.oblog.tppwatch.data.source.remote.serializer.NcaEntitiesListResponseDeserializer
 import com.applego.oblog.tppwatch.data.source.remote.serializer.NcaEntityDeserializer

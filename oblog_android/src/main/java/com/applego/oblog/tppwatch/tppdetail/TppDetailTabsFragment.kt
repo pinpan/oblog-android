@@ -42,13 +42,13 @@ class TppDetailTabsFragment : Fragment() {
     }
 
     private fun setupNavigation() {
-        viewModel.tppUpdatedEvent.observe(this, EventObserver {
+        viewModel.tppUpdatedEvent.observe(viewLifecycleOwner, EventObserver {
             val action = TppDetailTabsFragmentDirections
                     .actionTppDetailTabsFragmentToTppsFragment(args.tppId)
             findNavController().navigate(action)
         })
 
-        viewModel.editTppEvent.observe(this, EventObserver {
+        viewModel.editTppEvent.observe(viewLifecycleOwner, EventObserver {
             val action = TppDetailTabsFragmentDirections
                     .actionTppDetailTabsFragmentToAddEditTppFragment(
                             args.tppId,
@@ -57,7 +57,7 @@ class TppDetailTabsFragment : Fragment() {
             findNavController().navigate(action)
         })
 
-        viewModel.addTppAppEvent.observe(this, EventObserver {
+        viewModel.addTppAppEvent.observe(viewLifecycleOwner, EventObserver {
             val action = TppDetailTabsFragmentDirections
                     .actionTppDetailAppsFragmentToAddEditTppAppFragment(
                             args.tppId,
@@ -67,7 +67,7 @@ class TppDetailTabsFragment : Fragment() {
             findNavController().navigate(action)
         })
 
-        viewModel.editTppAppEvent.observe(this, EventObserver {
+        viewModel.editTppAppEvent.observe(viewLifecycleOwner, EventObserver {
             val action = AddEditTppAppFragmentDirections
                     .actionAddEditTppAppFragmentToTppDetailTabsFragment(
                             args.tppId
@@ -75,7 +75,7 @@ class TppDetailTabsFragment : Fragment() {
             findNavController().navigate(action)
         })
 
-        viewModel.backToTppsListEvent.observe(this, EventObserver {
+        viewModel.backToTppsListEvent.observe(viewLifecycleOwner, EventObserver {
             val action = TppDetailTabsFragmentDirections
                     .actionTppDetailTabsFragmentToTppsFragment(
                             args.tppId

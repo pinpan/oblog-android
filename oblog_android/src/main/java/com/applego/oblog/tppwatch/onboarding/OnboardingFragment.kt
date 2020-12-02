@@ -29,7 +29,7 @@ class OnboardingFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //onboardingViewModel = ViewModelProviders.of(this.activity!!).get(OnboardingViewModel::class.java)
-        onboardingViewModel = ViewModelProviders.of(this.activity!!).get(OnboardingViewModel::class.java)
+        onboardingViewModel = ViewModelProviders.of(this.requireActivity()).get(OnboardingViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -48,18 +48,18 @@ class OnboardingFragment : Fragment() {
         val titleView: TextView = root.findViewById(R.id.section_label)
         val descView: TextView = root.findViewById(R.id.section_description)
 
-        onboardingViewModel.text.observe(this, Observer<Int> {
+        onboardingViewModel.text.observe(viewLifecycleOwner, Observer<Int> {
             titleView.text = resources.getString(onboardingViewModel.text.value ?: 0)
         })
 
-        onboardingViewModel.desc.observe(this, Observer<Int> {
+        onboardingViewModel.desc.observe(viewLifecycleOwner, Observer<Int> {
             descView.text = resources.getString(onboardingViewModel.desc.value ?: 0)
         })
 
         val imgView: ImageView = root.findViewById(R.id.section_img)
         //val logoView: ImageView = root.findViewById(R.id.section_logo)
         val warningView: TextView = root.findViewById(R.id.section_warning)
-        onboardingViewModel.image.observe(this, Observer<Int> {
+        onboardingViewModel.image.observe(viewLifecycleOwner, Observer<Int> {
             imgView.setBackgroundResource(onboardingViewModel.image.value ?: 0)
 
             imgView.visibility = if (onboardingViewModel.isLastPage()) View.GONE else View.VISIBLE
@@ -67,14 +67,14 @@ class OnboardingFragment : Fragment() {
             warningView.visibility = if (onboardingViewModel.isLastPage()) View.VISIBLE else View.GONE
         })
 
-        onboardingViewModel.onboardingFinishEvent.observe(this, Observer<Event<Boolean>> {event ->
+        onboardingViewModel.onboardingFinishEvent.observe(viewLifecycleOwner, Observer<Event<Boolean>> {event ->
             event.getContentIfNotHandled().let {
                 finish(it ?: true)
             }
         })
 
         val img = root.findViewById(R.id.section_img) as ImageView
-        img.setBackgroundResource(onboardingViewModel.bgs.get(arguments!!.getInt(ARG_SECTION_NUMBER)))
+        img.setBackgroundResource(onboardingViewModel.bgs.get(requireArguments().getInt(ARG_SECTION_NUMBER)))
 
         /*val sectionLabel = root.findViewById(R.id.section_label) as TextView
         sectionLabel.setText(lbls.get(arguments!!.getInt(ARG_SECTION_NUMBER)))

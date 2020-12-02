@@ -27,7 +27,7 @@ class TppDetailNcaFragment(private val viewModel: TppDetailViewModel, @Nullable 
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.viewmodel
         if (viewModel != null) {
-            listAdapter = TppDetailAdapter(viewModel, context!!, R.layout.tpp_passport)
+            listAdapter = TppDetailAdapter(viewModel, requireContext(), R.layout.tpp_passport)
             //viewDataBinding.passportsList.adapter = listAdapter
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")

@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.applego.oblog.tppwatch.R
 
-class OblogPreferencesActivity : AppCompatActivity() {
+class OblogEnvironmentPreferencesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -12,7 +12,7 @@ class OblogPreferencesActivity : AppCompatActivity() {
 
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.settings, DefaultPreferencesFragment(R.xml.root_preferences))
+                .replace(R.id.settings, DefaultPreferencesFragment(R.xml.env_preferences))
                 .commit()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }

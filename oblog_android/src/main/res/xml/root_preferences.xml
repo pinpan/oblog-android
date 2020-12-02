@@ -35,15 +35,4 @@
             app:title="@string/show_intro_on_next_run"
         />
     </PreferenceCategory>
-
-    <PreferenceCategory app:title="@string/environments">
-        <ListPreference
-            app:defaultValue="env_TEST"
-            app:entries="@array/env_names"
-            app:entryValues="@array/env_names"
-            app:key="RUNTIME_ENV"
-            app:title="@string/actual_env_title"
-            app:useSimpleSummaryProvider="true"
-        />
-    </PreferenceCategory>
 </PreferenceScreen>

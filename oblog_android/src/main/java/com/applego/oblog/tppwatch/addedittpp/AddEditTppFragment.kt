@@ -53,7 +53,7 @@ class AddEditTppFragment : Fragment() {
     }
 
     private fun setupNavigation() {
-        viewModel.tppUpdatedEvent.observe(this, EventObserver {
+        viewModel.tppUpdatedEvent.observe(viewLifecycleOwner, EventObserver {
             val action = AddEditTppFragmentDirections
                     .actionAddEditTppFragmentToTppsFragment(null, ADD_EDIT_RESULT_OK)
             findNavController().navigate(action)

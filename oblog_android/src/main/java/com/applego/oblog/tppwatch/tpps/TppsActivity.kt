@@ -6,10 +6,9 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
-import android.preference.PreferenceManager
-import android.view.Menu
-import android.view.MenuItem
-import android.view.WindowManager
+import android.view.*
+import android.widget.FrameLayout
+import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -23,6 +22,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.applego.oblog.tppwatch.BuildConfig
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.onboarding.OnboardingActivity
+import com.applego.oblog.tppwatch.preferences.OblogEnvironmentPreferencesActivity
 import com.applego.oblog.tppwatch.preferences.OblogPreferencesActivity
 import com.applego.oblog.tppwatch.tppdetail.TppDetailTabsFragment
 import com.applego.oblog.tppwatch.util.ResourcesUtils
@@ -47,6 +47,9 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
     private var selectedTppId: String ?=null
 
     private var viewModel : TppsViewModel? = null
+
+    var count = 0
+    var startMillis: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,8 +96,31 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                     .setDrawerLayout(drawerLayout)
                     .build()
             setupActionBarWithNavController(navController, appBarConfiguration)
-            findViewById<NavigationView>(R.id.nav_view).setupWithNavController(navController)
-            navController.addOnDestinationChangedListener { navController, destination, arguments ->
+            val navView = findViewById<NavigationView>(R.id.nav_view)
+            navView.setupWithNavController(navController)
+            //val headerLayout = navView.getHeaderView(0)//findViewById<ViewGroup>(R.id.header_layout)
+            val headerLogo = (navView.getHeaderView(0) as FrameLayout).getChildAt(0)
+            headerLogo.setOnTouchListener {v, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    val currentTime = System.currentTimeMillis()
+                    if (startMillis == 0L || currentTime - startMillis > 3000) {
+                        startMillis = currentTime
+                        count = 1
+                    } else {
+                        count++
+                    }
+                    if (count == 4) {
+                        count = 0
+                        val intent = Intent(this@TppsActivity, OblogEnvironmentPreferencesActivity::class.java)
+                        startActivity(intent);
+                    }
+
+                    Timber.d("tap count -- $count")
+                }
+                false
+            }
+
+                navController.addOnDestinationChangedListener { navController, destination, arguments ->
                 Timber.i("onDestinationChanged: " + destination.label);
                 if ((destination as FragmentNavigator.Destination).className.equals(TppDetailTabsFragment::class.java.canonicalName)) {
                     selectedTppId = arguments!!.getString("tppId")

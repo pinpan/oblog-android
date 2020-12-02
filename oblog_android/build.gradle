@@ -52,8 +52,8 @@ android {
         buildConfigField "String", 'API_KEY_LOCAL', "\"Xe4HLKKvDVDVPpgXIicvMXDTL4QDrpX3\""
         buildConfigField "String", 'API_KEY_DEV', "\"Xe4HLKKvDVDVPpgXIicvMXDTL4QDrpX3\""
         buildConfigField "String", 'API_KEY_TEST', "\"Xe4HLKKvDVDVPpgXIicvMXDTL4QDrpX3\""
-        buildConfigField "String", 'API_KEY_STAGING', "\"T11NOL41x0L7Cn4OAc1FNQogHAcpWvQA\""
-        buildConfigField "String", 'API_KEY_PROD', "\"T11NOL41x0L7Cn4OAc1FNQogHAcpWvQA\""
+        buildConfigField "String", 'API_KEY_STAGING', "\"yDdES7R9DLO0EEzWoIkNCBraHVB38QuH\""
+        buildConfigField "String", 'API_KEY_PROD', "\"yDdES7R9DLO0EEzWoIkNCBraHVB38QuH\""
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
