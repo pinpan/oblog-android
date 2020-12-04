@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.preference.PreferenceManager
 import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.applego.oblog.tppwatch.BuildConfig
 import com.applego.oblog.tppwatch.data.model.EbaEntity
 import com.applego.oblog.tppwatch.data.repository.DefaultTppsRepository
@@ -73,11 +76,19 @@ object ServiceLocator {
         return TppsNcaDataSource(OblogNcaService.create(context), database.ncaDao())
     }
 
+    val MIGRATION_44_45 = object : Migration(44, 45) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("ALTER TABLE User ADD COLUMN name TEXT NOT NULL DEFAULT '' ")
+        }
+    }
+
     private fun createDataBase(context: Context, dbName: String): TppDatabase {
         val result = Room.databaseBuilder(
-            context.applicationContext,
-            TppDatabase::class.java, dbName
-        )
+                  context.applicationContext
+                , TppDatabase::class.java
+                , dbName
+                )
+                //.addMigrations(MIGRATION_44_45)
                 .fallbackToDestructiveMigration()
                 .build()
         //database = result

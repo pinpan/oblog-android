@@ -80,7 +80,7 @@ ext {
     mockitoVersion = '2.8.9'
     recyclerViewVersion = '1.0.0'
     robolectricVersion = '4.3-beta-1'
-    roomVersion = '2.1.0'
+    roomVersion = '2.2.5'
     rulesVersion = '1.0.1'
     timberVersion = '4.7.1'
     truthVersion = '0.44'

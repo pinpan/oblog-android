@@ -7,16 +7,6 @@ apply plugin: 'kotlin-android-extensions'
 repositories {
     maven { url "https://jitpack.io" }
 }
-/*
-
-// Create a variable called secretPropertiesFile, and initializes it to the
-// secret.properties file.
-def secretPropertiesFile = rootProject.file("secret.properties")
-// Initializes a new Properties() object called secretProperties.
-def secretProperties = new Properties()
-// Loads the secret.properties file into the secretProperties object.
-secretProperties.load(new FileInputStream(secretPropertiesFile))
-*/
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -25,34 +15,33 @@ android {
         applicationId "com.applego.oblog.tppwatch"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 12
-        versionName "v0.9.1-ALPHA-1"
+        versionCode 13
+        versionName "v1.0.0_RC-1"
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         kapt {
             arguments {
-                arg("room.schemaLocation", "$projectDir/schemas")
+                arg("room.schemaLocation", "$projectDir/schemas".toString())
             }
         }
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = ["room.schemaLocation":
-                                     "$projectDir/schemas".toString()]
+                arguments = ["room.schemaLocation" : "$projectDir/schemas".toString()]
             }
         }
 
-        buildConfigField "String", 'BASE_URL_LOCAL', $BASE_URL_LOCAL // "\"http://192.168.0.15:8585\""
-        buildConfigField "String", 'BASE_URL_DEV', $BASE_URL_DEV // "\"http://dev.oblog.org:443\""
-        buildConfigField "String", 'BASE_URL_TEST', $BASE_URL_TEST // "\"http://test.oblog.org:443\""
-        buildConfigField "String", 'BASE_URL_STAGING', $BASE_URL_STAGING // "\"http://staging.oblog.org:443\""
-        buildConfigField "String", 'BASE_URL_PROD', $BASE_URL_PROD // "\"http://api.oblog.org:443\""
+        buildConfigField "String", 'BASE_URL_LOCAL', $BASE_URL_LOCAL
+        buildConfigField "String", 'BASE_URL_DEV', $BASE_URL_DEV
+        buildConfigField "String", 'BASE_URL_TEST', $BASE_URL_TEST
+        buildConfigField "String", 'BASE_URL_STAGING', $BASE_URL_STAGING
+        buildConfigField "String", 'BASE_URL_PROD', $BASE_URL_PROD
 
-        buildConfigField "String", 'API_KEY_LOCAL', $API_KEY_LOCAL  //"\"Xe4HLKKvDVDVPpgXIicvMXDTL4QDrpX3\""
-        buildConfigField "String", 'API_KEY_DEV', $API_KEY_DEV  //"\"Xe4HLKKvDVDVPpgXIicvMXDTL4QDrpX3\""
-        buildConfigField "String", 'API_KEY_TEST', $API_KEY_TEST  //"\"Xe4HLKKvDVDVPpgXIicvMXDTL4QDrpX3\""
-        buildConfigField "String", 'API_KEY_STAGING', $API_KEY_STAGING  //"\"yDdES7R9DLO0EEzWoIkNCBraHVB38QuH\""
-        buildConfigField "String", 'API_KEY_PROD', $API_KEY_PROD  //"\"yDdES7R9DLO0EEzWoIkNCBraHVB38QuH\""
+        buildConfigField "String", 'API_KEY_LOCAL', $API_KEY_LOCAL
+        buildConfigField "String", 'API_KEY_DEV', $API_KEY_DEV
+        buildConfigField "String", 'API_KEY_TEST', $API_KEY_TEST
+        buildConfigField "String", 'API_KEY_STAGING', $API_KEY_STAGING
+        buildConfigField "String", 'API_KEY_PROD', $API_KEY_PROD
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -69,22 +58,35 @@ android {
         //viewBinding = true -> brakes the build with error: "... TppsSearchBinding cannot be converted to ViewDataBinding"
     }
 
-    android {
-        sourceSets {
-            String sharedTestDir = 'src/sharedTest/java'
-            test {
-                java.srcDir sharedTestDir
-            }
-            androidTest {
-                java.srcDir sharedTestDir
-            }
+    //android {
+    sourceSets {
+        String sharedTestDir = 'src/sharedTest/java'
+        test {
+            java.srcDir sharedTestDir
+        }
+        androidTest {
+            java.srcDir sharedTestDir
+            assets.srcDirs += files("$projectDir/schemas".toString())
+        }
+
+        debug { // Needed to run Room migration tests. Otherwise schema migration script is not found
+            assets.srcDirs += files("$projectDir/schemas".toString())
+        }
+
+        release { // Needed to run Room migration tests. Otherwise schema migration script is not found
+                  // see: https://stackoverflow.com/questions/58663990/testing-room-migration-cannot-find-the-schema-file-in-the-assets-folder-room-m
+            assets.srcDirs += files("$projectDir/schemas".toString())
         }
     }
+//}
+   /* testOptions {
+        unitTests.returnDefaultValues = true
+    }*/
 
     buildTypes {
-        each {
+        /*each {
 
-        }
+        }*/
         debug {
             minifyEnabled false
             testCoverageEnabled true
@@ -100,9 +102,9 @@ android {
             //testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
         }
 
-        release {
+        /*release {
             buildConfigField "String", 'BASE_URL', "\"https://api.oblog.org:443/eba-registry/\""
-        }
+        }*/
     }
 
     flavorDimensions "default"
@@ -189,8 +191,8 @@ dependencies {
 
     // Architecture Components
     kapt "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
-    implementation "androidx.room:room-runtime:$roomVersion"
-    kapt "androidx.room:room-compiler:$roomVersion"
+    //implementation "androidx.room:room-runtime:$roomVersion"
+    //kapt "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifecycleVersion"
@@ -243,6 +245,7 @@ dependencies {
     androidTestImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
     androidTestImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
     androidTestImplementation "androidx.test:rules:$androidXTestRulesVersion"
+    testImplementation "androidx.room:room-testing:$roomVersion"
     androidTestImplementation "androidx.room:room-testing:$roomVersion"
     androidTestImplementation "androidx.arch.core:core-testing:$archTestingVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
