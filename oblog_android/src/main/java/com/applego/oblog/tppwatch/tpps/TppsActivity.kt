@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -36,7 +37,7 @@ import timber.log.Timber
 /**
  * Main activity for the com.applego.oblog.tppwatch. Holds the Navigation Host Fragment and the Drawer, Toolbar, etc.
  */
-class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppCompatActivity() {
+class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private var actualEnvironment: Array<String> = emptyArray()
     private var selectedEnvironmentName : String = ""
@@ -138,7 +139,22 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
             if (BuildConfig.DEBUG) {
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             }
+
+            val navigationView = findViewById<NavigationView>(R.id.nav_view)
+            navigationView.setNavigationItemSelectedListener(this)
         }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        val navController: NavController = findNavController(R.id.nav_host_fragment)
+        val currentDestinationId = navController.currentDestination?.id ?: -1
+        val sameDestination = (item.getItemId() == currentDestinationId)
+        if (!sameDestination) {
+            navController.navigate(item.getItemId());
+        }
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
