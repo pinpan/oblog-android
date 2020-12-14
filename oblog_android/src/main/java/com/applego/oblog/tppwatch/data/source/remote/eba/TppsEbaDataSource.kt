@@ -26,9 +26,6 @@ class TppsEbaDataSource internal constructor (
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : RemoteTppDataSource<EbaEntity> {
 
-    // TODO: Get the String from config per Base URL
-    var theApiKey : ApiKey = ApiKey("T11NOL41x0L7Cn4OAc1FNQogHAcpWvQA") // Old key "MyhCyIKQ0IlIG5dFVk6sjXcG2aHhFbj0", "2Dvgcj0W7sinv0mqtwm2CSQuYYsW79xb", "GaW42ue9mRsgvlL0eIrrD6biU1tlpr8Y"
-
     override suspend fun getAllEntities(): Result<ListResponse<EbaEntity>> {
         var allFetchedTpps = ArrayList<EbaEntity>()
         runBlocking {
@@ -184,16 +181,6 @@ class TppsEbaDataSource internal constructor (
             return Result.Error(ioe)
         }
     }
-
-/*
-    private fun getTppsListResponse(ebaEntitiesListResponse: EbaEntitiesListResponse): ListResponse<EbaEntity> {
-        return ListResponse<EbaEntity>(ebaEntitiesListResponse.entitiesList.stream().map{x -> getTpp(x)}.collect(Collectors.toList()))
-    }
-
-    fun getTpp(ebaEntity: EbaEntity) : Tpp {
-        return Tpp(ebaEntity, NcaEntity())
-    }
-*/
 
     private fun getErrorCodeCategory(code: Int): Any {
         return (code/100)*100;
