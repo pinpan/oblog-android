@@ -72,16 +72,18 @@
     </string-array>
 
     <!-- Sync Preferences -->
+<!--
     <string-array name="psd2_service_codes">
         <item>&lt;All services&gt;</item>
         <item>AIS</item>
         <item>PIS</item>
         <item>PIIS</item>
     </string-array>
+-->
 
     <!-- Sync Preferences -->
     <string-array name="eba_roles">
-        <item> All PSD2 roles </item>
+        <item>All PSD2 roles</item>
         <item>Account Information</item>
         <item>Payment Initiation</item>
         <item>Payment Instrument Issuing</item>

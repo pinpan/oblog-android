@@ -7,25 +7,34 @@
     <uses-permission-sdk-23 android:name="android.permission.READ_CONTACTS" />
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <!--android:label="@string/app_name"-->
     <application
-        android:name=".TppWatchApplication"
-        android:label="@string/app_name"
-        android:description="@string/oblog_app_description"
+        android:name="com.applego.oblog.TppWatchApplication"
         android:allowBackup="false"
+        android:description="@string/oblog_app_description"
         android:icon="@mipmap/ic_oblog_logo"
+        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_oblog_icon"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        >
-        <!-- android:usesCleartextTraffic="true" : W Warning:(19, 9) Attribute `usesCleartextTraffic` is only used in API level 23 and higher (current min is 21) -->
+        android:theme="@style/AppTheme">
+        <receiver
+            android:name="com.applego.oblog.receiver.NetworkChangeReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
+        <service
+            android:name="com.applego.oblog.service.MyIntentService"
+            android:exported="false" />
+        <service
+            android:name="com.applego.oblog.service.UpdateService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/update_service" /> <!-- android:usesCleartextTraffic="true" : W Warning:(19, 9) Attribute `usesCleartextTraffic` is only used in API level 23 and higher (current min is 21) -->
         <activity
             android:name=".onboarding.OnboardingActivity"
-            android:label="@string/title_activity_onboarding"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".tpps.TppsActivity"
             android:exported="true"
-            >
+            android:label="@string/title_activity_onboarding"
+            android:parentActivityName=".tpps.TppsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
@@ -39,9 +48,10 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER"/>
-                <!--<category android:name="android.intent.category.HOME"/>-->
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
+
+                <category android:name="android.intent.category.LAUNCHER" />
+                <!-- <category android:name="android.intent.category.HOME"/> -->
+                <!-- <category android:name="android.intent.category.DEFAULT" /> -->
             </intent-filter>
 
             <meta-data
@@ -52,7 +62,6 @@
             android:name=".preferences.OblogPreferencesActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".tpps.TppsActivity">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.applego.oblog.tppwatch.tpps.TppsActivity" />
@@ -61,11 +70,19 @@
             android:name=".preferences.OblogEnvironmentPreferencesActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".tpps.TppsActivity">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.applego.oblog.tppwatch.tpps.TppsActivity" />
         </activity>
+
+        <!--<receiver
+            android:name="com.applego.oblog.receiver.NetworkChangeReceiver"
+            android:label="NetworkChangeReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>-->
     </application>
 
 </manifest>

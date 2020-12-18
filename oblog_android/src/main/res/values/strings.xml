@@ -162,6 +162,12 @@
     <string name="settings_used_tpps">Used TPPs</string>
     <string name="environments">Environments</string>
     <string name="user_account">Account</string>
+    <string name="update_service">Update service</string>
+    <string name="updates">Updates</string>
+    <string name="automatic_updates">Automatic updates</string>
+    <string name="update_on_start">Update on application start</string>
+    <string name="updates_start">Start first update at (24 hours format):</string>
+    <string name="updates_number">Updates per day:</string>
     <string name="no_fis_tpps">No financial institutions</string>
     <string name="label_psd2_only">TPPs with PSD2 only</string>
     <string name="no_psd2_only">No TPPs with PSD2 license only</string>

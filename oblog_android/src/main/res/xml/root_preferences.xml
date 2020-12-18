@@ -14,6 +14,38 @@
         />
     </PreferenceCategory>
 
+    <PreferenceCategory app:title= "@string/updates">
+        <SwitchPreferenceCompat
+            app:key="automatic_updates"
+            app:title="@string/automatic_updates"
+            />
+        <SwitchPreferenceCompat
+            app:key="update_on_start"
+            app:title="@string/update_on_start"
+            />
+        <EditTextPreference
+            app:key="updates_number"
+            app:title="@string/updates_number"
+            app:defaultValue="3"
+            app:dependency="automatic_updates"
+            app:persistent="true"
+            app:dialogMessage="Enter number of updates per day. Will be regularly distributed starting at selected hour bellow"
+            app:summary="the value formated goes here"
+            app:useSimpleSummaryProvider="true"
+            />
+
+        <EditTextPreference
+            app:key="updates_start_hour"
+            app:title="@string/updates_start"
+            app:defaultValue="6"
+            app:dependency="automatic_updates"
+            app:persistent="true"
+            app:dialogMessage="Enter starting hour"
+            app:summary="the value formated goes here"
+            app:useSimpleSummaryProvider="true"
+            />
+    </PreferenceCategory>
+
     <PreferenceCategory app:title= "@string/user_consents">
         <SwitchPreferenceCompat
             app:key="usage"

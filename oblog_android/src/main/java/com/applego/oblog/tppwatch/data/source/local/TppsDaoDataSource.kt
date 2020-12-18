@@ -6,6 +6,7 @@ import com.applego.oblog.tppwatch.data.Result.Error
 import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.dao.EbaEntityDao
 import com.applego.oblog.tppwatch.data.model.App
+import com.applego.oblog.tppwatch.data.model.EbaEntity
 import com.applego.oblog.tppwatch.data.model.NcaEntity
 import com.applego.oblog.tppwatch.data.model.Tpp
 import kotlinx.coroutines.CoroutineDispatcher
@@ -29,6 +30,7 @@ class TppsDaoDataSource internal constructor(
     override suspend fun getTpps(orderBy: String, isAsc: Boolean): Result<List<Tpp>> = withContext(ioDispatcher) {
         var tpps = ArrayList<Tpp>()
         try {
+            // TODO: Move this query to correct place
             val query = "SELECT * FROM Tpps ORDER BY " + orderBy + (if (isAsc) " ASC" else " DESC")
             var ebaEntities = ebaEntityDao.getAllTppEntitiesRaw(SimpleSQLiteQuery(query))
             ebaEntities.forEach { ebaEntity ->
@@ -74,17 +76,21 @@ class TppsDaoDataSource internal constructor(
         }
 
         val isRevoked = tpp.isRevoked()
-        val foundEntity = ebaEntityDao.getActiveOrRevokedEbaEntityByCode(tpp.ebaEntity.getEntityCode(), tpp.ebaEntity.ebaProperties.codeType, isRevoked)
+        val  allEntities = ebaEntityDao.getAllTppEntities()
+        val foundByHand = allEntities.stream().filter({ it.getEntityCode().equals(tpp.getEntityCode()) && it.isRevoked().equals(isRevoked) }).findFirst().isPresent()
+        val foundEntity = ebaEntityDao.getActiveOrRevokedEbaEntityByCode(tpp.ebaEntity.getEntityCode()/*, tpp.ebaEntity.ebaProperties.codeType*/, isRevoked)
         if (foundEntity == null) {
             ebaEntityDao.insertEbaEntity(tpp.ebaEntity)
             Timber.d("TPP with Eba Code %s was inserted in local DB.", tpp.getEntityCode())
         } else {
-            tpp.ebaEntity._db_id = foundEntity._db_id
-            val updatedNumber = ebaEntityDao.updateEbaEntity(tpp.ebaEntity)
-            if (updatedNumber != 1) {
-                Timber.w("Update of TPP with ID %s was not successfull.", tpp.getEntityId())
-            } else {
-                Timber.d("TPP with Eba Code %s was updated.", tpp.getEntityCode())
+            if (foundByHand) {
+                tpp.ebaEntity._db_id = foundEntity._db_id
+                val updatedNumber = ebaEntityDao.updateEbaEntity(tpp.ebaEntity)
+                if (updatedNumber != 1) {
+                    Timber.w("Update of TPP with ID %s was not successfull.", tpp.getEntityId())
+                } else {
+                    Timber.d("TPP with Eba Code %s was updated.", tpp.getEntityCode())
+                }
             }
         }
     }

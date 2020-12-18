@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountriesWithEU
 import com.applego.oblog.tppwatch.data.model.EbaService
-import com.applego.oblog.tppwatch.data.model.EbaService.Companion.psd2Servies
+import com.applego.oblog.tppwatch.data.model.EbaService.Companion.psd2ServiesWithAll_AllOptions
 import com.applego.oblog.tppwatch.data.model.InstType
 import com.applego.oblog.tppwatch.databinding.TppsFragBinding
 import com.applego.oblog.tppwatch.util.EventObserver
@@ -211,14 +211,14 @@ class TppsFragment : Fragment() {
         })
 
         servicesSpinner = activity?.findViewById(R.id.search_by_service)!!
-        val servicesAdapter = IconAndTextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_item, servicesSpinner, getShortDescriptions(psd2Servies), 12)
+        val servicesAdapter = IconAndTextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_item, servicesSpinner, getShortDescriptions(psd2ServiesWithAll_AllOptions), 12)
         servicesSpinner.setAdapter(servicesAdapter);
 
         servicesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 // An item was selected. You can retrieve the selected item using
                 val serviceCode = resources.getStringArray(R.array.eba_service_codes)[pos];
-                tppsFragViewModel.filterTppsByService(serviceCode)
+                tppsFragViewModel.filterTppsByService(servicesAdapter.getItem(pos))
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {

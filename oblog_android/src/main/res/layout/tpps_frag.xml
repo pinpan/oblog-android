@@ -73,7 +73,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:contentDescription="@string/label_psd2_services"
+                        android:contentDescription="@string/label_tpp_services"
                         android:isScrollContainer="true"
                         android:scrollbarAlwaysDrawHorizontalTrack="true"
                         android:scrollbarAlwaysDrawVerticalTrack="true"

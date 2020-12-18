@@ -63,28 +63,6 @@ data class SearchFilter @JvmOverloads constructor(
             TppsFilterType.AGENTS -> {
                 showAgents = !showAgents
             }
-
-/*
-            TppsFilterType.FOLLOWED -> {
-                showFollowedOnly = !showFollowedOnly
-            }
-            TppsFilterType.USED -> {
-                showUsedOnly = !showUsedOnly
-            }
-
-            TppsFilterType.REVOKED -> {
-                showRevoked = !showRevoked
-                if (!showRevoked) {
-                    showRevokedOnly = false
-                }
-            }
-            TppsFilterType.REVOKED_ONLY -> {
-                showRevokedOnly = !showRevokedOnly
-                if (showRevokedOnly) {
-                    showRevoked = true
-                }
-            }
-*/
         }
     }
 

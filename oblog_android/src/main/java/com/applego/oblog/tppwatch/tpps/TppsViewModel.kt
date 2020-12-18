@@ -271,7 +271,7 @@ class TppsViewModel(
             tppsToShow = filterTppsByCountry(tppsToShow, _searchFilter.countries)
         }
 
-        if (!_searchFilter.services.isNullOrBlank() && !_searchFilter.services.equals("<All services>")) {
+        if (!_searchFilter.services.isNullOrBlank() && !_searchFilter.services.equals(EbaService.ALL.shortDescription)) {
             tppsToShow = filterTppsByService(tppsToShow, _searchFilter.services)
         }
 
@@ -424,10 +424,19 @@ class TppsViewModel(
         }
 
         val filteredTpps = ArrayList<Tpp>()
-        if (service.isNullOrBlank() || service.equals("ALL")) {
+        if (service.isNullOrBlank() || service.equals(EbaService.ALL.shortDescription)) {
             filteredTpps.addAll(inputTpps)
+        } else if (service.equals(EbaService.ALL_PSD2.shortDescription)) {
+            inputTpps.forEach lit@{ tpp ->
+                tpp.getEbaPassport().serviceMap.entries.forEach() {
+                    if (EbaService.allPsd2ServiceMap.get(it.key) != null) {
+                        filteredTpps.add(tpp)
+                        return@lit;
+                    }
+                }
+            }
         } else {
-            val psdService = EbaService.findPsd2Service(service)
+            val psdService = EbaService.findServiceByShortDescription(service)
             inputTpps.forEach lit@{ tpp ->
                 tpp.getEbaPassport().serviceMap.entries.forEach() {
                     if (it.key.equals(psdService.code)) {
