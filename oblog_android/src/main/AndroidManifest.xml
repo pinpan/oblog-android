@@ -24,11 +24,14 @@
         <service
             android:name="com.applego.oblog.service.MyIntentService"
             android:exported="false" />
+
         <service
-            android:name="com.applego.oblog.service.UpdateService"
+            android:name="com.applego.oblog.service.UpdateJobService"
             android:enabled="true"
             android:exported="true"
-            android:label="@string/update_service" /> <!-- android:usesCleartextTraffic="true" : W Warning:(19, 9) Attribute `usesCleartextTraffic` is only used in API level 23 and higher (current min is 21) -->
+            android:label="@string/update_job_service" />
+        <!-- android:usesCleartextTraffic="true" : W Warning:(19, 9) Attribute `usesCleartextTraffic` is only used in API level 23 and higher (current min is 21) -->
+
         <activity
             android:name=".onboarding.OnboardingActivity"
             android:exported="true"
@@ -74,6 +77,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.applego.oblog.tppwatch.tpps.TppsActivity" />
         </activity>
+
+        <receiver android:name="com.applego.oblog.service.UpdateStartServiceReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <!--<receiver
             android:name="com.applego.oblog.receiver.NetworkChangeReceiver"

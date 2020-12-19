@@ -162,7 +162,7 @@
     <string name="settings_used_tpps">Used TPPs</string>
     <string name="environments">Environments</string>
     <string name="user_account">Account</string>
-    <string name="update_service">Update service</string>
+    <string name="update_job_service">Update Job Service</string>
     <string name="updates">Updates</string>
     <string name="automatic_updates">Automatic updates</string>
     <string name="update_on_start">Update on application start</string>
