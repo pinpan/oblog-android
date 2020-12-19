@@ -15,6 +15,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.applego.oblog.tppwatch.R
+import com.applego.oblog.tppwatch.data.model.EUCountry
 import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountriesWithEU
 import com.applego.oblog.tppwatch.data.model.EbaService
 import com.applego.oblog.tppwatch.data.model.EbaService.Companion.psd2ServiesWithAll_AllOptions
@@ -32,7 +33,7 @@ import java.util.*
 
 class TppsFragment : Fragment() {
 
-    private val tppsFragViewModel by viewModels<TppsViewModel> { getViewModelFactory() } //getViewModel()
+    private val tppsFragViewModel by viewModels<TppsViewModel> { getViewModelFactory() }
 
     private val args: TppsFragmentArgs by navArgs()
 
@@ -200,9 +201,7 @@ class TppsFragment : Fragment() {
         countriesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 // An item was selected. You can retrieve the selected item using
-                val countryISO = allEUCountriesWithEU.get(pos).isoCode
-
-                tppsFragViewModel.filterTppsByCountry(countryISO)
+                tppsFragViewModel.filterTppsByCountry(countryAdapter.getItem(pos)?.isoCode ?: EUCountry.EU.isoCode)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -213,11 +212,9 @@ class TppsFragment : Fragment() {
         servicesSpinner = activity?.findViewById(R.id.search_by_service)!!
         val servicesAdapter = IconAndTextSpinnerAdapter(getActivity() as Context, R.layout.custom_spinner_item, servicesSpinner, getShortDescriptions(psd2ServiesWithAll_AllOptions), 12)
         servicesSpinner.setAdapter(servicesAdapter);
-
         servicesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 // An item was selected. You can retrieve the selected item using
-                val serviceCode = resources.getStringArray(R.array.eba_service_codes)[pos];
                 tppsFragViewModel.filterTppsByService(servicesAdapter.getItem(pos))
             }
 

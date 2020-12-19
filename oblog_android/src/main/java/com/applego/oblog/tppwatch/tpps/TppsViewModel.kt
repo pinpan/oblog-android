@@ -33,7 +33,7 @@ class TppsViewModel(
     val dataLoadingLocalDB: LiveData<Boolean> = _dataLoadingLocalDB
 
     private val _dataLoadingRemote = MutableLiveData<Boolean>()
-    val dataLoadingRemote: LiveData<Boolean> = _dataLoadingRemote
+    //val dataLoadingRemote: LiveData<Boolean> = _dataLoadingRemote
 
     private var _searchFilter = SearchFilter()
     val  searchFilter = _searchFilter
