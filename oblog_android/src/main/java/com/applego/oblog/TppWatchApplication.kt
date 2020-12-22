@@ -3,10 +3,12 @@ package com.applego.oblog
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import com.applego.oblog.tppwatch.BuildConfig
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
 import com.applego.oblog.tppwatch.util.ServiceLocator
+import com.applego.oblog.tppwatch.util.ViewModelFactory
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 import kotlin.reflect.KProperty
@@ -57,4 +59,9 @@ class TppWatchApplication : Application() , SharedPreferences.OnSharedPreference
 
         // TODO: Schedule updates based on Preferences
     }
+
+    fun getViewModelFactory(): ViewModelFactory {
+        return ViewModelFactory(tppRepository)
+    }
+
 }
