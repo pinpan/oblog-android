@@ -19,7 +19,23 @@
         <receiver
             android:name="com.applego.oblog.receiver.NetworkChangeReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="com.applego.oblog.service.UpdateStartServiceReceiver"
+            android:enabled="true"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <service
             android:name="com.applego.oblog.service.MyIntentService"
@@ -29,8 +45,9 @@
             android:name="com.applego.oblog.service.UpdateJobService"
             android:enabled="true"
             android:exported="true"
-            android:label="@string/update_job_service" />
-        <!-- android:usesCleartextTraffic="true" : W Warning:(19, 9) Attribute `usesCleartextTraffic` is only used in API level 23 and higher (current min is 21) -->
+            android:label="@string/update_job_service"
+            />
+
 
         <activity
             android:name=".onboarding.OnboardingActivity"
@@ -42,6 +59,7 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".tpps.TppsActivity"
             android:label="OpenBanking LOG"
@@ -61,6 +79,7 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+
         <activity
             android:name=".preferences.OblogPreferencesActivity"
             android:label="@string/title_activity_settings"
@@ -69,6 +88,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.applego.oblog.tppwatch.tpps.TppsActivity" />
         </activity>
+
         <activity
             android:name=".preferences.OblogEnvironmentPreferencesActivity"
             android:label="@string/title_activity_settings"
@@ -77,21 +97,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.applego.oblog.tppwatch.tpps.TppsActivity" />
         </activity>
-
-        <receiver android:name="com.applego.oblog.service.UpdateStartServiceReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-
-        <!--<receiver
-            android:name="com.applego.oblog.receiver.NetworkChangeReceiver"
-            android:label="NetworkChangeReceiver">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-            </intent-filter>
-        </receiver>-->
     </application>
 
 </manifest>

@@ -9,13 +9,13 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.databinding.AboutFragBinding
 import com.applego.oblog.tppwatch.tpps.ADD_EDIT_RESULT_OK
 import com.applego.oblog.tppwatch.util.EventObserver
-import com.applego.oblog.tppwatch.util.getViewModelFactory
+import com.applego.oblog.tppwatch.util.ViewModelFactory.Companion.viewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
 
@@ -27,7 +27,7 @@ class AboutFragment : Fragment() {
 
     private lateinit var viewDataBinding: AboutFragBinding
 
-    private val viewModel by viewModels<AboutViewModel> { getViewModelFactory() }
+    private val viewModel by activityViewModels<AboutViewModel> { viewModelFactory }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

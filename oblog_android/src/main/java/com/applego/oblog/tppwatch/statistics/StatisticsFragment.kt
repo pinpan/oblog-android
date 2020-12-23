@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.data.model.EUCountry.Companion.allEUCountries
@@ -19,8 +20,8 @@ import com.applego.oblog.tppwatch.data.model.EbaEntityType.Companion.allEntityTy
 import com.applego.oblog.tppwatch.data.model.EbaService.Companion.allEbaServies
 import com.applego.oblog.tppwatch.databinding.StatisticsFragBinding
 import com.applego.oblog.tppwatch.util.TimePeriod
+import com.applego.oblog.tppwatch.util.ViewModelFactory.Companion.viewModelFactory
 import com.applego.oblog.ui.TextSpinnerAdapter
-import com.applego.oblog.tppwatch.util.getViewModelFactory
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.Legend
@@ -40,7 +41,7 @@ class StatisticsFragment : Fragment() {
 
     private lateinit var viewDataBinding: StatisticsFragBinding
 
-    private val viewModel by viewModels<StatisticsViewModel> { getViewModelFactory() }
+    private val viewModel by viewModels<StatisticsViewModel> { viewModelFactory }
 
     private lateinit var chart: BarChart
 

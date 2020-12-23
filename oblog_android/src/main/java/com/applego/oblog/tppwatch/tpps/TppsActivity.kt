@@ -8,11 +8,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.*
 import android.widget.FrameLayout
-import androidx.preference.PreferenceManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelStore
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigator
@@ -20,6 +21,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import com.applego.oblog.tppwatch.BuildConfig
 import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.onboarding.OnboardingActivity
@@ -42,12 +44,12 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
     private var actualEnvironment: Array<String> = emptyArray()
     private var selectedEnvironmentName : String = ""
 
+    private val tppsViewModel by viewModels<TppsViewModel> { viewModelFactory }
+
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     private var selectedTppId: String ?=null
-
-    private var viewModel : TppsViewModel? = null
 
     var count = 0
     var startMillis: Long = 0
@@ -67,8 +69,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                     ServiceLocator.resetTppsRepository(this.applicationContext)
                 }
 
-                viewModel = viewModelFactory.get(TppsViewModel::class.java) as TppsViewModel
-                viewModel!!.loadEbaDirectory()
+                tppsViewModel.loadEbaDirectory()
             }
 
             //show Intro activity
@@ -76,11 +77,9 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                 override fun run(): Unit {
                     val editor = sharedPrefs.edit()
                     editor.putBoolean("show_intro", false)
-                    editor.putString("RUNTIME_ENV", "Prod")
                     editor.commit()
 
                     startActivity(Intent(this@TppsActivity, OnboardingActivity::class.java))
-                    //Toast.makeText(this@TppsActivity, "Run only once", Toast.LENGTH_LONG).show()
                 }
             })
         } else {
@@ -100,7 +99,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
             val navView = findViewById<NavigationView>(R.id.nav_view)
             navView.setupWithNavController(navController)
             val headerLogo = (navView.getHeaderView(0) as FrameLayout).getChildAt(0)
-            headerLogo.setOnTouchListener {v, event ->
+            headerLogo.setOnTouchListener { v, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
                     val currentTime = System.currentTimeMillis()
                     if (startMillis == 0L || currentTime - startMillis > 3000) {
@@ -120,7 +119,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                 false
             }
 
-                navController.addOnDestinationChangedListener { navController, destination, arguments ->
+            navController.addOnDestinationChangedListener { navController, destination, arguments ->
                 Timber.i("onDestinationChanged: " + destination.label);
                 if ((destination as FragmentNavigator.Destination).className.equals(TppDetailTabsFragment::class.java.canonicalName)) {
                     selectedTppId = arguments!!.getString("tppId")
@@ -131,8 +130,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
             }
 
             //    getUserId()
-            viewModel = viewModelFactory.get(TppsViewModel::class.java) as TppsViewModel
-            viewModel!!.loadTpps()
+            tppsViewModel.loadTpps()
 
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
@@ -143,6 +141,19 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
             val navigationView = findViewById<NavigationView>(R.id.nav_view)
             navigationView.setNavigationItemSelectedListener(this)
         }
+    }
+
+    /**
+     * It is not recommended to override this method because in future it will be made private (from the parent JavaDoc).
+     * Nevertheless, the impementation of the caller method doee not provide other means of providing custom modelStore.
+     * The only other option is to use LastNonConfigurationInstance, which has its own drawbacks and complications.
+     */
+    override fun getViewModelStore(): ViewModelStore {
+        return viewModelFactory.oblogViewModelStore
+    }
+
+    override fun isChangingConfigurations() : Boolean {
+        return true
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -162,8 +173,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
             selectedEnvironmentName = sharedPreferences?.getString("RUNTIME_ENV", "") ?: "Prod"
             actualEnvironment = ResourcesUtils.getActualEnvironmentForActivity(this, selectedEnvironmentName)
 
-            viewModelFactory.tppsRepository = ServiceLocator.resetTppsRepository(this.applicationContext)
-            viewModel!!.tppsRepository = viewModelFactory.tppsRepository
+            viewModelFactory.reset(ServiceLocator.resetTppsRepository(this.applicationContext))
 
             val i = Intent(this@TppsActivity, TppsActivity::class.java)
             finish()

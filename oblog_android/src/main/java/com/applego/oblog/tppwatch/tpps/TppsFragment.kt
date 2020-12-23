@@ -9,7 +9,7 @@ import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +22,7 @@ import com.applego.oblog.tppwatch.data.model.EbaService.Companion.psd2ServiesWit
 import com.applego.oblog.tppwatch.data.model.InstType
 import com.applego.oblog.tppwatch.databinding.TppsFragBinding
 import com.applego.oblog.tppwatch.util.EventObserver
-import com.applego.oblog.tppwatch.util.getViewModelFactory
+import com.applego.oblog.tppwatch.util.ViewModelFactory.Companion.viewModelFactory
 import com.applego.oblog.tppwatch.util.setupSnackbar
 import com.applego.oblog.ui.CountriesSpinnerAdapter
 import com.applego.oblog.ui.IconAndTextSpinnerAdapter
@@ -33,7 +33,7 @@ import java.util.*
 
 class TppsFragment : Fragment() {
 
-    private val tppsFragViewModel by viewModels<TppsViewModel> { getViewModelFactory() }
+    private val tppsFragViewModel by activityViewModels<TppsViewModel> { viewModelFactory }
 
     private val args: TppsFragmentArgs by navArgs()
 

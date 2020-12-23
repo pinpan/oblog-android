@@ -3,7 +3,7 @@ package com.applego.oblog.tppwatch.tppdetail
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
@@ -11,7 +11,7 @@ import com.applego.oblog.tppwatch.R
 import com.applego.oblog.tppwatch.addedittppapp.AddEditTppAppFragmentDirections
 import com.applego.oblog.tppwatch.databinding.TppDetailTabsFragmentBinding
 import com.applego.oblog.tppwatch.util.EventObserver
-import com.applego.oblog.tppwatch.util.getViewModelFactory
+import com.applego.oblog.tppwatch.util.ViewModelFactory.Companion.viewModelFactory
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.runBlocking
 
@@ -29,9 +29,9 @@ class TppDetailTabsFragment : Fragment() {
 
     private val  args: TppDetailTabsFragmentArgs by navArgs()
 
-    private val viewModel by viewModels<TppDetailViewModel> { getViewModelFactory() }
+    private val viewModel by activityViewModels<TppDetailViewModel> { viewModelFactory }
 
-    private val appsViewModel by viewModels<AppsViewModel> { getViewModelFactory() }
+    private val appsViewModel by activityViewModels<AppsViewModel> { viewModelFactory }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -104,9 +104,6 @@ class TppDetailTabsFragment : Fragment() {
 
         val tabLayout = view.findViewById(R.id.detail_tabs) as TabLayout
         tabLayout.setupWithViewPager(viewPager)
-
-        //(tabLayout.getChildAt(0) as ViewGroup).getChildAt(1).isEnabled = false
-        //(tabLayout.getChildAt(0) as ViewGroup).getChildAt(1).isClickable = false
 
         viewDataBinding = TppDetailTabsFragmentBinding.bind(view).apply {
             viewmodel = viewModel
