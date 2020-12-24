@@ -31,7 +31,7 @@
             android:title="@string/refresh"
             app:showAsAction="ifRoom" />
         <item
-            android:id="@+id/load_directory"
+            android:id="@+id/sync_directory"
             android:title="@string/load_from_server"
             app:showAsAction="ifRoom" />
 <!--

@@ -9,7 +9,7 @@ import kotlinx.coroutines.runBlocking
  */
 fun TppsViewModel.loadTppsBlocking(forceUpdate: Boolean) = runBlocking {
     if (forceUpdate) {
-        this@loadTppsBlocking.loadEbaDirectory()
+        this@loadTppsBlocking.syncEbaDirectory()
     } else {
         this@loadTppsBlocking.loadTpps()
     }

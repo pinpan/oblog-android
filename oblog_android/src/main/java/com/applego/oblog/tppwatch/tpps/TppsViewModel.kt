@@ -158,7 +158,7 @@ class TppsViewModel(
       */
     // TODO: Set warning message than "Data is old" to be displayed,
     //  until refresh succeeds next time. May be for Remote updates only?
-    fun loadEbaDirectory() {
+    fun syncEbaDirectory() {
         if (!(_dataLoadingRemote.value?.equals(true) ?: false)) {
             _dataLoadingRemote.value = true
             _displayedItems.value = emptyList()

@@ -42,6 +42,9 @@ class TppsFragment : Fragment() {
     private lateinit var listAdapter: TppsAdapter
 
     private var searchView: SearchView? = null
+
+    private var syncMenuItem: MenuItem? = null
+
     var lastTppsSearchViewQuery = ""
 
     private var firstVisibleInListview = 0
@@ -65,12 +68,16 @@ class TppsFragment : Fragment() {
 
         tppsFragViewModel.refreshTpp(arguments?.getString("tppId"))
 
+        syncMenuItem?.setEnabled(progressBar?.visibility != View.VISIBLE)
+
         return viewDataBinding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         activity?.menuInflater?.inflate(R.menu.tpps_fragment_menu, menu)
+
+        syncMenuItem = menu.findItem(R.id.sync_directory)
 
         // Associate searchable configuration with the SearchView
         val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
@@ -125,8 +132,10 @@ class TppsFragment : Fragment() {
                 openAbout()
                 true
             }
-            R.id.load_directory -> {
-                tppsFragViewModel.loadEbaDirectory()
+            R.id.sync_directory -> {
+                tppsFragViewModel.syncEbaDirectory()
+                syncMenuItem?.setEnabled(false)
+                // TODO: Sync all NCAs
                 true
             }
             R.id.menu_filter -> {
@@ -154,18 +163,23 @@ class TppsFragment : Fragment() {
 
         progressBar = activity?.findViewById(R.id.progress_bar)!!
 
+        syncMenuItem?.setEnabled(progressBar?.visibility != View.VISIBLE)
+
         tppsFragViewModel.loadProgressStart.observe(this, EventObserver {
             progressBar?.max = it
             progressBar?.visibility = View.VISIBLE
+            syncMenuItem?.setEnabled(false)
         })
         tppsFragViewModel.loadProgressEnd.observe(this, EventObserver {
             progressBar?.visibility = View.GONE
+            syncMenuItem?.setEnabled(true)
         })
         tppsFragViewModel.loadProgress.observe(this, EventObserver {
             if (it.totalPages.compareTo(it.page+1) > 0) {
                 progressBar?.visibility = View.VISIBLE
                 progressBar?.max = it.totalPages
             }
+            syncMenuItem?.setEnabled(false)
             progressBar?.progress = it.page
         })
         tppsFragViewModel.loadTpps()

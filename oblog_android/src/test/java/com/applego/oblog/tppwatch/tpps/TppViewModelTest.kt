@@ -52,7 +52,7 @@ class TppsViewModelTest {
 
         tppsViewModel = TppsViewModel(tppsRepository)
         tppsViewModel.searchFilter.init()
-        tppsViewModel.loadEbaDirectory()
+        tppsViewModel.syncEbaDirectory()
     }
 
     /**
@@ -135,7 +135,7 @@ class TppsViewModelTest {
         // Given an initialized TppsViewModel with initialized tpps
 
         // Load tpps
-        tppsViewModel.loadEbaDirectory()
+        tppsViewModel.syncEbaDirectory()
 
         // When loading of Tpps is requested
         tppsViewModel.setFiltering(TppsFilterType.FOLLOWED)

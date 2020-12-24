@@ -69,7 +69,7 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                     ServiceLocator.resetTppsRepository(this.applicationContext)
                 }
 
-                tppsViewModel.loadEbaDirectory()
+                tppsViewModel.syncEbaDirectory()
             }
 
             //show Intro activity
@@ -174,6 +174,8 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
             actualEnvironment = ResourcesUtils.getActualEnvironmentForActivity(this, selectedEnvironmentName)
 
             viewModelFactory.reset(ServiceLocator.resetTppsRepository(this.applicationContext))
+            val appName = resources.getString(R.string.app_name)
+            setTitle(appName + "(" + selectedEnvironmentName + ")")
 
             val i = Intent(this@TppsActivity, TppsActivity::class.java)
             finish()

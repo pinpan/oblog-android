@@ -21,4 +21,14 @@ class OblogViewModelStore<T : ViewModel> : ViewModelStore() {
             with(key) {
                 return models.get(key)
             }
+
+    fun <T : ViewModel> get(modelClass: Class<T>) =
+            with(modelClass) {
+                var model: ViewModel? = super.get(modelClass.name)
+                /*if (model == null) {
+                    model = create(modelClass)
+                }*/
+                model
+            }
+
 }
