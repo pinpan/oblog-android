@@ -23,6 +23,7 @@
             app:key="update_on_start"
             app:title="@string/update_on_start"
             />
+<!--
         <EditTextPreference
             app:key="updates_number"
             app:title="@string/updates_number"
@@ -44,6 +45,7 @@
             app:summary="the value formated goes here"
             app:useSimpleSummaryProvider="true"
             />
+-->
     </PreferenceCategory>
 
     <PreferenceCategory app:title= "@string/user_consents">
