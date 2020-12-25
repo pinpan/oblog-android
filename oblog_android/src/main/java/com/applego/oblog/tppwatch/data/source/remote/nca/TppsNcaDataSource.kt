@@ -1,6 +1,5 @@
 package com.applego.oblog.tppwatch.data.source.remote.nca
 
-import com.applego.oblog.apikey.ApiKey
 import com.applego.oblog.tppwatch.data.source.remote.Paging
 import com.applego.oblog.tppwatch.data.Result
 import com.applego.oblog.tppwatch.data.dao.NcaEntityDao
@@ -23,8 +22,6 @@ class TppsNcaDataSource internal constructor (
         private val ncaEntityDao: NcaEntityDao,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : RemoteTppDataSource<NcaEntity> {
-
-    var theApiKey : ApiKey = ApiKey("T11NOL41x0L7Cn4OAc1FNQogHAcpWvQA ")
 
     override suspend fun getAllEntities(): Result<ListResponse<NcaEntity>> = withContext(ioDispatcher) {
         var paging = Paging(10, 1, 10, true)
@@ -53,7 +50,7 @@ class TppsNcaDataSource internal constructor (
     }
 
     private fun loadTppsPage(country: String, tppName: String, paging: Paging): Result<Paging> {
-        val call = oblogNcaService.listTpps(theApiKey.apiKey, country, tppName, paging.page, paging.size, paging.sortBy)
+        val call = oblogNcaService.listTpps(OblogNcaService.theApiKey.apiKey, country, tppName, paging.page, paging.size, paging.sortBy)
         var response: Response<NcaEntitiesListResponse>?
         try {
             response = call.execute()
@@ -85,7 +82,7 @@ class TppsNcaDataSource internal constructor (
     override suspend fun getEntityById(country: String, tppId: String): Result<NcaEntity> {
         val paging = Paging()
 
-        val call = oblogNcaService.findById(theApiKey.apiKey,country, tppId, paging.page, paging.size, paging.sortBy)
+        val call = oblogNcaService.findById(OblogNcaService.theApiKey.apiKey,country, tppId, paging.page, paging.size, paging.sortBy)
         try {
             var response: Response<NcaEntitiesListResponse> = call.execute()
             if (response.isSuccessful()) {
@@ -132,7 +129,7 @@ class TppsNcaDataSource internal constructor (
     override suspend fun getEntityByName(country: String, tppName: String): Result<List<NcaEntity>> {
         val paging = Paging()
 
-        val call = oblogNcaService.findByName(theApiKey.apiKey,country, tppName, paging.page, paging.size, paging.sortBy)
+        val call = oblogNcaService.findByName(OblogNcaService.theApiKey.apiKey,country, tppName, paging.page, paging.size, paging.sortBy)
         try {
             var response: Response<List<NcaEntity>> = call.execute()
 

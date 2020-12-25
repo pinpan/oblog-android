@@ -15,7 +15,7 @@ android {
         applicationId "com.applego.oblog.tppwatch"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 15
+        versionCode 16
         versionName "v1.0.0_RC-3"
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
