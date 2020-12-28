@@ -92,7 +92,7 @@ open class TppDetailViewModel(
     }
 
     fun start(tppId: String?, forceRefresh: Boolean = false) {
-        if (_isDataAvailable.value == true && !forceRefresh || _dataLoading.value == true) {
+        if (/*_isDataAvailable.value == true && !forceRefresh || */_dataLoading.value == true) {
             return
         }
 
