@@ -46,13 +46,10 @@ class DefaultTppsRepository (
             return withContext(ioDispatcher) {
                 if (forceUpdate) {
                     var paging = Paging(100, 1, 0, true)
-                    //var allFetchedTpps = ArrayList<Tpp>()
-
                     while (!paging.last) {
                         val tppsListResponse = fetchTppsPageFromRemoteDatasource(paging)
                         when (tppsListResponse) {
                             is Success -> {
-                                //allFetchedTpps.addAll(tppsListResponse.data.tppsList)
                                 updateLocalDataSource(tppsListResponse.data.aList)
 
                                 paging = tppsListResponse.data.paging
@@ -74,8 +71,6 @@ class DefaultTppsRepository (
         var tppsList: List<Tpp> = listOf()
         when (ebaEntitiesListResponse) {
             is Success -> {
-                //allFetchedTpps.addAll(tppsListResponse.data.tppsList)
-                //val paging = ebaEntitiesListResponse.data.paging
                 tppsList = ebaEntitiesListResponse.data.aList.stream().map {it -> Tpp(it, NcaEntity())}.collect(Collectors.toList())
                 updateLocalDataSource(tppsList)
 
@@ -134,12 +129,25 @@ class DefaultTppsRepository (
         }
     }
 
+    /*override*/ suspend fun getTppBlocking2(tppId: String, forceUpdate: Boolean): Result<Tpp> {
+        /*return withContext(ioDispatcher) {
+            getTppWithId(tppId)?.let {
+                EspressoIdlingResource.decrement() // Set app as idle.
+                return@withContext Success(it)
+            }*/
+
+        return/*@withContext*/ Success((fetchTppFromLocalOrRemote(tppId, forceUpdate) as Success).data)
+        //}
+    }
+
     private suspend fun fetchTppFromLocalOrRemote (
         tppId: String,
         forceUpdate: Boolean
-    ): Result<Tpp> {
+    ): Result<Tpp> { //Result<Pair<Tpp, Tpp>> {
 
         var tpp : Tpp?= null
+
+        val tppResultTuple: Pair<Tpp, Tpp>? = null
 
         // Local DB first
         val tppResult : Result<Tpp> = tppsLocalDataSource.getTpp(tppId)
@@ -186,11 +194,13 @@ class DefaultTppsRepository (
                 }
             }
 
+/*
             if (ebaUpdate || ncaUpdate) {
                 updateLocalDataSource(tpp)
             }
 
-            return tppResult
+*/
+            return /*Result<Pair<Tpp, Tpp>>(tppResultTuple)*/ tppResult
         }
 
         return Error(Exception("Error fetching from remote and local"))
@@ -268,11 +278,11 @@ class DefaultTppsRepository (
             tpp.ebaEntity = (tppsResult as Success<Tpp>).data.ebaEntity
             tpp.ncaEntity = (tppsResult as Success<Tpp>).data.ncaEntity
             tpp.setFollowed((tppsResult as Success<Tpp>).data.isFollowed())
-            tpp.setUsed((tppsResult as Success<Tpp>).data.isUsed())
+            //tpp.setUsed((tppsResult as Success<Tpp>).data.isUsed())
         }
     }
 
-    override suspend fun setTppActivateFlag(tpp: Tpp, used: Boolean) = withContext(ioDispatcher) {
+    /*override suspend fun setTppActivateFlag(tpp: Tpp, used: Boolean) = withContext(ioDispatcher) {
         // Do in memory cache update to keep the app UI up to date
         cacheAndPerform(tpp) {
             it.ebaEntity.used = used
@@ -280,7 +290,7 @@ class DefaultTppsRepository (
                 launch { tppsLocalDataSource.setTppActivateFlag(it.ebaEntity.getId(), used) }
             }
         }
-    }
+    }*/
 
     override suspend fun deleteAllTpps() {
         withContext(ioDispatcher) {
@@ -302,7 +312,7 @@ class DefaultTppsRepository (
         }
     }
 
-    private suspend fun updateLocalDataSource(tpps: List<Tpp>?) {
+    override suspend fun updateLocalDataSource(tpps: List<Tpp>?) {
         if (tpps != null) {
             for (tpp in tpps) {
                 updateLocalDataSource(tpp)
@@ -310,7 +320,7 @@ class DefaultTppsRepository (
         }
     }
 
-    private suspend fun updateLocalDataSource(tpp: Tpp) {
+    override suspend fun updateLocalDataSource(tpp: Tpp) {
         tppsLocalDataSource.saveTpp(tpp)
     }
 

@@ -31,7 +31,7 @@ class TppsDaoDataSource internal constructor(
         var tpps = ArrayList<Tpp>()
         try {
             // TODO: Move this query to correct place
-            val query = "SELECT * FROM Tpps ORDER BY " + orderBy + (if (isAsc) " ASC" else " DESC")
+            val query = "SELECT * FROM Tpps" /*ORDER BY " + orderBy + (if (isAsc) " ASC" else " DESC")*/
             var ebaEntities = ebaEntityDao.getAllTppEntitiesRaw(SimpleSQLiteQuery(query))
             ebaEntities.forEach { ebaEntity ->
                 tpps.add(Tpp(ebaEntity, NcaEntity()))}
@@ -111,9 +111,9 @@ class TppsDaoDataSource internal constructor(
         ebaEntityDao.updateFollowed(tpp.ebaEntity.getId(), follow)
     }
 
-    override suspend fun setTppActivateFlag(tppId: String, used: Boolean)  = withContext(ioDispatcher) {
+    /*override suspend fun setTppActivateFlag(tppId: String, used: Boolean)  = withContext(ioDispatcher) {
         ebaEntityDao.updateUsed(tppId, used)
-    }
+    }*/
 
     suspend fun clearFollowedTpps() = withContext<Unit>(ioDispatcher) {
         ebaEntityDao.deleteFollowedTppsEntities()

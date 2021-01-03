@@ -16,11 +16,16 @@
 
     <PreferenceCategory app:title= "@string/updates">
         <SwitchPreferenceCompat
+            app:key="refresh_while_updating"
+            app:title="@string/refresh_while_updating"
+            />
+        <SwitchPreferenceCompat
             app:key="automatic_updates"
             app:title="@string/automatic_updates"
             />
         <SwitchPreferenceCompat
             app:key="update_on_start"
+            app:dependency="automatic_updates"
             app:title="@string/update_on_start"
             />
 <!--

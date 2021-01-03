@@ -236,14 +236,14 @@ class DefaultTppsRepositoryTest {
         tppsRepository.setTppFollowedFlag(Tpp(newEbaEntity, NcaEntity()), false)
 
         // Make sure it's followed
-        assertThat((tppsRepository.getTpp(newEbaEntity.getEntityId(), true) as Success).data.isUsed()).isFalse()
+        assertThat((tppsRepository.getTpp(newEbaEntity.getEntityId(), true) as Success).data.isFollowed()).isFalse()
 
         // Mark is as used
-        tppsRepository.setTppActivateFlag(Tpp(newEbaEntity, NcaEntity()), true)
+        tppsRepository.setTppFollowedFlag(Tpp(newEbaEntity, NcaEntity()), true)
 
         // Verify it's now activated
         val result = tppsRepository.getTpp(newEbaEntity.getEntityId(), true) as Success
-        assertThat(result.data.isUsed()).isTrue()
+        assertThat(result.data.isFollowed()).isTrue()
     }
 
     // TODO-PZA#FIX this test:

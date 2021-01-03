@@ -77,8 +77,8 @@ data class EbaEntity @JvmOverloads constructor(
     @Ignore
     fun isFollowed() : Boolean = followed
 
-    @Ignore
-    fun isUsed() : Boolean = used
+    /*@Ignore
+    fun isUsed() : Boolean = used*/
 
     @Ignore
     fun isRevoked(): Boolean = revoked //!ebaProperties.authorizationEnd.isNullOrBlank()

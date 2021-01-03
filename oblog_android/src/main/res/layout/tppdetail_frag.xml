@@ -63,7 +63,7 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496" />
 
-                    <CheckBox
+                    <!--<CheckBox
                         android:id="@+id/checkbox_used"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
                         android:paddingTop="1dp"
                         android:text="@string/label_used"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="#006496" />
+                        android:textColor="#006496" />-->
 
                 </LinearLayout>
             </RelativeLayout>
@@ -226,11 +226,12 @@
                             android:text="@string/label_country"
                             android:textSize="14sp" />
 
+                        <!--android:layout_below="@id/checkbox_used"-->
                         <EditText
                             android:id="@+id/label_visa_psd2_roles"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/checkbox_used"
+
                             android:layout_toRightOf="@id/label_visa_country"
                             android:layout_weight="3"
                             android:clickable="false"

@@ -34,7 +34,7 @@ interface TppModel  {
 
     fun isNonPsd2Sp(): Boolean
 
-    fun isUsed(): Boolean
+   // fun isUsed(): Boolean
 
     fun isFollowed(): Boolean
 

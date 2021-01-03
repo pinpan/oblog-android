@@ -125,7 +125,7 @@ class TppsActivityTest {
             .check(matches(isChecked()))
     }
 
-    @Test
+    /*@Test
     fun markTppAsUsedOnDetailScreen_tppIsUsedInList() {
         // Add 1 followed tpp
         val tppTitle = "USED"
@@ -151,7 +151,7 @@ class TppsActivityTest {
         onView(allOf(withId(R.id.follow_checkbox), hasSibling(withText(tppTitle))))
             .check(matches(not(isChecked())))
     }
-
+*/
     @Test
     fun markTppAsFollowAndUsedOnDetailScreen_tppIsUsedInList() {
         // Add 1 used tpp
@@ -182,7 +182,7 @@ class TppsActivityTest {
     }
 
     @Test
-    fun markTppAsUsedAndFollowOnDetailScreen_tppIsFollowInList() {
+    fun markTppAsFollowOnDetailScreen_tppIsFollowInList() {//UsedAnd
         // Add 1 followed tpp
         val tppTitle = "COMP-ACT"
         repository.saveTppBlocking(Tpp(EbaEntity(_entityId = "28173281", _entityCode = "Entity_CZ28173281", _entityName = tppTitle, _description = "DESCRIPTION", _globalUrn = "", _ebaEntityVersion = "", _country = "CZ", _entityType = EbaEntityType.NONE), NcaEntity()))

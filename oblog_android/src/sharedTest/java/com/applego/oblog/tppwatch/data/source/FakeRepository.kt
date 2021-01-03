@@ -7,7 +7,6 @@ import com.applego.oblog.tppwatch.data.Result.Success
 import com.applego.oblog.tppwatch.data.model.App
 import com.applego.oblog.tppwatch.data.model.Tpp
 import com.applego.oblog.tppwatch.data.repository.TppsRepository
-import com.applego.oblog.tppwatch.data.source.remote.ListResponse
 import com.applego.oblog.tppwatch.data.source.remote.Paging
 import com.applego.oblog.tppwatch.data.source.remote.TppsListResponse
 import java.util.LinkedHashMap
@@ -94,17 +93,9 @@ class FakeRepository : TppsRepository {
         tppsServiceData[tpp.ebaEntity.getEntityId()]?.ebaEntity?.followed = true
     }
 
-    override suspend fun setTppActivateFlag(tpp: Tpp, used: Boolean) {
+    /*override suspend fun setTppActivateFlag(tpp: Tpp, used: Boolean) {
         tpp.ebaEntity.used = used
-    }
-
-/*
-    suspend fun clearFollowedTpps() {
-        tppsServiceData = tppsServiceData.filterValues {
-            !it.ebaEntity?.isFollowed()
-        } as LinkedHashMap<String, Tpp>
-    }
-*/
+    }*/
 
     override suspend fun deleteTpp(tppId: String) {
         tppsServiceData.remove(tppId)
@@ -119,5 +110,17 @@ class FakeRepository : TppsRepository {
         for (tpp in tpps) {
             tppsServiceData[tpp.getEntityId()] = tpp
         }
+    }
+
+    override suspend fun updateLocalDataSource(tpps: List<Tpp>?) {
+        if (tpps != null) {
+            for (tpp in tpps) {
+                updateLocalDataSource(tpp)
+            }
+        }
+    }
+
+    override suspend fun updateLocalDataSource(tpp: Tpp) {
+        // Dummy TODO: Un-Dummy
     }
 }

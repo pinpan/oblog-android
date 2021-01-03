@@ -196,7 +196,7 @@ class TppsFragmentTest {
         launchTppsActivity(false)
 
         // Mark the tpp as used
-        onView(checkboxUsed()).perform(click())
+        //onView(checkboxUsed()).perform(click())
 
         // Verify tpp is shown as used
         onView(withId(R.id.menu_filter)).perform(click())
@@ -386,7 +386,7 @@ class TppsFragmentTest {
         return allOf(withId(R.id.follow_checkbox))
     }
 
-    private fun checkboxUsed(): Matcher<View> {
+    /*private fun checkboxUsed(): Matcher<View> {
         return allOf(withId(R.id.used_checkbox))
-    }
+    }*/
 }

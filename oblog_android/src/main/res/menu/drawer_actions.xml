@@ -3,13 +3,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@id/statistics_fragment_dest"
-        android:icon="@drawable/ic_statistics"
-        android:title="@string/statistics_title" />
-    <item
         android:id="@id/tpps_fragment_dest"
         android:icon="@drawable/ic_list"
         android:title="@string/tpp_directory_title" />
+    <item
+        android:id="@id/statistics_fragment_dest"
+        android:icon="@drawable/ic_statistics"
+        android:title="@string/statistics_title" />
     <item
         android:id="@id/about_fragment_dest"
         android:icon="@drawable/ic_settings"

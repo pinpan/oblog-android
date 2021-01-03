@@ -30,7 +30,7 @@ interface TppsRepository {
 
     suspend fun setTppFollowedFlag(tpp: Tpp, followed: Boolean)
 
-    suspend fun setTppActivateFlag(tpp: Tpp, used: Boolean)
+    //suspend fun setTppActivateFlag(tpp: Tpp, used: Boolean)
 
     suspend fun deleteAllTpps()
 
@@ -42,4 +42,7 @@ interface TppsRepository {
 
     suspend fun updateApp(tpp: Tpp, app: App)
 
+    suspend fun updateLocalDataSource(tpp: Tpp)
+
+    suspend fun updateLocalDataSource(tpps: List<Tpp>?)
 }

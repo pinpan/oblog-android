@@ -5,6 +5,7 @@ import com.applego.oblog.tppwatch.data.model.Tpp
 /**
  * Function that does some trivial computation. Used to showcase unit tests.
  */
+/*
 internal fun getUsedAndFollowedStats(tpps: List<Tpp>?): StatsResult {
 
     return if (tpps == null || tpps.isEmpty()) {
@@ -18,5 +19,6 @@ internal fun getUsedAndFollowedStats(tpps: List<Tpp>?): StatsResult {
         )
     }
 }
+*/
 
-data class StatsResult(val usedTppsPercent: Float, val followedTppsPercent: Float)
+//data class StatsResult(val usedTppsPercent: Float, val followedTppsPercent: Float)

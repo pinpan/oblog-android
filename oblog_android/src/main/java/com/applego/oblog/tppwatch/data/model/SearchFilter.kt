@@ -21,7 +21,7 @@ data class SearchFilter @JvmOverloads constructor(
     @Embedded
     var instType = InstType.INST_PIAI
     var showFollowedOnly = false
-    var showUsedOnly = false
+    //var showUsedOnly = false
     var showRevoked = false
     var showRevokedOnly = false
     var showBranches = false
@@ -69,7 +69,7 @@ data class SearchFilter @JvmOverloads constructor(
     fun init() {
         instType = InstType.ALL
         showFollowedOnly = false
-        showUsedOnly = false
+      //  showUsedOnly = false
         showRevoked = false
         showRevokedOnly = false
         showBranches = false

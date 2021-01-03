@@ -34,9 +34,9 @@ object FakeFailingTppsLocalDataSource : LocalTppDataSource {
         TODO("not implemented")
     }
 
-    override suspend fun setTppActivateFlag(tppId: String, used: Boolean) {
+    /*override suspend fun setTppActivateFlag(tppId: String, used: Boolean) {
         TODO("not implemented")
-    }
+    }*/
 
     override suspend fun deleteAllTpps() {
         TODO("not implemented")

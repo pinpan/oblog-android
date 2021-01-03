@@ -152,7 +152,7 @@
                             android:textColor="@color/colorEUDarkBlue"
                             android:textSize="12sp"
                             android:textStyle="bold" />
-                        <CheckBox
+                        <!--<CheckBox
                             android:id="@+id/show_used_only_checkbox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -166,7 +166,7 @@
                             android:text="@string/U"
                             android:textColor="@color/colorEUDarkBlue"
                             android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold" />-->
                         <Spinner
                             android:id="@+id/order_by"
                             android:layout_width="wrap_content"
@@ -227,7 +227,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:onRefreshListener="@{viewmodel::loadTpps}"
-                    app:refreshing="@{viewmodel.dataLoading}"
+                    app:refreshing="@{viewmodel.dataLoadingLocalDB}"
                     >
                     <LinearLayout
                         android:id="@+id/tpps_container_layout"

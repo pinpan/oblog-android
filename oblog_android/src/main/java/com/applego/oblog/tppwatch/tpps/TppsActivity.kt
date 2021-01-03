@@ -130,7 +130,12 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
             }
 
             //    getUserId()
-            tppsViewModel.loadTpps()
+            var isUpdateOnStart = sharedPrefs.getBoolean("update_on_start", false)
+            if (isUpdateOnStart) {
+                tppsViewModel.syncEbaDirectory()
+            } else {
+                tppsViewModel.loadTpps()
+            }
 
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 

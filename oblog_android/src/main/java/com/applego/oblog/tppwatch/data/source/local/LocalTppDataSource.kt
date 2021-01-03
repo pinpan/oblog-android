@@ -19,7 +19,7 @@ interface LocalTppDataSource {
 
     suspend fun updateFollowing(tpp: Tpp, follow: Boolean)
 
-    suspend fun setTppActivateFlag(tppId: String, used: Boolean)
+    //suspend fun setTppActivateFlag(tppId: String, used: Boolean)
 
     suspend fun deleteAllTpps()
 

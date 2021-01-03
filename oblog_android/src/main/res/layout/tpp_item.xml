@@ -49,14 +49,14 @@
             android:checked="@{tpp.ebaEntity.followed}"
             android:onClick="@{(view) -> viewmodel.followTpp(tpp, ((CompoundButton)view).isChecked())}"
             android:textSize="10sp" />
-        <CheckBox
+        <!--<CheckBox
             android:id="@+id/used_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:checked="@{tpp.ebaEntity.used}"
             android:textSize="12sp"
-            android:onClick="@{(view) -> viewmodel.activateTpp(tpp, ((CompoundButton)view).isChecked())}" />
+            android:onClick="@{(view) -> viewmodel.activateTpp(tpp, ((CompoundButton)view).isChecked())}" />-->
 
         <TextView
             android:id="@+id/tpp_name"

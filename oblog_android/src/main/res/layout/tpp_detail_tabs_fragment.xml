@@ -62,7 +62,7 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#006496" />
 
-                    <CheckBox
+                    <!--<CheckBox
                         android:id="@+id/checkbox_used"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                         android:paddingTop="1dp"
                         android:text="@string/label_using"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="#006496" />
+                        android:textColor="#006496" />-->
                 </LinearLayout>
             </RelativeLayout>
 

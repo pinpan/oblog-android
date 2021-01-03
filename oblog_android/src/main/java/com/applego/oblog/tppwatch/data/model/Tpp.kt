@@ -39,7 +39,7 @@ class Tpp : TppModel {
     override fun getCountry() = ebaEntity.getCountry()
     override fun getEbaPassport() = ebaEntity.getEbaPassport()
     override fun getStatus() = ebaEntity.getStatus()
-    override fun isUsed() = ebaEntity.isUsed()
+    //override fun isUsed() = ebaEntity.isUsed()
     override fun isRevoked() = ebaEntity.isRevoked()
     override fun isPSD2(): Boolean = ebaEntity.isAllPSD2()
     override fun isPI(): Boolean = ebaEntity.isPI()

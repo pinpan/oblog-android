@@ -71,7 +71,7 @@
     <string name="loading_finished">Loading TPPs from EBA directory finished. %1$d pages were successfully loaded.</string>
     <string name="followed_tpps_cleared">Followed TPPs cleared</string>
     <string name="menu_filter">Filter</string>
-    <string name="load_from_server">Synchronize</string>
+    <string name="load_from_server">Synch with server</string>
     <string name="preferences_title">Preferences</string>
     <string name="menu_delete_tpp">Delete TPP</string>
     <string name="navigation_view_header_title">OBLOG</string>
@@ -165,6 +165,7 @@
     <string name="update_job_service">Update Job Service</string>
     <string name="updates">Updates</string>
     <string name="automatic_updates">Automatic updates</string>
+    <string name="refresh_while_updating">Refresh view while updating</string>
     <string name="update_on_start">Update on application start</string>
     <string name="updates_start">Start first update at (24 hours format):</string>
     <string name="updates_number">Updates per day:</string>
