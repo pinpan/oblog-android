@@ -63,6 +63,7 @@
     <string name="label_app_home">Web home</string>
     <string name="tpps_registered_all_number">Displaying all %1$d registered TPPs</string>
     <string name="tpps_registered_filtered_number">Displaying %1$d TPPs, out of %2$d registered TPPs (filtered)</string>
+    <string name="tpps_sync_number">Synchronized %1$d, out of max %2$d TPPs available</string>
 
     <string name="tpp_applications">Applications</string>
     <string name="tpp_marked_used">TPP marked used</string>

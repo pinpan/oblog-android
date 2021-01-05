@@ -54,6 +54,8 @@ class TppsFragment : Fragment() {
 
     var progressBar:ProgressBar? = null
 
+    var progressText:TextView? = null
+
     private  var toolbarIcon: Drawable? = null
 
     override fun onCreateView(
@@ -162,21 +164,25 @@ class TppsFragment : Fragment() {
         toolbar?.setNavigationIcon(d)
 
         progressBar = activity?.findViewById(R.id.progress_bar)!!
+        progressText = activity?.findViewById(R.id.progress_text)!!
 
         syncMenuItem?.setEnabled(progressBar?.visibility != View.VISIBLE)
 
         tppsFragViewModel.loadProgressStart.observe(this, EventObserver {
-            progressBar?.max = it
+            progressBar?.max = it.totalPages
             progressBar?.visibility = View.VISIBLE
+            progressText?.visibility = View.VISIBLE
             syncMenuItem?.setEnabled(false)
         })
         tppsFragViewModel.loadProgressEnd.observe(this, EventObserver {
             progressBar?.visibility = View.GONE
+            progressText?.visibility = View.GONE
             syncMenuItem?.setEnabled(true)
         })
         tppsFragViewModel.loadProgress.observe(this, EventObserver {
-            if (it.totalPages.compareTo(it.page+1) > 0) {
+            if (it.totalPages.compareTo(it.page + 1) > 0) {
                 progressBar?.visibility = View.VISIBLE
+                progressText?.visibility = View.VISIBLE
                 progressBar?.max = it.totalPages
             }
             syncMenuItem?.setEnabled(false)
@@ -257,7 +263,7 @@ class TppsFragment : Fragment() {
             override fun onClick(v: View) {
                 orderByDirectionButton.setImageResource(if (tppsFragViewModel.orderByDirection?.value
                                 ?: false)
-                    R.drawable.sort_ascending_bars else R.drawable.sort_descending_bars)
+                                   R.drawable.sort_ascending_bars else R.drawable.sort_descending_bars)
                 tppsFragViewModel.reverseOrderBy()
                 listAdapter.notifyDataSetChanged()
                 recyclerView.invalidate()
@@ -308,6 +314,8 @@ class TppsFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         tppsFragViewModel.saveSearchFilter(outState)
         progressBar?.visibility = View.INVISIBLE
+        progressText?.visibility = View.INVISIBLE
+
         super.onSaveInstanceState(outState)
     }
 

@@ -62,8 +62,8 @@ class TppsViewModel(
     private val _loadProgress = MutableLiveData<Event<Paging>>()
     val loadProgress: LiveData<Event<Paging>> = _loadProgress
 
-    private val _loadProgressStart = MutableLiveData<Event<Int>>()
-    val loadProgressStart: LiveData<Event<Int>> = _loadProgressStart
+    private val _loadProgressStart = MutableLiveData<Event<Paging>>()
+    val loadProgressStart: LiveData<Event<Paging>> = _loadProgressStart
 
     private val _loadProgressEnd = MutableLiveData<Event<Boolean>>()
     val loadProgressEnd: LiveData<Event<Boolean>> = _loadProgressEnd
@@ -71,6 +71,14 @@ class TppsViewModel(
     // This LiveData depends on another so we can use a transformation.
     val empty: LiveData<Boolean> = Transformations.map(_displayedItems) {
         it.isEmpty()
+    }
+
+    val progressLoadedTpps: LiveData<Int> = Transformations.map(_loadProgress) {
+        it.getContent().page*it.getContent().size
+    }
+
+    val progressTotalTpps: LiveData<Int> = Transformations.map(_loadProgressStart) {
+        it.getContent().totalElements
     }
 
     val showRevoked = MutableLiveData<Boolean>()
@@ -176,7 +184,7 @@ class TppsViewModel(
                         val tppsResult = tppsRepository.fetchTppsPageFromRemoteDatasource(paging)
                         if (tppsResult is Success) {
                             if (paging.page == 1) {
-                                _loadProgressStart.value = Event(tppsResult.data.paging.totalPages)
+                                _loadProgressStart.value = Event(tppsResult.data.paging)
                             }
 
                             _loadProgress.value = Event(paging)
@@ -188,7 +196,7 @@ class TppsViewModel(
                                     tppsRepository.updateLocalDataSource(tpp)
                                 }
                             }
-
+                            // TODO: Respect user preferences, which may not allow refreshing on every page fetch
                             loadTpps()
                         } else {
                             showSnackbarMessage(R.string.loading_tpps_error)
