@@ -43,12 +43,14 @@
                     android:paddingBottom="0dp"
                     android:layout_weight="1"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:layout_margin="0dp"
                     >
                     <Spinner
                         android:id="@+id/serarch_country"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:paddingStart="@dimen/header_padding"
                         android:contentDescription="@string/label_home_country"
                         android:isScrollContainer="true"
                         android:nestedScrollingEnabled="true"
@@ -98,6 +100,7 @@
                     android:checked="@{viewmodel.showRevoked}"
                     android:onClick="@{(view) -> viewmodel.filterRevoked(((CompoundButton)view).isChecked())}"
                     android:text="@string/label_revoked"
+                    android:textSize="12sp"
                     android:textColor="@color/colorEUDarkBlue"
                     />
                 <CheckBox
@@ -110,6 +113,7 @@
                     android:checked="@{viewmodel.showRevokedOnly}"
                     android:onClick="@{(view) -> viewmodel.filterRevokedOnly(((CompoundButton)view).isChecked())}"
                     android:text="@string/label_revoked_only"
+                    android:textSize="12sp"
                     android:textColor="@color/colorEUDarkBlue" />
             </RelativeLayout>
 
@@ -149,6 +153,8 @@
                             android:onClick="@{(view) -> viewmodel.filterFollowed(((CompoundButton)view).isChecked())}"
                             android:paddingLeft="0dp"
                             android:text="@string/F"
+                            android:textAlignment="viewStart"
+                            android:contentDescription="viewStart"
                             android:textColor="@color/colorEUDarkBlue"
                             android:textSize="12sp"
                             android:textStyle="bold" />
@@ -227,8 +233,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:onRefreshListener="@{viewmodel::loadTpps}"
-                    app:refreshing="@{viewmodel.dataLoadingLocalDB}"
-                    >
+                    ><!-- app:refreshing="@{viewmodel.dataLoadingLocalDB}"-->
                     <LinearLayout
                         android:id="@+id/tpps_container_layout"
                         android:layout_width="match_parent"

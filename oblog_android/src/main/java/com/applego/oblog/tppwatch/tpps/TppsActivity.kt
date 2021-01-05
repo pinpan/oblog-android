@@ -69,6 +69,11 @@ class TppsActivity : SharedPreferences.OnSharedPreferenceChangeListener, AppComp
                     ServiceLocator.resetTppsRepository(this.applicationContext)
                 }
 
+                val editor = sharedPrefs.edit()
+                editor.putBoolean("update_on_start", false)
+                editor.putBoolean("refresh_while_updating", true)
+                editor.commit()
+
                 tppsViewModel.syncEbaDirectory()
             }
 
