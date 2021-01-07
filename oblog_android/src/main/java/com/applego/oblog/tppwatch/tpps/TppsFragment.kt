@@ -242,6 +242,7 @@ class TppsFragment : Fragment() {
                 // Another interface callback
             }
         })
+        servicesSpinner.setSelection(2)
 
         val recyclerView: RecyclerView = activity?.findViewById(R.id.tpps_list)!!
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {

@@ -448,6 +448,15 @@ class TppsViewModel(
         val filteredTpps = ArrayList<Tpp>()
         if (service.isNullOrBlank() || service.equals(EbaService.ALL.shortDescription)) {
             filteredTpps.addAll(inputTpps)
+        } else if (service.equals(EbaService.AIS_PIS.shortDescription)) {
+            inputTpps.forEach lit@{ tpp ->
+                tpp.getEbaPassport().serviceMap.entries.forEach() {
+                    if (EbaService.aisAndPisServiceMap.get(it.key) != null) {
+                        filteredTpps.add(tpp)
+                        return@lit;
+                    }
+                }
+            }
         } else if (service.equals(EbaService.ALL_PSD2.shortDescription)) {
             inputTpps.forEach lit@{ tpp ->
                 tpp.getEbaPassport().serviceMap.entries.forEach() {
