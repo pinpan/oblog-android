@@ -1,0 +1,69 @@
+Index: oblog_android/src/main/java/com/applego/oblog/tppwatch/tpps/TppsViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- oblog_android/src/main/java/com/applego/oblog/tppwatch/tpps/TppsViewModel.kt	(revision e8ab9df3ba33970efaf0099c3292b840c8392ca0)
++++ oblog_android/src/main/java/com/applego/oblog/tppwatch/tpps/TppsViewModel.kt	(revision 672c2ee8017b547d5a6964f9397cdbf92b7feb9b)
+@@ -232,6 +232,7 @@
+             if (tppsResult is Success) {
+                     _allItems.value = tppsResult.data
+                     _displayedItems.value = applyAllTppFilters()
++                    orderTpps()
+                 } else {
+                     //is Result.Idle -> TODO()
+                     //is Result.Error -> TODO()
+@@ -277,11 +278,11 @@
+ 
+         tppsToShow = filterTppsByName(tppsToShow)
+ 
+-        if (orderByDirection.value ?: true) {
++        /*if (orderByDirection.value ?: true) {
+             tppsToShow.sortBy { it.getEntityName() }
+         } else {
+             tppsToShow.sortedByDescending { it.getEntityName() }
+-        }
++        }*/
+ 
+         _dataLoadingLocalDB.value = false
+ 
+@@ -293,23 +294,25 @@
+     }
+ 
+     fun orderTpps() {
+-        val fieldName = _orderByField.value
+-        val asc = orderByDirection.value ?: true
+-
+         if (!_displayedItems.value.isNullOrEmpty()) {
+-            (_displayedItems.value as MutableList).sortBy {
+-                when (fieldName) {
+-                    "authorizationDate" -> it.ebaEntity.getAuthorizationDate()
+-                    "country" -> it.ebaEntity.getCountry()
+-                    "type" -> it.ebaEntity.getEntityType().code
+-                    "followed" -> it.isFollowed().toString()
+-                    else -> it.getEntityName()
+-                }
+-            }
++            val fieldName = _orderByField.value
++            (_displayedItems.value as MutableList).sortWith (compareBy(
++                    {
++                        when (fieldName) {
++                            "authorizationDate" -> it.ebaEntity.getAuthorizationDate()
++                            "country" -> it.ebaEntity.getCountry()
++                            "type" -> it.ebaEntity.getEntityType().code
++                            "followed" -> it.isFollowed().toString()
++                            else -> it.getEntityName()
++                        }
++                    }
++                    , {it.getEntityName()}
++            ))
++        }
+ 
+-            if (!asc) {
++        val asc = orderByDirection.value ?: true
++        if (!asc) {
+                 (_displayedItems.value as MutableList).reverse()
+-            }
+         }
+     }
+ 

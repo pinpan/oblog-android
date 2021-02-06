@@ -252,6 +252,7 @@ class TppsViewModel(
             if (tppsResult is Success) {
                     _allItems.value = tppsResult.data
                     _displayedItems.value = applyAllTppFilters()
+                    //orderTpps()
                 } else {
                     //is Result.Idle -> TODO()
                     //is Result.Error -> TODO()
@@ -315,23 +316,25 @@ class TppsViewModel(
     }
 
     fun orderTpps() {
-        val fieldName = _orderByField.value
-        val asc = orderByDirection.value ?: true
-
         if (!_displayedItems.value.isNullOrEmpty()) {
-            (_displayedItems.value as MutableList).sortBy {
-                when (fieldName) {
-                    "authorizationDate" -> it.ebaEntity.getAuthorizationDate()
-                    "country" -> it.ebaEntity.getCountry()
-                    "type" -> it.ebaEntity.getEntityType().code
-                    "followed" -> it.isFollowed().toString()
-                    else -> it.getEntityName()
-                }
-            }
+            val fieldName = _orderByField.value
+            (_displayedItems.value as MutableList).sortWith (compareBy(
+                    {
+                        when (fieldName) {
+                            "authorizationDate" -> it.ebaEntity.getAuthorizationDate()
+                            "country" -> it.ebaEntity.getCountry()
+                            "type" -> it.ebaEntity.getEntityType().code
+                            "followed" -> it.isFollowed().toString()
+                            else -> it.getEntityName()
+                        }
+                    }
+                    , {it.getEntityName()}
+            ))
+        }
 
-            if (!asc) {
+        val asc = orderByDirection.value ?: true
+        if (!asc) {
                 (_displayedItems.value as MutableList).reverse()
-            }
         }
     }
 
