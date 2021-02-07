@@ -43,11 +43,13 @@ class TppsFragment : Fragment() {
 
     private var searchView: SearchView? = null
 
+    private var recyclerView: RecyclerView? = null
+
     private var syncMenuItem: MenuItem? = null
 
     var lastTppsSearchViewQuery = ""
 
-    private var firstVisibleInListview = 0
+    private var firstVisibleItem = 0
 
     lateinit var countriesSpinner: Spinner
     lateinit var servicesSpinner: Spinner
@@ -188,6 +190,12 @@ class TppsFragment : Fragment() {
             syncMenuItem?.setEnabled(false)
             progressBar?.progress = it.page
         })
+
+        tppsFragViewModel.scrollToItemIndex.observe(this, EventObserver {
+            firstVisibleItem = it
+            (recyclerView?.layoutManager as LinearLayoutManager).scrollToPosition(firstVisibleItem)
+        })
+
         tppsFragViewModel.loadTpps()
     }
 
@@ -244,21 +252,6 @@ class TppsFragment : Fragment() {
         })
         servicesSpinner.setSelection(2)
 
-        val recyclerView: RecyclerView = activity?.findViewById(R.id.tpps_list)!!
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                firstVisibleInListview = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition();
-                var aTpp = tppsFragViewModel.displayedItems.value?.get(firstVisibleInListview)
-                // TODO: Find the Tpp item position after sorting
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                firstVisibleInListview = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-            }
-        })
-
         val orderByDirectionButton:ImageButton = activity?.findViewById(R.id.order_direction)!!
         orderByDirectionButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
@@ -267,7 +260,7 @@ class TppsFragment : Fragment() {
                                    R.drawable.sort_ascending_bars else R.drawable.sort_descending_bars)
                 tppsFragViewModel.reverseOrderBy()
                 listAdapter.notifyDataSetChanged()
-                recyclerView.invalidate()
+                recyclerView?.invalidate()
             }
         })
 
@@ -278,9 +271,9 @@ class TppsFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 val orderByField = resources.getStringArray(R.array.orderby_field_values)[pos];
                 tppsFragViewModel.orderTppsBy(orderByField)
-                tppsFragViewModel.orderTpps()
+                tppsFragViewModel.orderDisplayedTpps()
                 listAdapter.notifyDataSetChanged()
-                recyclerView.invalidate()
+                recyclerView?.invalidate()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -290,12 +283,12 @@ class TppsFragment : Fragment() {
 
         val btnFirst:ImageButton = activity?.findViewById(R.id.btn_first)!!
         btnFirst.setOnClickListener{
-            recyclerView.scrollToPosition(0);
+            recyclerView?.scrollToPosition(0);
         }
 
         val btnLast:ImageButton = activity?.findViewById(R.id.btn_last)!!
         btnLast.setOnClickListener{
-            recyclerView.scrollToPosition((tppsFragViewModel.displayedItems.value?.size ?: 1) - 1);
+            recyclerView?.scrollToPosition((tppsFragViewModel.displayedItems.value?.size ?: 1) - 1);
         }
     }
 
@@ -417,6 +410,20 @@ class TppsFragment : Fragment() {
 
             viewDataBinding.tppsList.adapter = listAdapter
 
+            recyclerView = activity?.findViewById(R.id.tpps_list)!!
+            recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    firstVisibleItem = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition();
+                    tppsFragViewModel.firstVisibleItem = listAdapter.currentList.get(firstVisibleItem)
+                }
+
+                /*override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    firstVisibleItem = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                    tppsFragViewModel.firstVisibleItem = tppsFragViewModel.displayedItems.value?.get(firstVisibleItem)
+                }*/
+            })
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
         }

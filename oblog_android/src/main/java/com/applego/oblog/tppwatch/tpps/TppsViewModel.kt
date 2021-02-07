@@ -29,8 +29,8 @@ class TppsViewModel(
     private val _displayedItems = MutableLiveData<List<Tpp>>().apply { value = allItems.value }
     val displayedItems: LiveData<List<Tpp>> = _displayedItems
 
-    private val lastSyncUpdatedItems: MutableLiveData<List<Tpp>> =  MutableLiveData(listOf<Tpp>())
-    private val _lastSyncUpdatedItems: MutableLiveData<List<Tpp>> = lastSyncUpdatedItems
+    private val _lastSyncUpdatedItems: MutableLiveData<List<Tpp>> =  MutableLiveData(listOf<Tpp>())
+    val lastSyncUpdatedItems: MutableLiveData<List<Tpp>> = _lastSyncUpdatedItems
 
     private val _dataLoadingLocalDB = MutableLiveData<Boolean>()
     val dataLoadingLocalDB: LiveData<Boolean> = _dataLoadingLocalDB
@@ -67,6 +67,9 @@ class TppsViewModel(
 
     private val _loadProgressEnd = MutableLiveData<Event<Boolean>>()
     val loadProgressEnd: LiveData<Event<Boolean>> = _loadProgressEnd
+
+    var firstVisibleItem: Tpp? = null
+    val scrollToItemIndex = MutableLiveData<Event<Int>>()
 
     // This LiveData depends on another so we can use a transformation.
     val empty: LiveData<Boolean> = Transformations.map(_displayedItems) {
@@ -113,7 +116,6 @@ class TppsViewModel(
                     tppsRepository.refreshTpp(tpp)
                 }
             }
-            // TODO: Check if this is needed: loadTpps()
         }
     }
 
@@ -155,9 +157,6 @@ class TppsViewModel(
                 showRevoked.value = _searchFilter.showRevoked
             }
 
-            /*TppsFilterType.USED -> {
-                _searchFilter.showUsedOnly = !_searchFilter.showUsedOnly
-            }*/
             TppsFilterType.FOLLOWED -> {
                 _searchFilter.showFollowedOnly = !_searchFilter.showFollowedOnly
             }
@@ -177,7 +176,7 @@ class TppsViewModel(
             showSnackbarMessage(R.string.loading)
             wrapEspressoIdlingResource {
                 viewModelScope.launch {
-                    lastSyncUpdatedItems.value = listOf<Tpp>()
+                    _lastSyncUpdatedItems.value = listOf<Tpp>()
                     var paging = Paging(100, 1, 0, true)
                     while (!paging.last) {
 
@@ -220,15 +219,6 @@ class TppsViewModel(
         }
     }
 
-/*
-    fun activateTpp(tpp: Tpp, used: Boolean) = viewModelScope.launch {
-        viewModelScope.launch {
-            tppsRepository.setTppActivateFlag(tpp, used)
-            showSnackbarMessage(R.string.tpp_marked_used)
-        }
-    }
-*/
-
     /**
       * Called by the Data Binding library and the FAB's click listener.
       */
@@ -269,22 +259,32 @@ class TppsViewModel(
         wrapEspressoIdlingResource {
 
             viewModelScope.launch {
-                val tppsToShow = applyAllTppFilters()
-                _displayedItems.value = tppsToShow
+                _displayedItems.value = applyAllTppFilters()
 
                 _dataLoadingLocalDB.value = false
             }
         }
     }
-
     fun applyAllTppFilters(): List<Tpp> {
-        _dataLoadingLocalDB.value = true
+        var outputList = listOf<Tpp>()
 
-        if (allItems.value.isNullOrEmpty()) {
+        if (allItems.value != null) {
+            _dataLoadingLocalDB.value = true
+
+            outputList = applyAllTppFilters(allItems.value!!)
+
+            _dataLoadingLocalDB.value = false
+        }
+
+        return outputList
+    }
+
+    fun applyAllTppFilters(inputItems: List<Tpp>): List<Tpp> {
+        if (inputItems.isNullOrEmpty()) {
             return listOf<Tpp>()
         }
 
-        var tppsToShow = filterFollowedOnly(allItems.value)
+        var tppsToShow = filterFollowedOnly(inputItems)
 
         tppsToShow = filterTppsByUserInterest(tppsToShow, _searchFilter)
 
@@ -298,15 +298,13 @@ class TppsViewModel(
 
         tppsToShow = filterTppsByName(tppsToShow)
 
-        /*if (orderByDirection.value ?: true) {
-            tppsToShow.sortBy { it.getEntityName() }
-        } else {
-            tppsToShow.sortedByDescending { it.getEntityName() }
-        }*/
+        tppsToShow = orderTpps(tppsToShow)
 
-        orderTpps()
-
-        _dataLoadingLocalDB.value = false
+        if (firstVisibleItem != null) {
+            var idx = tppsToShow.indexOf(firstVisibleItem!!)
+            if (idx < 0) idx = 0
+            scrollToItemIndex.value = Event(idx)
+        }
 
         return tppsToShow
     }
@@ -315,27 +313,36 @@ class TppsViewModel(
         _orderByField.value = fieldName
     }
 
-    fun orderTpps() {
+    fun orderDisplayedTpps() {
         if (!_displayedItems.value.isNullOrEmpty()) {
+            _displayedItems.value = orderTpps(_displayedItems.value)
+        }
+    }
+
+    private fun orderTpps(items: List<Tpp>?): List<Tpp> {
+        var outputList: List<Tpp> = emptyList()
+        if (!items.isNullOrEmpty()) {
             val fieldName = _orderByField.value
-            (_displayedItems.value as MutableList).sortWith (compareBy(
-                    {
-                        when (fieldName) {
-                            "authorizationDate" -> it.ebaEntity.getAuthorizationDate()
-                            "country" -> it.ebaEntity.getCountry()
-                            "type" -> it.ebaEntity.getEntityType().code
-                            "followed" -> it.isFollowed().toString()
-                            else -> it.getEntityName()
-                        }
+            outputList = items.sortedWith (compareBy(
+                {
+                    when (fieldName) {
+                        "authorizationDate" -> it.ebaEntity.getAuthorizationDate()
+                        "country" -> it.ebaEntity.getCountry()
+                        "type" -> it.ebaEntity.getEntityType().code
+                        "followed" -> it.isFollowed().toString()
+                        else -> it.getEntityName()
                     }
-                    , {it.getEntityName()}
+                }
+                , {it.getEntityName()}
             ))
+
+            val asc = orderByDirection.value ?: true
+            if (!asc) {
+                outputList = outputList.reversed()
+            }
         }
 
-        val asc = orderByDirection.value ?: true
-        if (!asc) {
-                (_displayedItems.value as MutableList).reverse()
-        }
+        return outputList
     }
 
     fun reverseOrderBy() {
@@ -346,19 +353,15 @@ class TppsViewModel(
     }
 
     private fun filterFollowedOnly(inTpps: List<Tpp>?): List<Tpp>? {
-        if (!(searchFilter.showFollowedOnly/* || searchFilter.showUsedOnly*/)) {
+        if (!(searchFilter.showFollowedOnly)) {
             return inTpps
         }
 
         val filteredTpps = ArrayList<Tpp>()
         inTpps?.forEach { aTpp ->
-            /*if (searchFilter.showUsedOnly && aTpp.isUsed()) {
+            if (searchFilter.showFollowedOnly && (aTpp.isFollowed())) {
                 filteredTpps.add(aTpp)
-            } else {*/
-                if (searchFilter.showFollowedOnly && (aTpp.isFollowed() /*|| aTpp.isUsed()*/)) {
-                    filteredTpps.add(aTpp)
-                }
-            /*}*/
+            }
         }
 
         return filteredTpps
@@ -496,14 +499,6 @@ class TppsViewModel(
         _displayedItems.value = applyAllTppFilters()
     }
 
-/*
-    fun filterUsed(only: Boolean) {
-        setFiltering(TppsFilterType.USED)
-
-        _displayedItems.value = applyAllTppFilters()
-    }
-
-*/
     fun filterRevoked(dofilter: Boolean) {
         setFiltering(TppsFilterType.REVOKED)
 
